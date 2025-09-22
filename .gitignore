@@ -11,7 +11,3 @@ venv/
 .mypy_cache/
 .streamlit/*.toml
 
-# --- Data (keep folder, ignore contents) ---
-data/*
-!data/.gitignore
-!data/README.md
