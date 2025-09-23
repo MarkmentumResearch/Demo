@@ -11,15 +11,7 @@ from urllib.parse import quote_plus
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Overview", layout="wide")
-st.markdown("""
-<style>
-/* Keep 3-up layout from collapsing on smaller laptops (~<=1100px) */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
 
-/* Optional: prevent ultra-wide stretching; center content nicely */
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
-</style>
-""", unsafe_allow_html=True)
 
 st.markdown("""
 <style>
