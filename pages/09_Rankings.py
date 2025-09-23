@@ -63,30 +63,42 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 </style>
 """, unsafe_allow_html=True)
 
-
 st.markdown("""
 <style>
-/* Center any 3-column row by centering its contents */
-div[data-testid="stHorizontalBlock"]{
-  justify-content: center !important;   /* center the group of columns */
+/* Center any st.columns row that contains an Altair/Vega chart */
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]),
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) {
+  justify-content: center !important;           /* center the group of columns (or the single stacked one) */
 }
 
-/* Make the 2nd (middle) column intrinsic width so it hugs the chart */
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
-  flex: 0 0 auto !important;            /* no grow/shrink */
-  width: auto !important;               /* width = content (the chart) */
-  display: flex !important;             /* let the chart center inside column */
+/* Make every column in that row hug its contents and center them */
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]) > div[data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) > div[data-testid="column"] {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  display: flex !important;
   justify-content: center !important;
 }
 
-/* Keep the Vega embed from stretching to 100% */
+/* Keep the Vega embed at its intrinsic width so it doesn't stretch on small screens */
 div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed{
+div[data-testid="stVegaLiteChart"] .vega-embed {
   width: auto !important;
+  max-width: 100% !important;
   flex: 0 0 auto !important;
+}
+
+/* Fallback for older browsers (or if :has isn't supported) – on narrow viewports,
+   just center all columns' contents so the chart stays centered */
+@media (max-width: 1200px) {
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    display: flex !important;
+    justify-content: center !important;
+  }
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
