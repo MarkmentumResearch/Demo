@@ -63,6 +63,16 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Center ALL Altair/Vega charts (canvas + legend) */
+.vega-embed, .vega-embed > div {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
@@ -187,9 +197,7 @@ cur_heat = (
 )
 
 st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-_, center, _ = st.columns([1, 4, 1])   # side spacers
-with center:
-    st.altair_chart(cur_heat, use_container_width=False)
+st.altair_chart(cur_heat, use_container_width=False)
 st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
