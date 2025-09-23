@@ -1,0 +1,11 @@
+Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
+DD,"DUPONT DE NEMOURS, INC.",Materials,2025-09-22,158.0,73.0,-85.0
+ELV,"ELEVANCE HEALTH, INC.",Health Care,2025-09-22,134.0,63.0,-71.0
+TER,"TERADYNE, INC.",Information Technology,2025-09-22,127.0,73.0,-54.0
+CDNS,"CADENCE DESIGN SYSTEMS, INC.",Information Technology,2025-09-22,124.0,94.0,-30.0
+BLK,"BLACKROCK, INC.",Financials,2025-09-22,115.0,62.0,-53.0
+EA,ELECTRONIC ARTS INC.,Communication Services,2025-09-22,110.0,48.0,-62.0
+GREK,GLBL X MSCI GREECE,Foreign,2025-09-22,110.0,78.0,-32.0
+EC,ECOPETROL SA,MR Discretion,2025-09-22,106.0,72.0,-34.0
+TRMB,TRIMBLE INC.,Information Technology,2025-09-22,98.0,78.0,-20.0
+FICO,FAIR ISAAC CORPORATION,Information Technology,2025-09-22,97.0,54.0,-43.0

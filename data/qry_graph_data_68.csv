@@ -1,0 +1,11 @@
+Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
+ABT,ABBOTT LABORATORIES,Health Care,2025-09-22,-122.0,-69.0,53.0
+EQR,EQUITY RESIDENTIAL,Real Estate,2025-09-22,-119.0,-56.0,63.0
+GIS,"GENERAL MILLS, INC.",Consumer Staples,2025-09-22,-119.0,-54.0,65.0
+ENPH,"ENPHASE ENERGY, INC.",Information Technology,2025-09-22,-117.0,-52.0,65.0
+FTNT,"FORTINET, INC.",Information Technology,2025-09-22,-115.0,-63.0,52.0
+CNC,CENTENE CORPORATION,Health Care,2025-09-22,-114.0,-76.0,38.0
+IR,INGERSOLL RAND INC.,Industrials,2025-09-22,-113.0,-51.0,62.0
+GEOS,GEOSPACE TECHNOLOGIES CORPORATION,MR Discretion,2025-09-22,-112.0,-50.0,62.0
+CCL,CARNIVAL CORP,Consumer Discretionary,2025-09-22,-108.0,-28.0,80.0
+EIS,ISHARES:MSCI ISRAEL,Foreign,2025-09-22,-108.0,-13.0,95.0
