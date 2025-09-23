@@ -205,7 +205,7 @@ cur_heat = (
       .configure_view(strokeOpacity=0)
 )
 
-st.markdown('<div class="viz-center">', unsafe_allow_html=True)
+#st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 st.altair_chart(cur_heat, use_container_width=False)
 st.markdown('</div>', unsafe_allow_html=True)
 
