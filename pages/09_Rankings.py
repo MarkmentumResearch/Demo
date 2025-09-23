@@ -304,7 +304,7 @@ if show_cur_ticker_hm:
     # (Do the same for the per-ticker heatmap)
     _, mid2, _ = st.columns([1, 1, 1], gap="large")
     with mid2:
-        st.altair_chart(ticker_heat, use_container_width=False)
+        st.altair_chart(cur_ticker_heat, use_container_width=False)
 
 
 
