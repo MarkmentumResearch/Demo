@@ -54,7 +54,7 @@ APP_DIR = _here if _here.name != "pages" else _here.parent
 
 DATA_DIR  = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
-LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"S") / "markmentum_logo.png"
+LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
 
 
