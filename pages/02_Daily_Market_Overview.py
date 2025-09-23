@@ -12,47 +12,53 @@ from urllib.parse import quote_plus
 # -------------------------
 st.set_page_config(page_title="Markmentum – Overview", layout="wide")
 
-# ---- LAYOUT FIXES FOR CLOUD (render parity with local) ----
+# ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 st.markdown("""
 <style>
-/* 1) Force Streamlit column rows to stay 3-up on desktop */
+/* Keep 3-up rows on desktop */
 div[data-testid="stHorizontalBlock"]{
-  display:flex;                /* explicit flex in case defaults change */
-  flex-wrap: nowrap !important;/* <-- prevents wrap to 2 columns */
-  gap: 24px;
-  min-width: 1100px;           /* same guard you used locally */
+  display:flex;
+  flex-wrap: nowrap !important;
+  gap: 28px;
 }
 
-/* 2) Expand and center the content area across Streamlit versions */
+/* Wider page, smaller side margins */
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
-  max-width: 1800px;           /* a bit wider than before to match local */
+  width: 95vw;                 /* expands to viewport width */
+  max-width: 2100px;           /* more than before to widen cards */
   margin-left: auto;
   margin-right: auto;
 }
 
-/* 3) Typography + card/table shell (unchanged look) */
+/* Base typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; box-shadow:0 0 0 rgba(0,0,0,0); }
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; }
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
 
-/* 4) Table sizing: slightly smaller minimums so three cards always fit */
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; }
+/* Table */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow: hidden; text-overflow: ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
-.right { text-align:right; } .center { text-align:center; }
-.company { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.center { text-align:center; }
+.right  { text-align:right; white-space:nowrap; }
 
-/* Allow cells to shrink more easily without breaking layout */
-.tbl th[style*="min-width:42ch"] { min-width:36ch !important; }  /* Company */
-.tbl th[style*="min-width:25ch"] { min-width:20ch !important; }  /* Exposure */
+/* No wrapping for these columns, sized by characters per your constraints */
+th.col-company, td.col-company { white-space: nowrap; min-width:11ch; width:39ch; max-width:39ch; }
+th.col-exposure, td.col-exposure { white-space: nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 
-/* Small safety for narrower laptop screens without collapsing to 2 cols */
+/* Fixed ticker width */
+th.col-ticker, td.col-ticker { width:74px; }
+
+/* Shares column gets extra width; also no wrapping */
+.shares-wide th.col-value, .shares-wide td.col-value { width:120px !important; white-space:nowrap; }
+
+/* Safety on narrower laptops so it still stays 3-up */
 @media (max-width: 1280px){
   [data-testid="stAppViewContainer"] .main .block-container,
-  section.main > div { max-width: 1500px; }
+  section.main > div { max-width: 1600px; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -148,7 +154,7 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
                 return col
     return default
 
-def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
     # tolerant column mapping
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
@@ -159,22 +165,22 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
-  <td class="company">{r.get(ncol, "")}</td>
-  <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td style="min-width:20ch">{r.get(ccol, "")}</td>
-  <td class="right" style="width:90px">{value_fmt(r.get(value_col))}</td>
+  <td class="col-company">{r.get(ncol, "")}</td>
+  <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
+  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
     return textwrap.dedent(f"""
-<div class="card">
+<div class="card {extra_class}">
   <h3>{title}</h3>
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:36ch">Company</th>
-        <th style="width:74px">Ticker</th>
-        <th style="min-width:20ch">Exposure</th>
-        <th style="width:90px" class="right">{value_label}</th>
+        <th class="col-company">Company</th>
+        <th class="col-ticker">Ticker</th>
+        <th class="col-exposure">Exposure</th>
+        <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
     <tbody>
@@ -184,12 +190,12 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
 </div>
 """).strip()
 
-def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
     with slot:
         if df.empty or value_col is None:
             st.info(f"No data for {title}.")
             return
-        st.markdown(_table_html(title, df, value_col, value_label, value_fmt), unsafe_allow_html=True)
+        st.markdown(_table_html(title, df, value_col, value_label, value_fmt, value_width_px, extra_class), unsafe_allow_html=True)
 
 # -------------------------
 # Header (logo centered)
@@ -254,7 +260,8 @@ render_card(c2, T_PCT_DECL, df2, col_pct2, "Percent", _fmt_pct)
 
 df3 = dfs[2].copy()
 col_shares = _pick(df3, ["Shares", "Volume", "shares", "volume", "value"], default=None)
-render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions)
+# Wider value column, no wrap
+render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions, value_width_px=120, extra_class="shares-wide")
 
 row_spacer(14)
 
@@ -273,7 +280,7 @@ def render_table_card(container, title: str, df):
         )
 
 # -------------------------
-# ROW 2 (3 cards): Highest/Lowest Score Change / Distribution
+# ROW 2 (3 cards): Top Score Gainers / Decliners / Score Change Dist
 # -------------------------
 d1, d2, d3 = st.columns([1,1,1], gap="large")
 
