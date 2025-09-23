@@ -13,38 +13,53 @@ from urllib.parse import quote_plus
 st.set_page_config(page_title="Markmentum – Weekly Overview", layout="wide")
 st.markdown("""
 <style>
-/* Keep 3-up layout from collapsing on smaller laptops (~<=1100px) */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
+/* Keep 3-up rows on desktop */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;
+  flex-wrap: nowrap !important;
+  gap: 28px;
+}
 
-/* Optional: prevent ultra-wide stretching; center content nicely */
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
-</style>
-""", unsafe_allow_html=True)
+/* Wider page, smaller side margins */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  width: 95vw;                 /* expands to viewport width */
+  max-width: 2100px;           /* more than before to widen cards */
+  margin-left: auto;
+  margin-right: auto;
+}
 
-st.markdown("""
-<style>
+/* Base typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card {
-  border: 1px solid #cfcfcf;
-  border-radius: 8px;
-  background: #fff;
-  padding: 12px 12px 8px 12px;
-  box-shadow: 0 0 0 rgba(0,0,0,0);
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; }
+.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
+
+/* Table */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow: hidden; text-overflow: ellipsis; }
+.tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
+.center { text-align:center; }
+.right  { text-align:right; white-space:nowrap; }
+
+/* No wrapping for these columns, sized by characters per your constraints */
+th.col-company, td.col-company { white-space: nowrap; min-width:11ch; width:39ch; max-width:39ch; }
+th.col-exposure, td.col-exposure { white-space: nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+
+/* Fixed ticker width */
+th.col-ticker, td.col-ticker { width:74px; }
+
+/* Shares column gets extra width; also no wrapping */
+.shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
+
+/* Safety on narrower laptops so it still stays 3-up */
+@media (max-width: 1280px){
+  [data-testid="stAppViewContainer"] .main .block-container,
+  section.main > div { max-width: 1600px; }
 }
-.card h3 {
-  margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a;
-}
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; }
-.tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
-.right { text-align: right; }
-.center { text-align: center; }
-.company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 """, unsafe_allow_html=True)
-
 # -------------------------
 # Paths
 # -------------------------
@@ -146,22 +161,22 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
-  <td class="company">{r.get(ncol, "")}</td>
-  <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td style="min-width:25ch">{r.get(ccol, "")}</td>
-  <td class="right" style="width:90px">{value_fmt(r.get(value_col))}</td>
+  <td class="col-company">{r.get(ncol, "")}</td>
+  <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
+  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
-    html = f"""
-<div class="card">
+    return textwrap.dedent(f"""
+<div class="card {extra_class}">
   <h3>{title}</h3>
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Company</th>
-        <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
-        <th style="width:90px" class="right">{value_label}</th>
+        <th class="col-company">Company</th>
+        <th class="col-ticker">Ticker</th>
+        <th class="col-exposure">Exposure</th>
+        <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
     <tbody>
@@ -169,8 +184,9 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     </tbody>
   </table>
 </div>
-"""
-    return textwrap.dedent(html).strip()
+""").strip()
+
+
 
 def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
     with slot:
