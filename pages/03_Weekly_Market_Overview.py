@@ -11,9 +11,11 @@ from urllib.parse import quote_plus
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Weekly Overview", layout="wide")
+
+# ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 st.markdown("""
 <style>
-/* Keep 3-up rows on desktop */
+/* Keep 3-up rows on desktop and prevent wrapping to 2 columns */
 div[data-testid="stHorizontalBlock"]{
   display:flex;
   flex-wrap: nowrap !important;
@@ -24,7 +26,7 @@ div[data-testid="stHorizontalBlock"]{
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
   width: 95vw;                 /* expands to viewport width */
-  max-width: 2100px;           /* more than before to widen cards */
+  max-width: 2100px;           /* wider so cards stretch nicely */
   margin-left: auto;
   margin-right: auto;
 }
@@ -38,19 +40,19 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 
 /* Table */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
-.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow: hidden; text-overflow: ellipsis; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .center { text-align:center; }
 .right  { text-align:right; white-space:nowrap; }
 
-/* No wrapping for these columns, sized by characters per your constraints */
-th.col-company, td.col-company { white-space: nowrap; min-width:11ch; width:39ch; max-width:39ch; }
-th.col-exposure, td.col-exposure { white-space: nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+/* No wrapping, sized by characters per your constraints */
+th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
+th.col-exposure, td.col-exposure { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 
 /* Fixed ticker width */
 th.col-ticker, td.col-ticker { width:74px; }
 
-/* Shares column gets extra width; also no wrapping */
+/* Shares column gets extra width; also no wrapping (Row 1 / Card 3) */
 .shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
 
 /* Safety on narrower laptops so it still stays 3-up */
@@ -60,13 +62,14 @@ th.col-ticker, td.col-ticker { width:74px; }
 }
 </style>
 """, unsafe_allow_html=True)
+
 # -------------------------
-# Paths
+# Paths (portable for Cloud)
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR  = APP_DIR / "data"
+DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
@@ -75,7 +78,7 @@ CSV_FILES = [
     (52, "Top Ten Percentage Gainers"),
     (53, "Top Ten Percentage Decliners"),
     (54, "Most Active (Shares)"),
-    (55, "Top Ten Marmkmentum Score Gainers"),
+    (55, "Top Ten Markmentum Score Gainers"),
     (56, "Top Ten Markmentum Score Decliners"),
     (57, "Markmentum Score Change Distribution"),
 ]
@@ -83,7 +86,6 @@ CSV_FILES = [
 # -------------------------
 # Helpers
 # -------------------------
-
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -94,7 +96,7 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
+# Lightweight router for Deep Dive links
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
 if dest.replace("%20", " ") == "deep dive":
@@ -120,9 +122,7 @@ def load_csv(path: Path) -> pd.DataFrame:
 
 def _fmt_pct(val):
     try:
-        v = float(val) *100
-        #if abs(v) <= 1.0:
-         #   v *= 100.0
+        v = float(val) * 100
         return f"{v:,.2f}%"
     except Exception:
         return "—"
@@ -151,7 +151,8 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
                 return col
     return default
 
-def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
+    # tolerant column mapping
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
@@ -186,27 +187,12 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
 </div>
 """).strip()
 
-
-
-def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
     with slot:
         if df.empty or value_col is None:
             st.info(f"No data for {title}.")
             return
-        st.markdown(_table_html(title, df, value_col, value_label, value_fmt), unsafe_allow_html=True)
-
-def render_card_branded(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    with slot:
-        if df.empty or value_col is None:
-            st.info(f"No data for {title}.")
-            return
-        html = _table_html(title, df, value_col, value_label, value_fmt)
-        html = html.replace(
-            "</h3>",
-            '</h3>\n  <div style="font-size:12px; color:#666; margin:-20px 0 6px 0;">Markmentum Research</div>',
-            1,
-        )
-        st.markdown(html, unsafe_allow_html=True)
+        st.markdown(_table_html(title, df, value_col, value_label, value_fmt, value_width_px, extra_class), unsafe_allow_html=True)
 
 # -------------------------
 # Header (logo centered)
@@ -222,7 +208,7 @@ if LOGO_PATH.exists():
     )
 
 # -------------------------
-# Load CSVs
+# Load CSVs (cache-clearable)
 # -------------------------
 st.cache_data.clear()
 
@@ -238,11 +224,7 @@ dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 # ---- Title under logo (date from #52) ----
 df_date = dfs[0].copy()
 date_col = next((c for c in df_date.columns if c.lower() in ("date", "as_of_date", "trade_date")), None)
-if date_col is not None and not df_date.empty:
-    asof = pd.to_datetime(df_date[date_col], errors="coerce").max()
-else:
-    asof = pd.NaT
-
+asof = pd.to_datetime(df_date[date_col], errors="coerce").max() if (date_col and not df_date.empty) else pd.NaT
 date_str = f"{asof.month}/{asof.day}/{asof.year}" if pd.notna(asof) else ""
 if date_str:
     st.markdown(
@@ -261,7 +243,7 @@ T_GAIN, T_DECL, T_ACTIVE, T_HI_CHG, T_LO_CHG, T_HIST = [label for _, label in CS
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
 # -------------------------
-c1, c2, c3 = st.columns(3, gap="large")
+c1, c2, c3 = st.columns([1,1,1], gap="large")
 
 # Card 1: Gainers -> Percent (WTD)
 df1 = dfs[0].copy()
@@ -273,24 +255,24 @@ df2 = dfs[1].copy()
 col_pct2 = _pick(df2, ["wtd_return_pct", "Percent", "percent", "value"], default=None)
 render_card(c2, T_DECL, df2, col_pct2, "Percent", _fmt_pct)
 
-# Card 3: Most Active -> Shares (WTD)
+# Card 3: Most Active -> Shares (WTD) — wider value column + no wrap
 df3 = dfs[2].copy()
 col_shares = _pick(df3, ["Volume", "volume", "Shares", "shares", "value"], default=None)
-render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions)
+render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions, value_width_px=100, extra_class="shares-wide")
 
 row_spacer(14)
 
 # -------------------------
 # ROW 2 (3 cards): Highest/Lowest Model Score Change / Distribution
 # -------------------------
-d1, d2, d3 = st.columns(3, gap="large")
+d1, d2, d3 = st.columns([1,1,1], gap="large")
 
-# Card 4: Highest Model Score Change
+# Card 4: Highest Model Score Change (WTD)
 df4 = dfs[3].copy()
 col_change_hi = _pick(df4, ["model_score_wtd_change", "Change", "change", "value"], default=None)
 render_card(d1, T_HI_CHG, df4, col_change_hi, "Change", _fmt_num)
 
-# Card 5: Lowest Model Score Change
+# Card 5: Lowest Model Score Change (WTD)
 df5 = dfs[4].copy()
 col_change_lo = _pick(df5, ["model_score_wtd_change", "Change", "change", "value"], default=None)
 render_card(d2, T_LO_CHG, df5, col_change_lo, "Change", _fmt_num)
@@ -342,7 +324,6 @@ def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
         text = p.text.strip()
         if not text:
             continue
-        # simple bullet detection
         try:
             is_list = p._p.pPr.numPr is not None  # type: ignore[attr-defined]
         except Exception:
