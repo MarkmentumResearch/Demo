@@ -11,38 +11,63 @@ from urllib.parse import quote_plus
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Overview", layout="wide")
+
+# ---- LAYOUT FIXES FOR CLOUD (render parity with local) ----
 st.markdown("""
 <style>
-/* Keep 3-up layout from collapsing */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
-/* Center & cap max width (works across Streamlit builds) */
-.main .block-container, section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
+/* 1) Force Streamlit column rows to stay 3-up on desktop */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;                /* explicit flex in case defaults change */
+  flex-wrap: nowrap !important;/* <-- prevents wrap to 2 columns */
+  gap: 24px;
+  min-width: 1100px;           /* same guard you used locally */
+}
 
-/* Typography + card/table shell */
+/* 2) Expand and center the content area across Streamlit versions */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  max-width: 1800px;           /* a bit wider than before to match local */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3) Typography + card/table shell (unchanged look) */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
 .card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; box-shadow:0 0 0 rgba(0,0,0,0); }
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
+
+/* 4) Table sizing: slightly smaller minimums so three cards always fit */
 .tbl { border-collapse: collapse; width: 100%; }
 .tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .right { text-align:right; } .center { text-align:center; }
 .company { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* Allow cells to shrink more easily without breaking layout */
+.tbl th[style*="min-width:42ch"] { min-width:36ch !important; }  /* Company */
+.tbl th[style*="min-width:25ch"] { min-width:20ch !important; }  /* Exposure */
+
+/* Small safety for narrower laptop screens without collapsing to 2 cols */
+@media (max-width: 1280px){
+  [data-testid="stAppViewContainer"] .main .block-container,
+  section.main > div { max-width: 1500px; }
+}
 </style>
 """, unsafe_allow_html=True)
 
 # -------------------------
-# Paths (same as your other apps)
+# Paths (portable for Cloud)
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR  = APP_DIR / "data"
+DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
-# Overview CSVs (kept flexible to match your working v6)
+# Overview CSVs
 CSV_FILES = [
     (26, "Top Ten Percentage Gainers"),
     (27, "Top Ten Percentage Decliners"),
@@ -54,12 +79,10 @@ CSV_FILES = [
     (30, "Lowest Markmentum Score"),
     (31, "Markmentum Score Histogram"),
 ]
+
 # -------------------------
 # Helpers
 # -------------------------
-
-
-#---clickable links helper------
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -70,19 +93,15 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
+# Lightweight router for Deep Dive links
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
-
 if dest.replace("%20", " ") == "deep dive":
     t = (qp.get("ticker") or "").strip().upper()
     if t:
-        # make Deep Dive happy even if it uses session_state only
         st.session_state["ticker"] = t
-        # keep the ticker in the URL for shareability
         st.query_params.clear()
         st.query_params["ticker"] = t
-    # jump to the page file in /pages
     st.switch_page("pages/11_Deep_Dive_Dashboard.py")
 
 def row_spacer(height_px: int = 14):
@@ -100,10 +119,7 @@ def load_csv(path: Path) -> pd.DataFrame:
 
 def _fmt_pct(val):
     try:
-        v = float(val) *100
-        # if data arrives as decimal (0.0948) instead of % (9.48)
-        #if abs(v) <= 1.0:
-         #   v *= 100.0
+        v = float(val) * 100
         return f"{v:,.2f}%"
     except Exception:
         return "—"
@@ -111,7 +127,7 @@ def _fmt_pct(val):
 def _fmt_millions(val):
     try:
         v = float(val)
-        if v > 1000:    # allow raw shares
+        if v > 1000:
             v = v / 1_000_000.0
         return f"{v:,.2f} M"
     except Exception:
@@ -127,7 +143,6 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
     for c in candidates:
         if c in df.columns:
             return c
-        # case-insensitive fallback
         for col in df.columns:
             if col.lower() == c.lower():
                 return col
@@ -146,7 +161,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
 <tr>
   <td class="company">{r.get(ncol, "")}</td>
   <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td style="min-width:25ch">{r.get(ccol, "")}</td>
+  <td style="min-width:20ch">{r.get(ccol, "")}</td>
   <td class="right" style="width:90px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
@@ -156,9 +171,9 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Company</th>
+        <th style="min-width:36ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
+        <th style="min-width:20ch">Exposure</th>
         <th style="width:90px" class="right">{value_label}</th>
       </tr>
     </thead>
@@ -168,7 +183,6 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
   </table>
 </div>
 """).strip()
-
 
 def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
     with slot:
@@ -191,9 +205,8 @@ if LOGO_PATH.exists():
     )
 
 # -------------------------
-# Load CSVs (same logic as v6, but cache-clearable)
+# Load CSVs (cache-clearable)
 # -------------------------
-# clear cache if needed
 st.cache_data.clear()
 
 @st.cache_data(show_spinner=False)
@@ -203,26 +216,13 @@ def load_all_csvs(csv_files, data_dir: Path):
         dfs_local.append(load_csv(data_dir / f"qry_graph_data_{num}.csv"))
     return dfs_local
 
-# call once here so dfs is cache-managed
 dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 
-# ---- Small centered title under the logo, using the date from CSV #26 ----
-# (dfs[0] corresponds to qry_graph_data_26.csv)
+# ---- Date under the logo from CSV #26 ----
 df_date = dfs[0].copy()
 date_col = next((c for c in df_date.columns if c.lower() in ("date", "as_of_date", "trade_date")), None)
-
-if date_col is not None and not df_date.empty:
-    asof = pd.to_datetime(df_date[date_col], errors="coerce").max()
-else:
-    asof = pd.NaT
-
-if pd.notna(asof):
-    # no leading zeros on month/day
-    date_str = f"{asof.month}/{asof.day}/{asof.year}"
-else:
-    # graceful fallback if the date column is missing/empty
-    date_str = ""
-
+asof = pd.to_datetime(df_date[date_col], errors="coerce").max() if (date_col and not df_date.empty) else pd.NaT
+date_str = f"{asof.month}/{asof.day}/{asof.year}" if pd.notna(asof) else ""
 if date_str:
     st.markdown(
         f"""
@@ -242,34 +242,26 @@ if date_str:
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
 # -------------------------
-c1, c2, c3 = st.columns(3, gap="large")
+c1, c2, c3 = st.columns([1,1,1], gap="large")
 
-# Card 1: Gainers -> Percent
 df1 = dfs[0].copy()
 col_pct = _pick(df1, ["Percent", "daily_return_pct", "percent", "value"], default=None)
 render_card(c1, T_PCT_GAIN, df1, col_pct, "Percent", _fmt_pct)
 
-# Card 2: Decliners -> Percent
 df2 = dfs[1].copy()
 col_pct2 = _pick(df2, ["Percent", "daily_return_pct", "percent", "value"], default=None)
 render_card(c2, T_PCT_DECL, df2, col_pct2, "Percent", _fmt_pct)
 
-# Card 3: Most Active -> Shares
 df3 = dfs[2].copy()
 col_shares = _pick(df3, ["Shares", "Volume", "shares", "volume", "value"], default=None)
 render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions)
 
-row_spacer(14)  # same spacer width used in Filters
+row_spacer(14)
 
-# ------------- shared helper to render a plain table in the same card shell -------------
+# ------------- Helper for plain table-in-card -------------
 def render_table_card(container, title: str, df):
     with container:
-        # NOTE: this matches the same card/table shell used by the other cards
-        table_html = df.to_html(
-            index=False,
-            classes="tbl",
-            escape=False
-        )
+        table_html = df.to_html(index=False, classes="tbl", escape=False)
         st.markdown(
             f"""
             <div class="card">
@@ -280,23 +272,19 @@ def render_table_card(container, title: str, df):
             unsafe_allow_html=True,
         )
 
-
 # -------------------------
-# ROW 2 (3 cards): Highest/Lowest Model Score Change / Distribution
+# ROW 2 (3 cards): Highest/Lowest Score Change / Distribution
 # -------------------------
-d1, d2, d3 = st.columns(3, gap="large")
+d1, d2, d3 = st.columns([1,1,1], gap="large")
 
-# Card 4: Highest Model Score Change (qry_graph_data_70.csv -> dfs[3])
 df7 = dfs[3].copy()
 col_change_hi = _pick(df7, ["model_score_day_change", "Change", "change", "value"], default=None)
 render_card(d1, T_GAIN, df7, col_change_hi, "Change", _fmt_num)
 
-# Card 5: Lowest Model Score Change (qry_graph_data_71.csv -> dfs[4])
 df8 = dfs[4].copy()
 col_change_lo = _pick(df8, ["model_score_day_change", "Change", "change", "value"], default=None)
 render_card(d2, T_DECL, df8, col_change_lo, "Change", _fmt_num)
 
-# Card 6: Model Score Change Distribution (qry_graph_data_72.csv -> dfs[5])
 with d3:
     df_dist = dfs[5].copy()
     score_bin_col = "Score_Bin" if "Score_Bin" in df_dist.columns else "score_bin"
@@ -314,46 +302,23 @@ with d3:
         unsafe_allow_html=True,
     )
 
-row_spacer(14)  # same spacer width used in Filters
+row_spacer(14)
 
 # -------------------------
 # ROW 3 (3 cards): Highest Score / Lowest Score / Distribution
 # -------------------------
-d1, d2, d3 = st.columns(3, gap="large")
+e1, e2, e3 = st.columns([1,1,1], gap="large")
 
-def render_card_branded(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    """Same as render_card(), but injects a subtle 'Markmentum Research' line under the title."""
-    with slot:
-        if df.empty or value_col is None:
-            st.info(f"No data for {title}.")
-            return
-        html = _table_html(title, df, value_col, value_label, value_fmt)
-        # insert brand line immediately after </h3> (first occurrence only)
-        html = html.replace(
-            "</h3>",
-            '</h3>\n  <div style="font-size:12px; color:#666; margin:-20px 0 6px 0;">Markmentum Research</div>',
-            1,
-        )
-        st.markdown(html, unsafe_allow_html=True)
-
-
-
-# Card 4: Highest Model Score
 df4 = dfs[6].copy()
 col_score_hi = _pick(df4, ["Score", "model_score", "value"], default=None)
-render_card(d1, T_HI, df4, col_score_hi, "Score", _fmt_num)
-#render_card(d1, T_HI, df4, col_score_hi, "Score", _fmt_num)  # <-- branded
+render_card(e1, T_HI, df4, col_score_hi, "Score", _fmt_num)
 
-# Card 5: Lowest Model Score
 df5 = dfs[7].copy()
 col_score_lo = _pick(df5, ["Score", "model_score", "value"], default=None)
-render_card(d2, T_LO, df5, col_score_lo, "Score", _fmt_num)
-#render_card(d2, T_LO, df5, col_score_lo, "Score", _fmt_num)  # <-- branded
+render_card(e2, T_LO, df5, col_score_lo, "Score", _fmt_num)
 
-# Card 6: Model Score Distribution (now rendered with the same card+table shell)
-# Card 6: Model Score Distribution
-with d3:
-    df_dist = dfs[8].copy()
+with e3:
+    df_dist2 = dfs[8].copy()
     mapping = {
         "Below -100": "Strong Sell",
         "-100 to -25": "Sell",
@@ -361,15 +326,14 @@ with d3:
         "25 to 100": "Buy",
         "Above 100": "Strong Buy",
     }
-    score_bin_col = "Score_Bin" if "Score_Bin" in df_dist.columns else "score_bin"
-    count_col = "TickerCount" if "TickerCount" in df_dist.columns else "ticker_count"
+    score_bin_col = "Score_Bin" if "Score_Bin" in df_dist2.columns else "score_bin"
+    count_col = "TickerCount" if "TickerCount" in df_dist2.columns else "ticker_count"
 
-    df_dist["Classification"] = df_dist[score_bin_col].map(mapping)
-    df_dist = df_dist[["Classification", score_bin_col, count_col]]
-    df_dist.columns = ["Classification", "Score Bin", "Ticker Count"]
+    df_dist2["Classification"] = df_dist2[score_bin_col].map(mapping)
+    df_dist2 = df_dist2[["Classification", score_bin_col, count_col]]
+    df_dist2.columns = ["Classification", "Score Bin", "Ticker Count"]
 
-    # reuse the branded renderer for a consistent look
-    table_html = df_dist.to_html(index=False, classes="tbl", escape=False)
+    table_html = df_dist2.to_html(index=False, classes="tbl", escape=False)
     st.markdown(
         f"""
         <div class="card">
@@ -380,80 +344,49 @@ with d3:
         unsafe_allow_html=True,
     )
 
-        
-# ========= ROW 3 (Market Read) =========
-# ========= Row 3 (Market Read) =========
-# -- helper, loader, and renderer --
-
+# ========= Market Read (unchanged) =========
 import os
-import streamlit as st
-
 try:
     from docx import Document  # pip install python-docx
 except Exception:
     Document = None
 
-
 def _is_list_paragraph(paragraph) -> bool:
-    """Detect bulleted/numbered paragraphs from python-docx."""
     try:
-        return paragraph._p.pPr.numPr is not None  # type: ignore[attr-defined]
+        return paragraph._p.pPr.numPr is not None
     except Exception:
         return False
 
-
 @st.cache_data(show_spinner=False)
 def load_market_read_md(doc_path: str = "data/Market_Read_daily.docx") -> str:
-    """
-    Read the Market Read .docx and return a Markdown string.
-
-    - Keeps bullets as markdown "- ..."
-    - Ensures 'The model is saying:' is its own line (not glued to the date line).
-    """
     if Document is None:
         return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
-
     if not os.path.exists(doc_path):
         return f"⚠️ **Market Read** file not found: `{doc_path}`"
-
     try:
         doc = Document(doc_path)
     except Exception as e:
         return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
-
     lines: list[str] = []
     for p in doc.paragraphs:
         text = p.text.strip()
         if not text:
             continue
-        if _is_list_paragraph(p):
-            lines.append(f"- {text}")
-        else:
-            lines.append(text)
-
-    # If the Word doc has "Market Read: {date} The model is saying:" as a single paragraph,
-    # split it so "The model is saying:" is on its own line.
+        lines.append(f"- {text}" if _is_list_paragraph(p) else text)
     for i, l in enumerate(lines):
         if l.startswith("Market Read:") and "The model is saying:" in l:
             left, right = l.split("The model is saying:", 1)
             lines[i] = left.strip()
             lines.insert(i + 1, "The model is saying:")
-            # keep any remainder after the phrase (rare) as its own line
             if right.strip():
                 lines.insert(i + 2, right.strip())
             break
+    return "\n\n".join(lines)
 
-    # Join with blank lines between paragraphs for clear spacing
-    md = "\n\n".join(lines)
-    return md
-
-
-# ---------- render ----------
 with st.container():
     st.markdown("## Market Read")
     docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
-    st.markdown(load_market_read_md(str(docx_path)))  # str(...) only if your helper expects a string
-
+    st.markdown(load_market_read_md(str(docx_path)))
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
@@ -461,8 +394,6 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
-
-
 
 # -------------------------
 # Footer disclaimer
