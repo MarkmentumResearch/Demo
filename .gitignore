@@ -11,4 +11,4 @@ venv/
 .mypy_cache/
 #.streamlit/*.toml
 
-data/*.*
+#data/*.*
