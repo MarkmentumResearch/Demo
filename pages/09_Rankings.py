@@ -63,15 +63,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Center ALL Altair/Vega charts (canvas + legend) */
-.vega-embed, .vega-embed > div {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-</style>
-""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <style>
