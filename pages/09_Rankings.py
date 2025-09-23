@@ -11,7 +11,6 @@ import sys
 import numpy as np
 from urllib.parse import quote_plus
 
-
 st.cache_data.clear()
 
 # -------------------------
@@ -89,14 +88,10 @@ DATA_DIR  = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
-
-
-
 CSV_PATH_48  = DATA_DIR / "qry_graph_data_48.csv"   # model_score
 CSV_PATH_49  = DATA_DIR / "qry_graph_data_49.csv"   # Sharpe_Rank
 CSV_PATH_50  = DATA_DIR / "qry_graph_data_50.csv"   # Sharpe
 CSV_PATH_51  = DATA_DIR / "qry_graph_data_51.csv"   # Sharpe_Ratio_30D_Change
-
 
 # -------------------------
 # Header: logo centered
@@ -111,8 +106,7 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-
-#---clickable links helper------
+# --- clickable links helper ---
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -126,45 +120,33 @@ def _mk_ticker_link(ticker: str) -> str:
 # --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
-
 if dest.replace("%20", " ") == "deep dive":
     t = (qp.get("ticker") or "").strip().upper()
     if t:
-        # make Deep Dive happy even if it uses session_state only
         st.session_state["ticker"] = t
-        # keep the ticker in the URL for shareability
         st.query_params.clear()
         st.query_params["ticker"] = t
-    # jump to the page file in /pages
     st.switch_page("pages/10_Deep_Dive_Dashboard.py")
-
 
 # -------------------------
 # Loaders
 # -------------------------
-
 last_modified = (DATA_DIR / "qry_graph_data_48.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-
 def load_csv48(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score"])
     df = pd.read_csv(path)
-
-    # NEW: normalize keys to avoid whitespace/case issues that can hide axis labels
     for col in ("Ticker", "Ticker_name", "Category"):
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip()
-
-    df["Ticker"] = df["Ticker"].str.upper()   # optional but helps keep things uniform
+    df["Ticker"] = df["Ticker"].str.upper()
     df["model_score"] = pd.to_numeric(df["model_score"], errors="coerce")
     return df
 
-
-
 last_modified = (DATA_DIR / "qry_graph_data_49.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv49(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv49(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "Sharpe_Rank"])
     df = pd.read_csv(path)
@@ -173,7 +155,7 @@ def load_csv49(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
 
 last_modified = (DATA_DIR / "qry_graph_data_50.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv50(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv50(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "Sharpe"])
     df = pd.read_csv(path)
@@ -182,7 +164,7 @@ def load_csv50(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
 
 last_modified = (DATA_DIR / "qry_graph_data_51.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv51(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv51(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "Sharpe_Ratio_30D_Change"])
     df = pd.read_csv(path)
@@ -198,15 +180,12 @@ if df48.empty or df49.empty or df50.empty or df51.empty:
     st.warning("Missing one of the input CSVs (48, 49, 50, or 51). Please confirm files exist.")
     st.stop()
 
-
-#====title=================
+# ===== title =====
 def _mdy_fmt() -> str:
-    """Platform-safe month/day format (no leading zeros)."""
     return "%#m/%#d/%Y" if sys.platform.startswith("win") else "%-m/%-d/%Y"
 
 def _first_date_from_csv(path: str, date_col: str = "date") -> str:
     df = pd.read_csv(path)
-    # Be tolerant to 'Date' vs 'date'
     if date_col not in df.columns:
         for alt in ("Date", "DATE"):
             if alt in df.columns:
@@ -215,32 +194,19 @@ def _first_date_from_csv(path: str, date_col: str = "date") -> str:
     dt = pd.to_datetime(df[date_col].iloc[0], errors="coerce")
     return "" if pd.isna(dt) else dt.strftime(_mdy_fmt())
 
-date_text = _first_date_from_csv(CSV_PATH_48, date_col="date")
-
+date_text = _first_date_from_csv(str(CSV_PATH_48), date_col="date")
 st.markdown(
     f"""
-    <div style="
-        text-align:center;
-        font-size:20px;
-        font-weight:600;
-        color:#233;
-        margin-top:8px;
-        margin-bottom:12px;">
+    <div style="text-align:center; font-size:20px; font-weight:600; color:#233; margin-top:8px; margin-bottom:12px;">
         Rankings – {date_text}
     </div>
     """,
     unsafe_allow_html=True,
 )
-#=====title end
-
 
 # =========================
 # Global Heatmap — Current Markmentum Score (by Category)
 # =========================
-import altair as alt
-import pandas as pd
-import streamlit as st
-
 cat_cur = (
     df48[["Category", "model_score"]]
     .dropna(subset=["Category", "model_score"])
@@ -248,8 +214,6 @@ cat_cur = (
     .agg(avg_score=("model_score", "mean"), n=("model_score", "size"))
     .assign(Timeframe="Current")
 )
-
-# Order to match the rest of the app (keep unknowns at the bottom)
 preferred = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds & Yields","Foreign",
     "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials",
@@ -258,48 +222,30 @@ preferred = [
 present = list(cat_cur["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
 
-# Sizing (snug card that hugs the chart)
 row_h   = 26
 chart_h = max(360, row_h * len(cat_order) + 24)
 chart_w = 400
 legend_w = 120
 
-# Diverging winsorized scale around 0 (handles negatives if any)
 vmax = float(max(1.0, cat_cur["avg_score"].abs().quantile(0.98)))
 
 cur_heat = (
     alt.Chart(cat_cur)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X(
-            "Timeframe:N",
-            sort=["Current"],
-            axis=alt.Axis(
-                orient="top", title=None, labelAngle=0, labelPadding=8,
-                labelFlush=False, labelColor="#1a1a1a", labelFontSize=13
-            ),
-        ),
-        y=alt.Y(
-            "Category:N",
-            sort=cat_order,
-            axis=alt.Axis(
-                title=None, labelLimit=460, labelPadding=6,
-                labelFlush=False, labelColor="#1a1a1a", labelFontSize=13
-            ),
-        ),
-        color=alt.Color(
-            "avg_score:Q",
-            scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
-            legend=alt.Legend(
-                orient="right", title="Avg Score", titleColor="#1a1a1a",
-                labelColor="#1a1a1a", gradientLength=180, labelLimit=80
-            ),
-        ),
-        tooltip=[
-            alt.Tooltip("Category:N"),
-            alt.Tooltip("avg_score:Q", title="Avg Score", format=",.2f"),
-            alt.Tooltip("n:Q", title="Count"),
-        ],
+        x=alt.X("Timeframe:N", sort=["Current"],
+                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+        y=alt.Y("Category:N", sort=cat_order,
+                axis=alt.Axis(title=None, labelLimit=460, labelPadding=6,
+                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+        color=alt.Color("avg_score:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+                        legend=alt.Legend(orient="right", title="Avg Score", titleColor="#1a1a1a",
+                                          labelColor="#1a1a1a", gradientLength=180, labelLimit=80)),
+        tooltip=[alt.Tooltip("Category:N"),
+                 alt.Tooltip("avg_score:Q", title="Avg Score", format=",.2f"),
+                 alt.Tooltip("n:Q", title="Count")],
     )
     .properties(width=chart_w, height=chart_h,
                 padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
@@ -307,77 +253,43 @@ cur_heat = (
     .configure_axis(labelFontSize=12, titleFontSize=12)
 )
 
+# Center the heatmap INSIDE the card
 pad_l, center_col, pad_r = st.columns([5, 5.6, 5])
 with center_col:
     with st.container(border=True):
         st.markdown(
             '<div style="text-align:center;">'
             '<h3 style="margin:0;">Markmentum Heatmap — Current Score (by Category)</h3>'
-            '<div class="small" style="margin-top:4px;">'
-            'Average current Markmentum Score across tickers in each category.</div></div>',
+            '<div class="small" style="margin-top:4px;">Average current Markmentum Score across tickers in each category.</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
-        _l, _c, _r = st.columns([1, 6, 1])
+        _l, _c, _r = st.columns([1, 6, 1])   # inner centering for the chart
         with _c:
             st.altair_chart(cur_heat, use_container_width=False)
 
-# Tiny spacer before controls
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-
-
 # -------------------------
-# Controls (selector + lock)
+# Controls (toggle + selector + lock)
 # -------------------------
-# Desired manual order
-custom_order = [
-    "Sector & Style ETFs",
-    "Indices",
-    "Futures",
-    "Currencies",
-    "Commodities",
-    "Bonds & Yields",
-    "Foreign",
-    "Communication Services",
-    "Consumer Discretionary",
-    "Consumer Staples",
-    "Energy",
-    "Financials",
-    "Health Care",
-    "Industrials",
-    "Information Technology",
-    "Materials",
-    "Real Estate",
-    "Utilities",
-    "MR Discretion"
-]
-
-# Keep only categories that exist in your data
+custom_order = preferred
 all_cats = [cat for cat in custom_order if cat in (
     set(df48["Category"].dropna().unique())
     | set(df49["Category"].dropna().unique())
     | set(df50["Category"].dropna().unique())
     | set(df51["Category"].dropna().unique())
 )]
-
-
-# -------------------------
-# Controls (toggle + selector + lock)
-# -------------------------
-default_cat = "Sector Style ETFs"
+default_cat = "Sector Style ETFs"  # falls back to first if not matched
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
 c_blank, left_toggle, c_sel, c_lock = st.columns([0.10, 0.30, 0.35, 0.15])
 with left_toggle:
-    show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)",
-                                     value=False, key="show_cur_ticker_hm")
+    show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False, key="show_cur_ticker_hm")
 with c_sel:
     sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
 with c_lock:
-    lock_axes_and_order = st.checkbox(
-        "Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z"
-    )
-
+    lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
 # =========================
 # Per-Ticker Heatmap — Current Markmentum Score (for selected category)
@@ -388,84 +300,58 @@ if show_cur_ticker_hm:
         .dropna(subset=["Ticker", "model_score"])
         .assign(Timeframe="Current", score=lambda d: d["model_score"])
     )
-
     ticker_order = sorted(tm["Ticker"].unique().tolist())
 
     row_h   = 22
     chart_h = max(360, row_h * max(1, len(ticker_order)) + 24)
     chart_w = 285
     legend_w = 120
-
     vmax = float(max(1.0, tm["score"].abs().quantile(0.98)))
 
     cur_ticker_heat = (
         alt.Chart(tm)
         .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
         .encode(
-            x=alt.X(
-                "Timeframe:N", sort=["Current"],
-                axis=alt.Axis(orient="top", title=None, labelAngle=0,
-                              labelPadding=8, labelFlush=False,
-                              labelColor="#1a1a1a", labelFontSize=13),
-            ),
-            y=alt.Y(
-                "Ticker:N", sort=ticker_order,
-                axis=alt.Axis(title=None, labelLimit=140, labelPadding=6,
-                              labelFlush=False, labelColor="#1a1a1a",
-                              labelFontSize=13, labelOverlap=False),
-            ),
-            color=alt.Color(
-                "score:Q",
-                scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
-                legend=alt.Legend(orient="right", title="Score",
-                                  titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                  gradientLength=180, labelLimit=80),
-            ),
-            tooltip=[
-                alt.Tooltip("Ticker:N"),
-                alt.Tooltip("Ticker_name:N", title="Name"),
-                alt.Tooltip("score:Q", title="Current", format=",.2f"),
-                alt.Tooltip("Date:N", title="Date"),
-            ],
+            x=alt.X("Timeframe:N", sort=["Current"],
+                    axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+            y=alt.Y("Ticker:N", sort=ticker_order,
+                    axis=alt.Axis(title=None, labelLimit=140, labelPadding=6,
+                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
+            color=alt.Color("score:Q",
+                            scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+                            legend=alt.Legend(orient="right", title="Score", titleColor="#1a1a1a",
+                                              labelColor="#1a1a1a", gradientLength=180, labelLimit=80)),
+            tooltip=[alt.Tooltip("Ticker:N"),
+                     alt.Tooltip("Ticker_name:N", title="Name"),
+                     alt.Tooltip("score:Q", title="Current", format=",.2f"),
+                     alt.Tooltip("Date:N", title="Date")],
         )
-        .properties(
-            width=chart_w, height=chart_h,
-            padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6}
-        )
+        .properties(width=chart_w, height=chart_h,
+                    padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
         .configure_view(strokeOpacity=0)
         .configure_axis(labelFontSize=12, titleFontSize=12)
     )
 
+    # Center the per-ticker heatmap INSIDE its card
     pad_l, center_col, pad_r = st.columns([5, 5.6, 5])
     with center_col:
         with st.container(border=True):
             st.markdown(
-                f'<div style="text-align:center;">'
-                f'<h4 style="margin:0;">{sel} — Per-Ticker Markmentum Heatmap (Current)</h4>'
-                f'<div class="small" style="margin-top:4px;">'
-                f'Current Markmentum Score by ticker.</div></div>',
+                f'<div style="text-align:center;"><h4 style="margin:0;">{sel} — Per-Ticker Markmentum Heatmap (Current)</h4>'
+                f'<div class="small" style="margin-top:4px;">Current Markmentum Score by ticker.</div></div>',
                 unsafe_allow_html=True,
             )
-            _l, _c, _r = st.columns([1, 2.6, 1])
+            _l, _c, _r = st.columns([1, 2.6, 1])  # inner centering
             with _c:
                 st.altair_chart(cur_ticker_heat, use_container_width=False)
 
-    # small spacer after the card
     st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-
-# global model-score min/max for locked mode
-global_ms_min = float(df48["model_score"].min()) if not df48.empty else 0.0
-global_ms_max = float(df48["model_score"].max()) if not df48.empty else 0.0
-
 # -------------------------
-# Helper: padded domain for negative-capable charts
+# Helper: padded domain for nicer label space (visual)
 # -------------------------
 def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
-    """
-    Extend the x-domain a bit on the left (and a hair on the right) so
-    large negative bars have room for labels and tickers.
-    """
     if series.empty:
         return alt.Undefined
     s_min = float(series.min())
@@ -473,7 +359,7 @@ def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
     rng = max(s_max - s_min, 1e-9)
     pad = max(rng * frac, min_pad)
     left = s_min - pad if s_min < 0 else s_min
-    right = s_max + 0.02 * rng  # tiny right pad
+    right = s_max + 0.02 * rng
     return [left, right]
 
 # -------------------------
@@ -500,20 +386,14 @@ else:
 chart_height = max(260, 24 * max(len(view48), len(view49), len(view50), len(view51)) + 120)
 
 # -------------------------
-# Chart #1: Model Score  (now with padded domain)
+# Chart #1: Model Score
 # -------------------------
-# global model-score min/max for locked mode
-category_ms_min = float(view48["model_score"].min()-50) if not df48.empty else 0.0
-category_ms_max = float(view48["model_score"].max()+10) if not df48.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
+# use padded domain per-category (visual tweak)
+category_ms_min = float(view48["model_score"].min() - 50) if not df48.empty else 0.0
+category_ms_max = float(view48["model_score"].max() + 10) if not df48.empty else 0.0
+ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]), frac=0.06, min_pad=2.0)
 
 x48 = alt.X("model_score:Q", title="Model Score", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
 base48 = (
     alt.Chart(view48)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
@@ -524,32 +404,17 @@ base48 = (
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score:Q", format=",.0f")],
     )
 )
-
 bars48 = base48.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-pos48 = base48.transform_filter("datum.model_score >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("model_score:Q", format=",.0f"))
-neg48 = base48.transform_filter("datum.model_score < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("model_score:Q", format=",.0f"))
-
+pos48 = base48.transform_filter("datum.model_score >= 0").mark_text(align="left",  baseline="middle", dx=4)  \
+                .encode(text=alt.Text("model_score:Q", format=",.0f"))
+neg48 = base48.transform_filter("datum.model_score < 0").mark_text(align="right", baseline="middle", dx=-10) \
+                .encode(text=alt.Text("model_score:Q", format=",.0f"))
 chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", height=chart_height)
 
 # -------------------------
-# Chart #2: Sharpe Percentile Rank (unchanged)
+# Chart #2: Sharpe Percentile Ranking
 # -------------------------
-category_ms_min2 = float(view49["Sharpe_Rank"].min()-10) if not df49.empty else 0.0
-category_ms_max2 = float(view49["Sharpe_Rank"].max()+10) if not df49.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom2 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom2 = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
-
 x49 = alt.X("Sharpe_Rank:Q", title="Sharpe Percentile Rank", scale=alt.Scale(domain=[0, 100]))
-
-
 base49 = (
     alt.Chart(view49)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
@@ -560,29 +425,18 @@ base49 = (
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Rank:Q", format=",.1f")],
     )
 )
-
 bars49 = base49.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-labels49 = base49.mark_text(align="left", baseline="middle", dx=4).encode(
-    text=alt.Text("Sharpe_Rank:Q", format=",.1f")
-)
-
+labels49 = base49.mark_text(align="left", baseline="middle", dx=4).encode(text=alt.Text("Sharpe_Rank:Q", format=",.1f"))
 chart49 = (bars49 + labels49).properties(title="Sharpe Percentile Ranking", height=chart_height)
 
 # -------------------------
-# Chart #3: Sharpe Ratio  (now with padded domain)
+# Chart #3: Sharpe Ratio
 # -------------------------
-category_ms_min3 = float(view50["Sharpe"].min()-10) if not df50.empty else 0.0
-category_ms_max3 = float(view50["Sharpe"].max()+10) if not df50.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom3 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom3 = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
+category_ms_min3 = float(view50["Sharpe"].min() - 10) if not df50.empty else 0.0
+category_ms_max3 = float(view50["Sharpe"].max() + 10) if not df50.empty else 0.0
+ms_dom3 = padded_domain(pd.Series([category_ms_min3, category_ms_max3]), frac=0.06, min_pad=2.0)
 
 x50 = alt.X("Sharpe:Q", title="Sharpe Ratio", scale=alt.Scale(domain=ms_dom3))
-
-
-
 base50 = (
     alt.Chart(view50)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
@@ -593,32 +447,21 @@ base50 = (
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.1f")],
     )
 )
-
 bars50 = base50.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-pos50 = base50.transform_filter("datum.Sharpe >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
-neg50 = base50.transform_filter("datum.Sharpe < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
-
+pos50 = base50.transform_filter("datum.Sharpe >= 0").mark_text(align="left",  baseline="middle", dx=4)  \
+                .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
+neg50 = base50.transform_filter("datum.Sharpe < 0").mark_text(align="right", baseline="middle", dx=-10) \
+                .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
 chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_height)
 
 # -------------------------
-# Chart #4: Sharpe Ratio 30-Day Change  (now with padded domain)
+# Chart #4: Sharpe Ratio 30-Day Change
 # -------------------------
-category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min()-10) if not df51.empty else 0.0
-category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+30) if not df51.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom4 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom4 = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
+category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min() - 10) if not df51.empty else 0.0
+category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max() + 30) if not df51.empty else 0.0
+ms_dom4 = padded_domain(pd.Series([category_ms_min4, category_ms_max4]), frac=0.06, min_pad=2.0)
 
 x51 = alt.X("Sharpe_Ratio_30D_Change:Q", title="Sharpe Ratio 30-Day Change", scale=alt.Scale(domain=ms_dom4))
-
-
 base51 = (
     alt.Chart(view51)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
@@ -629,22 +472,16 @@ base51 = (
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")],
     )
 )
-
 bars51 = base51.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-pos51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
-neg51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
-
+pos51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0").mark_text(align="left",  baseline="middle", dx=4)  \
+                .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
+neg51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0").mark_text(align="right", baseline="middle", dx=-10) \
+                .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_height)
 
 # -------------------------
-# Side-by-side layout (4 charts)
+# Side-by-side layout (4 charts) — centered on the screen
 # -------------------------
-# --- Center the 4-chart band ---
 left_spacer, mid, right_spacer = st.columns([1, 10, 1])
 with mid:
     st.altair_chart(
@@ -660,7 +497,6 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
-
 
 # -------------------------
 # Footer disclaimer

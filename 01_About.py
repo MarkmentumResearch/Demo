@@ -128,10 +128,10 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
 <ul>
   <li><b>Probable Ranges</b> – Derived from historical distributions, realized volatility, and liquidity-aware smoothing across daily/weekly/monthly horizons.</li>
   <li><b>Anchors</b> – Long-term probabilistic anchors to contextualize extension and mean-reversion risk (e.g., “gap to LT anchor”).</li>
-  <li><b>Trend Lines</b> – Short-, mid-, and long-term composites using price structure with volatility-adjusted filters.</li>
+  <li><b>Trend Lines</b> – Short-, mid-, and long-term composites using price structure with volatility-adjusted factors.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, IVOL/RVOL spreads, and regime flags.</li>
   <li><b>Markmentum Score</b> – Our proprietary market model score blends volatility, trend quality, mean-reversion stretch, and risk-reward into one number. A high positive score means the setup favors the long side; a negative score means it favors the short side.</li>
-  <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across universes (Sectors & Styles, Macro & Rates, single names and ETFs).</li>
+  <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across full universe of instruments.</li>
 </ul>
 
 </div>
