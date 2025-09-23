@@ -12,29 +12,22 @@ from urllib.parse import quote_plus
 # -------------------------
 st.set_page_config(page_title="Markmentum – Overview", layout="wide")
 
-
+# One Cloud-robust CSS block (no duplicates)
 st.markdown("""
 <style>
 /* Pin the app to wide, center it, and keep 3-up columns from collapsing */
+.main .block-container { max-width: 1700px; margin-left: auto; margin-right: auto; }
 
-/* Cloud-friendly main container (works across recent Streamlit versions) */
-.main .block-container {
-  max-width: 1700px;   /* keep your “wide” look but not ultra-stretched */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Keep 3-up column layout from collapsing on narrower laptops */
+/* Keep 3-up layout from collapsing on narrower laptops */
 div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
 
-/* Optional: ensure each column has enough breathing room */
+/* Optional: ensure each column has breathing room */
 div[data-testid="column"] { min-width: 360px; }
 
 /* Typography + table shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-
 .card {
   border: 1px solid #cfcfcf;
   border-radius: 8px;
@@ -49,9 +42,14 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .right { text-align: right; }
 .center { text-align: center; }
 .company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Column widths for the 3-up tables */
+.col-company  { min-width: 42ch; }
+.col-ticker   { width: 74px; text-align: center; }
+.col-exposure { min-width: 25ch; }
+.col-value    { width: 90px; text-align: right; }
 </style>
 """, unsafe_allow_html=True)
-
 
 # -------------------------
 # Paths (same as your other apps)
@@ -59,7 +57,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR  = APP_DIR / "data"
+DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
@@ -78,7 +76,6 @@ CSV_FILES = [
 # -------------------------
 # Helpers
 # -------------------------
-
 
 #---clickable links helper------
 def _mk_ticker_link(ticker: str) -> str:
@@ -121,11 +118,8 @@ def load_csv(path: Path) -> pd.DataFrame:
 
 def _fmt_pct(val):
     try:
-        v = float(val) *100
-        # if data arrives as decimal (0.0948) instead of % (9.48)
-        #if abs(v) <= 1.0:
-         #   v *= 100.0
-        return f"{v:,.2f}%"
+        v = float(val) * 100
+        return f"{v:,2f}%"
     except Exception:
         return "—"
 
@@ -134,13 +128,13 @@ def _fmt_millions(val):
         v = float(val)
         if v > 1000:    # allow raw shares
             v = v / 1_000_000.0
-        return f"{v:,.2f} M"
+        return f"{v:,2f} M"
     except Exception:
         return "—"
 
 def _fmt_num(val):
     try:
-        return f"{float(val):,.0f}"
+        return f"{float(val):,0f}"
     except Exception:
         return "—"
 
@@ -165,10 +159,10 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
-  <td class="company">{r.get(ncol, "")}</td>
-  <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td style="min-width:25ch">{r.get(ccol, "")}</td>
-  <td class="right" style="width:90px">{value_fmt(r.get(value_col))}</td>
+  <td class="company col-company">{r.get(ncol, "")}</td>
+  <td class="col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
+  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="col-value">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
     html = f"""
@@ -177,10 +171,10 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Company</th>
-        <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
-        <th style="width:90px" class="right">{value_label}</th>
+        <th class="col-company">Company</th>
+        <th class="col-ticker">Ticker</th>
+        <th class="col-exposure">Exposure</th>
+        <th class="col-value right">{value_label}</th>
       </tr>
     </thead>
     <tbody>
@@ -282,97 +276,22 @@ render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions)
 
 row_spacer(14)  # same spacer width used in Filters
 
-# ------------- shared helper to render a plain table in the same card shell -------------
-def render_table_card(container, title: str, df):
-    with container:
-        # NOTE: this matches the same card/table shell used by the other cards
-        table_html = df.to_html(
-            index=False,
-            classes="tbl",
-            escape=False
-        )
-        st.markdown(
-            f"""
-            <div class="card">
-              <h3>{title}</h3>
-              {table_html}
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-
 # -------------------------
 # ROW 2 (3 cards): Highest/Lowest Model Score Change / Distribution
 # -------------------------
 d1, d2, d3 = st.columns(3, gap="large")
 
-# Card 4: Highest Model Score Change (qry_graph_data_70.csv -> dfs[3])
-df7 = dfs[3].copy()
-col_change_hi = _pick(df7, ["model_score_day_change", "Change", "change", "value"], default=None)
-render_card(d1, T_GAIN, df7, col_change_hi, "Change", _fmt_num)
-
-# Card 5: Lowest Model Score Change (qry_graph_data_71.csv -> dfs[4])
-df8 = dfs[4].copy()
-col_change_lo = _pick(df8, ["model_score_day_change", "Change", "change", "value"], default=None)
-render_card(d2, T_DECL, df8, col_change_lo, "Change", _fmt_num)
-
-# Card 6: Model Score Change Distribution (qry_graph_data_72.csv -> dfs[5])
-with d3:
-    df_dist = dfs[5].copy()
-    score_bin_col = "Score_Bin" if "Score_Bin" in df_dist.columns else "score_bin"
-    count_col = "TickerCount" if "TickerCount" in df_dist.columns else "ticker_count"
-    df_dist = df_dist[[score_bin_col, count_col]].copy()
-    df_dist.columns = ["Score Bin", "Ticker Count"]
-    table_html = df_dist.to_html(index=False, classes="tbl", escape=False)
-    st.markdown(
-        f"""
-        <div class="card">
-          <h3>{T_D_HIST}</h3>
-          {table_html}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-row_spacer(14)  # same spacer width used in Filters
-
-# -------------------------
-# ROW 3 (3 cards): Highest Score / Lowest Score / Distribution
-# -------------------------
-d1, d2, d3 = st.columns(3, gap="large")
-
-def render_card_branded(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    """Same as render_card(), but injects a subtle 'Markmentum Research' line under the title."""
-    with slot:
-        if df.empty or value_col is None:
-            st.info(f"No data for {title}.")
-            return
-        html = _table_html(title, df, value_col, value_label, value_fmt)
-        # insert brand line immediately after </h3> (first occurrence only)
-        html = html.replace(
-            "</h3>",
-            '</h3>\n  <div style="font-size:12px; color:#666; margin:-20px 0 6px 0;">Markmentum Research</div>',
-            1,
-        )
-        st.markdown(html, unsafe_allow_html=True)
-
-
-
 # Card 4: Highest Model Score
 df4 = dfs[6].copy()
 col_score_hi = _pick(df4, ["Score", "model_score", "value"], default=None)
 render_card(d1, T_HI, df4, col_score_hi, "Score", _fmt_num)
-#render_card(d1, T_HI, df4, col_score_hi, "Score", _fmt_num)  # <-- branded
 
 # Card 5: Lowest Model Score
 df5 = dfs[7].copy()
 col_score_lo = _pick(df5, ["Score", "model_score", "value"], default=None)
 render_card(d2, T_LO, df5, col_score_lo, "Score", _fmt_num)
-#render_card(d2, T_LO, df5, col_score_lo, "Score", _fmt_num)  # <-- branded
 
-# Card 6: Model Score Distribution (now rendered with the same card+table shell)
-# Card 6: Model Score Distribution
+# Card 6: Markmentum Score Distribution
 with d3:
     df_dist = dfs[8].copy()
     mapping = {
@@ -385,35 +304,30 @@ with d3:
     score_bin_col = "Score_Bin" if "Score_Bin" in df_dist.columns else "score_bin"
     count_col = "TickerCount" if "TickerCount" in df_dist.columns else "ticker_count"
 
-    df_dist["Classification"] = df_dist[score_bin_col].map(mapping)
-    df_dist = df_dist[["Classification", score_bin_col, count_col]]
-    df_dist.columns = ["Classification", "Score Bin", "Ticker Count"]
+    if not df_dist.empty and score_bin_col in df_dist.columns and count_col in df_dist.columns:
+        df_dist["Classification"] = df_dist[score_bin_col].map(mapping)
+        df_dist = df_dist[["Classification", score_bin_col, count_col]]
+        df_dist.columns = ["Classification", "Score Bin", "Ticker Count"]
 
-    # reuse the branded renderer for a consistent look
-    table_html = df_dist.to_html(index=False, classes="tbl", escape=False)
-    st.markdown(
-        f"""
-        <div class="card">
-          <h3>Markmentum Score Distribution</h3>
-          {table_html}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        table_html = df_dist.to_html(index=False, classes="tbl", escape=False)
+        st.markdown(
+            f"""
+            <div class="card">
+              <h3>Markmentum Score Distribution</h3>
+              {table_html}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.info("No data for Markmentum Score Distribution.")
 
-        
-# ========= ROW 3 (Market Read) =========
 # ========= Row 3 (Market Read) =========
-# -- helper, loader, and renderer --
-
 import os
-import streamlit as st
-
 try:
     from docx import Document  # pip install python-docx
 except Exception:
     Document = None
-
 
 def _is_list_paragraph(paragraph) -> bool:
     """Detect bulleted/numbered paragraphs from python-docx."""
@@ -421,7 +335,6 @@ def _is_list_paragraph(paragraph) -> bool:
         return paragraph._p.pPr.numPr is not None  # type: ignore[attr-defined]
     except Exception:
         return False
-
 
 @st.cache_data(show_spinner=False)
 def load_market_read_md(doc_path: str = "data/Market_Read_daily.docx") -> str:
@@ -433,14 +346,10 @@ def load_market_read_md(doc_path: str = "data/Market_Read_daily.docx") -> str:
     """
     if Document is None:
         return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
-
-    if not os.path.exists(doc_path):
-        return f"⚠️ **Market Read** file not found: `{doc_path}`"
-
     try:
         doc = Document(doc_path)
-    except Exception as e:
-        return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
+    except Exception:
+        return "⚠️ **Market Read**: Unable to open the .docx file."
 
     lines: list[str] = []
     for p in doc.paragraphs:
@@ -452,29 +361,24 @@ def load_market_read_md(doc_path: str = "data/Market_Read_daily.docx") -> str:
         else:
             lines.append(text)
 
-    # If the Word doc has "Market Read: {date} The model is saying:" as a single paragraph,
-    # split it so "The model is saying:" is on its own line.
+    # Put 'The model is saying:' on its own line if attached to the date
     for i, l in enumerate(lines):
         if l.startswith("Market Read:") and "The model is saying:" in l:
             left, right = l.split("The model is saying:", 1)
             lines[i] = left.strip()
             lines.insert(i + 1, "The model is saying:")
-            # keep any remainder after the phrase (rare) as its own line
             if right.strip():
                 lines.insert(i + 2, right.strip())
             break
 
-    # Join with blank lines between paragraphs for clear spacing
     md = "\n\n".join(lines)
     return md
-
 
 # ---------- render ----------
 with st.container():
     st.markdown("## Market Read")
     docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
-    st.markdown(load_market_read_md(str(docx_path)))  # str(...) only if your helper expects a string
-
+    st.markdown(load_market_read_md(str(docx_path)))
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
@@ -482,8 +386,6 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
-
-
 
 # -------------------------
 # Footer disclaimer
