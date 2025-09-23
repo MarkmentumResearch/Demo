@@ -23,9 +23,26 @@ section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
 
 st.markdown("""
 <style>
+/* Pin the app to wide, center it, and keep 3-up columns from collapsing */
+
+/* Cloud-friendly main container (works across recent Streamlit versions) */
+.main .block-container {
+  max-width: 1700px;   /* keep your “wide” look but not ultra-stretched */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Keep 3-up column layout from collapsing on narrower laptops */
+div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
+
+/* Optional: ensure each column has enough breathing room */
+div[data-testid="column"] { min-width: 360px; }
+
+/* Typography + table shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
+
 .card {
   border: 1px solid #cfcfcf;
   border-radius: 8px;
@@ -33,9 +50,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
   padding: 12px 12px 8px 12px;
   box-shadow: 0 0 0 rgba(0,0,0,0);
 }
-.card h3 {
-  margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a;
-}
+.card h3 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a; }
 .tbl { border-collapse: collapse; width: 100%; }
 .tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; }
 .tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
@@ -44,6 +59,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 """, unsafe_allow_html=True)
+
 
 # -------------------------
 # Paths (same as your other apps)
