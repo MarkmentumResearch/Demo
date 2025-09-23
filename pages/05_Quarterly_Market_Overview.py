@@ -15,52 +15,74 @@ st.set_page_config(page_title="Markmentum – Quarterly Overview", layout="wide"
 # ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 st.markdown("""
 <style>
-/* Keep 3-up rows on desktop and prevent wrapping to 2 columns */
+/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
 div[data-testid="stHorizontalBlock"]{
   display:flex;
-  flex-wrap: nowrap !important;
+  flex-wrap: wrap;               /* allow wrapping by default (we’ll control per breakpoint) */
   gap: 28px;
 }
 
-/* Wider page, smaller side margins */
+/* Each Streamlit column: let it size as a percentage row item */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 32%;                 /* default try for ~3-up */
+  min-width: 360px;              /* don’t collapse too small */
+}
+
+/* Container width & side margins */
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
-  width: 95vw;                 /* expands to viewport width */
-  max-width: 2100px;           /* wider so cards stretch nicely */
+  width: 95vw;
+  max-width: 2100px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Base typography + card shell */
+/* Typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
 .card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; }
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
 
-/* Table */
+/* Table styling */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .center { text-align:center; }
 .right  { text-align:right; white-space:nowrap; }
 
-/* No wrapping, sized by characters per your constraints */
+/* Column widths (no-wrap) — desktop defaults */
 th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
 th.col-exposure, td.col-exposure { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+th.col-ticker,   td.col-ticker   { width:74px; }
 
-/* Fixed ticker width */
-th.col-ticker, td.col-ticker { width:74px; }
-
-/* Shares column gets extra width; also no wrapping (Row 1 / Card 3) */
+/* Shares column (Row 1 / Card 3) */
 .shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
 
-/* Safety on narrower laptops so it still stays 3-up */
-@media (max-width: 1280px){
-  [data-testid="stAppViewContainer"] .main .block-container,
-  section.main > div { max-width: 1600px; }
+/* ---------- Breakpoints ---------- */
+
+/* Big desktop (>=1500px): force 3-up, keep wide columns */
+@media (min-width: 1500px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+}
+
+/* Laptop / standard desktops (1000px–1499px): go 2-up and gently shrink text columns */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+  th.col-company, td.col-company { width:32ch; max-width:32ch; }  /* still no wrap */
+  th.col-exposure, td.col-exposure { width:18ch; max-width:18ch; }
+}
+
+/* Narrow (<1000px): single column; give tables more breathing room again */
+@media (max-width: 999.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  th.col-company, td.col-company { width:36ch; max-width:36ch; }
+  th.col-exposure, td.col-exposure { width:22ch; max-width:22ch; }
 }
 </style>
+
 """, unsafe_allow_html=True)
 
 # -------------------------
