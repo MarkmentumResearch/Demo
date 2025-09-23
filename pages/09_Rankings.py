@@ -65,17 +65,19 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 
 st.markdown("""
 <style>
-/* Center the Streamlit Altair container */
+/* Center Streamlit's Altair/VegaLite chart container */
 div[data-testid="stAltairChart"],
-div[data-testid="stVegaLiteChart"]{            /* covers older/newer names */
-  text-align: center !important;               /* center inline children */
+div[data-testid="stVegaLiteChart"]{
+  display: flex !important;             /* make wrapper a flex row */
+  justify-content: center !important;   /* center the chart horizontally */
+  align-items: center !important;       /* (optional) vertical centering */
 }
 
-/* Make the Vega embed shrink to its content so it can be centered */
+/* Prevent the Vega embed from stretching; keep it at intrinsic width */
 div[data-testid="stAltairChart"] .vega-embed,
 div[data-testid="stVegaLiteChart"] .vega-embed{
-  display: inline-block !important;            /* allows text-align to center it */
-  width: auto !important;                      /* don't stretch to 100% */
+  flex: 0 0 auto !important;            /* don’t grow/shrink */
+  width: auto !important;               /* ignore any 100% width rules */
 }
 </style>
 """, unsafe_allow_html=True)
@@ -187,7 +189,7 @@ cur_heat = (
       .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
       .encode(
           x=alt.X("Timeframe:N", sort=["Current"],
-                  axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8)),
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
           y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420)),
           color=alt.Color("avg_score:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
