@@ -15,16 +15,31 @@ from urllib.parse import quote_plus
 # -------------------------
 st.set_page_config(page_title="Markmentum – Volatility Spreads", layout="wide")
 
-st.markdown(
-    """
+st.markdown("""
 <style>
-/* Keep 3-up layout from collapsing on smaller laptops (~<=1100px) */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
+/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;
+  flex-wrap: wrap;               /* allow wrapping; we control per breakpoint */
+  gap: 28px;
+}
 
-/* Optional: prevent ultra-wide stretching; center content nicely */
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
+/* Each Streamlit column behaves like a grid item */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 32%;                 /* target ~3-up by default */
+  min-width: 360px;              /* don't collapse too small */
+}
 
-/* Type & cards */
+/* Container width & side margins */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  width: 95vw;
+  max-width: 2100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Base typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
@@ -36,16 +51,49 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
   box-shadow: 0 0 0 rgba(0,0,0,0);
 }
 .card h3 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a; }
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; }
+
+/* Table */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
-.right { text-align: right; }
 .center { text-align: center; }
-.company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.right  { text-align: right; white-space: nowrap; }
+
+/* --- Column widths & no-wrap (override any inline styles) --- */
+/* Company (col 1): 11–39ch, no wrap */
+.tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){
+  white-space: nowrap; min-width:11ch !important; width:39ch !important; max-width:39ch !important;
+}
+/* Ticker (col 2): fixed width */
+.tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
+/* Exposure (col 3): 6–22ch, no wrap */
+.tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
+  white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
+}
+/* Value (col 4): keep compact (most cards use %/score; shares not used here) */
+.tbl thead th:nth-child(4), .tbl tbody td:nth-child(4){ width:90px; }
+
+/* ---------- Breakpoints ---------- */
+/* Big desktop (>=1500px): force 3-up */
+@media (min-width: 1500px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+}
+/* Laptop / standard desktops (1000–1499px): go 2-up, gently shrink text cols */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+  .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:32ch !important; max-width:32ch !important; }
+  .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:18ch !important; max-width:18ch !important; }
+}
+/* Narrow (<1000px): single column; loosen table widths a bit */
+@media (max-width: 999.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:36ch !important; max-width:36ch !important; }
+  .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:22ch !important; max-width:22ch !important; }
+}
 </style>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # -------------------------
 # Paths (same pattern as Overview)
