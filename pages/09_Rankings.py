@@ -473,7 +473,7 @@ chart_height = max(260, 24 * max(len(view48), len(view49), len(view50), len(view
 # Chart #1: Model Score  (now with padded domain)
 # -------------------------
 # global model-score min/max for locked mode
-category_ms_min = float(view48["model_score"].min()-40) if not df48.empty else 0.0
+category_ms_min = float(view48["model_score"].min()-50) if not df48.empty else 0.0
 category_ms_max = float(view48["model_score"].max()+10) if not df48.empty else 0.0
 
 if lock_axes_and_order:
@@ -560,7 +560,7 @@ base50 = (
         y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_50), title="Ticker"),
         x=x50,
         href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.2f")],
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.1f")],
     )
 )
 
@@ -568,10 +568,10 @@ bars50 = base50.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 pos50 = base50.transform_filter("datum.Sharpe >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("Sharpe:Q", format=",.2f"))
+              .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
 neg50 = base50.transform_filter("datum.Sharpe < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("Sharpe:Q", format=",.2f"))
+              .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
 
 chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_height)
 
@@ -579,7 +579,7 @@ chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", heig
 # Chart #4: Sharpe Ratio 30-Day Change  (now with padded domain)
 # -------------------------
 category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min()-10) if not df51.empty else 0.0
-category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+10) if not df51.empty else 0.0
+category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+30) if not df51.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom4 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
@@ -596,7 +596,7 @@ base51 = (
         y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_51), title="Ticker"),
         x=x51,
         href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.2f")],
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")],
     )
 )
 
@@ -604,10 +604,10 @@ bars51 = base51.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 pos51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.2f"))
+              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 neg51 = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.2f"))
+              .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 
 chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_height)
 
