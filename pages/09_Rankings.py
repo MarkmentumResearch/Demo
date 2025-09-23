@@ -408,15 +408,26 @@ neg48  = base48.transform_filter("datum.model_score < 0").mark_text(align="right
 chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", height=chart_h)
 
 # 2) Sharpe Percentile Rank
+category_ms_min2 = float(view49["Sharpe_Rank"].min()-10) if not df49.empty else 0.0
+category_ms_max2 = float(view49["Sharpe_Rank"].max()+10) if not df49.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom2 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom2 = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
+
+x49 = alt.X("Sharpe_Rank:Q", title="Sharpe Percentile Rank", scale=alt.Scale(domain=[0, 100]))
+
+
 base49 = (
     alt.Chart(view49)
-      .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-      .encode(
-          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_49), title="Ticker"),
-          x=alt.X("Sharpe_Rank:Q", title="Sharpe Percentile Rank", scale=alt.Scale(domain=[0,100])),
-          href=alt.Href("url:N"),
-          tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Rank:Q", format=",.1f")],
-      )
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_49), title="Ticker"),
+        x=x49,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Rank:Q", format=",.1f")],
+    )
 )
 bars49  = base49.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 label49 = base49.mark_text(align="left", baseline="middle", dx=4)\
@@ -424,15 +435,27 @@ label49 = base49.mark_text(align="left", baseline="middle", dx=4)\
 chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking", height=chart_h)
 
 # 3) Sharpe Ratio
+category_ms_min3 = float(view50["Sharpe"].min()-10) if not df50.empty else 0.0
+category_ms_max3 = float(view50["Sharpe"].max()+10) if not df50.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom3 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom3 = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
+
+x50 = alt.X("Sharpe:Q", title="Sharpe Ratio", scale=alt.Scale(domain=ms_dom3))
+
+
+
 base50 = (
     alt.Chart(view50)
-      .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-      .encode(
-          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_50), title="Ticker"),
-          x=alt.X("Sharpe:Q", title="Sharpe Ratio"),
-          href=alt.Href("url:N"),
-          tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.1f")],
-      )
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_50), title="Ticker"),
+        x=x50,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.1f")],
+    )
 )
 bars50 = base50.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 pos50  = base50.transform_filter("datum.Sharpe >= 0").mark_text(align="left",  baseline="middle", dx=4)\
@@ -442,16 +465,26 @@ neg50  = base50.transform_filter("datum.Sharpe < 0").mark_text(align="right", ba
 chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_h)
 
 # 4) Sharpe Ratio 30-Day Change
+category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min()-10) if not df51.empty else 0.0
+category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+30) if not df51.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom4 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom4 = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
+
+x51 = alt.X("Sharpe_Ratio_30D_Change:Q", title="Sharpe Ratio 30-Day Change", scale=alt.Scale(domain=ms_dom4))
+
+
 base51 = (
     alt.Chart(view51)
-      .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-      .encode(
-          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_51), title="Ticker"),
-          x=alt.X("Sharpe_Ratio_30D_Change:Q", title="Sharpe Ratio 30-Day Change"),
-          href=alt.Href("url:N"),
-          tooltip=["Ticker", "Ticker_name", "Category",
-                   alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")],
-      )
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_51), title="Ticker"),
+        x=x51,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")],
+    )
 )
 bars51 = base51.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 pos51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0").mark_text(align="left",  baseline="middle", dx=4)\
