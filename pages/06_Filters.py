@@ -8,22 +8,38 @@ import streamlit.components.v1 as components
 from urllib.parse import quote_plus
 
 # -------------------------
-# Page setup & global style
+# Page setup
 # -------------------------
 st.set_page_config(page_title="Markmentum – Filters", layout="wide")
+
+# -------------------------
+# Responsive, no-wrap render styles (desktop + laptop)
+# -------------------------
 st.markdown("""
 <style>
-/* Keep 3-up layout from collapsing on smaller laptops (~<=1100px) */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
+/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;
+  flex-wrap: wrap;               /* allow wrapping; we control per breakpoint */
+  gap: 28px;
+}
 
-/* Optional: prevent ultra-wide stretching; center content nicely */
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
-</style>
-""", unsafe_allow_html=True)
+/* Each Streamlit column behaves like a grid item */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 32%;                 /* target ~3-up by default */
+  min-width: 360px;              /* don't collapse too small */
+}
 
+/* Container width & side margins */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  width: 95vw;
+  max-width: 2100px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-st.markdown("""
-<style>
+/* Base typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
@@ -34,15 +50,48 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
   padding: 12px 12px 8px 12px;
   box-shadow: 0 0 0 rgba(0,0,0,0);
 }
-.card h3 {
-  margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a;
-}
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; }
+.card h3 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a; }
+
+/* Table */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
-.right { text-align: right; }
 .center { text-align: center; }
-.company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.right  { text-align: right; white-space: nowrap; }
+
+/* --- Column widths & no-wrap (override any inline styles) --- */
+/* Company (col 1): 11–39ch, no wrap */
+.tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){
+  white-space: nowrap; min-width:11ch !important; width:39ch !important; max-width:39ch !important;
+}
+/* Ticker (col 2): fixed width */
+.tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
+/* Exposure (col 3): 6–22ch, no wrap */
+.tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
+  white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
+}
+/* Value (col 4): keep compact (most cards use %/score; shares not used here) */
+.tbl thead th:nth-child(4), .tbl tbody td:nth-child(4){ width:90px; }
+
+/* ---------- Breakpoints ---------- */
+/* Big desktop (>=1500px): force 3-up */
+@media (min-width: 1500px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+}
+/* Laptop / standard desktops (1000–1499px): go 2-up, gently shrink text cols */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+  .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:32ch !important; max-width:32ch !important; }
+  .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:18ch !important; max-width:18ch !important; }
+}
+/* Narrow (<1000px): single column; loosen table widths a bit */
+@media (max-width: 999.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:36ch !important; max-width:36ch !important; }
+  .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:22ch !important; max-width:22ch !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -55,9 +104,6 @@ APP_DIR = _here if _here.name != "pages" else _here.parent
 DATA_DIR  = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
-
-
-
 
 CSV_FILES = [
     (32, "Short Term Trend Gainers"),
@@ -73,8 +119,6 @@ CSV_FILES = [
 # -------------------------
 # Helpers
 # -------------------------
-
-#---clickable links helper------
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -85,23 +129,16 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
+# Lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
-
 if dest.replace("%20", " ") == "deep dive":
     t = (qp.get("ticker") or "").strip().upper()
     if t:
-        # make Deep Dive happy even if it uses session_state only
         st.session_state["ticker"] = t
-        # keep the ticker in the URL for shareability
         st.query_params.clear()
         st.query_params["ticker"] = t
-    # jump to the page file in /pages
     st.switch_page("pages/11_Deep_Dive_Dashboard.py")
-
-
-
 
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
@@ -110,8 +147,6 @@ def _card_table_html_three(df: pd.DataFrame):
     """Render a 3-column table: Company | Ticker | Exposure (no value column)."""
     if df.empty:
         return ""
-
-    # Case-insensitive column map
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
@@ -125,7 +160,6 @@ def _card_table_html_three(df: pd.DataFrame):
   <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
   <td style="min-width:25ch">{r.get(ccol, "")}</td>
 </tr>""")
-
     return f"""
 <div class="card">
   <h3>__TITLE__</h3>
@@ -145,7 +179,6 @@ def _card_table_html_three(df: pd.DataFrame):
 """
 
 def _render_card_no_value(slot, title: str, df: pd.DataFrame):
-    """Render a card showing only Company | Ticker | Exposure."""
     with slot:
         if df.empty:
             st.info(f"No data for {title}.")
@@ -154,15 +187,12 @@ def _render_card_no_value(slot, title: str, df: pd.DataFrame):
         st.markdown(html, unsafe_allow_html=True)
 
 def _pick_col(df: pd.DataFrame, candidates):
-    """Return the first matching column name in df from candidates (case-sensitive)."""
     for c in candidates:
         if c in df.columns:
             return c
-    # fallback: last column
     return df.columns[-1] if len(df.columns) else None
 
 def _render_card_custom(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    """Render a card using an explicit value column + label + formatter."""
     with slot:
         if df.empty or value_col is None:
             st.info(f"No data for {title}.")
@@ -173,7 +203,6 @@ def _image_to_base64(path: Path) -> str:
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-
 @st.cache_data(show_spinner=False)
 def load_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
@@ -183,7 +212,7 @@ def load_csv(path: Path) -> pd.DataFrame:
 def _fmt_pct(val):
     try:
         v = float(val)
-        if abs(v) <= 1.0:  # support 0.0948 -> 9.48%
+        if abs(v) <= 1.0:
             v *= 100.0
         return f"{v:,.2f}%"
     except:
@@ -205,11 +234,9 @@ def _fmt_num(val):
         return "—"
 
 def _guess_value_col(df: pd.DataFrame):
-    """Pick a metric column: prefer known names; else first numeric-like column."""
     if df.empty:
         return None, "Value", _fmt_num
     cmap = {c.lower(): c for c in df.columns}
-    # Preference order
     for key, label, fmt in [
         ("daily_return_pct", "Percent", _fmt_pct),
         ("percent",          "Percent", _fmt_pct),
@@ -219,26 +246,21 @@ def _guess_value_col(df: pd.DataFrame):
     ]:
         if key in cmap:
             return cmap[key], label, fmt
-    # Fallback: first numeric-looking column that isn't a known dimension
     dims = {"ticker","ticker_name","company","category","exposure","date"}
     for col in df.columns:
-        if col.lower() in dims: 
+        if col.lower() in dims:
             continue
-        # try to parse a few values as float
         s = pd.to_numeric(df[col], errors="coerce")
         if s.notna().sum() >= max(1, len(s)//4):
             return col, "Value", _fmt_num
-    # Last resort: last column
     return df.columns[-1], "Value", _fmt_num
 
 def _card_table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    # Case-insensitive dimension mapping
     safe = {c.lower(): c for c in df.columns}
     tcol = safe.get("ticker") or "Ticker"
     ncol = safe.get("ticker_name") or safe.get("company") or "Company"
     ccol = safe.get("category") or safe.get("exposure") or "Exposure"
 
-    # Render rows
     rows = []
     for _, r in df.iterrows():
         rows.append(f"""
@@ -288,13 +310,9 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-
-
 # -------------------------
 # Load data (cache-clearable)
 # -------------------------
-
-# clear cache automatically on each run
 st.cache_data.clear()
 
 @st.cache_data(show_spinner=False)
@@ -303,7 +321,6 @@ def load_all_csvs(csv_files, data_dir: Path):
     for num, _ in csv_files:
         dfs_local.append(load_csv(data_dir / f"qry_graph_data_{num}.csv"))
     return dfs_local
-
 
 dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 
@@ -317,7 +334,6 @@ def _filters_title_date() -> str:
     df = load_csv(DATA_DIR / "qry_graph_data_32.csv")  # #32
     if df.empty:
         return _mdy_no_leading_zeros(pd.Timestamp.today())
-    # find the latest valid date in the CSV
     dmax = pd.to_datetime(df.get("Date"), errors="coerce").max()
     if pd.isna(dmax):
         dmax = pd.Timestamp.today()
@@ -332,7 +348,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # -------------------------
 # Layout: 3 / 3 / 2 rows
 # -------------------------
@@ -340,60 +355,44 @@ titles = [label for _, label in CSV_FILES]
 
 # Row 1: 0,1,2  (all show % Change)
 r1c1, r1c2, r1c3 = st.columns(3, gap="large")
-
-# Card 1: ST Trend Gainers -> % Change
 vcol = _pick_col(dfs[0], ["Value", "daily_return_pct", "percent"])
 _render_card_custom(r1c1, titles[0], dfs[0], vcol, "% Change", _fmt_pct)
-
-# Card 2: ST Trend Decliners -> % Change
 vcol = _pick_col(dfs[1], ["Value", "daily_return_pct", "percent"])
 _render_card_custom(r1c2, titles[1], dfs[1], vcol, "% Change", _fmt_pct)
-
-# Card 3: MT Trend Gainers -> % Change
 vcol = _pick_col(dfs[2], ["Value", "daily_return_pct", "percent"])
 _render_card_custom(r1c3, titles[2], dfs[2], vcol, "% Change", _fmt_pct)
 
-row_spacer(14)  # keep your existing spacer
+row_spacer(14)
 
 # Row 2: 3,4,5  (card 4 %Change; cards 5–6 Chase Score)
 r2c1, r2c2, r2c3 = st.columns(3, gap="large")
-
-# Card 4: MT Trend Decliners -> % Change
 vcol = _pick_col(dfs[3], ["Value", "daily_return_pct", "percent"])
 _render_card_custom(r2c1, titles[3], dfs[3], vcol, "% Change", _fmt_pct)
 
-# Card 5: Chase -> Chase Score × 100
-score_col = _pick_col(dfs[4], ["ChaseScore", "chasescore", "chase_score", "Chase_Score",
-                               "Score", "score", "model_score"])
+score_col = _pick_col(dfs[4], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
 dfs[4][score_col] = dfs[4][score_col] * 100
 _render_card_custom(r2c2, titles[4], dfs[4], score_col, "Chase Score", _fmt_num)
 
-# Card 6: No Chase -> Chase Score × 100
-score_col = _pick_col(dfs[5], ["ChaseScore", "chasescore", "chase_score", "Chase_Score",
-                               "Score", "score", "model_score"])
+score_col = _pick_col(dfs[5], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
 dfs[5][score_col] = dfs[5][score_col] * 100
 _render_card_custom(r2c3, titles[5], dfs[5], score_col, "Chase Score", _fmt_num)
 
-row_spacer(14)  # keep your existing spacer
+row_spacer(14)
 
 # Row 3: 6,7 (use 3 columns so card sizes match row 2; leave last empty)
 r3c1, r3c2, r3c3 = st.columns(3, gap="large")
 
-# Card 7: Watch List -> Watch Score = Score * 100
 score_col = _pick_col(dfs[6], ["Score", "score"])
 if score_col is not None and not dfs[6].empty:
     dfs[6] = dfs[6].copy()
     dfs[6]["watch_x100"] = pd.to_numeric(dfs[6][score_col], errors="coerce") * 100.0
 _render_card_custom(r3c1, titles[6], dfs[6], "watch_x100", "Watch Score", _fmt_num)
 
-# Card 8: Up Cycle List -> Show only Company, Ticker, Exposure
 df8 = dfs[7].copy()
 keep_cols = ["Company", "Ticker", "Exposure"]
 df8 = df8[[col for col in keep_cols if col in df8.columns]]
 _render_card_no_value(r3c2, titles[7], dfs[7])
 
-
-# Middle: interpretation text only (inside a card)
 with r3c3:
     st.markdown(
         """
@@ -411,10 +410,6 @@ with r3c3:
 """,
         unsafe_allow_html=True,
     )
-
-
-
-# r3c3 is intentionally left empty to keep consistent card widths
 
 # -------------------------
 # Footer disclaimer
