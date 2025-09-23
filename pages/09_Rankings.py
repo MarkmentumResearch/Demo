@@ -222,7 +222,7 @@ if show_cur_ticker_hm:
             .assign(Timeframe="Current", score=lambda d: d["model_score"])
     )
     ticker_order = sorted(tm["Ticker"].unique().tolist())
-    t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98))))
+    t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98)))
     t_w     = 200
     t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
