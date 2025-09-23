@@ -187,7 +187,7 @@ cur_heat = (
 )
 
 st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-_, center, _ = st.columns([3, 3, 1])   # side spacers
+_, center, _ = st.columns([5, 3, 1])   # side spacers
 with center:
     st.altair_chart(cur_heat, use_container_width=False)
 st.markdown('</div>', unsafe_allow_html=True)
