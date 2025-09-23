@@ -11,4 +11,8 @@ venv/
 .mypy_cache/
 #.streamlit/*.toml
 
+<<<<<<< Updated upstream
 #data/*.*
+=======
+data/*.*
+>>>>>>> Stashed changes
