@@ -63,25 +63,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Center Streamlit's chart wrapper */
-div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
-  display:flex !important;
-  justify-content:center !important;
-}
 
-/* Keep the Vega embed at intrinsic width rather than 100% */
-div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed,
-div[data-testid="stAltairChart"] .vega-embed .chart-wrapper,
-div[data-testid="stVegaLiteChart"] .vega-embed .chart-wrapper{
-  width:auto !important;
-  flex:0 0 auto !important;
-  display:inline-block !important;
-}
-</style>
-""", unsafe_allow_html=True)
 st.markdown("""
 <style>
 /* Center any 3-column row by centering its contents */
