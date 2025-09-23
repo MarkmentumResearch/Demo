@@ -1,5 +1,6 @@
 # 09_Rankings_cloud.py
-# Markmentum — Rankings (render-only fixes for consistent cross-device layout)
+# Rendering-only updates: remove stray “pill” bars, center heatmaps, narrow heatmap cells,
+# and render bottom 4 charts in columns (avoids Altair concat error). No data/logic changes.
 
 from pathlib import Path
 import base64
@@ -10,18 +11,14 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-# -------------------------
-# Page setup
-# -------------------------
+# ---------- Page ----------
 st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – Rankings", layout="wide")
 
-# -------------------------
-# Global CSS (responsive container, centered charts, hide bordered-container "decoration")
-# -------------------------
+# ---------- Global CSS ----------
 st.markdown("""
 <style>
-/* Page container width */
+/* Page container sizing */
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
   width: 95vw;
@@ -30,43 +27,33 @@ section.main > div {
   margin-right: auto;
 }
 
-/* Hide the little header "decoration" strip from bordered containers */
+/* Kill any bordered-container “decoration” / pill bars */
 div[data-testid="stDecoration"] { display: none !important; }
-
-/* Grid baseline */
-div[data-testid="stHorizontalBlock"]{
-  display:flex; flex-wrap: wrap; gap: 28px;
+div[data-testid="stVerticalBlockBorderWrapper"] {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 32%; min-width: 360px;
+div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"] {
+  display: none !important;
 }
 
-/* Typography + card shell */
+/* Centering helper for charts */
+.viz-center { display:flex; justify-content:center; }
+
+/* Type + headings */
 html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card {
-  border:1px solid #cfcfcf; border-radius:10px; background:#fff;
-  padding:16px 16px 14px 16px;
-}
-.card h3, .card h4 {
-  margin:0 0 8px 0; font-weight:700; color:#1a1a1a; text-align:center;
-}
-.card h3 { font-size: 20px; }
-.card h4 { font-size: 16px; }
-.small { font-size:12px; color:#666; text-align:center; }
+.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin: 4px 0 8px; }
+.h-sub   { text-align:center; font-size:12px; color:#666; margin: 2px 0 10px; }
 
-/* Utility: center the chart block */
-.viz-center { display:flex; justify-content:center; }
-
-/* Compact select */
+/* Compact select width (doesn't create any pill) */
 div[data-baseweb="select"] { max-width: 36ch !important; }
 
-/* Breakpoints */
-@media (min-width: 1500px){
-  div[data-testid="stHorizontalBlock"]{ flex-wrap: nowrap; }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
-}
+/* Let Streamlit column rows wrap nicely on smaller widths */
+div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap: wrap; gap: 24px; }
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; min-width: 360px; }
 @media (max-width: 1499.98px){
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
 }
@@ -76,9 +63,7 @@ div[data-baseweb="select"] { max-width: 36ch !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# -------------------------
-# Paths
-# -------------------------
+# ---------- Paths ----------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 DATA_DIR  = APP_DIR / "data"
@@ -90,9 +75,7 @@ CSV49 = DATA_DIR / "qry_graph_data_49.csv"   # Sharpe_Rank
 CSV50 = DATA_DIR / "qry_graph_data_50.csv"   # Sharpe
 CSV51 = DATA_DIR / "qry_graph_data_51.csv"   # Sharpe_Ratio_30D_Change
 
-# -------------------------
-# Helpers
-# -------------------------
+# ---------- Helpers ----------
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
         return base64.b64encode(f.read()).decode()
@@ -101,40 +84,28 @@ def _mdy_fmt() -> str:
     return "%#m/%#d/%Y" if sys.platform.startswith("win") else "%-m/%-d/%Y"
 
 def _first_date_from_csv(path: Path, date_col: str = "date") -> str:
-    if not path.exists():
-        return ""
+    if not path.exists(): return ""
     df = pd.read_csv(path)
     if date_col not in df.columns:
-        for alt in ("Date", "DATE"):
+        for alt in ("Date","DATE"):
             if alt in df.columns:
-                date_col = alt
-                break
+                date_col = alt; break
     dt = pd.to_datetime(df[date_col].iloc[0], errors="coerce")
     return "" if pd.isna(dt) else dt.strftime(_mdy_fmt())
 
-def _mk_ticker_link(ticker: str) -> str:
-    t = (ticker or "").strip().upper()
-    if not t:
-        return ""
-    return (f'<a href="?page=Deep%20Dive&ticker={quote_plus(t)}" '
-            f'target="_self" rel="noopener" '
-            f'style="text-decoration:none; font-weight:600;">{t}</a>')
-
-# Simple router for deep-dive links
+# Router for Deep Dive
 qp = st.query_params
-if (qp.get("page") or "").replace("%20", " ").strip().lower() == "deep dive":
+if (qp.get("page") or "").replace("%20"," ").strip().lower() == "deep dive":
     t = (qp.get("ticker") or "").strip().upper()
     if t:
         st.session_state["ticker"] = t
         st.query_params.clear()
         st.query_params["ticker"] = t
-    # Adjust if your deep-dive filename differs
     st.switch_page("pages/11_Deep_Dive_Dashboard.py")
 
 @st.cache_data(show_spinner=False)
 def load_csv(path: Path, numeric_cols: list[str] | None = None) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
+    if not path.exists(): return pd.DataFrame()
     df = pd.read_csv(path)
     if numeric_cols:
         for c in numeric_cols:
@@ -142,9 +113,7 @@ def load_csv(path: Path, numeric_cols: list[str] | None = None) -> pd.DataFrame:
                 df[c] = pd.to_numeric(df[c], errors="coerce")
     return df
 
-# -------------------------
-# Data
-# -------------------------
+# ---------- Data ----------
 df48 = load_csv(CSV48, numeric_cols=["model_score"])
 df49 = load_csv(CSV49, numeric_cols=["Sharpe_Rank"])
 df50 = load_csv(CSV50, numeric_cols=["Sharpe"])
@@ -154,39 +123,31 @@ if any(df.empty for df in [df48, df49, df50, df51]):
     st.warning("One or more CSVs (48–51) are missing or empty.")
     st.stop()
 
-# -------------------------
-# Header
-# -------------------------
+# ---------- Header ----------
 if LOGO_PATH.exists():
     st.markdown(
-        f"""
-        <div style="text-align:center; margin: 8px 0 16px;">
-            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
-        </div>
-        """,
+        f'<div style="text-align:center; margin: 8px 0 14px;">'
+        f'<img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440"></div>',
         unsafe_allow_html=True,
     )
 
 st.markdown(
-    f"""
-    <div style="text-align:center; font-size:20px; font-weight:600; color:#233; margin-top:4px; margin-bottom:12px;">
-        Rankings – {_first_date_from_csv(CSV48)}
-    </div>
-    """,
+    f'<div class="h-title">Rankings – {_first_date_from_csv(CSV48)}</div>',
     unsafe_allow_html=True,
 )
 
-# =========================
+# =========================================================
 # Global Heatmap — Current Score (by Category)
-#   - fixed width (so it doesn’t stretch)
-#   - centered inside a “card”
-# =========================
+#   - Title centered
+#   - Chart centered
+#   - Narrow column width ~ matches “Current” header
+# =========================================================
 cat_cur = (
-    df48[["Category", "model_score"]]
-    .dropna(subset=["Category", "model_score"])
-    .groupby("Category", as_index=False)
-    .agg(avg_score=("model_score", "mean"), n=("model_score", "size"))
-    .assign(Timeframe="Current")
+    df48[["Category","model_score"]]
+      .dropna(subset=["Category","model_score"])
+      .groupby("Category", as_index=False)
+      .agg(avg_score=("model_score","mean"), n=("model_score","size"))
+      .assign(Timeframe="Current")
 )
 
 preferred = [
@@ -194,13 +155,15 @@ preferred = [
     "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials",
     "Health Care","Industrials","Information Technology","Materials","Real Estate","Utilities","MR Discretion"
 ]
-present = list(cat_cur["Category"].unique())
+present  = list(cat_cur["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
 
-vmax = float(max(1.0, cat_cur["avg_score"].abs().quantile(0.98)))
+vmax    = float(max(1.0, cat_cur["avg_score"].abs().quantile(0.98)))
+heat_w  = 200   # << narrow column (~“Current” header width)
+heat_h  = max(420, 26 * len(cat_order) + 24)
 
-heat_w  = 640   # fixed plot width (legend sits outside)
-heat_h  = max(380, 26 * len(cat_order) + 24)
+st.markdown('<div class="h-title">Markmentum Heatmap — Current Score (by Category)</div>', unsafe_allow_html=True)
+st.markdown('<div class="h-sub">Average current Markmentum Score across tickers in each category.</div>', unsafe_allow_html=True)
 
 cur_heat = (
     alt.Chart(cat_cur)
@@ -219,23 +182,17 @@ cur_heat = (
           ],
       )
       .properties(width=heat_w, height=heat_h,
-                  padding={"left": 8, "right": 8, "top": 6, "bottom": 6})
+                  padding={"left": 6, "right": 6, "top": 6, "bottom": 6})
       .configure_view(strokeOpacity=0)
 )
 
-with st.container():  # no border; we draw our own "card"
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<h3>Markmentum Heatmap — Current Score (by Category)</h3>', unsafe_allow_html=True)
-    st.markdown('<div class="small">Average current Markmentum Score across tickers in each category.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-    st.altair_chart(cur_heat, use_container_width=False)
-    st.markdown('</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="viz-center">', unsafe_allow_html=True)
+st.altair_chart(cur_heat, use_container_width=False)
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-# =========================
-# Controls
-# =========================
+# ---------- Controls ----------
 all_cats = sorted(list(set().union(
     df48["Category"].dropna().unique(),
     df49["Category"].dropna().unique(),
@@ -252,20 +209,25 @@ with c2:
 with c3:
     lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
-# =========================
-# Per-Ticker Heatmap — Current (centered, fixed width)
-# =========================
+# =========================================================
+# Per-Ticker Heatmap — Current
+#   - Title centered
+#   - Chart centered
+#   - Narrow column width like global heatmap
+# =========================================================
 if show_cur_ticker_hm:
     tm = (
-        df48.loc[df48["Category"] == sel, ["Ticker", "Ticker_name", "Category", "Date", "model_score"]]
-        .dropna(subset=["Ticker", "model_score"])
-        .assign(Timeframe="Current", score=lambda d: d["model_score"])
+        df48.loc[df48["Category"] == sel, ["Ticker","Ticker_name","Category","Date","model_score"]]
+            .dropna(subset=["Ticker","model_score"])
+            .assign(Timeframe="Current", score=lambda d: d["model_score"])
     )
     ticker_order = sorted(tm["Ticker"].unique().tolist())
+    t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98))))
+    t_w     = 200
+    t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
-    t_heat_w = 560
-    t_heat_h = max(380, 22 * max(1, len(ticker_order)) + 24)
-    t_vmax   = float(max(1.0, tm["score"].abs().quantile(0.98)))
+    st.markdown(f'<div class="h-title">{sel} — Per-Ticker Markmentum Heatmap (Current)</div>', unsafe_allow_html=True)
+    st.markdown('<div class="h-sub">Current Markmentum Score by ticker.</div>', unsafe_allow_html=True)
 
     cur_ticker_heat = (
         alt.Chart(tm)
@@ -285,24 +247,22 @@ if show_cur_ticker_hm:
                   alt.Tooltip("Date:N", title="Date"),
               ],
           )
-          .properties(width=t_heat_w, height=t_heat_h,
-                      padding={"left": 8, "right": 8, "top": 6, "bottom": 6})
+          .properties(width=t_w, height=t_h,
+                      padding={"left": 6, "right": 6, "top": 6, "bottom": 6})
           .configure_view(strokeOpacity=0)
     )
 
-    with st.container():
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown(f'<h4>{sel} — Per-Ticker Markmentum Heatmap (Current)</h4>', unsafe_allow_html=True)
-        st.markdown('<div class="small">Current Markmentum Score by ticker.</div>', unsafe_allow_html=True)
-        st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-        st.altair_chart(cur_ticker_heat, use_container_width=False)
-        st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="viz-center">', unsafe_allow_html=True)
+    st.altair_chart(cur_ticker_heat, use_container_width=False)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-# =========================
-# Ranking Panels (4 charts) — centered band, robust across widths
-# =========================
+# =========================================================
+# Ranking Panels (4 charts)
+#   - Render in 4 Streamlit columns (no hconcat → no Altair error)
+#   - Each column is responsive; on small screens they wrap cleanly
+# =========================================================
 view48 = df48[df48["Category"] == sel].copy().sort_values("model_score", ascending=False)
 view49 = df49[df49["Category"] == sel].copy().sort_values("Sharpe_Rank", ascending=False)
 view50 = df50[df50["Category"] == sel].copy().sort_values("Sharpe", ascending=False)
@@ -312,25 +272,24 @@ if view48.empty and view49.empty and view50.empty and view51.empty:
     st.info(f"No tickers found for **{sel}**.")
     st.stop()
 
-# y-axis order
 if lock_axes_and_order:
-    y_order = sorted(set(view48["Ticker"]) | set(view49["Ticker"]) | set(view50["Ticker"]) | set(view51["Ticker"]))
+    y_order_all = sorted(set(view48["Ticker"]) | set(view49["Ticker"]) | set(view50["Ticker"]) | set(view51["Ticker"]))
 else:
     y_order_48 = view48["Ticker"].tolist()
     y_order_49 = view49["Ticker"].tolist()
     y_order_50 = view50["Ticker"].tolist()
     y_order_51 = view51["Ticker"].tolist()
 
-row_h     = 24
-chart_h   = max(300, row_h * max(len(view48), len(view49), len(view50), len(view51)) + 120)
-panel_pad = {"left": 8, "right": 8, "top": 4, "bottom": 4}
+row_h   = 24
+max_len = max(len(view48), len(view49), len(view50), len(view51))
+chart_h = max(300, row_h * max_len + 120)
 
 # 1) Model Score
 base48 = (
     alt.Chart(view48)
       .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
       .encode(
-          y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_48), title="Ticker"),
+          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_48), title="Ticker"),
           x=alt.X("model_score:Q", title="Model Score"),
           href=alt.Href("url:N"),
           tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score:Q", format=",.0f")],
@@ -341,16 +300,15 @@ pos48  = base48.transform_filter("datum.model_score >= 0").mark_text(align="left
                  .encode(text=alt.Text("model_score:Q", format=",.0f"))
 neg48  = base48.transform_filter("datum.model_score < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("model_score:Q", format=",.0f"))
-chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking",
-                                              height=chart_h, padding=panel_pad)
+chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", height=chart_h)
 
 # 2) Sharpe Percentile Rank
 base49 = (
     alt.Chart(view49)
       .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
       .encode(
-          y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_49), title="Ticker"),
-          x=alt.X("Sharpe_Rank:Q", title="Sharpe Percentile Rank", scale=alt.Scale(domain=[0, 100])),
+          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_49), title="Ticker"),
+          x=alt.X("Sharpe_Rank:Q", title="Sharpe Percentile Rank", scale=alt.Scale(domain=[0,100])),
           href=alt.Href("url:N"),
           tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe_Rank:Q", format=",.1f")],
       )
@@ -358,15 +316,14 @@ base49 = (
 bars49  = base49.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 label49 = base49.mark_text(align="left", baseline="middle", dx=4)\
                  .encode(text=alt.Text("Sharpe_Rank:Q", format=",.1f"))
-chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking",
-                                        height=chart_h, padding=panel_pad)
+chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking", height=chart_h)
 
 # 3) Sharpe Ratio
 base50 = (
     alt.Chart(view50)
       .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
       .encode(
-          y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_50), title="Ticker"),
+          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_50), title="Ticker"),
           x=alt.X("Sharpe:Q", title="Sharpe Ratio"),
           href=alt.Href("url:N"),
           tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("Sharpe:Q", format=",.1f")],
@@ -377,21 +334,18 @@ pos50  = base50.transform_filter("datum.Sharpe >= 0").mark_text(align="left",  b
                  .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
 neg50  = base50.transform_filter("datum.Sharpe < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
-chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking",
-                                              height=chart_h, padding=panel_pad)
+chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_h)
 
 # 4) Sharpe Ratio 30-Day Change
 base51 = (
     alt.Chart(view51)
       .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
       .encode(
-          y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_51), title="Ticker"),
+          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_51), title="Ticker"),
           x=alt.X("Sharpe_Ratio_30D_Change:Q", title="Sharpe Ratio 30-Day Change"),
           href=alt.Href("url:N"),
-          tooltip=[
-              "Ticker", "Ticker_name", "Category",
-              alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")
-          ],
+          tooltip=["Ticker", "Ticker_name", "Category",
+                   alt.Tooltip("Sharpe_Ratio_30D_Change:Q", format=",.1f")],
       )
 )
 bars51 = base51.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
@@ -399,18 +353,14 @@ pos51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0").mark_text
                  .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 neg51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
-chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change",
-                                              height=chart_h, padding=panel_pad)
+chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_h)
 
-# Concat with | (avoids the v5 hconcat subspec error); modest spacing keeps it centered
-concat = (chart48 | chart49 | chart50 | chart51).configure_view(strokeOpacity=0).configure_axis(
-    labelFontSize=12, titleFontSize=12
-).resolve_scale(
-    x='independent', y='independent'
-).properties(spacing=24)
-
-# Single full-width container — Altair handles centering within
-st.altair_chart(concat, use_container_width=True)
+# Render in 4 columns (centered row; wraps on smaller screens)
+cA, cB, cC, cD = st.columns(4)
+with cA: st.altair_chart(chart48, use_container_width=True)
+with cB: st.altair_chart(chart49, use_container_width=True)
+with cC: st.altair_chart(chart50, use_container_width=True)
+with cD: st.altair_chart(chart51, use_container_width=True)
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
@@ -419,9 +369,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -------------------------
-# Footer
-# -------------------------
+# ---------- Footer ----------
 st.markdown("---")
 st.markdown(
     """
