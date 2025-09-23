@@ -326,6 +326,31 @@ if show_cur_ticker_hm:
 
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
+
+# global model-score min/max for locked mode
+global_ms_min = float(df48["model_score"].min()) if not df48.empty else 0.0
+global_ms_max = float(df48["model_score"].max()) if not df48.empty else 0.0
+
+# -------------------------
+# Helper: padded domain for negative-capable charts
+# -------------------------
+def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
+    """
+    Extend the x-domain a bit on the left (and a hair on the right) so
+    large negative bars have room for labels and tickers.
+    """
+    if series.empty:
+        return alt.Undefined
+    s_min = float(series.min())
+    s_max = float(series.max())
+    rng = max(s_max - s_min, 1e-9)
+    pad = max(rng * frac, min_pad)
+    left = s_min - pad if s_min < 0 else s_min
+    right = s_max + 0.02 * rng  # tiny right pad
+    return [left, right]
+
+
+
 # =========================================================
 # Ranking Panels (4 charts)
 #   - Render in 4 Streamlit columns (no hconcat → no Altair error)
@@ -353,15 +378,27 @@ max_len = max(len(view48), len(view49), len(view50), len(view51))
 chart_h = max(300, row_h * max_len + 120)
 
 # 1) Model Score
+category_ms_min = float(view48["model_score"].min()-50) if not df48.empty else 0.0
+category_ms_max = float(view48["model_score"].max()+10) if not df48.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
+
+x48 = alt.X("model_score:Q", title="Model Score", scale=alt.Scale(domain=ms_dom))
+
+
+hint = "'Click to open Deep Dive'"
 base48 = (
     alt.Chart(view48)
-      .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-      .encode(
-          y=alt.Y("Ticker:N", sort=(y_order_all if lock_axes_and_order else y_order_48), title="Ticker"),
-          x=alt.X("model_score:Q", title="Model Score"),
-          href=alt.Href("url:N"),
-          tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score:Q", format=",.0f")],
-      )
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_48), title="Ticker"),
+        x=x48,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score:Q", format=",.0f")],
+    )
 )
 bars48 = base48.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 pos48  = base48.transform_filter("datum.model_score >= 0").mark_text(align="left",  baseline="middle", dx=4)\
