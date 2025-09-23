@@ -63,21 +63,19 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 </style>
 """, unsafe_allow_html=True)
 
-
-
 st.markdown("""
 <style>
-/* Center Streamlit's Altair container itself */
+/* Center the Streamlit Altair container */
 div[data-testid="stAltairChart"],
-div[data-testid="stVegaLiteChart"]{         /* covers older/newer Streamlit names */
-  display: grid !important;
-  place-items: center !important;           /* perfect centering */
+div[data-testid="stVegaLiteChart"]{            /* covers older/newer names */
+  text-align: center !important;               /* center inline children */
 }
 
-/* Don't let Vega try to stretch to 100% width */
+/* Make the Vega embed shrink to its content so it can be centered */
 div[data-testid="stAltairChart"] .vega-embed,
 div[data-testid="stVegaLiteChart"] .vega-embed{
-  width: auto !important;
+  display: inline-block !important;            /* allows text-align to center it */
+  width: auto !important;                      /* don't stretch to 100% */
 }
 </style>
 """, unsafe_allow_html=True)
