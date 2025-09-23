@@ -65,22 +65,24 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; 
 
 st.markdown("""
 <style>
-/* Center Streamlit's Altair/VegaLite chart container */
-div[data-testid="stAltairChart"],
-div[data-testid="stVegaLiteChart"]{
-  display: flex !important;             /* make wrapper a flex row */
-  justify-content: center !important;   /* center the chart horizontally */
-  align-items: center !important;       /* (optional) vertical centering */
+/* Center Streamlit's chart wrapper */
+div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
+  display:flex !important;
+  justify-content:center !important;
 }
 
-/* Prevent the Vega embed from stretching; keep it at intrinsic width */
+/* Keep the Vega embed at intrinsic width rather than 100% */
 div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed{
-  flex: 0 0 auto !important;            /* don’t grow/shrink */
-  width: auto !important;               /* ignore any 100% width rules */
+div[data-testid="stVegaLiteChart"] .vega-embed,
+div[data-testid="stAltairChart"] .vega-embed .chart-wrapper,
+div[data-testid="stVegaLiteChart"] .vega-embed .chart-wrapper{
+  width:auto !important;
+  flex:0 0 auto !important;
+  display:inline-block !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
