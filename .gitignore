@@ -10,5 +10,3 @@ venv/
 .pytype/
 .mypy_cache/
 .streamlit/*.toml
-
-data/**
