@@ -99,6 +99,26 @@ div[data-testid="stVegaLiteChart"] .vega-embed {
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Center any Altair/Vega chart that lives inside a Streamlit column */
+div[data-testid="stVegaLiteChart"],
+div[data-testid="stAltairChart"]{
+  display: grid !important;
+  place-items: center !important;    /* centers child in both axes */
+}
+
+/* Make the vega-embed shrink to its content so centering is perfect */
+div[data-testid="stVegaLiteChart"] .vega-embed,
+div[data-testid="stAltairChart"] .vega-embed{
+  display: inline-block !important;
+  width: auto !important;            /* do NOT stretch to 100% */
+  margin: 0 auto !important;         /* backstop centering */
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
@@ -225,10 +245,10 @@ cur_heat = (
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 #st.altair_chart(cur_heat, use_container_width=False)
-
-_, mid, _ = st.columns([1, 1, 1], gap="large")
+left, mid, right = st.columns([1, 4, 1], gap="large")
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
