@@ -73,6 +73,23 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Center Streamlit's Altair container itself */
+div[data-testid="stAltairChart"],
+div[data-testid="stVegaLiteChart"]{         /* covers older/newer Streamlit names */
+  display: grid !important;
+  place-items: center !important;           /* perfect centering */
+}
+
+/* Don't let Vega try to stretch to 100% width */
+div[data-testid="stAltairChart"] .vega-embed,
+div[data-testid="stVegaLiteChart"] .vega-embed{
+  width: auto !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
