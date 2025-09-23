@@ -22,23 +22,53 @@ st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
 st.markdown(
     """
 <style>
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
+/* ---------- Responsive page width ---------- */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  width: 95vw;
+  max-width: 2100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;
+  flex-wrap: wrap;      /* allow wrapping by default */
+  gap: 28px;
+}
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 32%;
+  min-width: 360px;
+}
+
+/* Typography + cards */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card {
-  border: 1px solid #cfcfcf;
-  border-radius: 8px;
-  background: #fff;
-  padding: 14px 14px 10px 14px;
-}
-.card h3 { margin: 0 0 10px 0; font-size: 16px; font-weight: 700; color:#1a1a1a; }
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:14px 14px 10px 14px; }
+.card h3 { margin:0 0 10px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
 .small { font-size:12px; color:#666; }
 
-/* keep the selector compact (≈36 chars) */
-div[data-baseweb="select"] {
-  max-width: 36ch !important;
+/* Compact select control */
+div[data-baseweb="select"] { max-width: 36ch !important; }
+
+/* ---------- Breakpoints ---------- */
+/* Big desktop (>=1500px): encourage 3-up rows */
+@media (min-width: 1500px){
+  div[data-testid="stHorizontalBlock"]{ flex-wrap: nowrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+}
+
+/* Laptops (1000–1499px): switch to 2-up rows */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"]{ flex-wrap: wrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+}
+
+/* Narrow (<1000px): single column */
+@media (max-width: 999.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
 }
 </style>
 """,
