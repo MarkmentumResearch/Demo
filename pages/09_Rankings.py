@@ -254,7 +254,7 @@ cur_heat = (
 )
 
 # Center the heatmap INSIDE the card
-pad_l, center_col, pad_r = st.columns([2, 4, 2])
+pad_l, center_col, pad_r = st.columns([5, 5.6, 5])
 with center_col:
     with st.container(border=True):
         st.markdown(
@@ -264,7 +264,7 @@ with center_col:
             '</div>',
             unsafe_allow_html=True,
         )
-        _l, _c, _r = st.columns([1, 3, 1])   # inner centering for the chart
+        _l, _c, _r = st.columns([1, 6, 1])   # inner centering for the chart
         with _c:
             st.altair_chart(cur_heat, use_container_width=False)
 
