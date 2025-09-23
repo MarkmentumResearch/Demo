@@ -220,7 +220,7 @@ all_cats = sorted(list(set().union(
 )))
 ordered_cats = [c for c in preferred if c in all_cats] + [c for c in all_cats if c not in preferred]
 
-c1, c2, c3 = st.columns([0.60, 0.50, 0.25])
+c1, c2, c3 = st.columns([0.36, 0.34, 0.30])
 with c1:
     show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False)
 with c2:
