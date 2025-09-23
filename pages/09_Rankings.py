@@ -82,7 +82,29 @@ div[data-testid="stVegaLiteChart"] .vega-embed .chart-wrapper{
 }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+/* Center any 3-column row by centering its contents */
+div[data-testid="stHorizontalBlock"]{
+  justify-content: center !important;   /* center the group of columns */
+}
 
+/* Make the 2nd (middle) column intrinsic width so it hugs the chart */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex: 0 0 auto !important;            /* no grow/shrink */
+  width: auto !important;               /* width = content (the chart) */
+  display: flex !important;             /* let the chart center inside column */
+  justify-content: center !important;
+}
+
+/* Keep the Vega embed from stretching to 100% */
+div[data-testid="stAltairChart"] .vega-embed,
+div[data-testid="stVegaLiteChart"] .vega-embed{
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ---------- Paths ----------
 _here = Path(__file__).resolve().parent
@@ -208,7 +230,11 @@ cur_heat = (
 )
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-st.altair_chart(cur_heat, use_container_width=False)
+#st.altair_chart(cur_heat, use_container_width=False)
+
+_, mid, _ = st.columns([1, 1, 1], gap="large")
+with mid:
+    st.altair_chart(cur_heat, use_container_width=False)
 st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
