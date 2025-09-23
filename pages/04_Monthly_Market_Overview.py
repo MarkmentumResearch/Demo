@@ -10,52 +10,70 @@ from urllib.parse import quote_plus
 # -------------------------
 # Page & shared style
 # -------------------------
-st.set_page_config(page_title="Markmentum – Weekly Overview", layout="wide")
+st.set_page_config(page_title="Markmentum – Monthly Overview", layout="wide")
+
+# ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 st.markdown("""
 <style>
-/* Keep 3-up layout from collapsing on smaller laptops (~<=1100px) */
-div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
+/* Keep 3-up rows on desktop and prevent wrapping to 2 columns */
+div[data-testid="stHorizontalBlock"]{
+  display:flex;
+  flex-wrap: nowrap !important;
+  gap: 28px;
+}
 
-/* Optional: prevent ultra-wide stretching; center content nicely */
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
-</style>
-""", unsafe_allow_html=True)
+/* Wider page, smaller side margins */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div {
+  width: 95vw;                 /* expands to viewport width */
+  max-width: 2100px;           /* wider so cards stretch nicely */
+  margin-left: auto;
+  margin-right: auto;
+}
 
-st.markdown("""
-<style>
+/* Base typography + card shell */
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card {
-  border: 1px solid #cfcfcf;
-  border-radius: 8px;
-  background: #fff;
-  padding: 12px 12px 8px 12px;
-  box-shadow: 0 0 0 rgba(0,0,0,0);
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; }
+.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
+
+/* Table */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
+.tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
+.center { text-align:center; }
+.right  { text-align:right; white-space:nowrap; }
+
+/* No wrapping, sized by characters per your constraints */
+th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
+th.col-exposure, td.col-exposure { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+
+/* Fixed ticker width */
+th.col-ticker, td.col-ticker { width:74px; }
+
+/* Shares column gets extra width; also no wrapping (Row 1 / Card 3) */
+.shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
+
+/* Safety on narrower laptops so it still stays 3-up */
+@media (max-width: 1280px){
+  [data-testid="stAppViewContainer"] .main .block-container,
+  section.main > div { max-width: 1600px; }
 }
-.card h3 {
-  margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a;
-}
-.tbl { border-collapse: collapse; width: 100%; }
-.tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; }
-.tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
-.right { text-align: right; }
-.center { text-align: center; }
-.company { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 """, unsafe_allow_html=True)
 
 # -------------------------
-# Paths
+# Paths (portable for Cloud)
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR  = APP_DIR / "data"
+DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
-# Weekly Overview CSVs
+# Monthly Overview CSVs
 CSV_FILES = [
     (58, "Top Ten Percentage Gainers"),
     (59, "Top Ten Percentage Decliners"),
@@ -68,7 +86,6 @@ CSV_FILES = [
 # -------------------------
 # Helpers
 # -------------------------
-
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -79,7 +96,7 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
+# Lightweight router for Deep Dive links
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
 if dest.replace("%20", " ") == "deep dive":
@@ -105,9 +122,7 @@ def load_csv(path: Path) -> pd.DataFrame:
 
 def _fmt_pct(val):
     try:
-        v = float(val) *100
-        #if abs(v) <= 1.0:
-         #   v *= 100.0
+        v = float(val) * 100
         return f"{v:,.2f}%"
     except Exception:
         return "—"
@@ -136,7 +151,8 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
                 return col
     return default
 
-def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
+    # tolerant column mapping
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
@@ -146,22 +162,22 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
-  <td class="company">{r.get(ncol, "")}</td>
-  <td class="center" style="width:74px">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td style="min-width:25ch">{r.get(ccol, "")}</td>
-  <td class="right" style="width:90px">{value_fmt(r.get(value_col))}</td>
+  <td class="col-company">{r.get(ncol, "")}</td>
+  <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
+  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
-    html = f"""
-<div class="card">
+    return textwrap.dedent(f"""
+<div class="card {extra_class}">
   <h3>{title}</h3>
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Company</th>
-        <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
-        <th style="width:90px" class="right">{value_label}</th>
+        <th class="col-company">Company</th>
+        <th class="col-ticker">Ticker</th>
+        <th class="col-exposure">Exposure</th>
+        <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
     <tbody>
@@ -169,28 +185,14 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     </tbody>
   </table>
 </div>
-"""
-    return textwrap.dedent(html).strip()
+""").strip()
 
-def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
     with slot:
         if df.empty or value_col is None:
             st.info(f"No data for {title}.")
             return
-        st.markdown(_table_html(title, df, value_col, value_label, value_fmt), unsafe_allow_html=True)
-
-def render_card_branded(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
-    with slot:
-        if df.empty or value_col is None:
-            st.info(f"No data for {title}.")
-            return
-        html = _table_html(title, df, value_col, value_label, value_fmt)
-        html = html.replace(
-            "</h3>",
-            '</h3>\n  <div style="font-size:12px; color:#666; margin:-20px 0 6px 0;">Markmentum Research</div>',
-            1,
-        )
-        st.markdown(html, unsafe_allow_html=True)
+        st.markdown(_table_html(title, df, value_col, value_label, value_fmt, value_width_px, extra_class), unsafe_allow_html=True)
 
 # -------------------------
 # Header (logo centered)
@@ -206,7 +208,7 @@ if LOGO_PATH.exists():
     )
 
 # -------------------------
-# Load CSVs
+# Load CSVs (cache-clearable)
 # -------------------------
 st.cache_data.clear()
 
@@ -219,14 +221,10 @@ def load_all_csvs(csv_files, data_dir: Path):
 
 dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 
-# ---- Title under logo (date from #52) ----
+# ---- Title under logo (date from #58) ----
 df_date = dfs[0].copy()
 date_col = next((c for c in df_date.columns if c.lower() in ("date", "as_of_date", "trade_date")), None)
-if date_col is not None and not df_date.empty:
-    asof = pd.to_datetime(df_date[date_col], errors="coerce").max()
-else:
-    asof = pd.NaT
-
+asof = pd.to_datetime(df_date[date_col], errors="coerce").max() if (date_col and not df_date.empty) else pd.NaT
 date_str = f"{asof.month}/{asof.day}/{asof.year}" if pd.notna(asof) else ""
 if date_str:
     st.markdown(
@@ -245,36 +243,36 @@ T_GAIN, T_DECL, T_ACTIVE, T_HI_CHG, T_LO_CHG, T_HIST = [label for _, label in CS
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
 # -------------------------
-c1, c2, c3 = st.columns(3, gap="large")
+c1, c2, c3 = st.columns([1,1,1], gap="large")
 
-# Card 1: Gainers -> Percent (mtd)
+# Card 1: Gainers -> Percent (MTD)
 df1 = dfs[0].copy()
 col_pct = _pick(df1, ["mtd_return_pct", "Percent", "percent", "value"], default=None)
 render_card(c1, T_GAIN, df1, col_pct, "Percent", _fmt_pct)
 
-# Card 2: Decliners -> Percent (mtd)
+# Card 2: Decliners -> Percent (MTD)
 df2 = dfs[1].copy()
 col_pct2 = _pick(df2, ["mtd_return_pct", "Percent", "percent", "value"], default=None)
 render_card(c2, T_DECL, df2, col_pct2, "Percent", _fmt_pct)
 
-# Card 3: Most Active -> Shares (mtd)
+# Card 3: Most Active -> Shares (MTD) — wider value column + no wrap
 df3 = dfs[2].copy()
 col_shares = _pick(df3, ["Volume", "volume", "Shares", "shares", "value"], default=None)
-render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions)
+render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions, value_width_px=100, extra_class="shares-wide")
 
 row_spacer(14)
 
 # -------------------------
 # ROW 2 (3 cards): Highest/Lowest Model Score Change / Distribution
 # -------------------------
-d1, d2, d3 = st.columns(3, gap="large")
+d1, d2, d3 = st.columns([1,1,1], gap="large")
 
-# Card 4: Highest Model Score Change
+# Card 4: Highest Model Score Change (MTD)
 df4 = dfs[3].copy()
 col_change_hi = _pick(df4, ["model_score_mtd_change", "Change", "change", "value"], default=None)
 render_card(d1, T_HI_CHG, df4, col_change_hi, "Change", _fmt_num)
 
-# Card 5: Lowest Model Score Change
+# Card 5: Lowest Model Score Change (MTD)
 df5 = dfs[4].copy()
 col_change_lo = _pick(df5, ["model_score_mtd_change", "Change", "change", "value"], default=None)
 render_card(d2, T_LO_CHG, df5, col_change_lo, "Change", _fmt_num)
@@ -311,7 +309,7 @@ def _is_list_paragraph(paragraph) -> bool:
         return False
 
 @st.cache_data(show_spinner=False)
-def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
+def load_market_read_md(doc_path: str = "data/Market_Read_monthly.docx") -> str:
     if Document is None:
         return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
     if not os.path.exists(doc_path):
@@ -326,7 +324,6 @@ def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
         text = p.text.strip()
         if not text:
             continue
-        # simple bullet detection
         try:
             is_list = p._p.pPr.numPr is not None  # type: ignore[attr-defined]
         except Exception:
