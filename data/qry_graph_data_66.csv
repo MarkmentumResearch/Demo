@@ -1,6 +1,6 @@
 Ticker,Ticker_name,Category,Date,qtd_volume
-NVDA,NVIDIA CORPORATION,Information Technology,2025-09-22,9989.27
-INTC,INTEL CORPORATION,Information Technology,2025-09-22,6253.110000000001
+NVDA,NVIDIA ,Information Technology,2025-09-22,9989.27
+INTC,INTEL ,Information Technology,2025-09-22,6253.110000000001
 TSLA,"TESLA, INC.",Consumer Discretionary,2025-09-22,5204.73
 WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-09-22,4195.95
 SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-09-22,4041.5300000000007

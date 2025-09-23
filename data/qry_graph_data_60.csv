@@ -1,6 +1,6 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA CORPORATION,Information Technology,2025-09-22,269.63
-INTC,INTEL CORPORATION,Information Technology,2025-09-22,130.31
+NVDA,NVIDIA ,Information Technology,2025-09-22,269.63
+INTC,INTEL ,Information Technology,2025-09-22,130.31
 AAPL,APPLE INC.,Information Technology,2025-09-22,105.51
 TSLA,"TESLA, INC.",Consumer Discretionary,2025-09-22,97.1
 KVUE,KENVUE INC.,Consumer Staples,2025-09-22,76.03
