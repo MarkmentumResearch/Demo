@@ -53,7 +53,7 @@ th.col-exposure, td.col-exposure { white-space: nowrap; min-width:6ch;  width:22
 th.col-ticker, td.col-ticker { width:74px; }
 
 /* Shares column gets extra width; also no wrapping */
-.shares-wide th.col-value, .shares-wide td.col-value { width:120px !important; white-space:nowrap; }
+.shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
 
 /* Safety on narrower laptops so it still stays 3-up */
 @media (max-width: 1280px){
