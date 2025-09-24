@@ -386,7 +386,7 @@ if lock_axes_and_order:
 else:
     ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
 
-x48 = alt.X("model_score:Q", title="Model Score", scale=alt.Scale(domain=ms_dom),orient="center")
+x48 = alt.X("model_score:Q", title="Model Score", scale=alt.Scale(domain=ms_dom))
 
 
 hint = "'Click to open Deep Dive'"
