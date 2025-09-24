@@ -621,7 +621,7 @@ if show_ticker_hm:
         .properties(
             width=chart_w,
             height=chart_h,
-            padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6},  # balances right legend
+            padding={"left": legend_w, "right": 0, "top": 6, "bottom": 2},  # balances right legend
         )
         .configure_view(strokeOpacity=0)
         .configure_axis(labelFontSize=12, titleFontSize=12)
