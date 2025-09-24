@@ -405,7 +405,7 @@ pos48  = base48.transform_filter("datum.model_score >= 0").mark_text(align="left
                  .encode(text=alt.Text("model_score:Q", format=",.0f"))
 neg48  = base48.transform_filter("datum.model_score < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("model_score:Q", format=",.0f"))
-chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", height=chart_h)
+chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", height=chart_h).configure_title(anchor="middle")
 
 # 2) Sharpe Percentile Rank
 category_ms_min2 = float(view49["Sharpe_Rank"].min()-10) if not df49.empty else 0.0
