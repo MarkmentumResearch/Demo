@@ -409,7 +409,7 @@ chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Ranking", 
 
 # 2) Sharpe Percentile Rank
 category_ms_min2 = float(view49["Sharpe_Rank"].min()-10) if not df49.empty else 0.0
-category_ms_max2 = float(view49["Sharpe_Rank"].max()+10) if not df49.empty else 0.0
+category_ms_max2 = float(view49["Sharpe_Rank"].max()+15) if not df49.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom2 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
