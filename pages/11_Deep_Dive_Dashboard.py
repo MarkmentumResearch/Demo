@@ -48,7 +48,7 @@ st.markdown(
     """
 <style>
 div[data-testid="stHorizontalBlock"] { min-width: 1100px; }
-section.main > div { max-width: 1700px; margin-left: auto; margin-right: auto; }
+section.main > div { max-width: 1900px; margin-left: auto; margin-right: auto; }
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
@@ -1285,7 +1285,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([3.8, 3, 0.01], gap="large")
+col_left, col_center = st.columns([3.8, 9.2], gap="medium")
 
 with col_left:
     # ==============================
@@ -1593,8 +1593,8 @@ with col_center:
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
         # Graph #1 – bigger and a bit taller
-        fig, ax = plt.subplots(figsize=(12, 5))  # was ~9.5 x 5.8
-        fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.28)     # keep axes/legend happy
+        fig, ax = plt.subplots(figsize=(12.8, 6.2))
+        fig.subplots_adjust(left=0.07, right=0.995, top=0.86, bottom=0.34)
         fig.set_facecolor("white")
         # Day PR (gray) lines
         ax.plot(g1w["date"], g1w["day_pr_low"],  color=_EXCEL_GRAY,   linewidth=1)
