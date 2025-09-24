@@ -22,6 +22,34 @@ import numpy as np
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
+st.markdown(
+    """
+    <style>
+      /* Widen the main content area on desktops */
+      [data-testid="stAppViewContainer"] .main .block-container{
+        max-width: 1900px !important;   /* was ~1200px by default */
+        width: 96vw !important;         /* reduce side gutters on very wide screens */
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      /* Make st.columns rows truly responsive: 3 → 2 → 1 columns */
+      div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap:wrap; gap:24px; }
+      div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+        flex: 1 1 32%;                   /* three per row on wide screens */
+        min-width: 420px;                /* graceful wrap when narrower */
+      }
+      @media (max-width: 1499.98px){
+        div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex: 1 1 48%; } /* two up */
+      }
+      @media (max-width: 999.98px){
+        div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex: 1 1 100%; } /* one up */
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 st.markdown(
     """
