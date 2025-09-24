@@ -487,7 +487,7 @@ all_cats = [cat for cat in custom_order if cat in (
 default_cat = "Sector Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
-left_toggle, c_sel, c_lock = st.columns([0.35, 0.45, 0.15])
+left_toggle, c_sel, c_lock = st.columns([0.50, 0.45, 0.15])
 with left_toggle:
     show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
 with c_sel:
