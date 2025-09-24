@@ -216,7 +216,7 @@ present  = list(cat_cur["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
 
 vmax    = float(max(1.0, cat_cur["avg_score"].abs().quantile(0.98)))
-heat_w  = 200   # << narrow column (~“Current” header width)
+heat_w  = 300   # << narrow column (~“Current” header width)
 heat_h  = max(420, 26 * len(cat_order) + 24)
 
 st.markdown('<div class="h-title">Markmentum Heatmap — Current Score (by Category)</div>', unsafe_allow_html=True)
@@ -245,7 +245,7 @@ cur_heat = (
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 #st.altair_chart(cur_heat, use_container_width=False)
-_, mid, _= st.columns([1,4,1], gap="large")
+_, mid, _= st.columns([1,2,1], gap="large")
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
 
