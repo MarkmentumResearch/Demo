@@ -639,7 +639,7 @@ if show_ticker_hm:
                 f'</div></div>',
                 unsafe_allow_html=True,
             )
-            _l, _c, _r = st.columns([1, 3, 1])
+            _l, _c, _r = st.columns([1, 4, 1])
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
