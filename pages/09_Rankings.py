@@ -299,7 +299,7 @@ if show_cur_ticker_hm:
               y=alt.Y("Ticker:N", sort=ticker_order,
                       axis=alt.Axis(title=None, labelLimit=160, orient="right",labelOverlap=False)),
               color=alt.Color("score:Q",
-                              scale=alt.Scale(scheme="blueorange", domain=[-t_vmax, 0, t_vmax]),
+                              scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
                               legend=alt.Legend(orient="bottom", title="Score", gradientLength=160)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
