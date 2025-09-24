@@ -42,12 +42,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   min-width: 300px;            /* was larger; this prevents early wrapping on MBA */
 }
 
-/* 2 columns when space is tighter */
-@media (max-width: 1500px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-    flex: 1 1 calc(50% - 18px);
-  }
-}
+
 
 
 </style>
