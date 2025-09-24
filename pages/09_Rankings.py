@@ -216,7 +216,7 @@ present  = list(cat_cur["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
 
 vmax    = float(max(1.0, cat_cur["avg_score"].abs().quantile(0.98)))
-heat_w  = 285   # << narrow column (~“Current” header width)
+heat_w  = 300   # << narrow column (~“Current” header width)
 heat_h  = max(420, 26 * len(cat_order) + 24)
 
 st.markdown('<div class="h-title">Markmentum Heatmap — Current Score (by Category)</div>', unsafe_allow_html=True)
@@ -231,7 +231,7 @@ cur_heat = (
           y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420,orient="left")),
           color=alt.Color("avg_score:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                          legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=140)),
+                          legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=130)),
           tooltip=[
               alt.Tooltip("Category:N"),
               alt.Tooltip("avg_score:Q", title="Avg Score", format=",.2f"),
