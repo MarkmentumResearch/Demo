@@ -86,7 +86,7 @@ st.markdown(
 <div style="max-width:900px; margin: 0 auto;">
 
 <p style="font-weight:600; margin:12px 0 18px;">
-Markets & Momentum = Markmentum Research.  Investing Redefined.
+Markets + Momentum = Markmentum Research.  The solution to redefine investing.
 </p>
 
 <p style="font-weight:600; margin:12px 0 18px;">
