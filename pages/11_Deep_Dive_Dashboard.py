@@ -1310,7 +1310,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([3.2, 3, 0.2], gap="large")
+col_left, col_center, _ = st.columns([3.4, 7.6, 0.2], gap="large")
 
 with col_left:
     # ==============================
@@ -1617,7 +1617,7 @@ with col_center:
         rcParams["font.family"] = ["sans-serif"]
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
-        fig, ax = plt.subplots(figsize=(7, 5.8))
+        fig, ax = plt.subplots(figsize=(9.5, 5.8))
         fig.set_facecolor("white")
         fig.subplots_adjust(left=0.07, right=0.995, top=0.86, bottom=0.34)
 
