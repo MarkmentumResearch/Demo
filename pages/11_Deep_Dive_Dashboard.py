@@ -31,7 +31,7 @@ st.markdown("""
 <style>
 /* Make the content wider on desktops while keeping nice margins */
 [data-testid="stAppViewContainer"] .main .block-container{
-  max-width: 1720px;   /* was smaller; gives you more width on 27" */
+  max-width: 1900px;   /* was smaller; gives you more width on 27" */
   padding-left: 1.2rem;
   padding-right: 1.2rem;
 }
