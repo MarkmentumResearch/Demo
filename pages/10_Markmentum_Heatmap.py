@@ -500,7 +500,7 @@ with c_lock:
 #    show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
 
 global_delta = pd.concat([
-    df48["model_score_day_change"],
+    df48["model_score_daily_change"],
     dfWTD["model_score_wtd_change"],
     dfMTD["model_score_mtd_change"],
     dfQTD["model_score_qtd_change"],
