@@ -378,7 +378,7 @@ max_len = max(len(view48), len(view49), len(view50), len(view51))
 chart_h = max(300, row_h * max_len + 120)
 
 # 1) Model Score
-category_ms_min = float(view48["model_score"].min()-50) if not df48.empty else 0.0
+category_ms_min = float(view48["model_score"].min()-40) if not df48.empty else 0.0
 category_ms_max = float(view48["model_score"].max()+10) if not df48.empty else 0.0
 
 if lock_axes_and_order:
@@ -437,7 +437,7 @@ chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking", heigh
 
 # 3) Sharpe Ratio
 category_ms_min3 = float(view50["Sharpe"].min()-10) if not df50.empty else 0.0
-category_ms_max3 = float(view50["Sharpe"].max()+10) if not df50.empty else 0.0
+category_ms_max3 = float(view50["Sharpe"].max()+15) if not df50.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom3 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
