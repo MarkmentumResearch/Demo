@@ -327,8 +327,8 @@ global_delta = pd.concat([
     dfQTD["model_score_qtd_change"],
 ], ignore_index=True)
 
-vmax_ticker = float(max(1.0, global_delta.abs().quantile(0.98)))
-
+vmax_ticker = float(global_delta.abs().quantile(0.995))
+vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)
 
 
 # ---- Ordering
