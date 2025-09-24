@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-09-22,269.63
-INTC,INTEL ,Information Technology,2025-09-22,130.31
-AAPL,APPLE INC.,Information Technology,2025-09-22,105.51
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-09-22,97.1
-KVUE,KENVUE INC.,Consumer Staples,2025-09-22,76.03
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-09-22,69.45
-PFE,PFIZER INC.,Health Care,2025-09-22,67.86
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-09-22,58.43
-QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-09-22,57.15
-WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-09-22,55.39
+NVDA,NVIDIA ,Information Technology,2025-09-23,192.55
+INTC,INTEL ,Information Technology,2025-09-23,126.31
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-09-23,83.42
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-09-23,81.7
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-09-23,70.95
+KVUE,KENVUE INC.,Consumer Staples,2025-09-23,68.55
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-09-23,64.63
+PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-09-23,62.35
+AAPL,APPLE INC.,Information Technology,2025-09-23,60.27
+RIG,TRANSOCEAN LTD,MR Discretion,2025-09-23,56.81
