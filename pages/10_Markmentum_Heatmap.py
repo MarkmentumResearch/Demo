@@ -487,13 +487,13 @@ all_cats = [cat for cat in custom_order if cat in (
 default_cat = "Sector Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
-left_toggle= st.columns([1])
+c_blank,left_toggle,c_blank= st.columns([1,4,1])
 with left_toggle:
         show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-c_lock = st.columns([1])
+c_blank,c_lock,c_blank = st.columns([1,4,1])
 with c_lock:
         lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-c_sel = st.columns([1])
+c_blank,c_sel,c_blank = st.columns([1,4,1])
 with c_sel:
         sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
