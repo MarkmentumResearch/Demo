@@ -319,7 +319,8 @@ agg = (
     hm.groupby(["Category", "Timeframe"], as_index=False)
       .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
 )
-vmax_ticker = float(max(1.0, "delta".abs().quantile(0.98)))
+tm = pd.concat(parts, ignore_index=True).dropna(subset=["Ticker", "delta"])
+vmax_ticker = float(max(1.0, tm["delta"].abs().quantile(0.98)))
 
 # ---- Ordering
 preferred = [
