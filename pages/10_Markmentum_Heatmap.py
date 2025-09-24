@@ -399,7 +399,7 @@ heat = (
                 title="Avg Δ Score",
                 titleColor="#1a1a1a",   # darker legend title
                 labelColor="#1a1a1a",   # darker legend labels
-                gradientLength=350,
+                gradientLength=360,
                 labelLimit=80
             ),
         ),
