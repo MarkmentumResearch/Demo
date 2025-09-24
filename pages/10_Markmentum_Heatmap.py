@@ -319,8 +319,16 @@ agg = (
     hm.groupby(["Category", "Timeframe"], as_index=False)
       .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
 )
-tm = pd.concat(parts, ignore_index=True).dropna(subset=["Ticker", "delta"])
-vmax_ticker = float(max(1.0, tm["delta"].abs().quantile(0.98)))
+
+global_delta = pd.concat([
+    df48["model_score_day_change"],
+    dfWTD["model_score_wtd_change"],
+    dfMTD["model_score_mtd_change"],
+    dfQTD["model_score_qtd_change"],
+], ignore_index=True)
+
+vmax_ticker = float(max(1.0, global_delta.abs().quantile(0.98)))
+
 
 # ---- Ordering
 preferred = [
