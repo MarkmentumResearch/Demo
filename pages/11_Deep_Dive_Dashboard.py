@@ -15,7 +15,8 @@ from matplotlib.lines import Line2D
 from matplotlib.ticker import StrMethodFormatter
 import math  # (near your other imports, once)
 import numpy as np
-
+rcParams["figure.dpi"] = 110
+rcParams["savefig.dpi"] = 110
 # -------------------------
 # Page & shared style
 # -------------------------
@@ -46,6 +47,21 @@ div[data-baseweb="select"] {
 """,
     unsafe_allow_html=True,
 )
+
+st.markdown("""
+<style>
+/* Existing rule (keep) */
+/* section.main > div { max-width: 1700px; margin-left:auto; margin-right:auto; } */
+
+/* NEW: Cloud uses .block-container; widen the page on big screens */
+div.block-container { max-width: 1850px; margin-left:auto; margin-right:auto; }
+
+/* Keep things sensible on smaller screens */
+@media (max-width: 1500px){
+  div.block-container { max-width: 96vw; }
+}
+</style>
+""", unsafe_allow_html=True)
 
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
@@ -1260,7 +1276,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([0.9, 2.1, 0.9], gap="large")
+col_left, col_center, _ = st.columns([1.1, 2.6, 0.3], gap="large")
 
 with col_left:
     # ==============================
@@ -1733,7 +1749,7 @@ with col2:
         st.info("No trend data.")
     else:
         df2v = _window_by_label_with_gutter(df2_all, _rng, date_col="date")
-        st.pyplot(plot_g2_trend(df2v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g2_trend(df2v, _active_tkr), clear_figure=True,use_container_width=True)
 
 with col3:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1743,7 +1759,7 @@ with col3:
         st.info("No anchor data.")
     else:
         df3v = _window_by_label_with_gutter(df3_all, _rng, date_col="date")
-        st.pyplot(plot_g3_anchors(df3v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g3_anchors(df3v, _active_tkr), clear_figure=True,use_container_width=True)
 
 with col4:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1753,7 +1769,7 @@ with col4:
         st.info("No gap data.")
     else:
         df4v = _window_by_label_with_gutter(df4_all, _rng, date_col="date")
-        st.pyplot(plot_g4_gap(df4v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g4_gap(df4v, _active_tkr), clear_figure=True,use_container_width=True)
 
 
 # ==============================
