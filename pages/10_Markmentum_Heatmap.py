@@ -493,7 +493,7 @@ with left_toggle:
 #c_blank,c_lock,c_blank = st.columns([1,4,1])
 #with c_lock:
 #        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-c_blank,c_sel,c_blank = st.columns([1,4,1])
+c_blank,c_sel,c_blank = st.columns([1,5,1])
 with c_sel:
         sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
@@ -690,7 +690,7 @@ def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
 # Filter dataframes for the selected category
 # -------------------------
 
-c_blank,c_lock,c_blank = st.columns([1,4,1])
+c_lock,c_blank, c_blank = st.columns([1,4,1])
 with c_lock:
         lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
