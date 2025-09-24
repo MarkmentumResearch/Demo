@@ -245,7 +245,7 @@ cur_heat = (
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 #st.altair_chart(cur_heat, use_container_width=False)
-left, mid, right = st.columns([1, 7, 1], gap="large")
+left, mid, right = st.columns([1, 3, 1], gap="large")
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
 
@@ -297,10 +297,10 @@ if show_cur_ticker_hm:
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
               y=alt.Y("Ticker:N", sort=ticker_order,
-                      axis=alt.Axis(title=None, labelLimit=160, labelOverlap=False)),
+                      axis=alt.Axis(title=None, labelLimit=160, orient="right",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-t_vmax, 0, t_vmax]),
-                              legend=alt.Legend(orient="right", title="Score", gradientLength=160)),
+                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=160)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
                   alt.Tooltip("Ticker_name:N", title="Name"),
