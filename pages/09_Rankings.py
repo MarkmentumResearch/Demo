@@ -231,7 +231,7 @@ cur_heat = (
           y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420,orient="left")),
           color=alt.Color("avg_score:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                          legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=160)),
+                          legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=140)),
           tooltip=[
               alt.Tooltip("Category:N"),
               alt.Tooltip("avg_score:Q", title="Avg Score", format=",.2f"),
