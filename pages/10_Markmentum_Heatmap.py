@@ -384,6 +384,7 @@ heat = (
             axis=alt.Axis(
                 title=None,
                 labelLimit=460,
+                orient="left",
                 labelPadding=6,
                 labelFlush=False,
                 labelColor="#1a1a1a",   # darker category labels
@@ -394,7 +395,7 @@ heat = (
             "avg_delta:Q",
             scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
             legend=alt.Legend(
-                orient="right",
+                orient="bottom",
                 title="Avg Δ Score",
                 titleColor="#1a1a1a",   # darker legend title
                 labelColor="#1a1a1a",   # darker legend labels
