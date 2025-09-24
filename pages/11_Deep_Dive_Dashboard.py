@@ -41,10 +41,6 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   flex: 1 1 0;
   min-width: 300px;            /* was larger; this prevents early wrapping on MBA */
 }
-
-
-
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -74,20 +70,7 @@ div[data-baseweb="select"] {
     unsafe_allow_html=True,
 )
 
-st.markdown("""
-<style>
-/* Existing rule (keep) */
-/* section.main > div { max-width: 1700px; margin-left:auto; margin-right:auto; } */
 
-/* NEW: Cloud uses .block-container; widen the page on big screens */
-div.block-container { max-width: 1850px; margin-left:auto; margin-right:auto; }
-
-/* Keep things sensible on smaller screens */
-@media (max-width: 1500px){
-  div.block-container { max-width: 96vw; }
-}
-</style>
-""", unsafe_allow_html=True)
 
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
