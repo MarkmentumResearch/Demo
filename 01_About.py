@@ -85,6 +85,9 @@ st.markdown(
     """
 <div style="max-width:900px; margin: 0 auto;">
 
+<p style="font-weight:600; margin:12px 0 18px;">
+Markets & Momentum = Markmentum.
+</p>
 
 <p style="font-weight:600; margin:12px 0 18px;">
 We deliver volatility-adjusted probable ranges, algorithmic model scoring, and actionable signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused signals. Zero noise.
