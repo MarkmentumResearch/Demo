@@ -484,41 +484,13 @@ all_cats = [cat for cat in custom_order if cat in (
 )]
 
 
-default_cat = "Sector Style ETFs"
-default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
-sel_key = "rankings_category"    
 
-# --- get a safe default index for the selectbox ---
-prev = st.session_state.get(sel_key, default_cat)
-try:
-    default_index = all_cats.index(prev)              # ok if prev is valid
-except ValueError:
-    default_index = all_cats.index(default_cat)       # fallback if it isn't
-
-# Start with a valid 'sel' so the rest of the page can render even if the box is OFF
-sel = all_cats[default_index]
-
-# --- toggle row ---------------------------------------------------------------
-left_toggle, _, _ = st.columns([1, 6, 1])
+left_toggle,c_blank,c_blank= st.columns([1,4,1])
 with left_toggle:
-    show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False)
-
-# --- show the category selector ONLY when the box is checked ------------------
-if show_ticker_hm:
-    _, mid, _ = st.columns([1, 5, 1])
-    with mid:
-        sel = st.selectbox("Category", all_cats, index=default_index, key=sel_key)
-
-
-
-
-
-#left_toggle,c_blank,c_blank= st.columns([1,4,1])
-#with left_toggle:
-#        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-#c_blank,c_sel,c_blank = st.columns([1,4,1])
-#with c_sel:
-#        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
+        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
+c_blank,c_sel,c_blank = st.columns([1,4,1])
+with c_sel:
+        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
 
 
