@@ -1627,7 +1627,7 @@ with col_center:
         #from __future__ import annotations  # optional; if you use the | type hints above
         # ...
         add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, use_container_width=True,use_container_width=True)
 
 # -------------------------
 # Stat Box - End
