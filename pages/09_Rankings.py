@@ -262,13 +262,21 @@ all_cats = sorted(list(set().union(
 )))
 ordered_cats = [c for c in preferred if c in all_cats] + [c for c in all_cats if c not in preferred]
 
-c1, c2, c3 = st.columns([0.36, 0.34, 0.30])
-with c1:
-    show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False)
-with c2:
-    sel = st.selectbox("Category", ordered_cats, index=0, key="rankings_category")
-with c3:
-    lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
+left_toggle,c_blank,c_blank= st.columns([1,4,1])
+with left_toggle:
+        cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False, key="show_ticker_hm")
+c_blank,c_sel,c_blank = st.columns([1,4,1])
+with c_sel:
+        sel = st.selectbox("Category", ordered_cats, index=0, key="rankings_category")
+
+
+#c1, c2, c3 = st.columns([0.36, 0.34, 0.30])
+#with c1:
+#    show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False)
+#with c2:
+#    sel = st.selectbox("Category", ordered_cats, index=0, key="rankings_category")
+#with c3:
+#    lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
 # =========================================================
 # Per-Ticker Heatmap — Current
@@ -356,6 +364,13 @@ def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
 #   - Render in 4 Streamlit columns (no hconcat → no Altair error)
 #   - Each column is responsive; on small screens they wrap cleanly
 # =========================================================
+
+c_lock,c_blank, c_blank = st.columns([1,4,1])
+with c_lock:
+        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
+
+
+
 view48 = df48[df48["Category"] == sel].copy().sort_values("model_score", ascending=False)
 view49 = df49[df49["Category"] == sel].copy().sort_values("Sharpe_Rank", ascending=False)
 view50 = df50[df50["Category"] == sel].copy().sort_values("Sharpe", ascending=False)
