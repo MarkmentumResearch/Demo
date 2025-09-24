@@ -228,10 +228,10 @@ cur_heat = (
       .encode(
           x=alt.X("Timeframe:N", sort=["Current"],
                   axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
-          y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420)),
+          y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420,orient="right")),
           color=alt.Color("avg_score:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
-                          legend=alt.Legend(orient="right", title="Avg Score", gradientLength=160)),
+                          legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=160)),
           tooltip=[
               alt.Tooltip("Category:N"),
               alt.Tooltip("avg_score:Q", title="Avg Score", format=",.2f"),
