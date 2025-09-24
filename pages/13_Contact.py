@@ -87,8 +87,7 @@ st.markdown("---")
 
 
 # 13_Contact.py (or wherever your Contact page lives)
-import streamlit as st
-import requests
+
 
 st.set_page_config(page_title="Contact", page_icon="✉️", layout="wide")
 
