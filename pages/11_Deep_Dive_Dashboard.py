@@ -1593,7 +1593,7 @@ with col_center:
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
         # Graph #1 – bigger and a bit taller
-        fig, ax = plt.subplots(figsize=(9, 6.2))
+        fig, ax = plt.subplots(figsize=(10.5, 6.2))
         fig.subplots_adjust(left=0.035, right=0.995, top=0.86, bottom=0.30)
         fig.set_facecolor("white")
         # Day PR (gray) lines
