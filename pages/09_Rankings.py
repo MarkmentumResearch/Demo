@@ -432,7 +432,8 @@ base49 = (
 bars49  = base49.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 label49 = base49.mark_text(align="left", baseline="middle", dx=4)\
                  .encode(text=alt.Text("Sharpe_Rank:Q", format=",.1f"))
-chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking", height=chart_h)
+chart49 = (bars49 + label49).properties(title="Sharpe Percentile Ranking", height=chart_h).configure_title(anchor="middle")
+
 
 # 3) Sharpe Ratio
 category_ms_min3 = float(view50["Sharpe"].min()-10) if not df50.empty else 0.0
@@ -462,7 +463,8 @@ pos50  = base50.transform_filter("datum.Sharpe >= 0").mark_text(align="left",  b
                  .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
 neg50  = base50.transform_filter("datum.Sharpe < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("Sharpe:Q", format=",.1f"))
-chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_h)
+chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", height=chart_h).configure_title(anchor="middle")
+
 
 # 4) Sharpe Ratio 30-Day Change
 category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min()-10) if not df51.empty else 0.0
@@ -491,7 +493,8 @@ pos51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change >= 0").mark_text
                  .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 neg51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0").mark_text(align="right", baseline="middle", dx=-10)\
                  .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
-chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_h)
+chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_h).configure_title(anchor="middle")
+
 
 # Render in 4 columns (centered row; wraps on smaller screens)
 cA, cB, cC, cD = st.columns(4)
