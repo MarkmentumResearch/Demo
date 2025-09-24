@@ -494,7 +494,7 @@ with left_toggle:
         show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
 c_blank,c_sel,c_blank = st.columns([1,4,1])
 with c_sel:
-        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
+        sel = st.selectbox("Category - Note: Color scale fixed globally to ±160. Values outside this range are shown at the end color.", all_cats, index=default_index, key="rankings_category")
     
 
 
