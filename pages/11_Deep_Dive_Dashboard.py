@@ -2689,7 +2689,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style="font-size: 12px; color: gray;">
-    © 2025 Markmentum Research. <b>Disclaimer</b>: This content is for informational purposes only. 
+    © 2025 Markmentum Research LLC. <b>Disclaimer</b>: This content is for informational purposes only. 
     Nothing herein constitutes an offer to sell, a solicitation of an offer to buy, or a recommendation regarding any security, 
     investment vehicle, or strategy. It does not represent legal, tax, accounting, or investment advice by Markmentum Research 
     or its employees. The information is provided without regard to individual objectives or risk parameters and is general, 
