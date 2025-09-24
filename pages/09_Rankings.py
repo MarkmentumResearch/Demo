@@ -227,8 +227,8 @@ cur_heat = (
       .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
       .encode(
           x=alt.X("Timeframe:N", sort=["Current"],
-                  axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
-          y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420,orient="right")),
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=0)),
+          y=alt.Y("Category:N", sort=cat_order, axis=alt.Axis(title=None, labelLimit=420,orient="left")),
           color=alt.Color("avg_score:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
                           legend=alt.Legend(orient="bottom", title="Avg Score", gradientLength=160)),
