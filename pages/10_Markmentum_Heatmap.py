@@ -329,8 +329,8 @@ global_delta = pd.concat([
 
 #vmax_ticker = float(global_delta.abs().quantile(0.995))
 #vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)
-vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.995))  # 99.5th pct
-vmax_ticker = max(1.0, np.ceil(vmax_ticker / 5.0) * 5.0)              # round up nicely
+vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.999))  # 99.5th pct
+vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)              # round up nicely
 
 # ---- Ordering
 preferred = [
