@@ -645,7 +645,7 @@ if show_ticker_hm:
 
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
-    st.caption(f"Note:Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
+    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 
