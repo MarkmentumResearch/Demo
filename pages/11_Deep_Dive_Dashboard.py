@@ -1302,7 +1302,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([3.8, .5, 0.01], gap="large")
+col_left, col_center, _ = st.columns([3.8, 3, 0.01], gap="large")
 
 with col_left:
     # ==============================
@@ -1610,7 +1610,7 @@ with col_center:
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
         # Graph #1 – bigger and a bit taller
-        fig, ax = plt.subplots(figsize=(7, 6), constrained_layout=True)  # was ~9.5 x 5.8
+        fig, ax = plt.subplots(figsize=(7, 6))  # was ~9.5 x 5.8
         fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.28)     # keep axes/legend happy
         fig.set_facecolor("white")
         # Day PR (gray) lines
@@ -1653,7 +1653,7 @@ with col_center:
         #from __future__ import annotations  # optional; if you use the | type hints above
         # ...
         add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
-        st.pyplot(fig, use_container_width=True,clear_figure=True)
+        st.pyplot(fig, clear_figure=True)
 
 # -------------------------
 # Stat Box - End
