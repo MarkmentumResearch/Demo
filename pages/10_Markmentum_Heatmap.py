@@ -319,6 +319,7 @@ agg = (
     hm.groupby(["Category", "Timeframe"], as_index=False)
       .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
 )
+vmax_ticker = float(max(1.0, "delta".abs().quantile(0.98)))
 
 # ---- Ordering
 preferred = [
@@ -582,7 +583,7 @@ if show_ticker_hm:
             ),
             color=alt.Color(
                 "delta:Q",
-                scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+                scale=alt.Scale(scheme="blueorange", domain=[-vmax_ticker, 0, vmax_ticker]),
                 legend=alt.Legend(
                     orient="bottom",
                     title="Δ Score",
