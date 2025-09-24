@@ -27,34 +27,36 @@ plt.rcParams.update({
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
-st.markdown(
-    """
-    <style>
-      /* Widen the main content area on desktops */
-      [data-testid="stAppViewContainer"] .main .block-container{
-        max-width: 1900px !important;   /* was ~1200px by default */
-        width: 96vw !important;         /* reduce side gutters on very wide screens */
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
+st.markdown("""
+<style>
+/* Make the content wider on desktops while keeping nice margins */
+[data-testid="stAppViewContainer"] .main .block-container{
+  max-width: 1720px;   /* was smaller; gives you more width on 27" */
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
 
-      /* Make st.columns rows truly responsive: 3 → 2 → 1 columns */
-      div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap:wrap; gap:24px; }
-      div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-        flex: 1 1 32%;                   /* three per row on wide screens */
-        min-width: 420px;                /* graceful wrap when narrower */
-      }
-      @media (max-width: 1499.98px){
-        div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex: 1 1 48%; } /* two up */
-      }
-      @media (max-width: 999.98px){
-        div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex: 1 1 100%; } /* one up */
-      }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+/* Keep 3 charts per row as long as we reasonably can */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 0;
+  min-width: 320px;            /* was larger; this prevents early wrapping on MBA */
+}
 
+/* 2 columns when space is tighter */
+@media (max-width: 1500px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 1 1 calc(50% - 18px);
+  }
+}
+
+/* 1 column on phones/small tablets */
+@media (max-width: 1000px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 1 1 100%;
+  }
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.markdown(
     """
@@ -1310,7 +1312,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([3.4, 7.6, 0.2], gap="large")
+col_left, col_center, _ = st.columns([3.8, 8.2, 0.6], gap="small")
 
 with col_left:
     # ==============================
@@ -1617,10 +1619,10 @@ with col_center:
         rcParams["font.family"] = ["sans-serif"]
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
-        fig, ax = plt.subplots(figsize=(9.5, 5.8), constrained_layout=True)
+        # Graph #1 – bigger and a bit taller
+        fig, ax = plt.subplots(figsize=(12.2, 6.3), constrained_layout=True)  # was ~9.5 x 5.8
+        fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.28)     # keep axes/legend happy
         fig.set_facecolor("white")
-        fig.subplots_adjust(left=0.07, right=0.995, top=0.86, bottom=0.34)
-
         # Day PR (gray) lines
         ax.plot(g1w["date"], g1w["day_pr_low"],  color=_EXCEL_GRAY,   linewidth=1)
         ax.plot(g1w["date"], g1w["day_pr_high"], color=_EXCEL_GRAY,   linewidth=1)
@@ -1773,7 +1775,7 @@ def plot_g4_gap(df: pd.DataFrame, ticker: str):
 
 
 # ---- Render: three columns on one row ----
-col2, col3, col4 = st.columns(3, gap="large")
+col2, col3, col4 = st.columns(3, gap="small")
 
 with col2:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1896,7 +1898,7 @@ def plot_g7_rvol(df: pd.DataFrame, ticker: str):
 
 
 # ---- Render: three columns on one row (5, 6, 7) ----
-col5, col6, col7 = st.columns(3, gap="large")
+col5, col6, col7 = st.columns(3, gap="small")
 
 with col5:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -2015,7 +2017,7 @@ def plot_g10_ivol_pd(df: pd.DataFrame, ticker: str):
 
 
 # ---- Render: three columns on one row (8, 9, 10) ----
-col8, col9, col10 = st.columns(3, gap="large")
+col8, col9, col10 = st.columns(3, gap="small")
 
 with col8:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -2176,7 +2178,7 @@ def plot_g12_scatter(df: pd.DataFrame, ticker: str):
     return fig
 
 # ---- Render: Notes | Graph 11 | Graph 12 ----
-ncol, g11col, g12col = st.columns([1, 1, 1], gap="large")
+ncol, g11col, g12col = st.columns([1, 1, 1], gap="small")
 
 with ncol:
     st.markdown(
@@ -2326,7 +2328,7 @@ if render_info:
         return fig
 
     # ---- Render row horizontally (13, 14, 15) ----
-    col13, col14, col15 = st.columns(3, gap="large")
+    col13, col14, col15 = st.columns(3, gap="small")
 
     with col13:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2455,7 +2457,7 @@ if render_info:
         return fig
 
     # ---- Render row horizontally (16, 17, 18) ----
-    col16, col17, col18 = st.columns(3, gap="large")
+    col16, col17, col18 = st.columns(3, gap="small")
 
     with col16:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2578,7 +2580,7 @@ if render_info:
         return fig
 
     # ---- Render row horizontally (19, 20, 21) ----
-    col19, col20, col21 = st.columns(3, gap="large")
+    col19, col20, col21 = st.columns(3, gap="small")
 
     with col19:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2673,7 +2675,7 @@ if render_info:
         )
 
     # ---- Render row horizontally (22, 23, 24) ----
-    col22, col23, col24 = st.columns(3, gap="large")
+    col22, col23, col24 = st.columns(3, gap="small")
 
     with col22:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
