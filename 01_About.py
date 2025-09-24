@@ -97,7 +97,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
 
 <h3>Preview</h3>
 <ul>
-  <li><b>Demo</b> –  This is a limited preview of Markmentum Research for educational use. It runs the full product experience with production-grade features and data. The full production site is coming soon.</li>
+  <li><b>Demo</b> –  This is a limited preview of Markmentum Research for informational and educational use. It runs the full product experience with production-grade features and data. The full production site is coming soon.</li>
 </ul>
 
 <h3>What we publish</h3>
@@ -105,7 +105,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
   <li><b>Trends &amp; Regimes</b> – Short, mid, and long-term trend lines with regime cues (trend, chop, mean-reversion).</li>
   <li><b>Volatility Stats</b> – Implied (IVOL) vs. realized (RVOL) spreads, percentile ranks, and z-scores to spot crowding and regime shifts.</li>
-  <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — your compass for navigating markets with confidence.</li>
+  <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — your compass for navigating markets with clarity and confidence.</li>
   <li><b>Ranks &amp; Screens</b> – Daily leaders/laggards, filters, signals, and category rankings to surface opportunity and risk fast.</li>
   <li><b>Updates</b> – Nightly refresh after market close (typically 10–11 pm ET).</li>
 </ul>
@@ -119,12 +119,13 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
   <li><b>Filters</b> – Curated screens (e.g., short-term gainers/decliners, mid-term trends) to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest percentile and mean-reversion setups with context.</li>
-  <li><b>Rankings</b> – Category dashboards (i.e., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap by category, plus an optional per-ticker current heatmap. 
+  <li><b>Rankings</b> – Category dashboards (i.e., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap, plus an optional per-ticker current heatmap. 
   Below the heatmaps, see bar-chart rankings for each ticker in the selected category: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-day change.</li>
-  <li><b>Markmentum Heatmap</b> – At-a-glance heatmap of category Markmentum measured by changes in our proprietary market model score. Select a category to see each ticker’s Markmentum heatmap and rankings for Daily, Week-to-Date, Month-to-Date, and Quarter-to-Date.</li>
+  <li><b>Markmentum Heatmap</b> – At-a-glance heatmap of category Markmentum Score measured by changes in our proprietary AI-powered market model scoring algorithm. Select a category to see each ticker’s Markmentum heatmap and rankings for Daily, Week-to-Date, Month-to-Date, and Quarter-to-Date.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus broad S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
+  <li><b>Contact</b> – Complete and submit the form to let us know your questions and/or comments.</li>  
 </ul>
 
 <h3>Methodology</h3>
