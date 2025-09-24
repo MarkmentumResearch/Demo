@@ -105,7 +105,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
   <li><b>Trends &amp; Regimes</b> – Short, mid, and long-term trend lines with regime cues (trend, chop, mean-reversion).</li>
   <li><b>Volatility Stats</b> – Implied (IVOL) vs. realized (RVOL) spreads, percentile ranks, and z-scores to spot crowding and regime shifts.</li>
-  <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — your compass for navigating markets with clarity and confidence.</li>
+  <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — your navigator, allowing you, the captain, to steer the ship with clarity and confidence.</li>
   <li><b>Ranks &amp; Screens</b> – Daily leaders/laggards, filters, signals, and category rankings to surface opportunity and risk fast.</li>
   <li><b>Updates</b> – Nightly refresh after market close (typically 10–11 pm ET).</li>
 </ul>
