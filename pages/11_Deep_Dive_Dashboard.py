@@ -39,7 +39,7 @@ st.markdown("""
 /* Keep 3 charts per row as long as we reasonably can */
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   flex: 1 1 0;
-  min-width: 320px;            /* was larger; this prevents early wrapping on MBA */
+  min-width: 300px;            /* was larger; this prevents early wrapping on MBA */
 }
 
 /* 2 columns when space is tighter */
@@ -49,12 +49,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   }
 }
 
-/* 1 column on phones/small tablets */
-@media (max-width: 1000px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-    flex: 1 1 100%;
-  }
-}
+
 </style>
 """, unsafe_allow_html=True)
 
