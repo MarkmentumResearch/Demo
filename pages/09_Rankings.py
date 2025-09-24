@@ -300,7 +300,7 @@ if show_cur_ticker_hm:
                       axis=alt.Axis(title=None, labelLimit=160, orient="left",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=140)),
+                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=125)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
                   alt.Tooltip("Ticker_name:N", title="Name"),
