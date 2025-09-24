@@ -621,7 +621,7 @@ if show_ticker_hm:
         .properties(
             width=chart_w,
             height=chart_h,
-            padding={"left": legend_w, "right": 0, "top": 6, "bottom": 2},  # balances right legend
+            padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4},  # balances right legend
         )
         .configure_view(strokeOpacity=0)
         .configure_axis(labelFontSize=12, titleFontSize=12)
@@ -648,7 +648,7 @@ with col2:
     st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
-
+st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 
 # global model-score min/max for locked mode
 global_ms_min = float(df48["model_score_daily_change"].min()) if not df48.empty else 0.0
