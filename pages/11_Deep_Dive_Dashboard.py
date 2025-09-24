@@ -1584,7 +1584,7 @@ with col_center:
         rcParams["font.family"] = ["sans-serif"]
         rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
-        fig, ax = plt.subplots(figsize=(14.0, 10))
+        fig, ax = plt.subplots(figsize=(13.0, 10))
         fig.set_facecolor("white")
         fig.subplots_adjust(left=0.07, right=0.995, top=0.86, bottom=0.34)
 
