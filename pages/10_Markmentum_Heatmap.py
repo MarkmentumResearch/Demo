@@ -643,7 +643,7 @@ if show_ticker_hm:
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
-st.caption(f"Color scale fixed globally to ±{vmax_global:g}. Values outside this range are shown at the end color.")
+st.caption(f"Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 
