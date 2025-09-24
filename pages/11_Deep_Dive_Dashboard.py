@@ -7,6 +7,8 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib import rcParams
+rcParams["figure.dpi"] = 110
+rcParams["savefig.dpi"] = 110
 #from matplotlib import pyplot as plt
 #from matplotlib import rcParams
 #import matplotlib.dates as mdates
@@ -15,8 +17,7 @@ from matplotlib.lines import Line2D
 from matplotlib.ticker import StrMethodFormatter
 import math  # (near your other imports, once)
 import numpy as np
-rcParams["figure.dpi"] = 110
-rcParams["savefig.dpi"] = 110
+
 # -------------------------
 # Page & shared style
 # -------------------------
