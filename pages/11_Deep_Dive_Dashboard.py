@@ -1305,7 +1305,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center, _ = st.columns([2.5, 3.5, 0.15], gap="large")
+col_left, col_center, _ = st.columns([3.2, 7.3, 0.2], gap="large")
 
 with col_left:
     # ==============================
