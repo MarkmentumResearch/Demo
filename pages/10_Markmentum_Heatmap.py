@@ -492,7 +492,7 @@ default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 left_toggle,c_blank,c_blank= st.columns([1,4,1])
 with left_toggle:
         show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-c_blank,c_blank,c_sel,c_blank = st.columns([1,1,4,1])
+c_blank,c_blank,c_sel,c_blank = st.columns([1,.5,4,1])
 with c_sel:
         sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
