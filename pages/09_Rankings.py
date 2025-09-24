@@ -284,7 +284,7 @@ if show_cur_ticker_hm:
     )
     ticker_order = sorted(tm["Ticker"].unique().tolist())
     t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98)))
-    t_w     = 175
+    t_w     = 200
     t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
     st.markdown(f'<div class="h-title">{sel} — Per-Ticker Markmentum Heatmap (Current)</div>', unsafe_allow_html=True)
@@ -300,7 +300,7 @@ if show_cur_ticker_hm:
                       axis=alt.Axis(title=None, labelLimit=160, orient="left",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=160)),
+                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=150)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
                   alt.Tooltip("Ticker_name:N", title="Name"),
