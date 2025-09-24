@@ -484,6 +484,10 @@ all_cats = [cat for cat in custom_order if cat in (
 )]
 
 
+default_cat = "Sector Style ETFs"
+default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
+
+
 
 left_toggle,c_blank,c_blank= st.columns([1,4,1])
 with left_toggle:
