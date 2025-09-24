@@ -487,15 +487,42 @@ all_cats = [cat for cat in custom_order if cat in (
 default_cat = "Sector Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
-left_toggle,c_blank,c_blank= st.columns([1,4,1])
+# Checkbox row
+left_toggle, _, _ = st.columns([1, 4, 1])
 with left_toggle:
-        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-#c_blank,c_lock,c_blank = st.columns([1,4,1])
-#with c_lock:
-#        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-c_blank,c_sel,c_blank = st.columns([1,5,1])
-with c_sel:
-        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
+    show_ticker_hm = st.checkbox(
+        "Show per-ticker heatmap (category)", value=False, key="show_ticker_hm"
+    )
+
+# Keep/restore the last category (or default)
+sel_key = "rankings_category"
+if sel_key not in st.session_state:
+    st.session_state[sel_key] = default_cat  # e.g., "Sector & Style ETFs"
+
+# Only show the dropdown when the box is checked
+if show_ticker_hm:
+    _, c_sel, _ = st.columns([1, 5, 1])
+    with c_sel:
+        sel = st.selectbox(
+            "Category",
+            all_cats,
+            index=all_cats.index(st.session_state[sel_key]),
+            key=sel_key,
+        )
+else:
+    # Dropdown is hidden; use the last (or default) selection
+    sel = st.session_state[sel_key]
+
+
+
+
+
+#left_toggle,c_blank,c_blank= st.columns([1,4,1])
+#with left_toggle:
+#        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
+#c_blank,c_sel,c_blank = st.columns([1,4,1])
+#with c_sel:
+#        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
 
 
