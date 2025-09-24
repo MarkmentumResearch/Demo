@@ -1749,7 +1749,7 @@ with col2:
         st.info("No trend data.")
     else:
         df2v = _window_by_label_with_gutter(df2_all, _rng, date_col="date")
-        st.pyplot(plot_g2_trend(df2v, _active_tkr), clear_figure=True,use_container_width=True)
+        st.pyplot(plot_g2_trend(df2v, _active_tkr), use_container_width=True,clear_figure=True)
 
 with col3:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1759,7 +1759,7 @@ with col3:
         st.info("No anchor data.")
     else:
         df3v = _window_by_label_with_gutter(df3_all, _rng, date_col="date")
-        st.pyplot(plot_g3_anchors(df3v, _active_tkr), clear_figure=True,use_container_width=True)
+        st.pyplot(plot_g3_anchors(df3v, _active_tkr), use_container_width=True,clear_figure=True)
 
 with col4:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1769,7 +1769,7 @@ with col4:
         st.info("No gap data.")
     else:
         df4v = _window_by_label_with_gutter(df4_all, _rng, date_col="date")
-        st.pyplot(plot_g4_gap(df4v, _active_tkr), clear_figure=True,use_container_width=True)
+        st.pyplot(plot_g4_gap(df4v, _active_tkr), use_container_width=True,clear_figure=True)
 
 
 # ==============================
