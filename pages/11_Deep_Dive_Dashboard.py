@@ -17,6 +17,11 @@ from matplotlib.lines import Line2D
 from matplotlib.ticker import StrMethodFormatter
 import math  # (near your other imports, once)
 import numpy as np
+plt.rcParams.update({
+    "figure.dpi": 110,
+    "figure.figsize": (9.2, 3.4),   # good aspect for the 3-up rows
+})
+
 
 # -------------------------
 # Page & shared style
