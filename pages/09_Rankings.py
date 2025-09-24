@@ -483,7 +483,7 @@ chart50 = (bars50 + pos50 + neg50).properties(title="Sharpe Ratio Ranking", heig
 
 # 4) Sharpe Ratio 30-Day Change
 category_ms_min4 = float(view51["Sharpe_Ratio_30D_Change"].min()-10) if not df51.empty else 0.0
-category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+30) if not df51.empty else 0.0
+category_ms_max4 = float(view51["Sharpe_Ratio_30D_Change"].max()+20) if not df51.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom4 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
