@@ -490,9 +490,9 @@ default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 c_blank,left_toggle,c_blank= st.columns([1,4,1])
 with left_toggle:
         show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-c_blank,c_lock,c_blank = st.columns([1,4,1])
-with c_lock:
-        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
+#c_blank,c_lock,c_blank = st.columns([1,4,1])
+#with c_lock:
+#        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 c_blank,c_sel,c_blank = st.columns([1,4,1])
 with c_sel:
         sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
@@ -689,6 +689,12 @@ def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
 # -------------------------
 # Filter dataframes for the selected category
 # -------------------------
+
+c_blank,c_lock,c_blank = st.columns([1,4,1])
+with c_lock:
+        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
+
+
 view48 = df48[df48["Category"] == sel].copy().sort_values("model_score_daily_change", ascending=False)
 viewWTD = dfWTD[dfWTD["Category"] == sel].copy().sort_values("model_score_wtd_change", ascending=False)
 viewMTD = dfMTD[dfMTD["Category"] == sel].copy().sort_values("model_score_mtd_change", ascending=False)
