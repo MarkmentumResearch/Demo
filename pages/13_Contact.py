@@ -89,7 +89,7 @@ st.markdown("---")
 # 13_Contact.py (or wherever your Contact page lives)
 
 
-st.set_page_config(page_title="Contact", page_icon="✉️", layout="wide")
+
 
 st.title("Contact Markmentum Research")
 st.write("Have a question or want to get in touch? Send us a note below.")
