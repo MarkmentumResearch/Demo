@@ -245,7 +245,7 @@ cur_heat = (
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 #st.altair_chart(cur_heat, use_container_width=False)
-c_blank,left, mid, right = st.columns([.5,.5, 2, 3], gap="large")
+c_blank,left, mid, right,c_blank= st.columns([.5,.5, 2, 3,1], gap="large")
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
 
