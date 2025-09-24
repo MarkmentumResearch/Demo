@@ -320,14 +320,7 @@ agg = (
       .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
 )
 
-global_delta = pd.concat([
-    df48["model_score_day_change"],
-    dfWTD["model_score_wtd_change"],
-    dfMTD["model_score_mtd_change"],
-    dfQTD["model_score_qtd_change"],
-], ignore_index=True)
 
-vmax_ticker = float(max(1.0, global_delta.abs().quantile(0.98)))
 
 
 # ---- Ordering
@@ -505,6 +498,17 @@ with c_lock:
 #left_toggle, _ = st.columns([1, 9])
 #with left_toggle:
 #    show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
+
+global_delta = pd.concat([
+    df48["model_score_day_change"],
+    dfWTD["model_score_wtd_change"],
+    dfMTD["model_score_mtd_change"],
+    dfQTD["model_score_qtd_change"],
+], ignore_index=True)
+
+vmax_ticker = float(max(1.0, global_delta.abs().quantile(0.98)))
+
+
 
 if show_ticker_hm:
     # --- Build a unified per-ticker table across Daily / WTD / MTD / QTD for the selected category
