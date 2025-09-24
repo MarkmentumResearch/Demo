@@ -573,6 +573,7 @@ if show_ticker_hm:
                     title=None,
                     labelLimit=140,
                     labelPadding=6,
+                    orient = "right",
                     labelFlush=False, 
                     labelColor="#1a1a1a",
                     labelFontSize=13,
@@ -583,7 +584,7 @@ if show_ticker_hm:
                 "delta:Q",
                 scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
                 legend=alt.Legend(
-                    orient="right",
+                    orient="bottom",
                     title="Δ Score",
                     titleColor="#1a1a1a",
                     labelColor="#1a1a1a",
