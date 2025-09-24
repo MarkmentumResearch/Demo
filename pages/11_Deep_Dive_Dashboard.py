@@ -1872,7 +1872,7 @@ with col5:
         st.info("No Z-Score data.")
     else:
         df5v = apply_window_with_gutter(df5_all, _rng, date_col="date", gutter_days=5)  
-        st.pyplot(plot_g5_zscore(df5v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g5_zscore(df5v, _active_tkr), use_container_width=True,clear_figure=True)
 
 with col6:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1882,7 +1882,7 @@ with col6:
         st.info("No percentile rank data.")
     else:
         df6v = apply_window_with_gutter(df6_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g6_rank(df6v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g6_rank(df6v, _active_tkr), use_container_width=True,clear_figure=True)
 
 with col7:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -1892,7 +1892,7 @@ with col7:
         st.info("No rVol data.")
     else:
         df7v = apply_window_with_gutter(df7_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g7_rvol(df7v, _active_tkr), clear_figure=True)
+        st.pyplot(plot_g7_rvol(df7v, _active_tkr), use_container_width=True,clear_figure=True)
 # ==============================
 # Graphs 5–7  (end)
 # ==============================
@@ -1991,7 +1991,7 @@ with col8:
         st.info("No Sharpe data.")
     else:
         df8v = apply_window_with_gutter(df8_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g8_sharpe(df8v, _ticker), clear_figure=True)
+        st.pyplot(plot_g8_sharpe(df8v, _ticker), use_container_width=True,clear_figure=True)
 
 with col9:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -2001,7 +2001,7 @@ with col9:
         st.info("No Sharpe rank data.")
     else:
         df9v = apply_window_with_gutter(df9_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g9_sharpe_rank(df9v, _ticker), clear_figure=True)
+        st.pyplot(plot_g9_sharpe_rank(df9v, _ticker), use_container_width=True,clear_figure=True)
 
 with col10:
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
@@ -2011,7 +2011,7 @@ with col10:
         st.info("No Prem/Disc data.")
     else:
         df10v = apply_window_with_gutter(df10_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g10_ivol_pd(df10v, _ticker), clear_figure=True)
+        st.pyplot(plot_g10_ivol_pd(df10v, _ticker), use_container_width=True,clear_figure=True)
 
 # ==============================
 # ===== Graphs 8, 9 & 10 
@@ -2166,8 +2166,7 @@ with g11col:
         st.info("No Signal Score data.")
     else:
         df11v = apply_window_with_gutter(df11_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g11_signal(df11v, _ticker), clear_figure=True)
-
+        st.pyplot(plot_g11_signal(df11v, _ticker), use_container_width=True,clear_figure=True)
 with g12col:
     _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
     _rng    = st.session_state.get("range_sel", "All")
@@ -2176,7 +2175,7 @@ with g12col:
         st.info("No scatter data.")
     else:
         df12v = apply_window_with_gutter(df12_all, _rng, date_col="date", gutter_days=5)
-        st.pyplot(plot_g12_scatter(df12v, _ticker), clear_figure=True)
+        st.pyplot(plot_g12_scatter(df12v, _ticker), use_container_width=True,clear_figure=True)
 
 # ==============================
 # ===== Graphs 11 & 12 - END 
@@ -2303,7 +2302,7 @@ if render_info:
             st.info("No Daily Returns data.")
         else:
             df13v = apply_window_with_gutter(df13_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g13_daily_returns(df13v, _ticker), clear_figure=True)
+            st.pyplot(plot_g13_daily_returns(df13v, _ticker), use_container_width=True,clear_figure=True)
 
     with col14:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2313,7 +2312,7 @@ if render_info:
             st.info("No Daily Range data.")
         else:
             df14v = apply_window_with_gutter(df14_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g14_daily_range(df14v, _ticker), clear_figure=True)
+            st.pyplot(plot_g14_daily_range(df14v, _ticker), use_container_width=True,clear_figure=True)
 
     with col15:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2323,7 +2322,7 @@ if render_info:
             st.info("No Daily Volume data.")
         else:
             df15v = apply_window_with_gutter(df15_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g15_daily_volume(df15v, _ticker), clear_figure=True)
+            st.pyplot(plot_g15_daily_volume(df15v, _ticker), use_container_width=True,clear_figure=True)
 
     # ==============================
     # ===== Graphs 13, 14 & 15 (do not modify) END =====
@@ -2432,7 +2431,7 @@ if render_info:
             st.info("No Weekly Returns data.")
         else:
             df16v = apply_window_with_gutter(df16_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g16_weekly_returns(df16v, _ticker), clear_figure=True)
+            st.pyplot(plot_g16_weekly_returns(df16v, _ticker), use_container_width=True,clear_figure=True)
 
     with col17:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2442,7 +2441,7 @@ if render_info:
             st.info("No Weekly Range data.")
         else:
             df17v = apply_window_with_gutter(df17_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g17_weekly_range(df17v, _ticker), clear_figure=True)
+            st.pyplot(plot_g17_weekly_range(df17v, _ticker), use_container_width=True,clear_figure=True)
 
     with col18:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2452,7 +2451,7 @@ if render_info:
             st.info("No Weekly Volume data.")
         else:
             df18v = apply_window_with_gutter(df18_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g18_weekly_volume(df18v, _ticker), clear_figure=True)
+            st.pyplot(plot_g18_weekly_volume(df18v, _ticker), use_container_width=True,clear_figure=True)
 
     # ==============================
     # ===== Graphs 16, 17 & 18 END 
@@ -2555,7 +2554,7 @@ if render_info:
             st.info("No Monthly Returns data.")
         else:
             df19v = apply_window_with_gutter(df19_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g19_monthly_returns(df19v, _ticker), clear_figure=True)
+            st.pyplot(plot_g19_monthly_returns(df19v, _ticker), use_container_width=True,clear_figure=True)
 
     with col20:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2565,7 +2564,7 @@ if render_info:
             st.info("No Monthly Range data.")
         else:
             df20v = apply_window_with_gutter(df20_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g20_monthly_range(df20v, _ticker), clear_figure=True)
+            st.pyplot(plot_g20_monthly_range(df20v, _ticker), use_container_width=True,clear_figure=True)
 
     with col21:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2575,7 +2574,7 @@ if render_info:
             st.info("No Monthly Volume data.")
         else:
             df21v = apply_window_with_gutter(df21_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g21_monthly_volume(df21v, _ticker), clear_figure=True)
+            st.pyplot(plot_g21_monthly_volume(df21v, _ticker), use_container_width=True,clear_figure=True)
 
     # ==============================
     # ===== Graphs 19, 20 & 21 (do not modify) END =====
@@ -2650,7 +2649,7 @@ if render_info:
             st.info("No Short-Term Trend data.")
         else:
             df22v = apply_window_with_gutter(df22_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g22_st(df22v, _ticker), clear_figure=True)
+            st.pyplot(plot_g22_st(df22v, _ticker), use_container_width=True,clear_figure=True)
 
     with col23:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
@@ -2660,8 +2659,7 @@ if render_info:
             st.info("No Mid-Term Trend data.")
         else:
             df23v = apply_window_with_gutter(df23_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g23_mt(df23v, _ticker), clear_figure=True)
-
+            st.pyplot(plot_g23_mt(df23v, _ticker), use_container_width=True,clear_figure=True)
     with col24:
         _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
         _rng    = st.session_state.get("range_sel", "All")
@@ -2670,8 +2668,7 @@ if render_info:
             st.info("No Long-Term Trend data.")
         else:
             df24v = apply_window_with_gutter(df24_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g24_lt(df24v, _ticker), clear_figure=True)
-
+            st.pyplot(plot_g24_lt(df24v, _ticker), use_container_width=True,clear_figure=True)
     # ==============================
     # ===== Graphs 22, 23 & 24 END 
     # ==============================
