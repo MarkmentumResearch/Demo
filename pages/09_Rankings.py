@@ -239,13 +239,13 @@ cur_heat = (
           ],
       )
       .properties(width=heat_w, height=heat_h,
-                  padding={"left": 10, "right": 6, "top": 6, "bottom": 6})
+                  padding={"left": 6, "right": 6, "top": 6, "bottom": 6})
       .configure_view(strokeOpacity=0)
 )
 
 #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
 #st.altair_chart(cur_heat, use_container_width=False)
-left, mid, right= st.columns([1,3,1], gap="medium")
+left, mid, right= st.columns([1,3,1], gap="large")
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
 
