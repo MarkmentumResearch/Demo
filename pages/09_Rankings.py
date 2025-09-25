@@ -209,8 +209,6 @@ _, mid, _ = st.columns(3)
 with mid:
     st.altair_chart(cur_heat, use_container_width=False)
 
-st.markdown('</div>', unsafe_allow_html=True)
-
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # ---------- Controls ----------
@@ -287,11 +285,6 @@ if show_cur_ticker_hm:
     _, mid2, _ = st.columns(3)
     with mid2:
         st.altair_chart(cur_ticker_heat, use_container_width=False)
-
-
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 
