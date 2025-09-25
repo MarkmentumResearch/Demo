@@ -65,7 +65,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 }
 /* Ticker (col 2): fixed width */
 .tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
-/* Exposure (col 3): 6–22ch, no wrap */
+/* Category (col 3): 6–22ch, no wrap */
 .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
   white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
 }
@@ -183,7 +183,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
-    ccol = cmap.get("category") or cmap.get("exposure") or "Exposure"
+    ccol = cmap.get("category") 
 
     rows = []
     for _, r in df.iterrows():
@@ -205,7 +205,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
       <tr>
         <th style="min-width:42ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
+        <th style="min-width:25ch">Category</th>
         <th style="width:90px" class="right">{value_label}</th>
       </tr>
     </thead>
@@ -288,8 +288,8 @@ st.markdown(
 
 # Normalize "Category" -> "Exposure" to match the table headers
 for d in dfs:
-    if "Category" in d.columns and "Exposure" not in d.columns:
-        d.rename(columns={"Category": "Exposure"}, inplace=True)
+    if "Category" in d.columns and "Category" not in d.columns:
+        d.rename(columns={"Category": "Category"}, inplace=True)
 
 # -------------------------
 # ROW 1 (3 cards)
