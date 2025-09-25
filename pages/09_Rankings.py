@@ -49,6 +49,12 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   min-width: 0 !important;
 }
 
+/* A2) Per-ticker heatmap centering row: directly after the #hm-center2 marker */
+#hm-center2 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}            
+
 /* B) Bottom 4 charts grid: directly after the #grid4 marker */
 #grid4 + div[data-testid="stHorizontalBlock"]{
   display:flex; flex-wrap:wrap; gap:24px;
