@@ -289,7 +289,7 @@ if show_cur_ticker_hm:
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
               y=alt.Y("TickerLabel:N", sort=ticker_order,
-                      axis=alt.Axis(title=None, labelLimit=420, orient="right",labelOverlap=False)),
+                      axis=alt.Axis(title=None, labelLimit=420, orient="left",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
                               legend=alt.Legend(orient="bottom", title="Score", gradientLength=140)),
