@@ -394,7 +394,7 @@ with center_col:
             '<div style="text-align:center;">'
             '<h3 style="margin:0;">Markmentum Heatmap – Avg Score Changes</h3>'
             '<div class="small" style="margin-top:4px;">'
-            'Average Δ(Markmentum Score) across tickers in each category and timeframe.'
+            'Average Score Δ across tickers in each category and timeframe.'
             '</div></div>',
             unsafe_allow_html=True,
         )
@@ -605,7 +605,7 @@ if show_ticker_hm:
                 f'<div style="text-align:center;">'
                 f'<h4 style="margin:0;">{sel} — Per-Ticker Markmentum Heatmap</h4>'
                 f'<div class="small" style="margin-top:4px;">'
-                f'Δ(Markmentum Score) by ticker and timeframe.'
+                f'Score Δ by ticker and timeframe.'
                 f'</div></div>',
                 unsafe_allow_html=True,
             )
