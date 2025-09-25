@@ -284,7 +284,7 @@ if show_cur_ticker_hm:
           .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
           # add this in the per-ticker heatmap chain, before .encode(...)
           .transform_calculate(
-            TickerLabel="'                '"+ "datum.Ticker")
+            TickerLabel="'                '+ datum.Ticker")
           .encode(
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
