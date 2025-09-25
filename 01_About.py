@@ -8,11 +8,29 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib import rcParams
 import os
+import streamlit.components.v1 as components
 
 # -------------------------
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – About", layout="wide", initial_sidebar_state="expanded")
+
+# Always expand sidebar on page load (safe: only clicks if collapsed control is present)
+components.html("""
+<script>
+(function () {
+  function tryOpen() {
+    const doc = window.parent.document;
+    const ctrl = doc.querySelector('div[data-testid="stSidebarCollapsedControl"] button');
+    if (ctrl) { ctrl.click(); return true; }  // only present when sidebar is collapsed
+    return false;
+  }
+  let n = 0;
+  const t = setInterval(() => { if (tryOpen() || n++ > 10) clearInterval(t); }, 100);
+})();
+</script>
+""", height=0, width=0)
+
 
 st.markdown(
     """
