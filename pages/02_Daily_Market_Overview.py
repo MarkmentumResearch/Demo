@@ -188,7 +188,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
 <tr>
   <td class="col-company">{r.get(ncol, "")}</td>
   <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="col-category">{r.get(ccol, "")}</td>
   <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
@@ -200,7 +200,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
       <tr>
         <th class="col-company">Company</th>
         <th class="col-ticker">Ticker</th>
-        <th class="col-exposure">Exposure</th>
+        <th class="col-category">Category</th>
         <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
