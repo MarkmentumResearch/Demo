@@ -53,7 +53,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 
 /* Column widths (no-wrap) — desktop defaults */
 th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
-th.col-exposure, td.col-exposure { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+th.col-category, td.col-category { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 th.col-ticker,   td.col-ticker   { width:74px; }
 
 /* Shares column (Row 1 / Card 3) */
@@ -72,14 +72,14 @@ th.col-ticker,   td.col-ticker   { width:74px; }
   div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
   th.col-company, td.col-company { width:32ch; max-width:32ch; }  /* still no wrap */
-  th.col-exposure, td.col-exposure { width:18ch; max-width:18ch; }
+  th.col-category, td.col-category { width:18ch; max-width:18ch; }
 }
 
 /* Narrow (<1000px): single column; give tables more breathing room again */
 @media (max-width: 999.98px){
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
   th.col-company, td.col-company { width:36ch; max-width:36ch; }
-  th.col-exposure, td.col-exposure { width:22ch; max-width:22ch; }
+  th.col-category, td.col-category { width:22ch; max-width:22ch; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -177,15 +177,14 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
-    ccol = cmap.get("category") or cmap.get("exposure") or "Exposure"
-
+    ccol = cmap.get("category")
     rows = []
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
   <td class="col-company">{r.get(ncol, "")}</td>
   <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
-  <td class="col-exposure">{r.get(ccol, "")}</td>
+  <td class="col-category">{r.get(ccol, "")}</td>
   <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
 </tr>""")
 
@@ -197,7 +196,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
       <tr>
         <th class="col-company">Company</th>
         <th class="col-ticker">Ticker</th>
-        <th class="col-exposure">Exposure</th>
+        <th class="col-category">Category</th>
         <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
