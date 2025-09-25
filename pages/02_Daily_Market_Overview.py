@@ -53,7 +53,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 
 /* Column widths (no-wrap) — desktop defaults */
 th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
-th.col-exposure, td.col-exposure { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
+th.col-category, td.col-category { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 th.col-ticker,   td.col-ticker   { width:74px; }
 
 /* Shares column (Row 1 / Card 3) */
@@ -72,14 +72,14 @@ th.col-ticker,   td.col-ticker   { width:74px; }
   div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
   th.col-company, td.col-company { width:32ch; max-width:32ch; }  /* still no wrap */
-  th.col-exposure, td.col-exposure { width:18ch; max-width:18ch; }
+  th.col-category, td.col-category { width:18ch; max-width:18ch; }
 }
 
 /* Narrow (<1000px): single column; give tables more breathing room again */
 @media (max-width: 999.98px){
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
   th.col-company, td.col-company { width:36ch; max-width:36ch; }
-  th.col-exposure, td.col-exposure { width:22ch; max-width:22ch; }
+  th.col-category, td.col-category { width:22ch; max-width:22ch; }
 }
 </style>
 """, unsafe_allow_html=True)
