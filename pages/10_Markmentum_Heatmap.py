@@ -598,7 +598,7 @@ if show_ticker_hm:
     )
 
     # --- Centered, snug card
-    pad_l, center_col, pad_r = st.columns([1.25, 3, .75])
+    pad_l, center_col, pad_r = st.columns([1.15, 3, .85])
     with center_col:
         with st.container(border=True):
             st.markdown(
