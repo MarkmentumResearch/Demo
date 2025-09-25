@@ -350,7 +350,7 @@ heat = (
             axis=alt.Axis(
                 title=None,
                 labelLimit=460,
-                orient="right",
+                orient="left",
                 labelPadding=6,
                 labelFlush=False,
                 labelColor="#1a1a1a",   # darker category labels
@@ -529,7 +529,7 @@ if show_ticker_hm:
     # --- Chart sizing (narrow, card hugs chart)
     row_h   = 22
     chart_h = max(360, row_h * max(1, len(ticker_order)) + 24)
-    chart_w = 510
+    chart_w = 625
     legend_w = 120
 
     # --- Symmetric diverging scale centered at 0 (winsorized)
