@@ -279,7 +279,7 @@ def _card_table_html(title: str, df: pd.DataFrame, value_col: str, value_label: 
       <tr>
         <th style="min-width:42ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
+        <th style="min-width:25ch">Category</th>
         <th style="width:90px" class="right">{value_label}</th>
       </tr>
     </thead>
