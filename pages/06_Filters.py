@@ -389,7 +389,7 @@ if score_col is not None and not dfs[6].empty:
 _render_card_custom(r3c1, titles[6], dfs[6], "watch_x100", "Watch Score", _fmt_num)
 
 df8 = dfs[7].copy()
-keep_cols = ["Company", "Ticker", "Exposure"]
+keep_cols = ["Company", "Ticker", "Category"]
 df8 = df8[[col for col in keep_cols if col in df8.columns]]
 _render_card_no_value(r3c2, titles[7], dfs[7])
 
