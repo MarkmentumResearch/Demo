@@ -11,119 +11,73 @@ import sys
 import numpy as np
 from urllib.parse import quote_plus
 
-
+# ---------- Page ----------
 st.cache_data.clear()
-
-# -------------------------
-# Page & shared style
-# -------------------------
-st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
-
-st.markdown("""
-<style>
-/* Page container sizing */
-[data-testid="stAppViewContainer"] .main .block-container,
-section.main > div {
-  width: 95vw;
-  max-width: 2100px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Kill any bordered-container “decoration” / pill bars */
-div[data-testid="stDecoration"] { display: none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"] {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"] {
-  display: none !important;
-}
-
-/* Centering helper for charts */
-.viz-center { display:flex; justify-content:center; }
-
-/* Type + headings */
-html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-}
-.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin: 4px 0 8px; }
-.h-sub   { text-align:center; font-size:12px; color:#666; margin: 2px 0 10px; }
-
-/* Compact select width (doesn't create any pill) */
-div[data-baseweb="select"] { max-width: 36ch !important; }
-
-/* Let Streamlit column rows wrap nicely on smaller widths */
-div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap: wrap; gap: 24px; }
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; min-width: 360px; }
-@media (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
-}
-@media (max-width: 999.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* Center any st.columns row that contains an Altair/Vega chart */
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]),
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) {
-  justify-content: center !important;           /* center the group of columns (or the single stacked one) */
-}
-
-/* Make every column in that row hug its contents and center them */
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]) > div[data-testid="column"],
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) > div[data-testid="column"] {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  display: flex !important;
-  justify-content: center !important;
-}
-
-/* Keep the Vega embed at its intrinsic width so it doesn't stretch on small screens */
-div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed {
-  width: auto !important;
-  max-width: 100% !important;
-  flex: 0 0 auto !important;
-}
-
-/* Fallback for older browsers (or if :has isn't supported) – on narrow viewports,
-   just center all columns' contents so the chart stays centered */
-@media (max-width: 1200px) {
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
-    display: flex !important;
-    justify-content: center !important;
-  }
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* Center any Altair/Vega chart that lives inside a Streamlit column */
-div[data-testid="stVegaLiteChart"],
-div[data-testid="stAltairChart"]{
-  display: grid !important;
-  place-items: center !important;    /* centers child in both axes */
-}
-
-/* Make the vega-embed shrink to its content so centering is perfect */
-div[data-testid="stVegaLiteChart"] .vega-embed,
-div[data-testid="stAltairChart"] .vega-embed{
-  display: inline-block !important;
-  width: auto !important;            /* do NOT stretch to 100% */
-  margin: 0 auto !important;         /* backstop centering */
-}
-</style>
-""", unsafe_allow_html=True)
-
+st.set_page_config(page_title="Markmentum Heatmap", layout="wide")
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
         return base64.b64encode(f.read()).decode()
+
+# -------------------------
+# Global CSS
+# -------------------------
+st.markdown("""
+<style>
+/* ============== Page & Shared style (clean, #9 rules) ============== */
+
+/* Container */
+[data-testid="stAppViewContainer"] .main .block-container,
+section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
+
+/* Remove bordered “decoration” wrappers */
+div[data-testid="stDecoration"]{ display:none !important; }
+div[data-testid="stVerticalBlockBorderWrapper"]{ border:none !important; background:transparent !important; box-shadow:none !important; }
+div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ display:none !important; }
+
+/* Type + optional heatmap headings (kept as in #9) */
+html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
+.h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
+
+/* Compact select width */
+div[data-baseweb="select"] { max-width:36ch !important; }
+
+/* -------- SCOPED layout rules (so we don't affect unrelated rows) -------- */
+
+/* A) Global heatmap centering row: applies to the st.columns row placed right after #hm-center */
+#hm-center + div[data-testid="stHorizontalBlock"]{
+  display:flex !important; justify-content:center !important; gap:0 !important;
+}
+#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important; min-width:0 !important;   /* side columns flex */
+}
+#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important; min-width:0 !important; /* middle column shrinks to chart */
+}
+
+/* B) Bottom 4 charts grid: 4-up desktop, 2×2 laptops/MBA, 1-up small screens */
+#grid4 + div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap:wrap; gap:24px; }
+#grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 22%; min-width:280px; }   /* 4-up desktop */
+@media (max-width:1499.98px){  /* laptops / MacBook Air → 2-up */
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+}
+@media (max-width:799.98px){   /* small screens → 1-up */
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+}
+
+/* C) Altair/Vega: intrinsic sizing + centering inside their column (backstop) */
+div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
+  display:grid !important; place-items:center !important; width:100%;
+}
+div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"] .vega-embed{
+  width:auto !important; max-width:100% !important; margin:0 auto !important; display:inline-block !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # -------------------------
 # Paths
