@@ -116,7 +116,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
   <li><b>Weekly Market Overview</b> – One-screen week-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Scores changes.</li>
   <li><b>Monthly Market Overview</b> – One-screen month-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Scores changes.</li>
   <li><b>Quarterly Market Overview</b> – One-screen quarter-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Scores changes.</li>
-  <li><b>Filters</b> – Curated screens (e.g., short-term gainers/decliners, mid-term trends) to find what matters now.</li>
+  <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, on watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest percentile and mean-reversion setups with context.</li>
   <li><b>Rankings</b> – Category dashboards (i.e., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap, plus an optional per-ticker current heatmap. 
@@ -132,7 +132,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
 <ul>
   <li><b>Probable Ranges</b> – Derived from historical distributions, realized volatility, and liquidity-aware smoothing across daily/weekly/monthly horizons.</li>
   <li><b>Anchors</b> – Long-term probabilistic anchors to contextualize extension and mean-reversion risk (e.g., “gap to LT anchor”).</li>
-  <li><b>Trend Lines</b> – Short-, mid-, and long-term composites using price structure with volatility-adjusted factors.</li>
+  <li><b>Trends</b> – Short-, mid-, and long-term composites using price structure with volatility-adjusted factors.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, IVOL/RVOL spreads, and regime flags.</li>
   <li><b>Markmentum Score</b> – Our proprietary market model score blends volatility, trend quality, mean-reversion stretch, and risk-reward into one number. A high positive score means the setup favors the long side; a negative score means it favors the short side.</li>
   <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across full universe of instruments.</li>
