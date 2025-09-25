@@ -574,7 +574,7 @@ if show_ticker_hm:
                     title="Δ Score",
                     titleColor="#1a1a1a",
                     labelColor="#1a1a1a",
-                    gradientLength=350,
+                    gradientLength=360,
                     labelLimit=80,
                 ),
             ),
