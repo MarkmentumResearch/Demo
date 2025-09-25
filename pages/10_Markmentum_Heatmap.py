@@ -386,7 +386,8 @@ heat = (
 )
 
 # ---- Centered, snug card that hugs the heatmap
-pad_l, center_col, pad_r = st.columns([3.5, 6, 3.5])
+st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
+pad_l, center_col, pad_r = st.columns([2, 3, .3])
 with center_col:
     with st.container(border=True):
         st.markdown(
