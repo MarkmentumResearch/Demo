@@ -241,7 +241,7 @@ all_cats = sorted(list(set().union(
 )))
 ordered_cats = [c for c in preferred if c in all_cats] + [c for c in all_cats if c not in preferred]
 
-left_toggle,c_blank,c_blank= st.columns([1,4,1])
+left_toggle,c_blank,c_blank= st.columns([2,3,1])
 with left_toggle:
         show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False)
 c_blank,c_sel,c_blank = st.columns([2.36,3,.3])
