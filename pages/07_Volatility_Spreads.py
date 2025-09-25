@@ -66,7 +66,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 }
 /* Ticker (col 2): fixed width */
 .tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
-/* Exposure (col 3): 6–22ch, no wrap */
+/* Category (col 3): 6–22ch, no wrap */
 .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
   white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
 }
@@ -179,7 +179,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
-    ccol = cmap.get("category") or cmap.get("exposure") or "Exposure"
+    ccol = cmap.get("category") 
 
     rows = []
     for _, r in df.iterrows():
@@ -201,7 +201,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
       <tr>
         <th style="min-width:42ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
+        <th style="min-width:25ch">Category</th>
         <th style="width:90px" class="right">{value_label}</th>
       </tr>
     </thead>
@@ -283,10 +283,10 @@ df_short = dfs[0].copy()
 df_long  = dfs[1].copy()
 df_up    = dfs[2].copy()
 
-# Normalize "Category" -> "Exposure"
+# Normalize "Category" -> "Category"
 for d in (df_short, df_long, df_up):
     if "Category" in d.columns and "Exposure" not in d.columns:
-        d.rename(columns={"Category": "Exposure"}, inplace=True)
+        d.rename(columns={"Category": "Category"}, inplace=True)
 
 col_s = _pick(df_short, ["Spread_Score"])
 col_l = _pick(df_long,  ["Spread_Score"])
@@ -305,8 +305,8 @@ r2c1, r2c2, r2c3 = st.columns(3, gap="large")
 
 # Left: Downside card (same width as others)
 df_down = dfs[3].copy()
-if "Category" in df_down.columns and "Exposure" not in df_down.columns:
-    df_down.rename(columns={"Category": "Exposure"}, inplace=True)
+if "Category" in df_down.columns and "Category" not in df_down.columns:
+    df_down.rename(columns={"Category": "Category"}, inplace=True)
 col_d = _pick(df_down, ["Spread_Score"])
 render_card(r2c1, CSV_FILES[3][1], df_down, col_d, "Score", _fmt_1dec)
 
