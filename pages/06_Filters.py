@@ -168,7 +168,7 @@ def _card_table_html_three(df: pd.DataFrame):
       <tr>
         <th style="min-width:42ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">category</th>
+        <th style="min-width:25ch">Category</th>
       </tr>
     </thead>
     <tbody>
