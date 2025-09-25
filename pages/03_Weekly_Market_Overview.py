@@ -13,22 +13,23 @@ from urllib.parse import quote_plus
 st.set_page_config(page_title="Markmentum – Weekly Overview", layout="wide")
 
 # ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
+
 st.markdown("""
 <style>
-/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+/* ---------------- Base layout ---------------- */
 div[data-testid="stHorizontalBlock"]{
   display:flex;
-  flex-wrap: wrap;               /* allow wrapping by default (we’ll control per breakpoint) */
+  flex-wrap: wrap;
   gap: 28px;
 }
 
-/* Each Streamlit column: let it size as a percentage row item */
+/* Each Streamlit column acts like a grid item */
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 32%;                 /* default try for ~3-up */
-  min-width: 360px;              /* don’t collapse too small */
+  flex: 1 1 32%;     /* desktop default target ~3-up */
+  min-width: 300px;
 }
 
-/* Container width & side margins */
+/* App container width */
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
   width: 95vw;
@@ -41,17 +42,28 @@ section.main > div {
 html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px 12px 8px 12px; }
+.card { 
+  border:1px solid #cfcfcf; 
+  border-radius:8px; 
+  background:#fff; 
+  padding:12px 12px 8px 12px; 
+}
+
+/* Choose a STANDARD width for all non-desktop cards */
+.card { 
+  max-width: 720px;      /* your “standard” card width */
+  width: 100%;
+}
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
 
-/* Table styling */
+/* Tables */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .center { text-align:center; }
 .right  { text-align:right; white-space:nowrap; }
 
-/* Column widths (no-wrap) — desktop defaults */
+/* Column widths (desktop defaults) */
 th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
 th.col-category, td.col-category { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 th.col-ticker,   td.col-ticker   { width:74px; }
@@ -59,30 +71,37 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 /* Shares column (Row 1 / Card 3) */
 .shares-wide th.col-value, .shares-wide td.col-value { width:100px !important; white-space:nowrap; }
 
-/* ---------- Breakpoints ---------- */
+/* ---------------- Breakpoints ---------------- */
 
-/* Big desktop (>=1500px): force 3-up, keep wide columns */
+/* DESKTOP (>=1500px): force 3-up */
 @media (min-width: 1500px){
   div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ 
+    flex: 0 0 32%;
+    min-width: 300px;
+  }
+  /* desktop cards can expand to their column */
+  .card { max-width: none; }
 }
 
-/* Laptop / standard desktops (1000px–1499px): go 2-up and gently shrink text columns */
+/* NON-DESKTOP (<1500px): ALWAYS 1-up, centered, fixed standard width */
 @media (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
-  th.col-company, td.col-company { width:32ch; max-width:32ch; }  /* still no wrap */
-  th.col-category, td.col-category { width:18ch; max-width:18ch; }
-}
+  /* make each column take the full row so only one column per row */
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 0 0 100%;
+  }
 
-/* Narrow (<1000px): single column; give tables more breathing room again */
-@media (max-width: 999.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
-  th.col-company, td.col-company { width:36ch; max-width:36ch; }
-  th.col-category, td.col-category { width:22ch; max-width:22ch; }
+  /* center every card and keep the standard width; no edge-to-edge stretching */
+  .card{
+    max-width: 720px;     /* same standard width as defined above */
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 </style>
 """, unsafe_allow_html=True)
+
+
 
 # -------------------------
 # Paths (portable for Cloud)
