@@ -118,6 +118,34 @@ div[data-testid="stAltairChart"] .vega-embed{
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* --- Altair/Vega centering fix --- */
+/* 1) Ensure the Streamlit VegaLite container is a flex row that centers content */
+div[data-testid="stVegaLiteChart"]{
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* 2) Center the actual vega-embed wrapper inside that container */
+div[data-testid="stVegaLiteChart"] > .vega-embed{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 3) If an extra wrapper sits between, center any direct child too */
+div[data-testid="stVegaLiteChart"] > div{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 4) Make sure your helper wrapper spans full width */
+.viz-center{
+  width: 100% !important;
+  display: block !important; /* or flex; both fine since parent now centers */
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ---------- Paths ----------
