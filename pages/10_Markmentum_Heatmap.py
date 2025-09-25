@@ -449,7 +449,7 @@ default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 #        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
 show_ticker_hm = True
 
-c_blank,c_sel,c_blank = st.columns([2.43,3,.3])
+c_blank,c_sel,c_blank = st.columns([2.5,3,.3])
 with c_sel:
         sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
