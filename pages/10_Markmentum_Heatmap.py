@@ -558,8 +558,8 @@ if show_ticker_hm:
                 axis=alt.Axis(
                     title=None,
                     labelLimit=140,
-                    labelPadding=6,
-                    orient = "right",
+                    labelPadding=10,
+                    orient = "left",
                     labelFlush=False, 
                     labelColor="#1a1a1a",
                     labelFontSize=13,
