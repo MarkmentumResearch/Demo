@@ -333,7 +333,7 @@ with r2c2:
         """
 <div class="card">
   <h3>How to interpret the four lists</h3>
-  <ol style="margin-top:6px; line-height:1.5; font-size:13px;">
+  <ol style="margin-top:6px; line-height:1.5; font-size:10px;">
     <li><b>Sharpe Ratio Rank</b> - Measures performance relative to a risk-free asset. The rank is a trailing 1-year percentile. Extreme highs or lows often signal an upcoming change in trend.
     <li><b>Upside/Downside Change Percentage</b> - The variance between the current close and the Long-Term Probable Anchor, expressed as a percentage. Highlights upside or downside potential.
   </ol>
