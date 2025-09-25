@@ -274,16 +274,21 @@ if show_cur_ticker_hm:
     t_w     = 300
     t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
+ 
+
     st.markdown(f'<div class="h-title">{sel} — Per-Ticker Markmentum Heatmap (Current)</div>', unsafe_allow_html=True)
     st.markdown('<div class="h-sub">Current Markmentum Score by ticker.</div>', unsafe_allow_html=True)
 
     cur_ticker_heat = (
         alt.Chart(tm)
           .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+          # add this in the per-ticker heatmap chain, before .encode(...)
+          .transform_calculate(
+            TickerLabel="datum.Ticker + ' - ' + datum.Ticker_name")
           .encode(
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
-              y=alt.Y("Ticker:N", sort=ticker_order,
+              y=alt.Y("TickerLabel:N", sort=ticker_order,
                       axis=alt.Axis(title=None, labelLimit=420, orient="left",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
