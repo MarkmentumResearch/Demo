@@ -271,7 +271,7 @@ if show_cur_ticker_hm:
     )
     ticker_order = sorted(tm["Ticker"].unique().tolist())
     t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98)))
-    t_w     = 200
+    t_w     = 300
     t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
  
@@ -288,7 +288,7 @@ if show_cur_ticker_hm:
           .encode(
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
-              y=alt.Y("TickerLabel:N", sort=ticker_order,
+              y=alt.Y("TickerLabel:N", sort=ticker_order,labelPadding=16
                       axis=alt.Axis(title=None, labelLimit=420, orient="left",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
