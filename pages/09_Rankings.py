@@ -217,7 +217,7 @@ cur_heat = (
 #st.altair_chart(cur_heat, use_container_width=False)
 _, mid, _= st.columns([1,2,1], gap="large")
 with mid:
-    st.altair_chart(cur_heat)
+    st.altair_chart(cur_heat,use_container_width=False)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
