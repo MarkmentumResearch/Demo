@@ -293,7 +293,7 @@ if show_cur_ticker_hm:
                       labelPadding=10)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                              legend=alt.Legend(orient="left", title="Score", gradientLength=140)),
+                              legend=alt.Legend(orient="left", title="Score", gradientLength=140,labelPadding=8)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
                   alt.Tooltip("Ticker_name:N", title="Name"),
