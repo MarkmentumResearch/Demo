@@ -111,7 +111,7 @@ Markets + Momentum = Markmentum Research.  The equation to redefine successful i
 We deliver volatility-adjusted probable ranges, algorithmic model scoring, and actionable signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused signals. Zero noise.
 </p>
 
-<p style="font-weight:600; margin:12px 0 18px;">We don't steer the ship. We provide the captain the coordinates. Let us help you navigate markets with clarity and confidence.</p>
+<p style="font-weight:600; margin:12px 0 18px;">You're the captain. We provide the coordinates. Let us help you navigate markets with clarity and confidence.</p>
 
 <h3>Preview</h3>
 <ul>
