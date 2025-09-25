@@ -244,7 +244,7 @@ ordered_cats = [c for c in preferred if c in all_cats] + [c for c in all_cats if
 left_toggle,c_blank,c_blank= st.columns([1,4,1])
 with left_toggle:
         show_cur_ticker_hm = st.checkbox("Show per-ticker current heatmap (category)", value=False)
-c_blank,c_sel,c_blank = st.columns([1,4,1])
+c_blank,c_sel,c_blank = st.columns([2.5,3,.3])
 with c_sel:
         sel = st.selectbox("Category", ordered_cats, index=0, key="rankings_category")
 
