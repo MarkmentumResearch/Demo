@@ -362,7 +362,7 @@ if view48.empty and view49.empty and view50.empty and view51.empty:
     st.stop()
 
 if lock_axes_and_order:
-    y_order_all = sorted(set(view48["Ticker"]) | set(view49["Ticker"]) | set(view50["Ticker"]) | set(view51["Ticker"]))
+    y_order = sorted(set(view48["Ticker"]) | set(view49["Ticker"]) | set(view50["Ticker"]) | set(view51["Ticker"]))
 else:
     y_order_48 = view48["Ticker"].tolist()
     y_order_49 = view49["Ticker"].tolist()
