@@ -529,7 +529,7 @@ if show_ticker_hm:
     # --- Chart sizing (narrow, card hugs chart)
     row_h   = 22
     chart_h = max(360, row_h * max(1, len(ticker_order)) + 24)
-    chart_w = 500
+    chart_w = 515
     legend_w = 120
 
     # --- Symmetric diverging scale centered at 0 (winsorized)
