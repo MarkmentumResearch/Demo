@@ -451,7 +451,7 @@ show_ticker_hm = True
 
 c_blank,c_sel,c_blank = st.columns([2.25,3,.3])
 with c_sel:
-        sel = st.selectbox("Category - Note: Color scale fixed globally to ±160. Values outside this range are shown at the end color.", all_cats, index=default_index, key="rankings_category")
+        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
     
 
 
@@ -615,7 +615,7 @@ if show_ticker_hm:
 
 #col1, col2, col3 = st.columns([1, 3, 1])
 #with col2:
-#    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
+st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
