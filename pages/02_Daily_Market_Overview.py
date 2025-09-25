@@ -13,19 +13,20 @@ from urllib.parse import quote_plus
 st.set_page_config(page_title="Markmentum – Overview", layout="wide")
 
 # ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
+
 st.markdown("""
 <style>
-/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+/* ---------- Responsive grid: 3-up desktop, 3-up MacBook Air, 2-up laptops, 1-up centered on small ---------- */
 div[data-testid="stHorizontalBlock"]{
   display:flex;
-  flex-wrap: wrap;               /* allow wrapping by default (we’ll control per breakpoint) */
+  flex-wrap: wrap;                 /* allow wrapping; we’ll control by breakpoint */
   gap: 28px;
 }
 
-/* Each Streamlit column: let it size as a percentage row item */
+/* Each Streamlit column acts like a grid item */
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 32%;                 /* default try for ~3-up */
-  min-width: 360px;              /* don’t collapse too small */
+  flex: 1 1 32%;                   /* default target ~3-up */
+  min-width: 300px;                /* smaller than before so 3-up fits on MacBook Air */
 }
 
 /* Container width & side margins */
@@ -61,28 +62,41 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 
 /* ---------- Breakpoints ---------- */
 
-/* Big desktop (>=1500px): force 3-up, keep wide columns */
+/* Big desktop (>=1500px): force 3-up, no wrap */
 @media (min-width: 1500px){
   div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
 }
 
-/* Laptop / standard desktops (1000px–1499px): go 2-up and gently shrink text columns */
-@media (max-width: 1499.98px){
+/* MacBook Air / large laptops (1200px–1499px): keep 3-up */
+@media (min-width: 1200px) and (max-width: 1499.98px){
   div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 1 1 32%;
+    min-width: 300px;             /* ensures 3 columns fit around ~1280px widths */
+  }
+}
+
+/* Standard laptops / big tablets (900px–1199px): 2-up */
+@media (min-width: 900px) and (max-width: 1199.98px){
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
-  th.col-company, td.col-company { width:32ch; max-width:32ch; }  /* still no wrap */
+  th.col-company, td.col-company { width:32ch; max-width:32ch; }
   th.col-category, td.col-category { width:18ch; max-width:18ch; }
 }
 
-/* Narrow (<1000px): single column; give tables more breathing room again */
-@media (max-width: 999.98px){
+/* Narrow (<900px): single column, but CENTERED (not full-width) */
+@media (max-width: 899.98px){
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  /* Center cards and limit width so they don’t stretch edge-to-edge */
+  .card { max-width: 680px; margin-left: auto; margin-right: auto; }
+  /* give tables a bit more breathing room on narrow */
   th.col-company, td.col-company { width:36ch; max-width:36ch; }
   th.col-category, td.col-category { width:22ch; max-width:22ch; }
 }
 </style>
 """, unsafe_allow_html=True)
+
+
 
 # -------------------------
 # Paths (portable for Cloud)
