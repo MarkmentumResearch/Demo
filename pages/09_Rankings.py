@@ -271,7 +271,7 @@ if show_cur_ticker_hm:
     )
     ticker_order = sorted(tm["Ticker"].unique().tolist())
     t_vmax  = float(max(1.0, tm["score"].abs().quantile(0.98)))
-    t_w     = 425
+    t_w     = 300
     t_h     = max(420, 22 * max(1, len(ticker_order)) + 24)
 
  
@@ -289,10 +289,10 @@ if show_cur_ticker_hm:
               x=alt.X("Timeframe:N", sort=["Current"],
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False,labelPadding=8)),
               y=alt.Y("TickerLabel:N", sort=ticker_order,
-                      axis=alt.Axis(title=None, labelLimit=200, orient="right",labelOverlap=False)),
+                      axis=alt.Axis(title=None, labelLimit=420, orient="right",labelOverlap=False)),
               color=alt.Color("score:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-100, 0, 100]),
-                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=175)),
+                              legend=alt.Legend(orient="bottom", title="Score", gradientLength=140)),
               tooltip=[
                   alt.Tooltip("Ticker:N"),
                   alt.Tooltip("Ticker_name:N", title="Name"),
