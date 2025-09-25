@@ -309,7 +309,7 @@ if show_cur_ticker_hm:
     #st.markdown('<div class="viz-center">', unsafe_allow_html=True)
     #st.altair_chart(cur_ticker_heat, use_container_width=False)
     # (Do the same for the per-ticker heatmap)
-    c_blank, mid2, c_blank_ = st.columns(2,3,.2)
+    c_blank, mid2, c_blank = st.columns(2,3,.2)
     with mid2:
         st.altair_chart(cur_ticker_heat, use_container_width=False)
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
