@@ -16,14 +16,9 @@ st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – Rankings", layout="wide")
 
 # ---------- Global CSS ----------
-
 st.markdown("""
 <style>
-/* =========================
-   Global CSS (clean)
-   ========================= */
-
-/* App container width */
+/* Page container sizing */
 [data-testid="stAppViewContainer"] .main .block-container,
 section.main > div {
   width: 95vw;
@@ -32,7 +27,7 @@ section.main > div {
   margin-right: auto;
 }
 
-/* Remove Streamlit decorative borders/pills */
+/* Kill any bordered-container “decoration” / pill bars */
 div[data-testid="stDecoration"] { display: none !important; }
 div[data-testid="stVerticalBlockBorderWrapper"] {
   border: none !important;
@@ -43,46 +38,114 @@ div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"] {
   display: none !important;
 }
 
-/* Typography */
+/* Centering helper for charts */
+.viz-center { display:flex; justify-content:center; }
+
+/* Type + headings */
 html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
+.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin: 4px 0 8px; }
+.h-sub   { text-align:center; font-size:12px; color:#666; margin: 2px 0 10px; }
 
-/* Columns: sensible wrapping (safe defaults for the rest of the page) */
-div[data-testid="stHorizontalBlock"] { display:flex; flex-wrap:wrap; gap:24px; }
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 24%; min-width:360px; }
-@media (max-width:1499.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 48%; }
+/* Compact select width (doesn't create any pill) */
+div[data-baseweb="select"] { max-width: 36ch !important; }
+
+/* Let Streamlit column rows wrap nicely on smaller widths */
+div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap: wrap; gap: 24px; }
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 24%; min-width: 360px; }
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
 }
-@media (max-width:999.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 100%; }
-}
-
-/* -------------------------
-   Altair/Vega absolute centering
-   ------------------------- */
-/* Optional wrapper you already use */
-.viz-center { display:flex; justify-content:center; width:100%; }
-
-/* Center the Streamlit Altair container itself */
-div[data-testid="stAltairChart"],
-div[data-testid="stVegaLiteChart"] {
-  display:flex !important;
-  justify-content:center !important;
-  align-items:center !important;
-}
-
-/* Make the embedded chart size to its intrinsic width (so centering works) */
-div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed {
-  width: auto !important;        /* CRITICAL: don't stretch to 100% */
-  max-width: 100% !important;
-  margin: 0 auto !important;     /* fallback centering */
-  flex: 0 0 auto !important;
+@media (max-width: 999.98px){
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
 }
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Center any st.columns row that contains an Altair/Vega chart */
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]),
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) {
+  justify-content: center !important;           /* center the group of columns (or the single stacked one) */
+}
+
+/* Make every column in that row hug its contents and center them */
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stAltairChart"]) > div[data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stVegaLiteChart"]) > div[data-testid="column"] {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Keep the Vega embed at its intrinsic width so it doesn't stretch on small screens */
+div[data-testid="stAltairChart"] .vega-embed,
+div[data-testid="stVegaLiteChart"] .vega-embed {
+  width: auto !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+}
+
+/* Fallback for older browsers (or if :has isn't supported) – on narrow viewports,
+   just center all columns' contents so the chart stays centered */
+@media (max-width: 1200px) {
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Center any Altair/Vega chart that lives inside a Streamlit column */
+div[data-testid="stVegaLiteChart"],
+div[data-testid="stAltairChart"]{
+  display: grid !important;
+  place-items: center !important;    /* centers child in both axes */
+}
+
+/* Make the vega-embed shrink to its content so centering is perfect */
+div[data-testid="stVegaLiteChart"] .vega-embed,
+div[data-testid="stAltairChart"] .vega-embed{
+  display: inline-block !important;
+  width: auto !important;            /* do NOT stretch to 100% */
+  margin: 0 auto !important;         /* backstop centering */
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* --- Altair/Vega centering fix --- */
+/* 1) Ensure the Streamlit VegaLite container is a flex row that centers content */
+div[data-testid="stVegaLiteChart"]{
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* 2) Center the actual vega-embed wrapper inside that container */
+div[data-testid="stVegaLiteChart"] > .vega-embed{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 3) If an extra wrapper sits between, center any direct child too */
+div[data-testid="stVegaLiteChart"] > div{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 4) Make sure your helper wrapper spans full width */
+.viz-center{
+  width: 100% !important;
+  display: block !important; /* or flex; both fine since parent now centers */
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ---------- Paths ----------
