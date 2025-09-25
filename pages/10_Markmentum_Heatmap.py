@@ -613,7 +613,7 @@ if show_ticker_hm:
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
-col1, col2, col3 = st.columns([1, 3, 1])
+col1, col2, col3 = st.columns([2.5, 3, .3])
 with col2:
     st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
