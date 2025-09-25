@@ -350,7 +350,7 @@ heat = (
             axis=alt.Axis(
                 title=None,
                 labelLimit=460,
-                orient="left",
+                orient="right",
                 labelPadding=6,
                 labelFlush=False,
                 labelColor="#1a1a1a",   # darker category labels
@@ -559,7 +559,7 @@ if show_ticker_hm:
                     title=None,
                     labelLimit=140,
                     labelPadding=6,
-                    orient = "left",
+                    orient = "right",
                     labelFlush=False, 
                     labelColor="#1a1a1a",
                     labelFontSize=13,
