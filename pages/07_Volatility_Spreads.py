@@ -325,9 +325,9 @@ with r2c2:
 <div class="card">
   <h3>How to interpret the four lists</h3>
   <ol style="margin-top:6px; line-height:1.5; font-size:13px;">
-    <li><b>Most Crowded Shorts</b> — Wide Implied-Volatility (IV) <b>premium</b> with an elevated 30-Day Volatility Z-Score.
+    <li><b>Most Crowded Shorts</b> — Wide Implied-Volatility (IV) <b>premium</b> with an <i>elevated</i> 30-Day Volatility Z-Score.
         Often indicates crowding on the short side; price may be due for a <i>bounce</i>.</li>
-    <li><b>Most Crowded Longs</b> — Wide IV <b>discount</b> with a depressed 30-Day Volatility Z-Score.
+    <li><b>Most Crowded Longs</b> — Wide IV <b>discount</b> with a </i>depressed</i> 30-Day Volatility Z-Score.
         Often indicates crowding on the long side; price may be due for a <i>correction</i>.</li>
     <li><b>Most Mean Reversion Upside Bias</b> — Wide IV <b>premium</b> with a <i>depressed</i> 30-Day Volatility Z-Score.
         Not always actionable in the moment, but can be a sign of “climbing a wall of worry.”</li>
