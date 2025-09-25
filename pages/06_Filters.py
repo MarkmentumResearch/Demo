@@ -66,7 +66,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 }
 /* Ticker (col 2): fixed width */
 .tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
-/* Exposure (col 3): 6–22ch, no wrap */
+/* category (col 3): 6–22ch, no wrap */
 .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
   white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
 }
@@ -144,13 +144,13 @@ def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
 
 def _card_table_html_three(df: pd.DataFrame):
-    """Render a 3-column table: Company | Ticker | Exposure (no value column)."""
+    """Render a 3-column table: Company | Ticker | category (no value column)."""
     if df.empty:
         return ""
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
-    ccol = cmap.get("category") or cmap.get("exposure") or "Exposure"
+    ccol = cmap.get("category") or cmap.get("category") or "category"
 
     rows = []
     for _, r in df.iterrows():
@@ -168,7 +168,7 @@ def _card_table_html_three(df: pd.DataFrame):
       <tr>
         <th style="min-width:42ch">Company</th>
         <th style="width:74px">Ticker</th>
-        <th style="min-width:25ch">Exposure</th>
+        <th style="min-width:25ch">category</th>
       </tr>
     </thead>
     <tbody>
@@ -246,7 +246,7 @@ def _guess_value_col(df: pd.DataFrame):
     ]:
         if key in cmap:
             return cmap[key], label, fmt
-    dims = {"ticker","ticker_name","company","category","exposure","date"}
+    dims = {"ticker","ticker_name","company","category","category","date"}
     for col in df.columns:
         if col.lower() in dims:
             continue
@@ -259,7 +259,7 @@ def _card_table_html(title: str, df: pd.DataFrame, value_col: str, value_label: 
     safe = {c.lower(): c for c in df.columns}
     tcol = safe.get("ticker") or "Ticker"
     ncol = safe.get("ticker_name") or safe.get("company") or "Company"
-    ccol = safe.get("category") or safe.get("exposure") or "Exposure"
+    ccol = safe.get("category") or safe.get("category") or "category"
 
     rows = []
     for _, r in df.iterrows():
