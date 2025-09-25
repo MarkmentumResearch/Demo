@@ -16,17 +16,17 @@ st.set_page_config(page_title="Markmentum – Signals", layout="wide")
 
 st.markdown("""
 <style>
-/* ---------- Responsive grid: 3-up desktop, 2-up laptop, 1-up narrow ---------- */
+/* ---------------- Base layout ---------------- */
 div[data-testid="stHorizontalBlock"]{
   display:flex;
-  flex-wrap: wrap;               /* allow wrapping; we control per breakpoint */
+  flex-wrap: wrap;
   gap: 28px;
 }
 
 /* Each Streamlit column behaves like a grid item */
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 32%;                 /* target ~3-up by default */
-  min-width: 360px;              /* don't collapse too small */
+  flex: 1 1 32%;                 /* desktop target ~3-up */
+  min-width: 300px;              /* allow 3-up comfortably on wide screens */
 }
 
 /* Container width & side margins */
@@ -48,6 +48,8 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
   background: #fff;
   padding: 12px 12px 8px 12px;
   box-shadow: 0 0 0 rgba(0,0,0,0);
+  max-width: 720px;            /* standard card width for non-desktop */
+  width: 100%;
 }
 .card h3 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color:#1a1a1a; }
 
@@ -59,35 +61,38 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .right  { text-align: right; white-space: nowrap; }
 
 /* --- Column widths & no-wrap (override any inline styles) --- */
-/* Company (col 1): 11–39ch, no wrap */
 .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){
   white-space: nowrap; min-width:11ch !important; width:39ch !important; max-width:39ch !important;
 }
-/* Ticker (col 2): fixed width */
 .tbl thead th:nth-child(2), .tbl tbody td:nth-child(2){ width:74px !important; }
-/* Category (col 3): 6–22ch, no wrap */
 .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){
   white-space: nowrap; min-width:6ch !important; width:22ch !important; max-width:22ch !important;
 }
-/* Value (col 4): keep compact (most cards use %/score; shares not used here) */
 .tbl thead th:nth-child(4), .tbl tbody td:nth-child(4){ width:90px; }
 
-/* ---------- Breakpoints ---------- */
-/* Big desktop (>=1500px): force 3-up */
+/* ---------------- Breakpoints ---------------- */
+
+/* DESKTOP (>=1500px): force 3-up, cards can expand within their column */
 @media (min-width: 1500px){
   div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex-basis: 32%; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 0 0 32%;
+    min-width: 300px;
+  }
+  .card { max-width: none; }   /* let desktop cards fill their columns */
 }
-/* Laptop / standard desktops (1000–1499px): go 2-up, gently shrink text cols */
+
+/* NON-DESKTOP (<1500px): ALWAYS 1-up, centered, fixed standard width */
 @media (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
-  .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:32ch !important; max-width:32ch !important; }
-  .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:18ch !important; max-width:18ch !important; }
-}
-/* Narrow (<1000px): single column; loosen table widths a bit */
-@media (max-width: 999.98px){
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+    flex: 0 0 100%;
+  }
+  .card{
+    max-width: 720px;          /* standard width */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Slightly loosen text columns for readability on smaller screens */
   .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){ width:36ch !important; max-width:36ch !important; }
   .tbl thead th:nth-child(3), .tbl tbody td:nth-child(3){ width:22ch !important; max-width:22ch !important; }
 }
