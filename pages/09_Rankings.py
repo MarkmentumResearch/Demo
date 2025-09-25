@@ -201,7 +201,7 @@ heat_w  = 300   # << narrow column (~“Current” header width)
 heat_h  = max(420, 26 * len(cat_order) + 24)
 
 st.markdown('<div class="h-title">Markmentum Heatmap — Current Score (by Category)</div>', unsafe_allow_html=True)
-st.markdown('<div class="h-sub">Average current Markmentum Score across tickers in each category.</div>', unsafe_allow_html=True)
+st.markdown('<div class="h-sub">Average current Score across tickers in each category</div>', unsafe_allow_html=True)
 
 cur_heat = (
     alt.Chart(cat_cur)
@@ -278,7 +278,7 @@ if show_cur_ticker_hm:
  
 
     st.markdown(f'<div class="h-title">{sel} — Per-Ticker Markmentum Heatmap (Current)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-sub">Current Markmentum Score by ticker.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="h-sub">Current Score by ticker</div>', unsafe_allow_html=True)
 
     cur_ticker_heat = (
         alt.Chart(tm)
