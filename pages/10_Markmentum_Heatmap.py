@@ -816,6 +816,7 @@ negQTD = baseQTD.transform_filter("datum.model_score_qtd_change < 0") \
 chartQTD = (barsQTD + posQTD + negQTD).properties(title="Markmentum Score QTD Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # Render in 4 columns (centered row; wraps on smaller screens)
+st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
 with cA: st.altair_chart(chart48, use_container_width=True)
 with cB: st.altair_chart(chartWTD, use_container_width=True)
