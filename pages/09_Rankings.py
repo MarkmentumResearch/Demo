@@ -16,75 +16,59 @@ st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – Rankings", layout="wide")
 
 # ---------- Global CSS ----------
+
 st.markdown("""
 <style>
-/* ============== Global CSS (cleaned & corrected) ============== */
+/* ============== Global CSS (scoped & safe) ============== */
 
 /* Page container sizing */
 [data-testid="stAppViewContainer"] .main .block-container,
-section.main > div {
-  width: 95vw;
-  max-width: 2100px;
-  margin-left: auto;
-  margin-right: auto;
-}
+section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
 
 /* Remove Streamlit decorative borders/pills */
-div[data-testid="stDecoration"] { display: none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"] {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"] {
-  display: none !important;
-}
+div[data-testid="stDecoration"] { display:none !important; }
+div[data-testid="stVerticalBlockBorderWrapper"]{ border:none !important; background:transparent !important; box-shadow:none !important; }
+div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ display:none !important; }
 
-/* Typography + HEATMAP TITLES */
+/* Typography + HEATMAP TITLES (unchanged) */
 html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif !important;
 }
 .h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
 .h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
 
 /* Compact select */
-div[data-baseweb="select"] { max-width: 36ch !important; }
+div[data-baseweb="select"] { max-width:36ch !important; }
 
-/* Responsive columns for lower graphs: 4 on desktop, 2×2 on laptops, 1 on small screens */
-div[data-testid="stHorizontalBlock"] { display:flex; flex-wrap:wrap; gap:24px; }
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 22%; min-width:280px; }  /* 4-up desktop */
+/* --------- SCOPED layouts (no global overrides) --------- */
 
-@media (max-width:1499.98px){   /* laptops / MacBook Air */
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 48%; }  /* 2-up */
-}
-@media (max-width:799.98px){   /* small screens / tablets */
-  div[data-testid="stHorizontalBlock"] > div[data-testid="column"] { flex:1 1 100%; } /* 1-up */
+/* A) Heatmap centering row: directly after the #hm-center marker */
+#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  /* restore equal columns for this one row so middle column is truly centered */
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
 }
 
-/* -------- Altair/Vega centering -------- */
-.viz-center { width:100%; text-align:center; }
-
-.viz-center > div[data-testid="stAltairChart"],
-.viz-center > div[data-testid="stVegaLiteChart"]{
-  display:inline-block !important;
-  width:auto !important;
-  margin:0 auto !important;
-  text-align:left;  /* keep axes/titles aligned properly */
+/* B) Bottom 4 charts grid: directly after the #grid4 marker */
+#grid4 + div[data-testid="stHorizontalBlock"]{
+  display:flex; flex-wrap:wrap; gap:24px;
+}
+#grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex:1 1 22%; min-width:280px;             /* 4-up on desktop */
+}
+@media (max-width:1499.98px){                 /* laptops / MacBook Air: 2×2 */
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+}
+@media (max-width:799.98px){                  /* small screens: 1-up */
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
 }
 
-div[data-testid="stAltairChart"],
-div[data-testid="stVegaLiteChart"]{
-  display:grid !important;
-  place-items:center !important;
+/* --- Altair/Vega: keep intrinsic width and allow centering --- */
+div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
+  display:grid !important; place-items:center !important; width:100%;
 }
-
-div[data-testid="stAltairChart"] .vega-embed,
-div[data-testid="stVegaLiteChart"] .vega-embed{
-  width:auto !important;
-  max-width:100% !important;
-  margin:0 auto !important;
-  display:inline-block !important;
-  flex:0 0 auto !important;
+div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"] .vega-embed{
+  width:auto !important; max-width:100% !important; margin:0 auto !important; display:inline-block !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -213,11 +197,11 @@ cur_heat = (
       .configure_view(strokeOpacity=0)
 )
 
-st.markdown('<div class="viz-center">', unsafe_allow_html=True)
-st.altair_chart(cur_heat, use_container_width=False)
-#_, mid, _= st.columns([1,2,1], gap="large")
-#with mid:
-#    st.altair_chart(cur_heat,use_container_width=False)
+#st.markdown('<div class="viz-center">', unsafe_allow_html=True)
+#st.altair_chart(cur_heat, use_container_width=False)
+_, mid, _= st.columns([1,2,1], gap="large")
+with mid:
+    st.altair_chart(cur_heat,use_container_width=False)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -482,6 +466,8 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 
 
 # Render in 4 columns (centered row; wraps on smaller screens)
+# marker to scope 4→2×2→1 layout to JUST this row
+st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
 with cA: st.altair_chart(chart48, use_container_width=True)
 with cB: st.altair_chart(chart49, use_container_width=True)
