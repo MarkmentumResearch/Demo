@@ -49,11 +49,32 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   min-width: 0 !important;
 }
 
-/* A2) Per-ticker heatmap centering row: directly after the #hm-center2 marker */
-#hm-center2 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 auto !important;
+/* A2) Per-ticker heatmap centering row (right after the #hm-center2 marker) */
+#hm-center2 + div[data-testid="stHorizontalBlock"]{
+  display: flex !important;
+  justify-content: center !important;  /* center the row */
+  gap: 0 !important;
+}
+
+/* side columns: take remaining space equally */
+#hm-center2 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#hm-center2 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex: 1 1 0 !important;
   min-width: 0 !important;
-}            
+}
+
+/* middle column: shrink to content so the chart width dictates the center */
+#hm-center2 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+}
+
+/* make sure the embedded Altair chart stays at intrinsic width */
+#hm-center2 + div[data-testid="stHorizontalBlock"] .vega-embed{
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}        
 
 /* B) Bottom 4 charts grid: directly after the #grid4 marker */
 #grid4 + div[data-testid="stHorizontalBlock"]{
