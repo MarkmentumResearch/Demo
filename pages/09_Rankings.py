@@ -78,15 +78,18 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
 
-/* Default (desktop): show 4-across block, hide 2x2 */
-#grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
-#grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
+
 
 /* Laptop / MacBook Air: hide 4-across, show 2x2 */
 @media (max-width: 1499.98px){
   #grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
   #grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
 }
+
+/* Default (desktop): show 4-across block, hide 2x2 */
+#grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
+#grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }            
+
 
 /* Optional: tighten gaps inside those blocks */
 #grid4-desktop ~ div[data-testid="stHorizontalBlock"],
