@@ -84,8 +84,8 @@ th.col-ticker,   td.col-ticker   { width:74px; }
   .card { max-width: none; }
 }
 
-/* NON-DESKTOP (<1700px): ALWAYS 1-up, centered, fixed standard width */
-@media (max-width: 1699.98px){
+/* NON-DESKTOP (<1900px): ALWAYS 1-up, centered, fixed standard width */
+@media (max-width: 1899.98px){
   /* make each column take the full row so only one column per row */
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
     flex: 0 0 100%;
