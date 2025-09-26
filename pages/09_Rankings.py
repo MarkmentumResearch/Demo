@@ -77,19 +77,19 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* B) Bottom 4 charts grid: directly after the #grid4 marker */
-#grid4 + div[data-testid="stHorizontalBlock"]{
+grid4 + div[data-testid="stHorizontalBlock"]{
   display:flex ;
   flex-wrap:wrap;
   gap:24px;
 }
-#grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   flex:1 1 22%; min-width:280px;             /* 4-up on desktop */
 }
 @media (max-width:1499.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 0 48% !important; }
+  grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 0 48% !important; }
 }
 @media (max-width:799.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 0 100% !important; }
+  grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 0 100% !important; }
 }
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
