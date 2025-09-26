@@ -77,22 +77,41 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
-/* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
+/* Bottom 4 charts: single-row, responsive */
 
-/* Default (desktop): show 4-across block, hide 2x2 */
-#grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
-#grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
-
-/* Laptop / MacBook Air: hide 4-across, show 2x2 */
-@media (max-width: 1499.98px){
-  #grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
-  #grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
+/* Target the row that CONTAINS #grid4 and make it a grid */
+div[data-testid="stHorizontalBlock"]:has(#grid4){
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 across on desktop */
+  gap: 24px;
+  align-items: start;
 }
 
-/* Optional: tighten gaps inside those blocks */
-#grid4-desktop ~ div[data-testid="stHorizontalBlock"],
-#grid4-laptop  ~ div[data-testid="stHorizontalBlock"]{ gap: 24px; }
+/* If Streamlit inserts an inner row wrapper, flatten it */
+div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
+  display: contents !important;
+}
 
+/* Neutralize Streamlit’s inline widths/flex on columns in this row */
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
+  width: auto !important;
+  max-width: none !important;
+  flex: initial !important;
+}
+
+/* Laptops / MacBook Air: 2 × 2 */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Small tablets / phones: 1 per row */
+@media (max-width: 799.98px){
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
+    grid-template-columns: 1fr !important;
+  }
+}
       
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
