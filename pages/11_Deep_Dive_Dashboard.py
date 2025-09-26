@@ -1352,7 +1352,7 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 
 
 st.markdown('<div id="stat-center"></div>', unsafe_allow_html=True)
-_, mid_stat, _ = st.columns([2.2,3,.6])
+_, mid_stat, _ = st.columns([1.9,3,1])
 
 with mid_stat:
 
