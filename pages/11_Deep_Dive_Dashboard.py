@@ -87,20 +87,25 @@ st.markdown("""
 }
 
 /* GRAPH 1 row (immediately after the #g1-center marker) */
-#g1-center + div[data-testid="stHorizontalBlock"]{
-  display:flex !important; justify-content:center !important; gap:0 !important;
+/* GRAPH 1 row (2/3 page wide, centered) */
+#g1-wide + div[data-testid="stHorizontalBlock"]{
+  display:flex !important; justify-content:center !important; gap:24px !important;
 }
-#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
-#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
-  flex:1 1 0 !important; min-width:0 !important;
+#g1-wide + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#g1-wide + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important; min-width:0 !important;   /* side gutters */
 }
-#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
-  flex:0 0 auto !important; min-width:0 !important;
+#g1-wide + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex:4 1 0 !important; min-width:0 !important;   /* ~66.7% width for Graph 1 */
 }
 
-/* Backstop so charts/images don’t stretch inside the middle column */
-#g1-center + div[data-testid="stHorizontalBlock"] img,
-#g1-center + div[data-testid="stHorizontalBlock"] canvas { display:inline-block !important; }
+/* Backstop so the plot doesn’t shrink inside the middle column */
+#g1-wide + div[data-testid="stHorizontalBlock"] img,
+#g1-wide + div[data-testid="stHorizontalBlock"] canvas{
+  display:inline-block !important;
+  max-width:100% !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
