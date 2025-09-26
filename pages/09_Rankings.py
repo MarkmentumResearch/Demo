@@ -86,10 +86,10 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   flex:1 1 22%; min-width:280px;             /* 4-up on desktop */
 }
 @media (max-width:1499.98px){
-  #grid4 ~  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48% !important; }
+  #grid4 ~  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:0 0 48% !important; }
 }
 @media (max-width:799.98px){
-  #grid4 ~  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100% !important; }
+  #grid4 ~  div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:0 0 100% !important; }
 }
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
