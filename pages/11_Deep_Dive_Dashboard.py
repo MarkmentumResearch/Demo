@@ -1555,7 +1555,7 @@ with mid_stat:
         if "active_ticker" not in st.session_state:
             st.session_state["active_ticker"] = DEFAULT_TICKER
 
-        SEARCH_BOX_WIDTH_PX = 480
+        SEARCH_BOX_WIDTH_PX = 515
         st.markdown(
             f"""
             <style>
