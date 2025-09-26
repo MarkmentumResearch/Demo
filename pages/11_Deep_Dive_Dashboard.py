@@ -80,6 +80,8 @@ st.markdown("""
   flex:0 0 auto !important; min-width:0 !important;   /* middle column = shrink-to-fit */
 }
 
+
+
 /* GRAPH 1 row (immediately after the #g1-center marker) */
 /* GRAPH 1 row (2/3 page wide, centered) */
 #g1-wide + div[data-testid="stHorizontalBlock"]{
@@ -114,6 +116,18 @@ st.markdown("""
   max-width: 100% !important;
 }
 
+/* Tighten vertical space between Stat Box and Graph 1 */
+#stat-center + div[data-testid="stHorizontalBlock"]{
+  margin-bottom: 6px !important;      /* reduce bottom margin of the Stat Box row */
+}
+#g1-wide + div[data-testid="stHorizontalBlock"]{
+  margin-top: 4px !important;         /* reduce top margin of the Graph 1 row */
+}
+
+/* Ensure pyplot wrapper itself has no extra top margin */
+#g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"]{
+  margin-top: 0 !important;
+}            
 
 </style>
 """, unsafe_allow_html=True)
