@@ -114,25 +114,6 @@ st.markdown("""
   max-width: 100% !important;
 }
 
-/* ===== Scoped 3-up grid: applies ONLY after the #grid3-start marker ===== */
-#grid3-start ~ div[data-testid="stHorizontalBlock"]{
-  display: flex;            /* ensure flex rows for the gallery */
-  flex-wrap: wrap;
-  gap: 24px;
-}
-#grid3-start ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 0 !important;   /* 3 per row on laptop/desktop */
-  min-width: 300px !important;
-}
-
-/* (Optional) tighten on small tablets/phones */
-@media (max-width: 799.98px){
-  #grid3-start ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-    flex: 1 1 100% !important;   /* 1-up on very small screens */
-  }
-}            
-
-
 
 </style>
 """, unsafe_allow_html=True)
@@ -1730,7 +1711,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div id="grid3-start"></div>', unsafe_allow_html=True)
+st.markdown('<div id="data-testid"></div>', unsafe_allow_html=True)
 
 # ==============================
 #  Graphs 2–4 - begin
