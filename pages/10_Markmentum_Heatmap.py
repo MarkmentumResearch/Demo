@@ -59,13 +59,13 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }
 
 /* B) Bottom 4 charts grid: 4-up desktop, 2×2 laptops/MBA, 1-up small screens */
-#grid4 + div[data-testid="stHorizontalBlock"]{ display:flex; flex-wrap:wrap; gap:24px; }
-#grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 22%; min-width:280px; }   /* 4-up desktop */
+div[data-testid="stHorizontalBlock"]:has(#grid4) { display:flex; flex-wrap:wrap; gap:24px; }
+div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 22%; min-width:280px; }   /* 4-up desktop */
 @media (max-width:1499.98px){  /* laptops / MacBook Air → 2-up */
-  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48%; }
+  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 48%; }
 }
 @media (max-width:799.98px){   /* small screens → 1-up */
-  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100%; }
+  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 100%; }
 }
 
 /* C) Altair/Vega: intrinsic sizing + centering inside their column (backstop) */
@@ -816,9 +816,12 @@ negQTD = baseQTD.transform_filter("datum.model_score_qtd_change < 0") \
 chartQTD = (barsQTD + posQTD + negQTD).properties(title="Markmentum Score QTD Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # Render in 4 columns (centered row; wraps on smaller screens)
-st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
-with cA: st.altair_chart(chart48, use_container_width=True)
+
+with cA:
+    st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
+    st.altair_chart(chart48, use_container_width=True)
+
 with cB: st.altair_chart(chartWTD, use_container_width=True)
 with cC: st.altair_chart(chartMTD, use_container_width=True)
 with cD: st.altair_chart(chartQTD, use_container_width=True)
