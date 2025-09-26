@@ -173,8 +173,8 @@ def _fmt_pct(val):
 def _fmt_millions(val):
     try:
         v = float(val)
-        if v > 1000:
-            v = v / 1_000_000.0
+        #if v > 1000:
+        #    v = v / 1_000_000.0
         return f"{v:,.2f} M"
     except Exception:
         return "—"
