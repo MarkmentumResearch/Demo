@@ -224,6 +224,8 @@ if date_str:
         unsafe_allow_html=True,
     )
 
+st.caption(f"Streamlit {st.__version__}")
+
 
 # --- watermark helper (Matplotlib) ---
 from matplotlib.axes import Axes
