@@ -118,10 +118,10 @@ st.markdown("""
 
 /* Tighten vertical space between Stat Box and Graph 1 */
 #stat-center + div[data-testid="stHorizontalBlock"]{
-  margin-bottom: 6px !important;      /* reduce bottom margin of the Stat Box row */
+  margin-bottom: 2px !important;      /* reduce bottom margin of the Stat Box row */
 }
 #g1-wide + div[data-testid="stHorizontalBlock"]{
-  margin-top: 4px !important;         /* reduce top margin of the Graph 1 row */
+  margin-top: 0px !important;         /* reduce top margin of the Graph 1 row */
 }
 
 /* Ensure pyplot wrapper itself has no extra top margin */
