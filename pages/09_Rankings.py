@@ -76,35 +76,32 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   margin: 0 auto !important;
 }        
 
-/* B) Bottom 4 charts grid: directly after the #grid4 marker */
+/* B) Bottom 4 charts grid (robust): use CSS Grid for this row only */
 #grid4 ~ div[data-testid="stHorizontalBlock"]{
-  display:flex !important;
-  flex-wrap:wrap !important;
-  gap:24px;
-}
-/* Desktop: 4-up */
-#grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 0 0 22% !important;
-  width: 22% !important;                /* override Streamlit inline width */
-  max-width: 22% !important;            /* keep deterministic */
-  min-width: 280px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4-across desktop */
+  gap: 24px;
+  align-items: start;
 }
 
-/* Laptops / MacBook Air: 2 per row (2x2) */
-@media (max-width:1499.98px){
-  #grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-    flex: 0 0 48% !important;
-    width: 48% !important;              /* override inline 25% */
-    max-width: 48% !important;
+/* neutralize Streamlit's inline widths on columns inside this row */
+#grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  width: auto !important;
+  max-width: none !important;
+  flex: initial !important;   /* stop flex from interfering */
+}
+
+/* Laptops / MacBook Air: 2x2 */
+@media (max-width: 1499.98px){
+  #grid4 ~ div[data-testid="stHorizontalBlock"]{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 /* Small tablets/phones: 1 per row */
-@media (max-width:799.98px){
-  #grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
+@media (max-width: 799.98px){
+  #grid4 ~ div[data-testid="stHorizontalBlock"]{
+    grid-template-columns: 1fr !important;
   }
 }
 
