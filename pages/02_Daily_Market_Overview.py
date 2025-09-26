@@ -85,7 +85,7 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 }
 
 /* NON-DESKTOP (<1900px): ALWAYS 1-up, centered, fixed standard width */
-@media (max-width: 1899.98px){
+@media (max-width: 1199.98px){
   /* make each column take the full row so only one column per row */
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
     flex: 0 0 100%;
