@@ -1601,7 +1601,7 @@ with mid_stat:
         render_stat_box_component(_row)
 
 # optional small spacer
-st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+#st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-center"></div>', unsafe_allow_html=True)
