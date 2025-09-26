@@ -1721,7 +1721,7 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # -------------------------
 
 st.markdown("""
-
+<style>
 /* Keep 3 charts per row as long as we reasonably can */
 div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   flex: 1 1 0;
