@@ -74,7 +74,7 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 /* ---------------- Breakpoints ---------------- */
 
 /* DESKTOP (>=1700px): force 3-up */
-@media (min-width: 1500px){
+@media (min-width: 1700px){
   div[data-testid="stHorizontalBlock"] { flex-wrap: nowrap; }
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ 
     flex: 0 0 32%;
@@ -85,7 +85,7 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 }
 
 /* NON-DESKTOP (<1700px): ALWAYS 1-up, centered, fixed standard width */
-@media (max-width: 1499.98px){
+@media (max-width: 1699.98px){
   /* make each column take the full row so only one column per row */
   div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
     flex: 0 0 100%;
