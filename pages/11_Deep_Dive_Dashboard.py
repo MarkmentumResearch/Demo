@@ -1609,8 +1609,8 @@ with mid_stat:
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
 # --- centered Graph 1 row ---
-st.markdown('<div id="g1-center"></div>', unsafe_allow_html=True)
-_, mid_g1, _ = st.columns(3)
+st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
+left_g1, mid_g1, right_g1 = st.columns([1, 4, 1], gap="small")
 with mid_g1:
     # ==============================
     # Graph 1 — centered, 90° dates, legend bottom-center, **5-day gutter both ends**
