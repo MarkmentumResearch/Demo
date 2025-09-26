@@ -76,29 +76,37 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   margin: 0 auto !important;
 }        
 
-/* B) Bottom 4 charts grid (robust): use CSS Grid for this row only */
+/* B) Bottom 4 charts grid — robust against nested wrappers */
+/* Make the row after #grid4 a CSS grid */
 #grid4 ~ div[data-testid="stHorizontalBlock"]{
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4-across desktop */
+  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 across on desktop */
   gap: 24px;
   align-items: start;
 }
 
-/* neutralize Streamlit's inline widths on columns inside this row */
-#grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  width: auto !important;
-  max-width: none !important;
-  flex: initial !important;   /* stop flex from interfering */
+/* If Streamlit inserts an inner row wrapper, flatten it so its children
+   (the real columns) become grid items of the outer row */
+#grid4 ~ div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"]{
+  display: contents !important;
 }
 
-/* Laptops / MacBook Air: 2x2 */
+/* Target columns as DESCENDANTS (not only direct children) and
+   neutralize Streamlit’s inline width/flex */
+#grid4 ~ div[data-testid="stHorizontalBlock"] [data-testid="column"]{
+  width: auto !important;
+  max-width: none !important;
+  flex: initial !important;
+}
+
+/* Laptops / MacBook Air: 2 × 2 */
 @media (max-width: 1499.98px){
   #grid4 ~ div[data-testid="stHorizontalBlock"]{
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-/* Small tablets/phones: 1 per row */
+/* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
   #grid4 ~ div[data-testid="stHorizontalBlock"]{
     grid-template-columns: 1fr !important;
