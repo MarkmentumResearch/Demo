@@ -84,22 +84,31 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }
 /* Desktop: 4-up */
 #grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 0 0 22% !important;         /* fixed basis so wrap logic is deterministic */
+  flex: 0 0 22% !important;
+  width: 22% !important;                /* override Streamlit inline width */
+  max-width: 22% !important;            /* keep deterministic */
   min-width: 280px !important;
 }
-            
-/* Laptops / MBA: 2 per row (2x2) */
+
+/* Laptops / MacBook Air: 2 per row (2x2) */
 @media (max-width:1499.98px){
   #grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
     flex: 0 0 48% !important;
+    width: 48% !important;              /* override inline 25% */
+    max-width: 48% !important;
   }
 }
+
 /* Small tablets/phones: 1 per row */
 @media (max-width:799.98px){
   #grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
     flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
+
+      
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
   display:grid !important; place-items:center !important; width:100%;
