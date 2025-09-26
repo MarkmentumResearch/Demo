@@ -1683,7 +1683,7 @@ with mid_g1:
         #from __future__ import annotations  # optional; if you use the | type hints above
         # ...
         add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
-        st.pyplot(fig, clear_figure=True)
+        st.pyplot(fig, clear_figure=True,use_container_width=True)
 
 # optional small spacer
 st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
