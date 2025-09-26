@@ -103,7 +103,7 @@ st.markdown("""
 #g1-wide + div[data-testid="stHorizontalBlock"] img,
 #g1-wide + div[data-testid="stHorizontalBlock"] canvas{
   display:inline-block !important;
-  max-width:100% !important;
+  width:100% !important;
 }
 
 </style>
