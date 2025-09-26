@@ -156,6 +156,12 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
   <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across full universe of instruments.</li>
 </ul>
 
+<h3>Our Why</h3>
+<ul>
+Markmentum Research was born from a passion for markets and numbers, but it’s guided by faith. We believe clarity and discipline are gifts meant to be shared. All glory goes to the Lord, who makes every step possible.
+
+Our mission is to deliver actionable, probability-driven insights without noise or narratives, helping investors steward their resources with confidence.
+<ul>
 </div>
 """,
     unsafe_allow_html=True,
