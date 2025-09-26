@@ -148,7 +148,7 @@ We deliver volatility-adjusted probable ranges, algorithmic model scoring, and a
 
 <h3>Methodology</h3>
 <ul>
-  <li><b>Probable Ranges</b> – Derived from historical distributions, realized volatility, and liquidity-aware smoothing across daily/weekly/monthly horizons.</li>
+  <li><b>Probable Ranges</b> – Derived from historical distributions of intraday highs and lows, realized volatility, and liquidity-aware smoothing across daily/weekly/monthly horizons.</li>
   <li><b>Anchors</b> – Long-term probabilistic anchors to contextualize extension and mean-reversion risk (e.g., “gap to LT anchor”).</li>
   <li><b>Trends</b> – Short-, mid-, and long-term composites derived by netting the underlying volatility-adjusted factors used to calculate probable highs and lows, providing a directional trend signal.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, IVOL/RVOL spreads, and regime flags.</li>
