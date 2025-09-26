@@ -1617,7 +1617,7 @@ with mid_g1:
     # ==============================
 
 
-    st.markdown('<div style="height: 36px;"></div>', unsafe_allow_html=True)
+    #st.markdown('<div style="height: 36px;"></div>', unsafe_allow_html=True)
 
     _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
     _range_sel  = st.session_state.get("range_sel", "All")
