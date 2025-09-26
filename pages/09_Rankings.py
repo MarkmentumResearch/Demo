@@ -77,19 +77,19 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* B) Bottom 4 charts grid: directly after the #grid4 marker */
-div[grid4] + div[data-testid="stHorizontalBlock"]{
+#grid4 + div[data-testid="stHorizontalBlock"]{
   display:flex ;
   flex-wrap:wrap;
   gap:24px;
 }
-div[grid4] + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+#grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
   flex:1 1 22%; min-width:280px;             /* 4-up on desktop */
 }
 @media (max-width:1499.98px){
-  div[grid4] + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48% !important; }
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 48% !important; }
 }
 @media (max-width:799.98px){
-  div[grid4] + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100% !important; }
+  #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{ flex:1 1 100% !important; }
 }
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
@@ -496,7 +496,7 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 
 # Render in 4 columns (centered row; wraps on smaller screens)
 # marker to scope 4→2×2→1 layout to JUST this row
-st.markdown('<div grid4></div>', unsafe_allow_html=True)
+st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
 with cA: st.altair_chart(chart48, use_container_width=True)
 with cB: st.altair_chart(chart49, use_container_width=True)
