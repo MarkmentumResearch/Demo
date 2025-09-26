@@ -1579,30 +1579,58 @@ with mid_stat:
             key="sb_query", label_visibility="collapsed",
             placeholder="Type ticker or name…"
         )
-        raw = (q or "").strip().upper()
+        # --- typeahead suggester (drop-in) ---
+        # assumes: q (text), dir_df with 'tkr','nam', and SEARCH_BOX_WIDTH_PX defined
+        if "display" not in dir_df.columns:
+            dir_df["display"] = dir_df["tkr"] + " - " + dir_df["nam"]
 
-        # token typed by the user (left of " - " if they picked from the menu)
-        token = raw.split(" - ")[0].strip()
+        raw = (q or "").strip()
+        query = raw.upper()
+        entered = (raw.split(" - ")[0].strip().upper()
+               if " - " in raw else (query.split()[0] if query else ""))
 
-        tickers = set(dir_df["tkr"])          # already UPPER
-        choose = None
+        tickers = set(dir_df["tkr"])
 
-        # 1) exact ticker
-        if token in tickers:
-            choose = token
-        else:
-            # 2) try name match (use the full token, no regex so & / . etc. are safe)
-            hits = dir_df[dir_df["nam"].str.contains(token, regex=False, na=False)]
-            if hits.empty:
-                # 3) fallback: begins-with match on name
-                hits = dir_df[dir_df["nam"].str.startswith(token, na=False)]
-            if not hits.empty:
-                choose = hits.iloc[0]["tkr"]   # first match → ticker
-
-        if choose and choose != st.session_state.get("active_ticker"):
-            st.session_state["active_ticker"] = choose
-            st.query_params.update({"ticker": choose})
+        # 1) exact ticker -> select immediately
+        if entered and entered in tickers and entered != st.session_state.get("active_ticker"):
+            st.session_state["active_ticker"] = entered
+            st.query_params.update({"ticker": entered})
             st.rerun()
+
+        # 2) show suggestions when not an exact ticker
+        options = []
+        if query and entered not in tickers:
+            # rank: ticker startswith > ticker contains > name contains
+            s1 = dir_df[dir_df["tkr"].str.startswith(query, na=False)]
+            s2 = dir_df[dir_df["tkr"].str.contains(query, na=False, regex=False)
+                & ~dir_df.index.isin(s1.index)]
+            # use RAW (not upper) for names + case-insensitive search; regex=False avoids '.' and '&' issues
+            s3 = dir_df[dir_df["nam"].str.contains(raw, case=False, na=False, regex=False)
+                        & ~dir_df.index.isin(s1.index.union(s2.index))]
+
+            ranked = (pd.concat([s1, s2, s3], axis=0)
+                .drop_duplicates("tkr", keep="first")
+                .head(10))
+            options = ranked["display"].tolist()
+
+        # 3) render suggestion list as buttons (Google-like)
+        if options:
+            st.markdown(
+                f"""
+                <div style="border:1px solid #D7D9E0;border-radius:6px;background:#fff;
+                    padding:6px 0;max-width:{SEARCH_BOX_WIDTH_PX}px;
+                    max-height:280px;overflow:auto;margin-top:-2px;">
+                """,
+                unsafe_allow_html=True,
+            )
+            for i, disp in enumerate(options):
+                if st.button(disp, key=f"sb_sugg_{i}", use_container_width=True):
+                    chosen = disp.split(" - ")[0]  # map label -> ticker
+                    st.session_state["active_ticker"] = chosen
+                    st.query_params.update({"ticker": chosen})
+                    st.rerun()
+            st.markdown("</div>", unsafe_allow_html=True)
+# --- end typeahead ---
 
     if "range_sel" not in st.session_state:
         st.session_state["range_sel"] = "All"
