@@ -496,7 +496,7 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 
 # Render in 4 columns (centered row; wraps on smaller screens)
 # marker to scope 4→2×2→1 layout to JUST this row
-st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
+st.markdown('<div grid4></div>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
 with cA: st.altair_chart(chart48, use_container_width=True)
 with cB: st.altair_chart(chart49, use_container_width=True)
