@@ -36,12 +36,6 @@ st.markdown("""
   padding-right: 1.2rem;
 }
 
-/* Keep 3 charts per row as long as we reasonably can */
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  flex: 1 1 0;
-  min-width: 300px;            /* was larger; this prevents early wrapping on MBA */
-}
-</style>
 """, unsafe_allow_html=True)
 
 st.markdown(
@@ -1705,6 +1699,18 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # -------------------------
 # Stat Box - End
 # -------------------------
+
+st.markdown("""
+
+/* Keep 3 charts per row as long as we reasonably can */
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+  flex: 1 1 0;
+  min-width: 300px;            /* was larger; this prevents early wrapping on MBA */
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 
 # ==============================
 #  Graphs 2–4 - begin
