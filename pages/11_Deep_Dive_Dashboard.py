@@ -1580,11 +1580,28 @@ with mid_stat:
             placeholder="Type ticker or name…"
         )
         raw = (q or "").strip().upper()
-        entered = raw.split(" - ")[0].split()[0] if raw else ""
-        tickers = set(dir_df["tkr"])
-        if entered and entered in tickers and entered != st.session_state.get("active_ticker"):
-            st.session_state["active_ticker"] = entered
-            st.query_params.update({"ticker": entered})  # keep deep links working
+
+        # token typed by the user (left of " - " if they picked from the menu)
+        token = raw.split(" - ")[0].strip()
+
+        tickers = set(dir_df["tkr"])          # already UPPER
+        choose = None
+
+        # 1) exact ticker
+        if token in tickers:
+            choose = token
+        else:
+            # 2) try name match (use the full token, no regex so & / . etc. are safe)
+            hits = dir_df[dir_df["nam"].str.contains(token, regex=False, na=False)]
+            if hits.empty:
+                # 3) fallback: begins-with match on name
+                hits = dir_df[dir_df["nam"].str.startswith(token, na=False)]
+            if not hits.empty:
+                choose = hits.iloc[0]["tkr"]   # first match → ticker
+
+        if choose and choose != st.session_state.get("active_ticker"):
+            st.session_state["active_ticker"] = choose
+            st.query_params.update({"ticker": choose})
             st.rerun()
 
     if "range_sel" not in st.session_state:
