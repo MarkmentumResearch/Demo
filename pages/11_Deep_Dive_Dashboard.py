@@ -1711,7 +1711,7 @@ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div id="data-testid"></div>', unsafe_allow_html=True)
+#st.markdown('<div id="data-testid"></div>', unsafe_allow_html=True)
 
 # ==============================
 #  Graphs 2–4 - begin
