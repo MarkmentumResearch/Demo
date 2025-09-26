@@ -70,7 +70,39 @@ div[data-baseweb="select"] {
     unsafe_allow_html=True,
 )
 
+st.markdown("""
+<style>
+/* ===== Scoped centering for Stat Box and Graph 1 only ===== */
 
+/* STAT BOX row (immediately after the #stat-center marker) */
+#stat-center + div[data-testid="stHorizontalBlock"]{
+  display:flex !important; justify-content:center !important; gap:0 !important;
+}
+#stat-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#stat-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important; min-width:0 !important;      /* symmetric side gutters */
+}
+#stat-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important; min-width:0 !important;   /* middle column = shrink-to-fit */
+}
+
+/* GRAPH 1 row (immediately after the #g1-center marker) */
+#g1-center + div[data-testid="stHorizontalBlock"]{
+  display:flex !important; justify-content:center !important; gap:0 !important;
+}
+#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important; min-width:0 !important;
+}
+#g1-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important; min-width:0 !important;
+}
+
+/* Backstop so charts/images don’t stretch inside the middle column */
+#g1-center + div[data-testid="stHorizontalBlock"] img,
+#g1-center + div[data-testid="stHorizontalBlock"] canvas { display:inline-block !important; }
+</style>
+""", unsafe_allow_html=True)
 
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
@@ -1285,9 +1317,13 @@ def load_g24_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd
 # -------------------------
 
 # Layout: left = stat box, middle = centered graph, right = spacer (centers graph on page)
-col_left, col_center = st.columns([3.8, 9.2], gap="small")
+#col_left, col_center = st.columns([3.8, 9.2], gap="small")
 
-with col_left:
+st.markdown('<div id="stat-center"></div>', unsafe_allow_html=True)
+_, mid_stat, _ = st.columns(3)
+
+with mid_stat:
+
     # ==============================
     # Stat Box (baseline)
     # ==============================
@@ -1564,7 +1600,13 @@ with col_left:
                 _row.loc["ticker_name"] = _active
         render_stat_box_component(_row)
 
-with col_center:
+# optional small spacer
+st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+
+# --- centered Graph 1 row ---
+st.markdown('<div id="g1-center"></div>', unsafe_allow_html=True)
+_, mid_g1, _ = st.columns(3)
+with mid_g1:
     # ==============================
     # Graph 1 — centered, 90° dates, legend bottom-center, **5-day gutter both ends**
     # ==============================
@@ -1637,6 +1679,9 @@ with col_center:
         # ...
         add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
         st.pyplot(fig, clear_figure=True)
+
+# optional small spacer
+st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
 # -------------------------
 # Stat Box - End
