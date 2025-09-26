@@ -99,11 +99,25 @@ st.markdown("""
   flex:4 1 0 !important; min-width:0 !important;   /* ~66.7% width for Graph 1 */
 }
 
-/* Backstop so the plot doesn’t shrink inside the middle column */
-#g1-wide + div[data-testid="stHorizontalBlock"] img,
-#g1-wide + div[data-testid="stHorizontalBlock"] canvas{
-  display:inline-block !important;
-  width:100% !important;
+/* Make the st.pyplot WRAPPER fill the 2/3 middle column */
+#g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"]{
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+/* Ensure the figure/img inside also stretches to the wrapper */
+#g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"] > figure,
+#g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"] img{
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Keep canvas covered too (some themes render via canvas) */
+#g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"] canvas{
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 </style>
@@ -1610,7 +1624,7 @@ with mid_stat:
 
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
-left_g1, mid_g1, right_g1 = st.columns([1, 4, 1], gap="small")
+left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
 with mid_g1:
     # ==============================
     # Graph 1 — centered, 90° dates, legend bottom-center, **5-day gutter both ends**
@@ -1683,7 +1697,7 @@ with mid_g1:
         #from __future__ import annotations  # optional; if you use the | type hints above
         # ...
         add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
-        st.pyplot(fig, clear_figure=True,use_container_width=True)
+        st.pyplot(fig, clear_figure=True, use_container_width=True)
 
 # optional small spacer
 st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
