@@ -501,21 +501,12 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 # Render in 4 columns (centered row; wraps on smaller screens)
 # marker to scope 4→2×2→1 layout to JUST this row
 # --- DESKTOP: 4-across ---
-st.markdown('<div id="grid4-desktop"></div>', unsafe_allow_html=True)
-dA, dB, dC, dD = st.columns(4)
-with dA: st.altair_chart(chart48, use_container_width=True)
-with dB: st.altair_chart(chart49, use_container_width=True)
-with dC: st.altair_chart(chart50, use_container_width=True)
-with dD: st.altair_chart(chart51, use_container_width=True)
-
-# --- LAPTOP: 2x2 (hidden on desktop by CSS) ---
-st.markdown('<div id="grid4-laptop"></div>', unsafe_allow_html=True)
-r1c1, r1c2 = st.columns(2)
-with r1c1: st.altair_chart(chart48, use_container_width=True)
-with r1c2: st.altair_chart(chart49, use_container_width=True)
-r2c1, r2c2 = st.columns(2)
-with r2c1: st.altair_chart(chart50, use_container_width=True)
-with r2c2: st.altair_chart(chart51, use_container_width=True)
+st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
+cA, cB, cC, cD = st.columns(4)
+with cA: st.altair_chart(chart48, use_container_width=True)
+with cB: st.altair_chart(chart49, use_container_width=True)
+with cC: st.altair_chart(chart50, use_container_width=True)
+with cD: st.altair_chart(chart51, use_container_width=True)
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
