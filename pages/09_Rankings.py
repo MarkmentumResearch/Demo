@@ -77,9 +77,9 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* B) Bottom 4 charts grid: directly after the #grid4 marker */
-#grid4 + div[data-testid="stHorizontalBlock"]{
-  display:flex ;
-  flex-wrap:wrap;
+#grid4 ~ div[data-testid="stHorizontalBlock"]{
+  display:flex !important;
+  flex-wrap:wrap !important;
   gap:24px;
 }
 #grid4 + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
