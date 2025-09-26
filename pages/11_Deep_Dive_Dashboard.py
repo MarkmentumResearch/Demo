@@ -1675,7 +1675,7 @@ with mid_stat:
 
 # optional small spacer
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-
+st.caption(f"Streamlit {st.__version__}")
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
 left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
