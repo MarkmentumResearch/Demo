@@ -507,38 +507,7 @@ neg51  = base51.transform_filter("datum.Sharpe_Ratio_30D_Change < 0").mark_text(
                  .encode(text=alt.Text("Sharpe_Ratio_30D_Change:Q", format=",.1f"))
 chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change", height=chart_h).configure_title(anchor="middle")
 
-st.markdown("""
-<style>
-/* B) Bottom 4 charts grid (robust): use CSS Grid for this row only */
-#grid4 ~ div[data-testid="stHorizontalBlock"]{
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4-across desktop */
-  gap: 24px;
-  align-items: start;
-}
 
-/* neutralize Streamlit's inline widths on columns inside this row */
-#grid4 ~ div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
-  width: auto !important;
-  max-width: none !important;
-  flex: initial !important;   /* stop flex from interfering */
-}
-
-/* Laptops / MacBook Air: 2x2 */
-@media (max-width: 1499.98px){
-  #grid4 ~ div[data-testid="stHorizontalBlock"]{
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-
-/* Small tablets/phones: 1 per row */
-@media (max-width: 799.98px){
-  #grid4 ~ div[data-testid="stHorizontalBlock"]{
-    grid-template-columns: 1fr !important;
-  }
-}
-</style>
-""", unsafe_allow_html=True)
 
 
 # Render in 4 columns (centered row; wraps on smaller screens)
