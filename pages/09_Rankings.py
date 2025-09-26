@@ -520,12 +520,23 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 # Render in 4 columns (centered row; wraps on smaller screens)
 # marker to scope 4→2×2→1 layout to JUST this row
 # --- DESKTOP: 4-across ---
-st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
+# Create the 4-column row
 cA, cB, cC, cD = st.columns(4)
-with cA: st.altair_chart(chart48, use_container_width=True)
-with cB: st.altair_chart(chart49, use_container_width=True)
-with cC: st.altair_chart(chart50, use_container_width=True)
-with cD: st.altair_chart(chart51, use_container_width=True)
+
+with cA:
+    # invisible marker INSIDE the first column so the row matches :has(#grid4)
+    st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
+    st.altair_chart(chart48, use_container_width=True)
+
+with cB:
+    st.altair_chart(chart49, use_container_width=True)
+
+with cC:
+    st.altair_chart(chart50, use_container_width=True)
+
+with cD:
+    st.altair_chart(chart51, use_container_width=True)
+
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
