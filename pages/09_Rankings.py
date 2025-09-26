@@ -76,39 +76,21 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   margin: 0 auto !important;
 }        
 
-/* B) Bottom 4 charts grid — target the row that CONTAINS #grid4 */
-div[data-testid="stHorizontalBlock"]:has(#grid4){
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 across on desktop */
-  gap: 24px;
-  align-items: start;
-}
+/* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
 
-/* If Streamlit nests an inner row, flatten it so its children become grid items */
-div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
-  display: contents !important;
-}
+/* Default (desktop): show 4-across block, hide 2x2 */
+#grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
+#grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
 
-/* Neutralize inline widths/flex on the columns in this row */
-div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
-  width: auto !important;
-  max-width: none !important;
-  flex: initial !important;
-}
-
-/* Laptops / MacBook Air: 2 × 2 */
+/* Laptop / MacBook Air: hide 4-across, show 2x2 */
 @media (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
+  #grid4-desktop ~ div[data-testid="stHorizontalBlock"] { display: none  !important; }
+  #grid4-laptop  ~ div[data-testid="stHorizontalBlock"] { display: block !important; }
 }
 
-/* Small tablets / phones: 1 per row */
-@media (max-width: 799.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
-    grid-template-columns: 1fr !important;
-  }
-}
+/* Optional: tighten gaps inside those blocks */
+#grid4-desktop ~ div[data-testid="stHorizontalBlock"],
+#grid4-laptop  ~ div[data-testid="stHorizontalBlock"]{ gap: 24px; }
 
       
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
@@ -517,12 +499,22 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 
 # Render in 4 columns (centered row; wraps on smaller screens)
 # marker to scope 4→2×2→1 layout to JUST this row
-st.markdown('<div id="grid4"></div>', unsafe_allow_html=True)
-cA, cB, cC, cD = st.columns(4)
-with cA: st.altair_chart(chart48, use_container_width=True)
-with cB: st.altair_chart(chart49, use_container_width=True)
-with cC: st.altair_chart(chart50, use_container_width=True)
-with cD: st.altair_chart(chart51, use_container_width=True)
+# --- DESKTOP: 4-across ---
+st.markdown('<div id="grid4-desktop"></div>', unsafe_allow_html=True)
+dA, dB, dC, dD = st.columns(4)
+with dA: st.altair_chart(chart48, use_container_width=True)
+with dB: st.altair_chart(chart49, use_container_width=True)
+with dC: st.altair_chart(chart50, use_container_width=True)
+with dD: st.altair_chart(chart51, use_container_width=True)
+
+# --- LAPTOP: 2x2 (hidden on desktop by CSS) ---
+st.markdown('<div id="grid4-laptop"></div>', unsafe_allow_html=True)
+r1c1, r1c2 = st.columns(2)
+with r1c1: st.altair_chart(chart48, use_container_width=True)
+with r1c2: st.altair_chart(chart49, use_container_width=True)
+r2c1, r2c2 = st.columns(2)
+with r2c1: st.altair_chart(chart50, use_container_width=True)
+with r2c2: st.altair_chart(chart51, use_container_width=True)
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
