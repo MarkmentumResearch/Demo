@@ -125,7 +125,7 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
   <li><b>Volatility Stats</b> – Implied (IVOL) vs. realized (RVOL) spreads, percentile ranks, and z-scores to spot crowding and regime shifts.</li>
   <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Ranks &amp; Screens</b> – Daily leaders/laggards, filters, signals, and category rankings to surface opportunity and risk fast.</li>
-  <li><b>Updates</b> – Nightly refresh after market close (typically 10–11 pm ET).</li>
+  <li><b>Updates</b> – Nightly refresh after market close (typically 9–10 pm ET).</li>
 </ul>
 
 <h3>How to use the app</h3>
