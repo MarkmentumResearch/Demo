@@ -423,14 +423,16 @@ def _extract_output_text(resp) -> str | None:
 
     return None
 
-@st.cache_data(show_spinner=False)
+
+@st.cache_data(show_spinner=False, hash_funcs={dict: lambda d: json.dumps(d, sort_keys=True)})
 def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     """
-    Calls OpenAI once per (ticker, as_of, depth) thanks to cache.
-    Expects a compact context dict (built from what's already on-screen).
+    Calls OpenAI once per (ticker, as_of, depth, context-hash).
+    Expects the compact context dict you already build on-screen.
     Always returns at least one bullet per section (neutral if needed).
     """
-    # Depth tuning
+
+    # Depth tuning (rough bullet budget)
     max_bullets = {"Quick": 4, "Standard": 7, "Deep": 10}.get(depth, 7)
 
     # Bail early if SDK/key isn't ready
@@ -439,11 +441,23 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
     api_key = _read_openai_key()
     if not api_key:
-        # (optional) st.error("OPENAI_API_KEY not found")
+        # st.error("OPENAI_API_KEY not found")  # optional
         return _default_insights()
+
     client = OpenAI(api_key=api_key)
 
-    # Ask for JSON back; keep tokens modest
+    # --- Guidance so the model uses your metrics, bands, and flags ---
+    rules = f"""
+Treat these as strong, present-tense signals if true (be concise, descriptive, no advice):
+- If score.current <= -80 or rating includes 'Sell', state bearish bias and cite drivers (e.g., day/week/month weakness, Sharpe weakness, rvol spike).
+- If flags.gap_stretched is true, say price is stretched vs long-term anchor; compare gap_lt to gap_lt_hi/lo.
+- If any of day/week/month 'breach' != 'none', mention the breach explicitly.
+- Prefer concrete numbers already in the payload (anchor_gap_pct, gap_lt, st/mt/lt trends, zscore, rvol, sharpe, Sharpe_Rank, ivol_pd).
+Depth={depth} ⇒ cap total bullets to {max_bullets}.
+Return ONLY strict JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+"""
+
+    # --- OpenAI call ---
     try:
         def _call(model_name: str):
             return client.responses.create(
@@ -456,12 +470,8 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                                 "type": "input_text",
                                 "text": (
                                     SYSTEM_PROMPT_DEEPDIVE
-                                    + "\nPolicy tweaks for quiet days:"
-                                    + "\n- Even if signals look weak or mixed, DO NOT say 'no insight'."
-                                    + "\n- Always return at least one concise, neutral bullet per section."
-                                    + "\n- Keep declarative, strictly descriptive, and avoid advice."
-                                    + "\nReturn ONLY a strict JSON object with keys: "
-                                    "salient_signals, context_and_implications, risk_and_caveats, followup_questions."
+                                    + "\n\n"
+                                    + rules
                                 ),
                             }
                         ],
@@ -473,19 +483,17 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                                 "type": "input_text",
                                 "text": (
                                     f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                    "Use ONLY this JSON. Compare each current value to its avg/hi/lo bands "
-                                    "to decide if it's stretched or subdued. Cite the exact fields you use in 'evidence'.\n"
+                                    "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
+                                    "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
                                     + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
                                 ),
                             }
                         ],
                     },
                 ],
-                # no response_format kwarg (older SDK shape)
                 max_output_tokens=600,
             )
 
-        # Try primary, then a safe fallback
         try:
             resp = _call(MODEL_NAME_PRIMARY)
         except Exception:
@@ -493,7 +501,7 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
         raw = _extract_output_text(resp)
 
-        # Parse hard to JSON; if the model adds extra text, strip it down.
+        # Parse to JSON; if extra text leaked, extract the first JSON object
         try:
             data = json.loads(raw or "{}")
         except Exception:
@@ -504,13 +512,13 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
         st.caption(f"AI call failed: {e}")
         return _default_insights()
 
-    # Basic shape + safety scrub (remove advicey verbs/phrasing we don't want)
+    # --- Post-process / safety scrub ---
     for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
         items = data.get(key, [])
         for it in items:
             it["insight"] = _scrub_advice(it.get("insight", ""))
 
-    # Trim to the depth budget (roughly split across the three sections)
+    # Trim to depth budget (roughly 1/3 each)
     def _trim(lst):
         return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
 
@@ -519,10 +527,9 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     data["risk_and_caveats"]         = _trim(data.get("risk_and_caveats", []))
     data["followup_questions"]       = (data.get("followup_questions", []) or [])[:max(1, max_bullets // 4)]
 
-    # Guarantee at least one neutral bullet in every section
-    neutral = {"insight": "Neutral read from on-screen data (no standout patterns); values are within recent ranges.", "evidence": []}
+    # Ensure at least one bullet per section (neutral fallback)
     if not data["salient_signals"]:
-        data["salient_signals"] = [neutral.copy()]
+        data["salient_signals"] = [{"insight": "Neutral read from on-screen data (no standout patterns); values are within recent ranges.", "evidence": []}]
     if not data["context_and_implications"]:
         data["context_and_implications"] = [{"insight": "Context remains mixed; short/mid/long trends and volatility are not extreme.", "evidence": []}]
     if not data["risk_and_caveats"]:
@@ -531,7 +538,6 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
         data["followup_questions"] = ["Which sub-period (day/week/month) is most informative for this ticker right now?"]
 
     return data
-
 
 
 
@@ -1994,7 +2000,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     except Exception:
         g4_df = pd.DataFrame()
 
-        gap_lt_avg = gap_lt_hi = gap_lt_lo = None  # defaults
+        gap_lt = gap_lt_avg = gap_lt_hi = gap_lt_lo = None  # defaults
 
     if not g4_df.empty:
         asof_dt = pd.to_datetime(as_of, errors="coerce")
@@ -2005,10 +2011,13 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         if not g4_row.empty:
             r = g4_row.iloc[0]
             # All are numeric already; guard for NaNs
+            gap_lt = float(r["gap_lt"]) if pd.notna(r["gap_lt"]) else None
             gap_lt_avg = float(r["gap_lt_avg"]) if pd.notna(r["gap_lt_avg"]) else None
             gap_lt_hi  = float(r["gap_lt_hi"])  if pd.notna(r["gap_lt_hi"])  else None
             gap_lt_lo  = float(r["gap_lt_lo"])  if pd.notna(r["gap_lt_lo"])  else None
-
+            # simple, explicit flags the model can latch onto
+            is_gap_stretched = (float(gap_lt) >= float(gap_lt_hi)) or (float(gap_lt) <= float(gap_lt_lo))
+        
  
 # ---- G5 (Z-Score 30D + bands) ----
 # Requires: load_g5_ticker(...) and DATA_DIR defined.
@@ -2187,6 +2196,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "month_down": month_down,
         "month_up": month_up,
         "month_rr": month_rr,
+        "gap_lt": gap_lt,        
         "gap_lt_avg": gap_lt_avg,
         "gap_lt_hi": gap_lt_hi,
         "gap_lt_lo": gap_lt_lo,
@@ -2207,6 +2217,12 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "prem_disc_avg": prem_disc_avg,
         "prem_disc_hi": prem_disc_hi,
         "prem_disc_lo": prem_disc_lo,
+        "Flags": {
+            "gap_stretched": is_gap_stretched,
+            "day_breach":  day_breach,         # you already compute these
+            "week_breach": week_breach,
+            "month_breach": month_breach,
+        }
     }
 
 #ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
