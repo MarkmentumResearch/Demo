@@ -400,27 +400,25 @@ def _extract_output_text(resp) -> str | None:
 
     return None
 
-
-
 @st.cache_data(show_spinner=False)
 def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     """
     Calls OpenAI once per (ticker, as_of, depth) thanks to cache.
     Expects a compact context dict (built from what's already on-screen).
+    Always returns at least one bullet per section (neutral if needed).
     """
-    # Depth tuning (keep this simple)
+    # Depth tuning
     max_bullets = {"Quick": 4, "Standard": 7, "Deep": 10}.get(depth, 7)
 
+    # Bail early if SDK/key isn't ready
     if not _OPENAI_READY:
         return _default_insights()
 
     api_key = _read_openai_key()
     if not api_key:
-    # (optional) st.error("OPENAI_API_KEY not found")
+        # (optional) st.error("OPENAI_API_KEY not found")
         return _default_insights()
     client = OpenAI(api_key=api_key)
-
-    
 
     # Ask for JSON back; keep tokens modest
     try:
@@ -431,10 +429,17 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                     {
                         "role": "system",
                         "content": [
-                            {"type": "input_text", "text":
-                                SYSTEM_PROMPT_DEEPDIVE
-                                + "\nReturn ONLY a strict JSON object with keys: "
-                                "salient_signals, context_and_implications, risk_and_caveats, followup_questions."
+                            {
+                                "type": "input_text",
+                                "text": (
+                                    SYSTEM_PROMPT_DEEPDIVE
+                                    + "\nPolicy tweaks for quiet days:"
+                                    + "\n- Even if signals look weak or mixed, DO NOT say 'no insight'."
+                                    + "\n- Always return at least one concise, neutral bullet per section."
+                                    + "\n- Keep declarative, strictly descriptive, and avoid advice."
+                                    + "\nReturn ONLY a strict JSON object with keys: "
+                                    "salient_signals, context_and_implications, risk_and_caveats, followup_questions."
+                                ),
                             }
                         ],
                     },
@@ -452,9 +457,9 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                         ],
                     },
                 ],
-                # NOTE: no response_format kwarg (older SDK)
+                # no response_format kwarg (older SDK shape)
                 max_output_tokens=600,
-        )
+            )
 
         # Try primary, then a safe fallback
         try:
@@ -462,7 +467,6 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
         except Exception:
             resp = _call(MODEL_NAME_FALLBACK)
 
-        # Prefer modern SDK convenience field
         raw = _extract_output_text(resp)
 
         # Parse hard to JSON; if the model adds extra text, strip it down.
@@ -476,21 +480,34 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
         st.caption(f"AI call failed: {e}")
         return _default_insights()
 
-    # Basic shape + safety scrub
+    # Basic shape + safety scrub (remove advicey verbs/phrasing we don't want)
     for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
         items = data.get(key, [])
         for it in items:
             it["insight"] = _scrub_advice(it.get("insight", ""))
 
-    # Trim to depth budget
-    def _trim(lst): 
+    # Trim to the depth budget (roughly split across the three sections)
+    def _trim(lst):
         return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
-    data["salient_signals"] = _trim(data.get("salient_signals", []))
-    data["context_and_implications"] = _trim(data.get("context_and_implications", []))
-    data["risk_and_caveats"] = _trim(data.get("risk_and_caveats", []))
-    data["followup_questions"] = (data.get("followup_questions", []) or [])[:3]
 
-    return data or _default_insights()
+    data["salient_signals"]          = _trim(data.get("salient_signals", []))
+    data["context_and_implications"] = _trim(data.get("context_and_implications", []))
+    data["risk_and_caveats"]         = _trim(data.get("risk_and_caveats", []))
+    data["followup_questions"]       = (data.get("followup_questions", []) or [])[:max(1, max_bullets // 4)]
+
+    # Guarantee at least one neutral bullet in every section
+    neutral = {"insight": "Neutral read from on-screen data (no standout patterns); values are within recent ranges.", "evidence": []}
+    if not data["salient_signals"]:
+        data["salient_signals"] = [neutral.copy()]
+    if not data["context_and_implications"]:
+        data["context_and_implications"] = [{"insight": "Context remains mixed; short/mid/long trends and volatility are not extreme.", "evidence": []}]
+    if not data["risk_and_caveats"]:
+        data["risk_and_caveats"] = [{"insight": "Numbers can drift with new prints; treat this view as descriptive, not predictive.", "evidence": []}]
+    if not data["followup_questions"]:
+        data["followup_questions"] = ["Which sub-period (day/week/month) is most informative for this ticker right now?"]
+
+    return data
+
 
 
 
