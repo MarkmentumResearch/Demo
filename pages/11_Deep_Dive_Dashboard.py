@@ -1804,7 +1804,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # ——— values directly from your stat box row ———
     last_price = float(stat_row.get("close"))
     anchor_val = float(stat_row.get("lt_pt_sm"))
-    anchor_gap_pct= stat_row.get("change_pct")
+    anchor_gap_pct= float(stat_row.get("change_pct")*100)
 
     day_low   = float(stat_row.get("day_pr_low"))
     day_high  = float(stat_row.get("day_pr_high"))
@@ -1813,9 +1813,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     month_low = float(stat_row.get("month_pr_low"))
     month_high= float(stat_row.get("month_pr_high"))
 
-    ivol = stat_row.get("ivol")      
-    rvol = stat_row.get("rvol")
-    ivolpd = stat_row.get("prem_disc")  
+    ivol = _pct(stat_row.get("ivol"))
+    rvol = _pct(stat_row.get("rvol"))
+    ivolpd = _pct(stat_row.get("prem_disc")) 
     score_current = stat_row.get("model_score")
     rating = stat_row.get("rating")
 
@@ -1880,6 +1880,7 @@ with st.expander("🧠 Explain this page", expanded=False):
     # Use your existing page values
         selected_ticker = TICKER
         as_of_str = date_str  # the header date you already compute
+        st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if st.secrets.get('OPENAI_API_KEY') else 'no'}, model_try={[MODEL_NAME_PRIMARY, MODEL_NAME_FALLBACK]}")
 
         if _row is None:
             st.warning("No data available for the selected ticker.")
