@@ -1947,24 +1947,26 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 
 
 # >>> ADD: Insight panel (UI)
-with st.expander("🧠 Explain this page", expanded=False):
+st.session_state.setdefault("ai_open", True)
+
+with st.expander("🧠 Explain this page",
+                 expanded=st.session_state.get("ai_open", True)):
     c1, c2 = st.columns([1, 1])
     depth = c1.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1, key="ai_depth")
     go = c2.button("Explain what stands out", use_container_width=True, key="ai_go")
 
-    # always show diagnostics on every rerun
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
 
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
         if go:
-            # build context from the SAME row you used for the stat box
             ctx = collect_deepdive_context(TICKER, date_str, _row)
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
                 st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
+            st.session_state["ai_open"] = True  # keep panel open after rerun
 
         insights = st.session_state.get("ai_last_insights")
 
