@@ -137,8 +137,8 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
-  <li><b>Rankings</b> – Category dashboards (i.e., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap, plus a per-ticker current heatmap. 
-  Below the heatmaps, see bar-chart rankings for each ticker in the selected category: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-day change.</li>
+  <li><b>Rankings</b> – Category dashboards (e.g., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap across categories, plus a per-ticker heatmap within each selected category. 
+  Beneath the heatmaps, bar-chart rankings display key metrics for every ticker: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-Day Change.</li>
   <li><b>Markmentum Heatmap</b> – Multi-layered view of score changes. Start with a category-level heatmap showing average Markmentum Score changes across Daily, WTD, MTD, and QTD. 
   Drill down into any category to see a per-ticker heatmap, and complement it with bar chart rankings of individual tickers by each timeframe. This gives both a top-down and bottom-up perspective on score movement.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
