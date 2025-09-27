@@ -1904,31 +1904,203 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     day_breach   = _breach_flag(last_price, day_low,   day_high)
     week_breach  = _breach_flag(last_price, week_low,  week_high)
     month_breach = _breach_flag(last_price, month_low, month_high)
-     
-    #----graphs -----------------
-    trend_short = stat_row.get("st_trend")
-    trend_mid   = stat_row.get("mt_trend")
-    trend_long  = stat_row.get("lt_trend")
-    gap_lt_avg = stat_row.get("gap_lt_avg")
-    gap_lt_hi = stat_row.get("gap_lt_hi")
-    gap_lt_lo = stat_row.get("gap_lt_lo")
-    zscore = stat_row.get("Z-Score")
-    zscore_avg = stat_row.get("Z-Score_avg")
-    zscore_hi = stat_row.get("Z-Score_hi")
-    zscore_lo = stat_row.get("Z-Score_lo")
-    zscore_rank = stat_row.get("Z-Score Rank")
-    rvol_avg = stat_row.get("Rvol_avg")
-    rvol_hi = stat_row.get("Rvol_hi")
-    rvol_low = stat_row.get("Rvol_low")    
-    Sharpe = stat_row.get("Sharpe")
-    Sharpe_avg = stat_row.get("Sharpe_avg")
-    Sharpe_hi = stat_row.get("Sharpe_hi")
-    Sharpe_low = stat_row.get("Sharpe_low")
-    Sharpe_Rank = stat_row.get("Sharpe_Rank")
-    prem_disc = stat_row.get("prem_disc")
-    prem_disc_avg = stat_row.get("prem_disc_avg")
-    prem_disc_hi = stat_row.get("prem_disc_hi")
-    prem_disc_lo = stat_row.get("prem_disc_lo")
+
+
+
+#----graphs -----------------
+# ---- G2 (Trend lines) ----
+# Requires: load_g2_ticker(...) from earlier and DATA_DIR defined.
+# G2 loader returns columns normalized to: ['date','st','mt','lt'] for the selected ticker.
+    try:
+        g2_df = load_g2_ticker(DATA_DIR / "qry_graph_data_02.csv", ticker=ticker)
+    except Exception:
+        g2_df = pd.DataFrame()
+
+    trend_short = trend_mid = trend_long = None
+
+    if not g2_df.empty:
+        # ensure datetime + pick last observation at/<= as_of
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g2_df["date"].dtype.kind != "M":
+            g2_df = g2_df.assign(date=pd.to_datetime(g2_df["date"], errors="coerce"))
+
+        g2_row = g2_df.loc[g2_df["date"] <= asof_dt].tail(1)
+        if not g2_row.empty:
+            r = g2_row.iloc[0]
+            trend_short = float(r["st"]) if pd.notna(r["st"]) else None
+            trend_mid   = float(r["mt"]) if pd.notna(r["mt"]) else None
+            trend_long  = float(r["lt"]) if pd.notna(r["lt"]) else None
+
+# ---- G4 (Gap to LT anchor + bands) ----
+# Requires: load_g4_ticker(...) and DATA_DIR defined.
+# G4 loader returns columns: ['date','gap_lt','gap_lt_avg','gap_lt_hi','gap_lt_lo'] for this ticker.
+    try:
+        g4_df = load_g4_ticker(DATA_DIR / "qry_graph_data_04.csv", ticker=ticker)
+    except Exception:
+        g4_df = pd.DataFrame()
+
+        gap_lt_avg = gap_lt_hi = gap_lt_lo = None  # defaults
+
+    if not g4_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g4_df["date"].dtype.kind != "M":
+            g4_df = g4_df.assign(date=pd.to_datetime(g4_df["date"], errors="coerce"))
+
+        g4_row = g4_df.loc[g4_df["date"] <= asof_dt].tail(1)
+        if not g4_row.empty:
+            r = g4_row.iloc[0]
+            # All are numeric already; guard for NaNs
+            gap_lt_avg = float(r["gap_lt_avg"]) if pd.notna(r["gap_lt_avg"]) else None
+            gap_lt_hi  = float(r["gap_lt_hi"])  if pd.notna(r["gap_lt_hi"])  else None
+            gap_lt_lo  = float(r["gap_lt_lo"])  if pd.notna(r["gap_lt_lo"])  else None
+
+ 
+# ---- G5 (Z-Score 30D + bands) ----
+# Requires: load_g5_ticker(...) and DATA_DIR defined.
+# G5 loader returns columns for this ticker: ['date','z','avg','hi','lo'] (already numeric).
+
+    try:
+        g5_df = load_g5_ticker(DATA_DIR / "qry_graph_data_05.csv", ticker=ticker)
+    except Exception:
+        g5_df = pd.DataFrame()
+
+    zscore = zscore_avg = zscore_hi = zscore_lo = None
+
+    if not g5_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g5_df["date"].dtype.kind != "M":
+            g5_df = g5_df.assign(date=pd.to_datetime(g5_df["date"], errors="coerce"))
+
+        g5_row = g5_df.loc[g5_df["date"] <= asof_dt].tail(1)
+        if not g5_row.empty:
+            r = g5_row.iloc[0]
+            zscore     = float(r["z"])   if pd.notna(r["z"])   else None
+            zscore_avg = float(r["avg"]) if pd.notna(r["avg"]) else None
+            zscore_hi  = float(r["hi"])  if pd.notna(r["hi"])  else None
+            zscore_lo  = float(r["lo"])  if pd.notna(r["lo"])  else None
+
+# ---- G6 (Z-Score Percentile Rank 0..100) ----
+# Requires: load_g6_ticker(...) and DATA_DIR defined.
+# G6 loader returns columns for this ticker: ['date','rank'] (already numeric 0..100).
+    try:
+        g6_df = load_g6_ticker(DATA_DIR / "qry_graph_data_06.csv", ticker=ticker)
+    except Exception:
+        g6_df = pd.DataFrame()
+
+    zscore_rank = None
+
+    if not g6_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g6_df["date"].dtype.kind != "M":
+            g6_df = g6_df.assign(date=pd.to_datetime(g6_df["date"], errors="coerce"))
+
+        g6_row = g6_df.loc[g6_df["date"] <= asof_dt].tail(1)
+        if not g6_row.empty:
+            r = g6_row.iloc[0]
+            zscore_rank = float(r["rank"]) if pd.notna(r["rank"]) else None
+
+
+# ---- G7 (Rvol 30D + bands) ----
+# Requires: load_g7_ticker(...) and DATA_DIR defined.
+# G7 loader returns for this ticker: ['date','rvol','rvol_avg','rvol_hi','rvol_low'] (numeric; % scaled if needed).
+
+    try:
+        g7_df = load_g7_ticker(DATA_DIR / "qry_graph_data_07.csv", ticker=ticker)
+    except Exception:
+        g7_df = pd.DataFrame()
+
+    rvol_avg = rvol_hi = rvol_low = None  # defaults
+
+    if not g7_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g7_df["date"].dtype.kind != "M":
+            g7_df = g7_df.assign(date=pd.to_datetime(g7_df["date"], errors="coerce"))
+
+        g7_row = g7_df.loc[g7_df["date"] <= asof_dt].tail(1)
+        if not g7_row.empty:
+            r = g7_row.iloc[0]
+            rvol_avg = float(r["rvol_avg"]) if pd.notna(r["rvol_avg"]) else None
+            rvol_hi  = float(r["rvol_hi"])  if pd.notna(r["rvol_hi"])  else None
+            rvol_low = float(r["rvol_low"]) if pd.notna(r["rvol_low"]) else None
+
+
+    
+# ---- G8 (Sharpe Ratio 30D + bands) ----
+# Requires: load_g8_ticker(...) and DATA_DIR defined.
+# G8 loader returns (normalized) columns for this ticker: ['date','sharpe','avg','hi','lo'].
+
+    try:
+        g8_df = load_g8_ticker(DATA_DIR / "qry_graph_data_08.csv", ticker=ticker)
+    except Exception:
+        g8_df = pd.DataFrame()
+
+    Sharpe = Sharpe_avg = Sharpe_hi = Sharpe_low = None
+
+    if not g8_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g8_df["date"].dtype.kind != "M":
+            g8_df = g8_df.assign(date=pd.to_datetime(g8_df["date"], errors="coerce"))
+
+        g8_row = g8_df.loc[g8_df["date"] <= asof_dt].tail(1)
+        if not g8_row.empty:
+            r = g8_row.iloc[0]
+            Sharpe     = float(r["sharpe"]) if pd.notna(r["sharpe"]) else None
+            Sharpe_avg = float(r["avg"])    if pd.notna(r["avg"])    else None
+            Sharpe_hi  = float(r["hi"])     if pd.notna(r["hi"])     else None
+            Sharpe_low = float(r["lo"])     if pd.notna(r["lo"])     else None
+
+
+
+
+# ---- G9 (Sharpe Ratio Percentile Rank 0..100) ----
+# Requires: load_g9_ticker(...) and DATA_DIR defined.
+# G9 loader returns for this ticker: ['date','rank'] (numeric; 0..100, auto-scaled if 0..1).
+
+    try:
+        g9_df = load_g9_ticker(DATA_DIR / "qry_graph_data_09.csv", ticker=ticker)
+    except Exception:
+        g9_df = pd.DataFrame()
+
+    Sharpe_Rank = None
+
+    if not g9_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g9_df["date"].dtype.kind != "M":
+            g9_df = g9_df.assign(date=pd.to_datetime(g9_df["date"], errors="coerce"))
+
+        g9_row = g9_df.loc[g9_df["date"] <= asof_dt].tail(1)
+        if not g9_row.empty:
+            v = g9_row.iloc[0]["rank"]
+            Sharpe_Rank = float(v) if pd.notna(v) else None
+
+
+
+# ---- G10 (Ivol Prem/Disc 30D + bands, percent) ----
+# Requires: load_g10_ticker(...) and DATA_DIR defined.
+# G10 loader returns for this ticker: ['date','ivol_pd','avg','hi','lo'] (numeric; % scaled if needed).
+
+    try:
+        g10_df = load_g10_ticker(DATA_DIR / "qry_graph_data_10.csv", ticker=ticker)
+    except Exception:
+        g10_df = pd.DataFrame()
+
+    prem_disc = prem_disc_avg = prem_disc_hi = prem_disc_lo = None
+
+    if not g10_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g10_df["date"].dtype.kind != "M":
+            g10_df = g10_df.assign(date=pd.to_datetime(g10_df["date"], errors="coerce"))
+
+        g10_row = g10_df.loc[g10_df["date"] <= asof_dt].tail(1)
+        if not g10_row.empty:
+            r = g10_row.iloc[0]
+            prem_disc     = float(r["ivol_pd"]) if pd.notna(r["ivol_pd"]) else None
+            prem_disc_avg = float(r["avg"])     if pd.notna(r["avg"])     else None
+            prem_disc_hi  = float(r["hi"])      if pd.notna(r["hi"])      else None
+            prem_disc_lo  = float(r["lo"])      if pd.notna(r["lo"])      else None
+
+
+
     
     return {
         "as_of": as_of,
