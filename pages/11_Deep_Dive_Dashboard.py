@@ -1969,20 +1969,41 @@ with st.expander("🧠 Explain this page",
             st.session_state["ai_open"] = True 
 
         insights = st.session_state.get("ai_last_insights")
+        INSIGHT_KEYS = ["salient_signals", "context_and_implications", "risk_and_caveats", "followup_questions"]
 
-        if not insights:
-            st.info("Click the button to generate insights.")
+        def _is_empty_payload(d):
+            if not d or not isinstance(d, dict):
+                return True
+            return not any((d.get(k) or []) for k in INSIGHT_KEYS)
+
+        empty_payload = _is_empty_payload(insights)
+
+        if empty_payload:
+            st.warning("No standout AI insights were returned for this view.")
+            with st.expander("Why might this be?", expanded=False):
+                st.markdown(
+                    "- The on-screen data may not show strong signals.\n"
+                    "- Try **Depth → Deep** and click again.\n"
+                    "- If this persists, enable debug below and share the snapshot."
+                )
+            # Optional: quick debug toggle (safe to leave in)
+            if st.checkbox("Show AI debug", value=False, key="ai_debug"):
+                st.write("Context snapshot:")
+                st.json(st.session_state.get("ai_last_ctx", {}))
+                st.write("Insights snapshot:")
+                st.json(insights or {})
         else:
+            # your existing rendering:
             def _render_section(title, items):
-                if not items: 
+                if not items:
                     return
                 st.markdown(f"**{title}**")
                 for it in items:
                     insight = it.get("insight", "")
-                    ev = ", ".join(it.get("evidence", []))
+                    ev = " · ".join(it.get("evidence", []))
                     st.markdown(
                         f"- {insight}  \n"
-                        f"  <span style='opacity:0.6'>evidence: `{ev}`</span>",
+                        f"  <span style='opacity:0.6'>evidence: {ev}</span>",
                         unsafe_allow_html=True,
                     )
 
