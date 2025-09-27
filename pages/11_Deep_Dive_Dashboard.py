@@ -1863,26 +1863,24 @@ with st.expander("🧠 Explain this page", expanded=False):
     run = colB.button("Explain what stands out", use_container_width=True)
 
     if run:
-        # You already know the selected ticker and as_of date in this page:
-        # Example placeholders — use your real variables.
-        selected_ticker = TICKER   # <- replace if your variable name differs
-        as_of_str = date_str # <- e.g., the date you show on the page header
+    # Use your existing page values
+    selected_ticker = TICKER
+    as_of_str = date_str  # the header date you already compute
 
-        # after
-        if _row is None:
-            st.warning("No data available for the selected ticker.")
-        else:
-            ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
-            with st.spinner("Analyzing on-screen telemetry…", expanded=False):
-                insights = get_ai_insights(ctx, depth=depth)
-   
+    if _row is None:
+        st.warning("No data available for the selected ticker.")
+    else:
+        # Build context from the SAME stat-box row
+        ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
 
+        # Spinner has no 'expanded' arg
         with st.spinner("Analyzing on-screen telemetry…"):
             insights = get_ai_insights(ctx, depth=depth)
 
-        # Render clean sections
+        # Render (unchanged)
         def _render_section(title, items):
-            if not items: return
+            if not items: 
+                return
             st.markdown(f"**{title}**")
             for it in items:
                 insight = it.get("insight", "")
@@ -1898,7 +1896,6 @@ with st.expander("🧠 Explain this page", expanded=False):
             st.caption("Follow-ups to explore")
             for q in insights["followup_questions"]:
                 st.markdown(f"- {q}")
-
 
 
 # --- centered Graph 1 row ---
