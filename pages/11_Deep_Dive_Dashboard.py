@@ -1880,25 +1880,25 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # ——— values directly from your stat box row ———
     last_price = float(stat_row.get("close"))
     anchor_val = float(stat_row.get("lt_pt_sm"))
-    anchor_gap_pct= _pct(stat_row.get("change_pct"))
+    anchor_gap_pct= float(stat_row.get("change_pct")*100)
     day_low   = float(stat_row.get("day_pr_low"))
     day_high  = float(stat_row.get("day_pr_high"))
-    day_down  = _pct(stat_row.get("day_dn"))
-    day_up  = _pct(stat_row.get("day_up"))
-    day_rr = _rr(stat_row.get("day_rr_ratio"))
+    day_down  = float(stat_row.get("day_dn")*100)
+    day_up  = float(stat_row.get("day_up")*100)
+    day_rr = float(stat_row.get("day_rr_ratio"))
     week_low  = float(stat_row.get("week_pr_low"))
     week_high = float(stat_row.get("week_pr_high"))
-    week_down  = _pct(stat_row.get("week_dn"))
-    week_up  = _pct(stat_row.get("week_up"))
-    week_rr = _rr(stat_row.get("week_rr_ratio"))
+    week_down  = float(stat_row.get("week_dn")*100)
+    week_up  = float(stat_row.get("week_up")*100)
+    week_rr = float(stat_row.get("week_rr_ratio"))
     month_low = float(stat_row.get("month_pr_low"))
     month_high= float(stat_row.get("month_pr_high"))
-    month_down  = _pct(stat_row.get("month_dn"))
-    month_up  = _pct(stat_row.get("month_up"))
-    month_rr = _rr(stat_row.get("month_rr_ratio"))
-    ivol = _pct(stat_row.get("ivol"))
-    rvol = _pct(stat_row.get("rvol"))
-    ivolpd = _pct(stat_row.get("prem_disc")) 
+    month_down  = float(stat_row.get("month_dn")*100)
+    month_up  = float(stat_row.get("month_up")*100)
+    month_rr = float(stat_row.get("month_rr_ratio"))
+    ivol = float(stat_row.get("ivol")*100)
+    rvol = float(stat_row.get("rvol")*100)
+    ivolpd = float(stat_row.get("prem_disc")*100) 
     score_current = stat_row.get("model_score")
     rating = stat_row.get("rating")
     day_breach   = _breach_flag(last_price, day_low,   day_high)
@@ -1935,7 +1935,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "ticker": ticker,
         "price": last_price,
         "anchor_val": float(anchor_val),
-        "anchor_gap_pct": float(anchor_gap_pct),
+        "anchor_gap_pct": anchor_gap_pct,
         "ranges": {
             "day":   {"low": day_low,   "high": day_high,   "breach": day_breach},
             "week":  {"low": week_low,  "high": week_high,  "breach": week_breach},
