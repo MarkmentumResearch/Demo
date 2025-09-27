@@ -1901,9 +1901,6 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     ivolpd = _pct(stat_row.get("prem_disc")) 
     score_current = stat_row.get("model_score")
     rating = stat_row.get("rating")
-    ivol = stat_row.get("ivol")      
-    rvol = stat_row.get("rvol")
-    ivolpd = stat_row.get("prem_disc")
     day_breach   = _breach_flag(last_price, day_low,   day_high)
     week_breach  = _breach_flag(last_price, week_low,  week_high)
     month_breach = _breach_flag(last_price, month_low, month_high)
@@ -1911,7 +1908,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     #----graphs -----------------
     trend_short = stat_row.get("st_trend")
     trend_mid   = stat_row.get("mt_trend")
-    trend_long  = stat_row.get("lt_long")
+    trend_long  = stat_row.get("lt_trend")
     gap_lt_avg = stat_row.get("gap_lt_avg")
     gap_lt_hi = stat_row.get("gap_lt_hi")
     gap_lt_lo = stat_row.get("gap_lt_lo")
