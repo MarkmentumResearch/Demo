@@ -160,12 +160,11 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
 <h3>Our Why</h3>
 <p>
   Markmentum Research was born from a passion for markets and numbers — but it’s guided by faith. 
-  We believe clarity and discipline are gifts meant to be shared. 
-  All glory goes to the Lord, who makes every step possible.
+  All glory and honor goes to the Lord, who makes every step possible.
 </p>
 <p>
   Our mission is to deliver actionable, probability-driven insights without noise or narratives, 
-  helping investors steward their resources with confidence.
+  helping market participants steward their resources with confidence.
 </p>
 </div>
 """,
