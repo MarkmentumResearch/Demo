@@ -1873,11 +1873,11 @@ with st.expander("🧠 Explain this page", expanded=False):
             st.warning("No data available for the selected ticker.")
         else:
             ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
-            with st.status("Analyzing on-screen telemetry…", expanded=False):
+            with st.spinner("Analyzing on-screen telemetry…", expanded=False):
                 insights = get_ai_insights(ctx, depth=depth)
    
 
-        with st.status("Analyzing on-screen telemetry…"):
+        with st.spinner("Analyzing on-screen telemetry…"):
             insights = get_ai_insights(ctx, depth=depth)
 
         # Render clean sections
