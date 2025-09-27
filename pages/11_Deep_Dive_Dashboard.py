@@ -324,17 +324,14 @@ rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", 
 
 def _read_openai_key():
     s = st.secrets
-    # 1) root-level keys (most common)
-    for k in ("OPENAI_API_KEY", "openai_api_key"):
-        if k in s and s[k]:
-            return str(s[k])
-    # 2) common table layouts: [openai] api_key="..."
-    for sect in ("openai", "OpenAI", "OPENAI"):
-        if sect in s and isinstance(s[sect], dict):
-            for k in ("api_key", "API_KEY", "key"):
-                if k in s[sect] and s[sect][k]:
-                    return str(s[sect][k])
-    # 3) environment fallback
+    # 1) root-level key in Streamlit Secrets UI
+    if "OPENAI_API_KEY" in s and s["OPENAI_API_KEY"]:
+        return str(s["OPENAI_API_KEY"])
+    # 2) optional [openai] table if you ever use it
+    if "openai" in s and isinstance(s["openai"], dict):
+        v = s["openai"].get("api_key") or s["openai"].get("API_KEY") or s["openai"].get("key")
+        if v: return str(v)
+    # 3) env var (local dev)
     return os.getenv("OPENAI_API_KEY")
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
@@ -379,9 +376,11 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
     api_key = _read_openai_key()
     if not api_key:
+    # (optional) st.error("OPENAI_API_KEY not found")
         return _default_insights()
-
     client = OpenAI(api_key=api_key)
+
+    
 
     # Ask for JSON back; keep tokens modest
     try:
@@ -1894,12 +1893,7 @@ with st.expander("🧠 Explain this page", expanded=False):
     # Use your existing page values
         selected_ticker = TICKER
         as_of_str = date_str  # the header date you already compute
-        st.caption(
-            f"AI diag → sdk={_OPENAI_READY}, "
-            f"key={'yes' if _read_openai_key() else 'no'}, "
-            f"model_try={[MODEL_NAME_PRIMARY, MODEL_NAME_FALLBACK]}, "
-            f"secrets_keys={list(st.secrets.keys())}"
-        )
+        st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
         
         if _row is None:
             st.warning("No data available for the selected ticker.")
