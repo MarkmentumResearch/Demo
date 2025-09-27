@@ -425,7 +425,7 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
         # Prefer modern SDK convenience field
         raw = getattr(resp, "output_text", None)
         if not raw and getattr(resp, "output", None):
-        raw = resp.output[0].content[0].text
+            raw = resp.output[0].content[0].text
 
         try:
             data = json.loads(raw or "{}")
