@@ -1946,12 +1946,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             "rvol": float(rvol) if rvol is not None else None,
             "ivol_prem_disc": float(ivolpd) if ivolpd is not None else None,
         },
-        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},
-        "sharpe": {
-            "pctile": sharpe_pctile,
-            "ratio": sharpe_ratio,
-            "ratio_30d_delta": sharpe_ratio_delta_30d,
-        },
+        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},        
         "score": {
             "current": score_current,
             "rating": rating,
