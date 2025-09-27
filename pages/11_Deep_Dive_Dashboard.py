@@ -1948,27 +1948,19 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 
 # >>> ADD: Insight panel (UI)
 with st.expander("🧠 Explain this page", expanded=False):
-    colA, colB = st.columns([1, 1])
-    depth = colA.selectbox(
-        "Depth", ["Quick", "Standard", "Deep"], index=1, key="ai_depth"
-    )
-    clicked = colB.button(
-        "Explain what stands out", use_container_width=True, key="ai_go"
-    )
+    c1, c2 = st.columns([1, 1])
+    depth = c1.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1, key="ai_depth")
+    go = c2.button("Explain what stands out", use_container_width=True, key="ai_go")
 
-    # Always show a one-line diagnostic so we know the SDK/key status on every rerun
+    # always show diagnostics on every rerun
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-
-    # Build context from the SAME stat-box row you render above
-    selected_ticker = TICKER
-    as_of_str = date_str
 
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
-        # Generate on click and persist the result for subsequent reruns
-        if clicked:
-            ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
+        if go:
+            # build context from the SAME row you used for the stat box
+            ctx = collect_deepdive_context(TICKER, date_str, _row)
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
@@ -1980,14 +1972,15 @@ with st.expander("🧠 Explain this page", expanded=False):
             st.info("Click the button to generate insights.")
         else:
             def _render_section(title, items):
-                if not items:
+                if not items: 
                     return
                 st.markdown(f"**{title}**")
                 for it in items:
                     insight = it.get("insight", "")
                     ev = ", ".join(it.get("evidence", []))
                     st.markdown(
-                        f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>",
+                        f"- {insight}  \n"
+                        f"  <span style='opacity:0.6'>evidence: `{ev}`</span>",
                         unsafe_allow_html=True,
                     )
 
@@ -2001,6 +1994,7 @@ with st.expander("🧠 Explain this page", expanded=False):
                 for q in insights["followup_questions"]:
                     st.markdown(f"- {q}")
 
+                    
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
 left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
