@@ -22,6 +22,15 @@ import numpy as np
 #    "figure.figsize": (9.2, 3.4),   # good aspect for the 3-up rows
 #})
 
+# >>> ADD: OpenAI + utils
+import json, re
+import streamlit as st
+
+try:
+    from openai import OpenAI
+    _OPENAI_READY = True
+except Exception:
+    _OPENAI_READY = False
 
 # -------------------------
 # Page & shared style
@@ -313,6 +322,88 @@ def _window_by_label_with_gutter(df: pd.DataFrame, label: str, date_col: str) ->
 
 rcParams["font.family"] = ["sans-serif"]
 rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
+
+
+# >>> ADD: System prompt that bans advice and forces evidence-backed insights
+SYSTEM_PROMPT_DEEPDIVE = """
+You analyze on-screen market telemetry and produce concise insights only.
+- No investment advice or trade instructions (no 'buy/sell/short/allocate/should').
+- Do not predict prices or recommend positions.
+- Each insight must reference the specific on-page fields used (as dot paths in an 'evidence' list).
+- Keep language neutral, descriptive, and grounded in the provided context.
+- Output JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+"""
+
+# Simple regex guard (server-side belt & suspenders)
+_ADVICE_RE = re.compile(r"\b(buy|sell|short|cover|allocate|should|stop[- ]?loss|take profit|position|hedge)\b", re.I)
+
+def _scrub_advice(text: str) -> str:
+    """Replace any advicey verbs with neutral phrasing."""
+    return _ADVICE_RE.sub("**(removed: advicey verb)**", text)
+
+def _default_insights():
+    """Fallback if API fails — very small, neutral."""
+    return {
+        "salient_signals": [{"insight": "No AI insight available; showing default message.", "evidence": []}],
+        "context_and_implications": [],
+        "risk_and_caveats": [],
+        "followup_questions": ["Try again or adjust the ticker/date."]
+    }
+
+@st.cache_data(show_spinner=False)
+def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
+    """
+    Calls OpenAI once per (ticker, as_of, depth) thanks to cache.
+    Expects a compact context dict (built from what's already on-screen).
+    """
+    # Depth tuning (keep this simple)
+    max_bullets = {"Quick": 4, "Standard": 7, "Deep": 10}.get(depth, 7)
+
+    if not _OPENAI_READY:
+        return _default_insights()
+
+    api_key = st.secrets.get("OPENAI_API_KEY")
+    if not api_key:
+        return _default_insights()
+
+    client = OpenAI(api_key=api_key)
+
+    # Ask for JSON back; keep tokens modest
+    try:
+        resp = client.responses.create(
+            model="gpt-5.1",  # or your preferred deployed model
+            input=[
+                {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE},
+                {"role": "user", "content": [
+                    {"type": "text", "text": f"Depth: {depth}. Return at most {max_bullets} total bullets."},
+                    {"type": "json", "json": context}
+                ]}
+            ],
+            response_format={"type": "json_object"},
+            max_output_tokens=600,
+        )
+        raw = resp.output[0].content[0].text if resp and resp.output else "{}"
+        data = json.loads(raw or "{}")
+    except Exception:
+        return _default_insights()
+
+    # Basic shape + safety scrub
+    for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
+        items = data.get(key, [])
+        for it in items:
+            it["insight"] = _scrub_advice(it.get("insight", ""))
+
+    # Trim to depth budget
+    def _trim(lst): 
+        return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
+    data["salient_signals"] = _trim(data.get("salient_signals", []))
+    data["context_and_implications"] = _trim(data.get("context_and_implications", []))
+    data["risk_and_caveats"] = _trim(data.get("risk_and_caveats", []))
+    data["followup_questions"] = (data.get("followup_questions", []) or [])[:3]
+
+    return data or _default_insights()
+
+
 
 # ==============================
 # LAZY LOADERS (ticker-only, CSV sorted by ticker/date)
@@ -1679,6 +1770,129 @@ with mid_stat:
 
 # optional small spacer
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+
+
+# >>> ADD: Use the exact objects you already computed for the Deep Dive visuals.
+def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
+    """Build context from the SAME row you use to render the stat box."""
+    # ——— values directly from your stat box row (names from your screenshot) ———
+    last_price = float(stat_row.get("close"))
+
+    day_low   = float(stat_row.get("day_pr_low"))
+    day_high  = float(stat_row.get("day_pr_high"))
+    week_low  = float(stat_row.get("week_pr_low"))
+    week_high = float(stat_row.get("week_pr_high"))
+    month_low = float(stat_row.get("month_pr_low"))
+    month_high= float(stat_row.get("month_pr_high"))
+
+    # if you track breach flags elsewhere, keep "none" for now
+    day_breach = "none"
+    week_breach = "none"
+    month_breach = "none"
+
+    # anchor gap: you appear to show an anchor value (lt_pt_sm). If you also show a % gap, use that.
+    # If not, compute % gap to anchor from price:
+    anchor_val = stat_row.get("lt_pt_sm")
+    anchor_gap_pct = float(((last_price - anchor_val) / anchor_val) * 100) if anchor_val else 0.0
+
+    # trends: if you store ST/MT/LT regimes in this row, map them here; else leave neutral placeholders
+    trend_short = stat_row.get("trend_short", "flat")
+    trend_mid   = stat_row.get("trend_mid",   "flat")
+    trend_long  = stat_row.get("trend_long",  "flat")
+
+    # vol stats (names from your stat box block)
+    ivol = stat_row.get("ivol")      # already rendered via _pct(row.get("ivol"))
+    rvol = stat_row.get("rvol")
+    ivolpd = stat_row.get("prem_disc")  # your “IVOL premium/discount”
+    ivol_rvol_spread = float(ivol - rvol) if ivol is not None and rvol is not None else 0.0
+    z_30d = float(stat_row.get("z_30d")) if "z_30d" in stat_row else 0.0
+    vol_regime = stat_row.get("rating", "") or "normal"   # you show `rating` below mscores
+
+    # Sharpe + ranks (adjust if your field names differ)
+    sharpe_pctile = int(stat_row.get("sharpe_pctile", 0))
+    sharpe_ratio = float(stat_row.get("sharpe_ratio", 0.0))
+    sharpe_ratio_delta_30d = float(stat_row.get("sharpe_ratio_30d_delta", 0.0))
+
+    # Markmentum Score (you call it `model_score` in the stat box)
+    score_current = float(stat_row.get("model_score", 0.0))
+    score_d1  = float(stat_row.get("d1_ms_delta", 0.0))    # rename to your real delta columns if present
+    score_wtd = float(stat_row.get("wtd_ms_delta", 0.0))
+    score_mtd = float(stat_row.get("mtd_ms_delta", 0.0))
+    score_qtd = float(stat_row.get("qtd_ms_delta", 0.0))
+
+    return {
+        "as_of": as_of,
+        "ticker": ticker,
+        "price": last_price,
+        "ranges": {
+            "day":   {"low": day_low,   "high": day_high,   "breach": day_breach},
+            "week":  {"low": week_low,  "high": week_high,  "breach": week_breach},
+            "month": {"low": month_low, "high": month_high, "breach": month_breach},
+        },
+        "anchor_gap_pct": float(anchor_gap_pct),
+        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},
+        "vol_stats": {
+            "ivol_rvol_spread": float(ivol_rvol_spread),
+            "z_30d": float(z_30d),
+            "regime": str(vol_regime),
+            "ivol": float(ivol) if ivol is not None else None,
+            "rvol": float(rvol) if rvol is not None else None,
+            "ivol_prem_disc": float(ivolpd) if ivolpd is not None else None,
+        },
+        "sharpe": {
+            "pctile": sharpe_pctile,
+            "ratio": sharpe_ratio,
+            "ratio_30d_delta": sharpe_ratio_delta_30d,
+        },
+        "score": {
+            "current": score_current,
+            "d1_delta": score_d1,
+            "wtd_delta": score_wtd,
+            "mtd_delta": score_mtd,
+            "qtd_delta": score_qtd,
+        },
+    }
+
+#ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
+
+
+# >>> ADD: Insight panel (UI)
+with st.expander("🧠 Explain this page", expanded=False):
+    colA, colB = st.columns([1, 1])
+    depth = colA.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1)
+    run = colB.button("Explain what stands out", use_container_width=True)
+
+    if run:
+        # You already know the selected ticker and as_of date in this page:
+        # Example placeholders — use your real variables.
+        selected_ticker = TICKER   # <- replace if your variable name differs
+        as_of_str = date_str # <- e.g., the date you show on the page header
+
+        ctx = collect_deepdive_context(selected_ticker, as_of_str)
+
+        with st.status("Analyzing on-screen telemetry…", expanded=False):
+            insights = get_ai_insights(ctx, depth=depth)
+
+        # Render clean sections
+        def _render_section(title, items):
+            if not items: return
+            st.markdown(f"**{title}**")
+            for it in items:
+                insight = it.get("insight", "")
+                ev = ", ".join(it.get("evidence", []))
+                st.markdown(f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>", unsafe_allow_html=True)
+
+        _render_section("Signals", insights.get("salient_signals"))
+        _render_section("Context", insights.get("context_and_implications"))
+        _render_section("Risk & caveats", insights.get("risk_and_caveats"))
+
+        if insights.get("followup_questions"):
+            st.divider()
+            st.caption("Follow-ups to explore")
+            for q in insights["followup_questions"]:
+                st.markdown(f"- {q}")
+
+
 
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
