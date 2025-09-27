@@ -137,10 +137,10 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
-  <li><b>Rankings</b> – Category dashboards (e.g., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap across categories, plus a per-ticker heatmap within each selected category. 
-  Beneath the heatmaps, bar-chart rankings display key metrics for every ticker: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-Day Change.</li>
-  <li><b>Markmentum Heatmap</b> – Multi-layered view of score changes. Start with a category-level heatmap showing average Markmentum Score changes across Daily, WTD, MTD, and QTD. 
-  Drill down into any category to see a per-ticker heatmap, and complement it with bar chart rankings of individual tickers by each timeframe. This gives both a top-down and bottom-up perspective on score movement.</li>
+  <li><b>Rankings</b> – Category dashboards (e.g., Sectors & Styles, Indices, Currencies, Rates) with a current snapshot of Markmentum Scores. 
+  Each category shows a heatmap of current scores across tickers, plus bar-chart rankings for every ticker: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-Day Change.</li>
+  <li><b>Markmentum Heatmap</b> – Multi-layered view of score changes over time. Starts with category-level heatmaps showing average score changes across Daily, WTD, MTD, and QTD. 
+  Drill down into any category to see per-ticker heatmaps and bar-chart rankings by timeframe, providing both a top-down and bottom-up view of momentum shifts.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus broad S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
