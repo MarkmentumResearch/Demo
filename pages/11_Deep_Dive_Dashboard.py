@@ -2479,7 +2479,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
     # Left axis: Signal Score
-    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="Model Score")
+    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="Markmentum Score")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
     # Right axis: Close
