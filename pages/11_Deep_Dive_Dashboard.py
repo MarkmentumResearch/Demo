@@ -1877,7 +1877,7 @@ with st.expander("🧠 Explain this page", expanded=False):
                 insights = get_ai_insights(ctx, depth=depth)
    
 
-        with st.status("Analyzing on-screen telemetry…", expanded=False):
+        with st.status("Analyzing on-screen telemetry…"):
             insights = get_ai_insights(ctx, depth=depth)
 
         # Render clean sections
