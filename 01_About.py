@@ -115,7 +115,7 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
 
 <h3>Preview</h3>
 <ul>
-  <li><b>Demo</b> –  This is a limited preview of Markmentum Research for informational and educational use. It runs the full product experience with production-grade features and data. The full production site is coming soon.</li>
+  <li><b>Demo</b> –  This is a limited preview of Markmentum Research for informational and educational use. It showcases the full feature set with production-grade data. The subscription launch is coming soon.</li>
 </ul>
 
 <h3>What we publish</h3>
@@ -139,7 +139,8 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
   <li><b>Rankings</b> – Category dashboards (i.e., Sectors & Styles, Indices, Currencies, Rates) with a current Markmentum Score heatmap, plus a per-ticker current heatmap. 
   Below the heatmaps, see bar-chart rankings for each ticker in the selected category: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-day change.</li>
-  <li><b>Markmentum Heatmap</b> – At-a-glance heatmap of category Markmentum Score measured by changes in our proprietary AI-powered market model scoring algorithm. Select a category to see each ticker’s Markmentum heatmap and rankings for Daily, Week-to-Date, Month-to-Date, and Quarter-to-Date.</li>
+  <li><b>Markmentum Heatmap</b> – Multi-layered view of score changes. Start with a category-level heatmap showing average Markmentum Score changes across Daily, WTD, MTD, and QTD. 
+  Drill down into any category to see a per-ticker heatmap, and complement it with bar chart rankings of individual tickers by each timeframe. This gives both a top-down and bottom-up perspective on score movement.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus broad S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
@@ -160,7 +161,7 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
 <h3>Our Why</h3>
 <p>
   Markmentum Research was born from a passion for markets and numbers — but it’s guided by faith. 
-  All glory and honor goes to the Lord, who makes every step possible.
+  All glory and honor belongs to the Lord, who makes every step possible.
 </p>
 <p>
   Our mission is to deliver actionable, probability-driven insights without noise or narratives, 
