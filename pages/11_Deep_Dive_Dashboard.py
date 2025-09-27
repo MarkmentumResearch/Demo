@@ -388,30 +388,33 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
             return client.responses.create(
                 model=model_name,
                 input=[
-                 {
+                    {
                         "role": "system",
                         "content": [
-                            {"type": "input_text", "text": SYSTEM_PROMPT_DEEPDIVE}
+                            {"type": "input_text", "text":
+                                SYSTEM_PROMPT_DEEPDIVE
+                                + "\nReturn ONLY a strict JSON object with keys: "
+                                "salient_signals, context_and_implications, risk_and_caveats, followup_questions."
+                            }
                         ],
-                },
-                {
+                    },
+                    {
                         "role": "user",
                         "content": [
                             {
                                 "type": "input_text",
                                 "text": (
                                     f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                    "Here is the page context as JSON. Use ONLY this data for insights "
-                                    "(no advice):\n"
+                                    "Here is the page context as JSON. Use ONLY this data (no advice):\n"
                                     + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
                                 ),
                             }
                         ],
                     },
                 ],
-                response_format={"type": "json_object"},
+                # NOTE: no response_format kwarg (older SDK)
                 max_output_tokens=600,
-            )   
+        )
 
         # Try primary, then a safe fallback
         try:
@@ -421,13 +424,21 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
         # Prefer modern SDK convenience field
         raw = getattr(resp, "output_text", None)
-        if not raw:
-            raw = (resp.output[0].content[0].text if getattr(resp, "output", None) else "{}")
+        if not raw and getattr(resp, "output", None):
+        raw = resp.output[0].content[0].text
 
-        data = json.loads(raw or "{}")
+        try:
+            data = json.loads(raw or "{}")
+        except Exception:
+            # Extract a JSON object if the model added extra text
+            m = re.search(r"\{.*\}", raw or "", re.S)
+            data = json.loads(m.group(0)) if m else {}
+
+
+
     except Exception as e:
         st.caption(f"AI call failed: {e}")
-    return _default_insights()
+        return _default_insights()
 
     # Basic shape + safety scrub
     for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
