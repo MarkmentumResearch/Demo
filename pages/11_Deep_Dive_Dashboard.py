@@ -13,7 +13,7 @@ from matplotlib import rcParams
 #from matplotlib import rcParams
 #import matplotlib.dates as mdates
 from matplotlib.lines import Line2D
-#import os
+import os
 from matplotlib.ticker import StrMethodFormatter
 import math  # (near your other imports, once)
 import numpy as np
@@ -322,6 +322,20 @@ def _window_by_label_with_gutter(df: pd.DataFrame, label: str, date_col: str) ->
 rcParams["font.family"] = ["sans-serif"]
 rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
+def _read_openai_key():
+    s = st.secrets
+    # 1) root-level keys (most common)
+    for k in ("OPENAI_API_KEY", "openai_api_key"):
+        if k in s and s[k]:
+            return str(s[k])
+    # 2) common table layouts: [openai] api_key="..."
+    for sect in ("openai", "OpenAI", "OPENAI"):
+        if sect in s and isinstance(s[sect], dict):
+            for k in ("api_key", "API_KEY", "key"):
+                if k in s[sect] and s[sect][k]:
+                    return str(s[sect][k])
+    # 3) environment fallback
+    return os.getenv("OPENAI_API_KEY")
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
 SYSTEM_PROMPT_DEEPDIVE = """
@@ -363,7 +377,7 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     if not _OPENAI_READY:
         return _default_insights()
 
-    api_key = st.secrets.get("OPENAI_API_KEY")
+    api_key = _read_openai_key()
     if not api_key:
         return _default_insights()
 
@@ -1880,8 +1894,13 @@ with st.expander("🧠 Explain this page", expanded=False):
     # Use your existing page values
         selected_ticker = TICKER
         as_of_str = date_str  # the header date you already compute
-        st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if st.secrets.get('OPENAI_API_KEY') else 'no'}, model_try={[MODEL_NAME_PRIMARY, MODEL_NAME_FALLBACK]}")
-
+        st.caption(
+            f"AI diag → sdk={_OPENAI_READY}, "
+            f"key={'yes' if _read_openai_key() else 'no'}, "
+            f"model_try={[MODEL_NAME_PRIMARY, MODEL_NAME_FALLBACK]}, "
+            f"secrets_keys={list(st.secrets.keys())}"
+        )
+        
         if _row is None:
             st.warning("No data available for the selected ticker.")
         else:
