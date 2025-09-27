@@ -1861,40 +1861,40 @@ with st.expander("🧠 Explain this page", expanded=False):
     depth = colA.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1)
     run = colB.button("Explain what stands out", use_container_width=True)
 
-if run:
+    if run:
     # Use your existing page values
-   selected_ticker = TICKER
-   as_of_str = date_str  # the header date you already compute
+        selected_ticker = TICKER
+        as_of_str = date_str  # the header date you already compute
 
-   if _row is None:
+        if _row is None:
             st.warning("No data available for the selected ticker.")
-    else:
-    # Build context from the SAME stat-box row
-        ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
+        else:
+        # Build context from the SAME stat-box row
+            ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
 
-    # Spinner has no 'expanded' arg
-        with st.spinner("Analyzing on-screen telemetry…"):
-            insights = get_ai_insights(ctx, depth=depth)
+        # Spinner has no 'expanded' arg
+            with st.spinner("Analyzing on-screen telemetry…"):
+                insights = get_ai_insights(ctx, depth=depth)
 
-    # Render (unchanged)
-        def _render_section(title, items):
-            if not items: 
-                return
-            st.markdown(f"**{title}**")
-            for it in items:
-                insight = it.get("insight", "")
-                ev = ", ".join(it.get("evidence", []))
-                st.markdown(f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>", unsafe_allow_html=True)
+        # Render (unchanged)
+            def _render_section(title, items):
+                if not items: 
+                    return
+                st.markdown(f"**{title}**")
+                for it in items:
+                    insight = it.get("insight", "")
+                    ev = ", ".join(it.get("evidence", []))
+                    st.markdown(f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>", unsafe_allow_html=True)
 
-        _render_section("Signals", insights.get("salient_signals"))
-        _render_section("Context", insights.get("context_and_implications"))
-        _render_section("Risk & caveats", insights.get("risk_and_caveats"))
+            _render_section("Signals", insights.get("salient_signals"))
+            _render_section("Context", insights.get("context_and_implications"))
+            _render_section("Risk & caveats", insights.get("risk_and_caveats"))
 
-        if insights.get("followup_questions"):
-            st.divider()
-            st.caption("Follow-ups to explore")
-            for q in insights["followup_questions"]:
-                st.markdown(f"- {q}")
+            if insights.get("followup_questions"):
+                st.divider()
+                st.caption("Follow-ups to explore")
+                for q in insights["followup_questions"]:
+                    st.markdown(f"- {q}")
 
 
 # --- centered Graph 1 row ---
