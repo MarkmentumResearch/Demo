@@ -1771,11 +1771,26 @@ with mid_stat:
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
 
+def _breach_flag(close, low, high):
+    """Return 'below_low', 'above_high', or 'none' based on close vs range."""
+    try:
+        if close is None or low is None or high is None:
+            return "none"
+        c = float(close); lo = float(low); hi = float(high)
+        if c < lo:  return "below_low"
+        if c > hi:  return "above_high"
+        return "none"
+    except Exception:
+        return "none"
+
+
 # >>> ADD: Use the exact objects you already computed for the Deep Dive visuals.
 def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     """Build context from the SAME row you use to render the stat box."""
-    # ——— values directly from your stat box row (names from your screenshot) ———
+    # ——— values directly from your stat box row ———
     last_price = float(stat_row.get("close"))
+    anchor_val = float(stat_row.get("lt_pt_sm"))
+    anchor_gap_pct= stat_row.get("change_pct")
 
     day_low   = float(stat_row.get("day_pr_low"))
     day_high  = float(stat_row.get("day_pr_high"))
@@ -1784,60 +1799,49 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     month_low = float(stat_row.get("month_pr_low"))
     month_high= float(stat_row.get("month_pr_high"))
 
-    # if you track breach flags elsewhere, keep "none" for now
-    day_breach = "none"
-    week_breach = "none"
-    month_breach = "none"
+    ivol = stat_row.get("ivol")      
+    rvol = stat_row.get("rvol")
+    ivolpd = stat_row.get("prem_disc")  
+    score_current = stat_row.get("model_score")
+    rating = stat_row.get("rating")
 
-    # anchor gap: you appear to show an anchor value (lt_pt_sm). If you also show a % gap, use that.
-    # If not, compute % gap to anchor from price:
-    anchor_val = stat_row.get("lt_pt_sm")
-    anchor_gap_pct = float(((last_price - anchor_val) / anchor_val) * 100) if anchor_val else 0.0
-
+    day_breach   = _breach_flag(last_price, day_low,   day_high)
+    week_breach  = _breach_flag(last_price, week_low,  week_high)
+    month_breach = _breach_flag(last_price, month_low, month_high)
+     
     # trends: if you store ST/MT/LT regimes in this row, map them here; else leave neutral placeholders
     trend_short = stat_row.get("trend_short", "flat")
     trend_mid   = stat_row.get("trend_mid",   "flat")
     trend_long  = stat_row.get("trend_long",  "flat")
 
     # vol stats (names from your stat box block)
-    ivol = stat_row.get("ivol")      # already rendered via _pct(row.get("ivol"))
+    ivol = stat_row.get("ivol")      
     rvol = stat_row.get("rvol")
-    ivolpd = stat_row.get("prem_disc")  # your “IVOL premium/discount”
-    ivol_rvol_spread = float(ivol - rvol) if ivol is not None and rvol is not None else 0.0
-    z_30d = float(stat_row.get("z_30d")) if "z_30d" in stat_row else 0.0
-    vol_regime = stat_row.get("rating", "") or "normal"   # you show `rating` below mscores
+    ivolpd = stat_row.get("prem_disc")
 
     # Sharpe + ranks (adjust if your field names differ)
     sharpe_pctile = int(stat_row.get("sharpe_pctile", 0))
     sharpe_ratio = float(stat_row.get("sharpe_ratio", 0.0))
     sharpe_ratio_delta_30d = float(stat_row.get("sharpe_ratio_30d_delta", 0.0))
 
-    # Markmentum Score (you call it `model_score` in the stat box)
-    score_current = float(stat_row.get("model_score", 0.0))
-    score_d1  = float(stat_row.get("d1_ms_delta", 0.0))    # rename to your real delta columns if present
-    score_wtd = float(stat_row.get("wtd_ms_delta", 0.0))
-    score_mtd = float(stat_row.get("mtd_ms_delta", 0.0))
-    score_qtd = float(stat_row.get("qtd_ms_delta", 0.0))
-
+    
     return {
         "as_of": as_of,
         "ticker": ticker,
         "price": last_price,
+        "anchor_val": float(anchor_val),
+        "anchor_gap_pct": float(anchor_gap_pct),
         "ranges": {
             "day":   {"low": day_low,   "high": day_high,   "breach": day_breach},
             "week":  {"low": week_low,  "high": week_high,  "breach": week_breach},
             "month": {"low": month_low, "high": month_high, "breach": month_breach},
-        },
-        "anchor_gap_pct": float(anchor_gap_pct),
-        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},
-        "vol_stats": {
-            "ivol_rvol_spread": float(ivol_rvol_spread),
-            "z_30d": float(z_30d),
-            "regime": str(vol_regime),
+        },       
+        "vol_stats": {        
             "ivol": float(ivol) if ivol is not None else None,
             "rvol": float(rvol) if rvol is not None else None,
             "ivol_prem_disc": float(ivolpd) if ivolpd is not None else None,
         },
+        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},
         "sharpe": {
             "pctile": sharpe_pctile,
             "ratio": sharpe_ratio,
@@ -1845,10 +1849,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         },
         "score": {
             "current": score_current,
-            "d1_delta": score_d1,
-            "wtd_delta": score_wtd,
-            "mtd_delta": score_mtd,
-            "qtd_delta": score_qtd,
+            "rating": rating,
         },
     }
 
