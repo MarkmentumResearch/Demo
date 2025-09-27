@@ -1945,68 +1945,94 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 
 #ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
 
+# ==============================
+# AI Insight Panel (Deep Dive)
+# ==============================
 
-# >>> ADD: Insight panel (UI)
+# Keep the panel open after clicks
 st.session_state.setdefault("ai_open", True)
 
 with st.expander("🧠 Explain this page",
                  expanded=st.session_state.get("ai_open", True)):
-    c1, c2 = st.columns([1, 1])
-    depth = c1.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1, key="ai_depth")
-    go = c2.button("Explain what stands out", use_container_width=True, key="ai_go")
 
+    # Controls
+    c1, c2 = st.columns([1, 1])
+    depth = c1.selectbox(
+        "Depth",
+        ["Quick", "Standard", "Deep"],
+        index=1,
+        key="dd_ai_depth",            # unique key
+    )
+    go = c2.button(
+        "Explain what stands out",
+        use_container_width=True,
+        key="dd_ai_go",               # unique key
+    )
+
+    # Runtime diagnostics
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
 
+    # Guard: no row for selected ticker/date
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
+        # Trigger AI
         if go:
             ctx = collect_deepdive_context(TICKER, date_str, _row)
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
-                st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
-            st.session_state["ai_open"] = True 
+                try:
+                    st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
+                except Exception as e:
+                    st.session_state["ai_last_insights"] = {}
+                    st.error(f"AI call failed: {e}")
+            st.session_state["ai_open"] = True  # keep panel open after rerun
 
         insights = st.session_state.get("ai_last_insights")
-        INSIGHT_KEYS = ["salient_signals", "context_and_implications", "risk_and_caveats", "followup_questions"]
+
+        # Helpers
+        INSIGHT_KEYS = [
+            "salient_signals",
+            "context_and_implications",
+            "risk_and_caveats",
+            "followup_questions",
+        ]
 
         def _is_empty_payload(d):
             if not d or not isinstance(d, dict):
                 return True
             return not any((d.get(k) or []) for k in INSIGHT_KEYS)
 
-        empty_payload = _is_empty_payload(insights)
-
-        if empty_payload:
-            st.warning("No standout AI insights were returned for this view.")
-            with st.expander("Why might this be?", expanded=False):
+        def _render_section(title, items):
+            if not items:
+                return
+            st.markdown(f"**{title}**")
+            for it in items:
+                insight = it.get("insight", "")
+                ev = " · ".join(it.get("evidence", []))
                 st.markdown(
-                    "- The on-screen data may not show strong signals.\n"
-                    "- Try **Depth → Deep** and click again.\n"
-                    "- If this persists, enable debug below and share the snapshot."
+                    f"- {insight}  \n"
+                    f"  <span style='opacity:0.6'>evidence: {ev}</span>",
+                    unsafe_allow_html=True,
                 )
-            # Optional: quick debug toggle (safe to leave in)
-            if st.checkbox("Show AI debug", value=False, key="ai_debug"):
+
+        # Empty / no-content case
+        if _is_empty_payload(insights):
+            st.warning("No standout AI insights were returned for this view.")
+            st.markdown(
+                "- The on-screen data may not show strong signals.\n"
+                "- Try **Depth → Deep** and click again.\n"
+                "- You can toggle debug below to see the context the model received."
+            )
+            # Optional debug
+            if st.checkbox("Show AI debug", value=False, key="dd_ai_debug"):
                 st.write("Context snapshot:")
                 st.json(st.session_state.get("ai_last_ctx", {}))
                 st.write("Insights snapshot:")
                 st.json(insights or {})
         else:
-            # your existing rendering:
-            def _render_section(title, items):
-                if not items:
-                    return
-                st.markdown(f"**{title}**")
-                for it in items:
-                    insight = it.get("insight", "")
-                    ev = " · ".join(it.get("evidence", []))
-                    st.markdown(
-                        f"- {insight}  \n"
-                        f"  <span style='opacity:0.6'>evidence: {ev}</span>",
-                        unsafe_allow_html=True,
-                    )
-
+            # Render insights
             _render_section("Signals", insights.get("salient_signals"))
             _render_section("Context", insights.get("context_and_implications"))
             _render_section("Risk & caveats", insights.get("risk_and_caveats"))
@@ -2016,6 +2042,8 @@ with st.expander("🧠 Explain this page",
                 st.caption("Follow-ups to explore")
                 for q in insights["followup_questions"]:
                     st.markdown(f"- {q}")
+
+
 
                     
 # --- centered Graph 1 row ---
