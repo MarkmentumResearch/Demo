@@ -336,12 +336,32 @@ def _read_openai_key():
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
 SYSTEM_PROMPT_DEEPDIVE = """
-You analyze on-screen market telemetry and produce concise insights only.
-- No investment advice or trade instructions (no 'buy/sell/short/allocate/should').
-- Do not predict prices or recommend positions.
-- Each insight must reference the specific on-page fields used (as dot paths in an 'evidence' list).
-- Keep language neutral, descriptive, and grounded in the provided context.
-- Output JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+You analyze the on-screen telemetry and return concise, evidence-backed observations.
+Never give investment advice, predictions, or instructions.
+
+Use these semantics:
+- Trends: st/mt/lt are % deviations; >0 = above anchor, <0 = below.
+- Probable anchors: mt_pb_anchor/lt_pb_anchor are reference levels for price.
+- gap_lt, gap_lt_avg/hi/lo: distance from long-term anchor; above 'hi' = stretched high; below 'lo' = stretched low.
+- Rvol (rvol, rvol_avg/hi/low): realized volatility level vs its 30d bands.
+- Z-Score (z, avg/hi/lo): standard score; |z| near/above 'hi' or below 'lo' = statistically elevated.
+- Sharpe & Sharpe_Rank: 30d risk-adjusted return; high rank (e.g., >80) = unusually strong recent run.
+- Ivol prem/discount (ivol_pd, avg/hi/lo): option vol premium vs its baseline; large positive = fear/hedging premium.
+- Score.current (model_score): negative = unfavorable composite, positive = favorable.
+
+How to judge “what stands out”:
+- Compare each 'current' to its avg/hi/lo band and call out any breaches or proximity (e.g., “near upper band”).
+- Note multi-horizon alignment (e.g., st >> mt ≈ lt below zero = short-term rebound against down background).
+- If Score is extreme, state which components plausibly explain it (trend skew, stretched gaps, high Sharpe rank, vol regime).
+- Prefer nouns/adjectives (“stretched”, “subdued”, “elevated”) over verbs like “buy/sell/should”.
+
+Output JSON with keys:
+- salient_signals: [{insight, evidence[]}]
+- context_and_implications: [{insight, evidence[]}]
+- risk_and_caveats: [{insight, evidence[]}]
+- followup_questions: [string]
+Where 'evidence' are dot paths into the provided JSON (e.g., "gap_lt", "Z-Score.hi", "score.current").
+Always return at least one bullet per section even on quiet days.
 """
 MODEL_NAME_PRIMARY = "gpt-5-mini"
 MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
@@ -450,7 +470,9 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                                 "type": "input_text",
                                 "text": (
                                     f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                    "Here is the page context as JSON. Use ONLY this data (no advice):\n"
+                                    "Use ONLY this JSON (no outside data). Compare each 'current' value to its "
+                                    "avg/hi/lo bands and call out breaches or proximity. Cite the exact fields "
+                                    "you reference in 'evidence'.\n"
                                     + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
                                 ),
                             }
@@ -1581,7 +1603,21 @@ with mid_stat:
 
     TICKER = _resolve_ticker()
     st.session_state["active_ticker"] = TICKER   # persist for subsequent pages
-
+    
+    # --- AI panel reset on ticker change ---
+    prev = st.session_state.get("ai_prev_ticker")
+    if prev != TICKER:
+        # collapse the expander and forget prior text
+        st.session_state["ai_open"] = False
+        st.session_state["ai_last_insights"] = None
+        st.session_state["ai_last_ctx"] = None
+        st.session_state["ai_last_depth"] = None
+        # clear only this function's cache (safe; it is @st.cache_data)
+        try:
+            get_ai_insights.clear()  # streamlit will no-op if not yet cached
+        except Exception:
+            pass
+        st.session_state["ai_prev_ticker"] = TICKER
 
 
     # ---------- helpers ----------
@@ -2177,11 +2213,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 # AI Insight Panel (Deep Dive)
 # ==============================
 
-# Keep the panel open after clicks
-st.session_state.setdefault("ai_open", True)
+#Panel default: closed (we open it after the first run)
+st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Explain this page",
-                 expanded=st.session_state.get("ai_open", True)):
+                 expanded=st.session_state.get("ai_open", False)):
 
     # Controls
     c1, c2 = st.columns([1, 1])
@@ -2204,13 +2240,14 @@ with st.expander("🧠 Explain this page",
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
-        # Trigger AI
+        # Trigger AI on click
         if go:
             ctx = collect_deepdive_context(TICKER, date_str, _row)
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
                 try:
+                    # fresh call; result is cached internally by get_ai_insights
                     st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
                 except Exception as e:
                     st.session_state["ai_last_insights"] = {}
@@ -2265,12 +2302,12 @@ with st.expander("🧠 Explain this page",
             _render_section("Context", insights.get("context_and_implications"))
             _render_section("Risk & caveats", insights.get("risk_and_caveats"))
 
+            # Hide follow-ups if you don't want them: comment out below.
             if insights.get("followup_questions"):
                 st.divider()
                 st.caption("Follow-ups to explore")
                 for q in insights["followup_questions"]:
                     st.markdown(f"- {q}")
-
 
 
                     
