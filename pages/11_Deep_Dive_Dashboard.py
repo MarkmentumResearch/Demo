@@ -1868,7 +1868,14 @@ with st.expander("🧠 Explain this page", expanded=False):
         selected_ticker = TICKER   # <- replace if your variable name differs
         as_of_str = date_str # <- e.g., the date you show on the page header
 
-        ctx = collect_deepdive_context(selected_ticker, as_of_str)
+        # after
+        if _row is None:
+            st.warning("No data available for the selected ticker.")
+        else:
+            ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
+            with st.status("Analyzing on-screen telemetry…", expanded=False):
+                insights = get_ai_insights(ctx, depth=depth)
+   
 
         with st.status("Analyzing on-screen telemetry…", expanded=False):
             insights = get_ai_insights(ctx, depth=depth)
