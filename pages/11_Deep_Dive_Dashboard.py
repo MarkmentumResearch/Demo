@@ -388,11 +388,18 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
             return client.responses.create(
                 model=model_name,
                 input=[
-                    {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE},
-                    {"role": "user", "content": [
-                        {"type": "text", "text": f"Depth: {depth}. Return at most {max_bullets} total bullets."},
-                        {"type": "json", "json": context}
-                    ]}
+                    {
+                        "role": "system",
+                        "content": [{"type": "input_text", "text": SYSTEM_PROMPT_DEEPDIVE}],
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "input_text",
+                            "text": f"Depth: {depth}. Return at most {max_bullets} total bullets."},
+                            {"type": "input_json", "json": context},
+                        ],
+                    },
                 ],
                 response_format={"type": "json_object"},
                 max_output_tokens=600,
