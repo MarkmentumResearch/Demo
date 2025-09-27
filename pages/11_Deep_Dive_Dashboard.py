@@ -1880,40 +1880,58 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # ——— values directly from your stat box row ———
     last_price = float(stat_row.get("close"))
     anchor_val = float(stat_row.get("lt_pt_sm"))
-    anchor_gap_pct= float(stat_row.get("change_pct")*100)
-
+    anchor_gap_pct= _pct(stat_row.get("change_pct"))
     day_low   = float(stat_row.get("day_pr_low"))
     day_high  = float(stat_row.get("day_pr_high"))
+    day_down  = _pct(stat_row.get("day_dn"))
+    day_up  = _pct(stat_row.get("day_up"))
+    day_rr = _rr(stat_row.get("day_rr_ratio"))
     week_low  = float(stat_row.get("week_pr_low"))
     week_high = float(stat_row.get("week_pr_high"))
+    week_down  = _pct(stat_row.get("week_dn"))
+    week_up  = _pct(stat_row.get("week_up"))
+    week_rr = _rr(stat_row.get("week_rr_ratio"))
     month_low = float(stat_row.get("month_pr_low"))
     month_high= float(stat_row.get("month_pr_high"))
-
+    month_down  = _pct(stat_row.get("month_dn"))
+    month_up  = _pct(stat_row.get("month_up"))
+    month_rr = _rr(stat_row.get("month_rr_ratio"))
     ivol = _pct(stat_row.get("ivol"))
     rvol = _pct(stat_row.get("rvol"))
     ivolpd = _pct(stat_row.get("prem_disc")) 
     score_current = stat_row.get("model_score")
     rating = stat_row.get("rating")
-
+    ivol = stat_row.get("ivol")      
+    rvol = stat_row.get("rvol")
+    ivolpd = stat_row.get("prem_disc")
     day_breach   = _breach_flag(last_price, day_low,   day_high)
     week_breach  = _breach_flag(last_price, week_low,  week_high)
     month_breach = _breach_flag(last_price, month_low, month_high)
      
-    # trends: if you store ST/MT/LT regimes in this row, map them here; else leave neutral placeholders
-    trend_short = stat_row.get("trend_short", "flat")
-    trend_mid   = stat_row.get("trend_mid",   "flat")
-    trend_long  = stat_row.get("trend_long",  "flat")
-
-    # vol stats (names from your stat box block)
-    ivol = stat_row.get("ivol")      
-    rvol = stat_row.get("rvol")
-    ivolpd = stat_row.get("prem_disc")
-
-    # Sharpe + ranks (adjust if your field names differ)
-    sharpe_pctile = int(stat_row.get("sharpe_pctile", 0))
-    sharpe_ratio = float(stat_row.get("sharpe_ratio", 0.0))
-    sharpe_ratio_delta_30d = float(stat_row.get("sharpe_ratio_30d_delta", 0.0))
-
+    #----graphs -----------------
+    trend_short = stat_row.get("st_trend")
+    trend_mid   = stat_row.get("mt_trend")
+    trend_long  = stat_row.get("lt_long")
+    gap_lt_avg = stat_row.get("gap_lt_avg")
+    gap_lt_hi = stat_row.get("gap_lt_hi")
+    gap_lt_lo = stat_row.get("gap_lt_lo")
+    zscore = stat_row.get("Z-Score")
+    zscore_avg = stat_row.get("Z-Score_avg")
+    zscore_hi = stat_row.get("Z-Score_hi")
+    zscore_lo = stat_row.get("Z-Score_lo")
+    zscore_rank = stat_row.get("Z-Score Rank")
+    rvol_avg = stat_row.get("Rvol_avg")
+    rvol_hi = stat_row.get("Rvol_hi")
+    rvol_low = stat_row.get("Rvol_low")    
+    Sharpe = stat_row.get("Sharpe")
+    Sharpe_avg = stat_row.get("Sharpe_avg")
+    Sharpe_hi = stat_row.get("Sharpe_hi")
+    Sharpe_low = stat_row.get("Sharpe_low")
+    Sharpe_Rank = stat_row.get("Sharpe_Rank")
+    prem_disc = stat_row.get("prem_disc")
+    prem_disc_avg = stat_row.get("prem_disc_avg")
+    prem_disc_hi = stat_row.get("prem_disc_hi")
+    prem_disc_lo = stat_row.get("prem_disc_lo")
     
     return {
         "as_of": as_of,
@@ -1941,6 +1959,35 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             "current": score_current,
             "rating": rating,
         },
+        "day_down": day_down,
+        "day_up": day_up,
+        "day_rr": day_rr,
+        "week_down": week_down,
+        "week_up": week_up,
+        "week_rr": week_rr,
+        "month_down": month_down,
+        "month_up": month_up,
+        "month_rr": month_rr,
+        "gap_lt_avg": gap_lt_avg,
+        "gap_lt_hi": gap_lt_hi,
+        "gap_lt_lo": gap_lt_lo,
+        "Z-Score": zscore,
+        "Z-Score_avg": zscore_avg,
+        "Z-Score_hi": zscore_hi,
+        "Z-Score_lo": zscore_lo,
+        "Z-Score Rank": zscore_rank,
+        "Rvol_avg": rvol_avg,
+        "Rvol_hi": rvol_hi,
+        "Rvol_low": rvol_low,
+        "Sharpe": Sharpe,
+        "Sharpe_avg": Sharpe_avg,
+        "Sharpe_hi": Sharpe_hi,
+        "Sharpe_low": Sharpe_low,
+        "Sharpe_Rank": Sharpe_Rank,
+        "prem_disc": prem_disc,
+        "prem_disc_avg": prem_disc_avg,
+        "prem_disc_hi": prem_disc_hi,
+        "prem_disc_lo": prem_disc_lo,
     }
 
 #ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
