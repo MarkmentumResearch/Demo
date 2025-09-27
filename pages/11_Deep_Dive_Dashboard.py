@@ -1949,34 +1949,47 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 # >>> ADD: Insight panel (UI)
 with st.expander("🧠 Explain this page", expanded=False):
     colA, colB = st.columns([1, 1])
-    depth = colA.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1)
-    run = colB.button("Explain what stands out", use_container_width=True)
+    depth = colA.selectbox(
+        "Depth", ["Quick", "Standard", "Deep"], index=1, key="ai_depth"
+    )
+    clicked = colB.button(
+        "Explain what stands out", use_container_width=True, key="ai_go"
+    )
 
-    if run:
-    # Use your existing page values
-        selected_ticker = TICKER
-        as_of_str = date_str  # the header date you already compute
-        st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-        
-        if _row is None:
-            st.warning("No data available for the selected ticker.")
-        else:
-        # Build context from the SAME stat-box row
+    # Always show a one-line diagnostic so we know the SDK/key status on every rerun
+    st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
+
+    # Build context from the SAME stat-box row you render above
+    selected_ticker = TICKER
+    as_of_str = date_str
+
+    if _row is None:
+        st.warning("No data available for the selected ticker.")
+    else:
+        # Generate on click and persist the result for subsequent reruns
+        if clicked:
             ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
-
-        # Spinner has no 'expanded' arg
             with st.spinner("Analyzing on-screen telemetry…"):
-                insights = get_ai_insights(ctx, depth=depth)
+                st.session_state["ai_last_ctx"] = ctx
+                st.session_state["ai_last_depth"] = depth
+                st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
 
-        # Render (unchanged)
+        insights = st.session_state.get("ai_last_insights")
+
+        if not insights:
+            st.info("Click the button to generate insights.")
+        else:
             def _render_section(title, items):
-                if not items: 
+                if not items:
                     return
                 st.markdown(f"**{title}**")
                 for it in items:
                     insight = it.get("insight", "")
                     ev = ", ".join(it.get("evidence", []))
-                    st.markdown(f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>", unsafe_allow_html=True)
+                    st.markdown(
+                        f"- {insight}  \n  <span style='opacity:0.6'>evidence: `{ev}`</span>",
+                        unsafe_allow_html=True,
+                    )
 
             _render_section("Signals", insights.get("salient_signals"))
             _render_section("Context", insights.get("context_and_implications"))
@@ -1987,7 +2000,6 @@ with st.expander("🧠 Explain this page", expanded=False):
                 st.caption("Follow-ups to explore")
                 for q in insights["followup_questions"]:
                     st.markdown(f"- {q}")
-
 
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
