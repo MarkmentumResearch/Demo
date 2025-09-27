@@ -362,6 +362,46 @@ def _default_insights():
         "followup_questions": ["Try again or adjust the ticker/date."]
     }
 
+def _extract_output_text(resp) -> str | None:
+    """
+    Works across OpenAI SDK shapes. Returns a plain string or None.
+    """
+    # 1) Modern convenience
+    txt = getattr(resp, "output_text", None)
+    if isinstance(txt, str) and txt.strip():
+        return txt
+
+    # 2) Object-style 'output' -> [ { content: [ { text: ... } ] } ]
+    out = getattr(resp, "output", None)
+    if isinstance(out, list) and out:
+        first = out[0]
+        content = getattr(first, "content", None)
+        if isinstance(content, list) and content:
+            node = content[0]
+            # node may be pydantic object or dict
+            val = getattr(node, "text", None)
+            if not val and isinstance(node, dict):
+                val = node.get("text") or node.get("value")
+            if isinstance(val, str) and val.strip():
+                return val
+
+    # 3) Dict-style responses
+    if isinstance(resp, dict):
+        if isinstance(resp.get("output_text"), str):
+            return resp["output_text"]
+        out = resp.get("output")
+        if isinstance(out, list) and out:
+            content = (out[0] or {}).get("content")
+            if isinstance(content, list) and content:
+                node = content[0] or {}
+                val = node.get("text") or node.get("value")
+                if isinstance(val, str) and val.strip():
+                    return val
+
+    return None
+
+
+
 @st.cache_data(show_spinner=False)
 def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     """
@@ -423,18 +463,14 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
             resp = _call(MODEL_NAME_FALLBACK)
 
         # Prefer modern SDK convenience field
-        raw = getattr(resp, "output_text", None)
-        if not raw and getattr(resp, "output", None):
-            raw = resp.output[0].content[0].text
+        raw = _extract_output_text(resp)
 
+        # Parse hard to JSON; if the model adds extra text, strip it down.
         try:
             data = json.loads(raw or "{}")
         except Exception:
-            # Extract a JSON object if the model added extra text
             m = re.search(r"\{.*\}", raw or "", re.S)
             data = json.loads(m.group(0)) if m else {}
-
-
 
     except Exception as e:
         st.caption(f"AI call failed: {e}")
