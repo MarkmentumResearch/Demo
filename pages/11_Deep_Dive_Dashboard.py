@@ -332,6 +332,8 @@ You analyze on-screen market telemetry and produce concise insights only.
 - Keep language neutral, descriptive, and grounded in the provided context.
 - Output JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
 """
+MODEL_NAME_PRIMARY = "gpt-5-mini"
+MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
 
 # Simple regex guard (server-side belt & suspenders)
 _ADVICE_RE = re.compile(r"\b(buy|sell|short|cover|allocate|should|stop[- ]?loss|take profit|position|hedge)\b", re.I)
@@ -369,19 +371,31 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
     # Ask for JSON back; keep tokens modest
     try:
-        resp = client.responses.create(
-            model="gpt-5.1",  # or your preferred deployed model
-            input=[
-                {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE},
-                {"role": "user", "content": [
-                    {"type": "text", "text": f"Depth: {depth}. Return at most {max_bullets} total bullets."},
-                    {"type": "json", "json": context}
-                ]}
-            ],
-            response_format={"type": "json_object"},
-            max_output_tokens=600,
-        )
-        raw = resp.output[0].content[0].text if resp and resp.output else "{}"
+        def _call(model_name: str):
+            return client.responses.create(
+                model=model_name,
+                input=[
+                    {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE},
+                    {"role": "user", "content": [
+                        {"type": "text", "text": f"Depth: {depth}. Return at most {max_bullets} total bullets."},
+                        {"type": "json", "json": context}
+                    ]}
+                ],
+                response_format={"type": "json_object"},
+                max_output_tokens=600,
+            )
+
+        # Try primary, then a safe fallback
+        try:
+            resp = _call(MODEL_NAME_PRIMARY)
+        except Exception:
+            resp = _call(MODEL_NAME_FALLBACK)
+
+        # Prefer modern SDK convenience field
+        raw = getattr(resp, "output_text", None)
+        if not raw:
+            raw = (resp.output[0].content[0].text if getattr(resp, "output", None) else "{}")
+
         data = json.loads(raw or "{}")
     except Exception:
         return _default_insights()
