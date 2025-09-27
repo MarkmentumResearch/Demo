@@ -1966,7 +1966,7 @@ with st.expander("🧠 Explain this page",
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
                 st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
-            st.session_state["ai_open"] = True  # keep panel open after rerun
+            st.session_state["ai_open"] = True 
 
         insights = st.session_state.get("ai_last_insights")
 
