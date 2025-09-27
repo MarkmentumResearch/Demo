@@ -24,7 +24,6 @@ import numpy as np
 
 # >>> ADD: OpenAI + utils
 import json, re
-import streamlit as st
 
 try:
     from openai import OpenAI
@@ -1862,22 +1861,22 @@ with st.expander("🧠 Explain this page", expanded=False):
     depth = colA.selectbox("Depth", ["Quick", "Standard", "Deep"], index=1)
     run = colB.button("Explain what stands out", use_container_width=True)
 
-    if run:
+if run:
     # Use your existing page values
-    selected_ticker = TICKER
-    as_of_str = date_str  # the header date you already compute
+   selected_ticker = TICKER
+   as_of_str = date_str  # the header date you already compute
 
-    if _row is None:
-        st.warning("No data available for the selected ticker.")
+   if _row is None:
+            st.warning("No data available for the selected ticker.")
     else:
-        # Build context from the SAME stat-box row
+    # Build context from the SAME stat-box row
         ctx = collect_deepdive_context(selected_ticker, as_of_str, _row)
 
-        # Spinner has no 'expanded' arg
+    # Spinner has no 'expanded' arg
         with st.spinner("Analyzing on-screen telemetry…"):
             insights = get_ai_insights(ctx, depth=depth)
 
-        # Render (unchanged)
+    # Render (unchanged)
         def _render_section(title, items):
             if not items: 
                 return
