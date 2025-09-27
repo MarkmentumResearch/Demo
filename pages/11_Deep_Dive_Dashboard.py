@@ -335,34 +335,37 @@ def _read_openai_key():
     return os.getenv("OPENAI_API_KEY")
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
+
 SYSTEM_PROMPT_DEEPDIVE = """
-You analyze the on-screen telemetry and return concise, evidence-backed observations.
-Never give investment advice, predictions, or instructions.
+You analyze on-screen telemetry and return concise, evidence-backed observations.
+No advice/predictions.
 
-Use these semantics:
-- Trends: st/mt/lt are % deviations; >0 = above anchor, <0 = below.
-- Probable anchors: mt_pb_anchor/lt_pb_anchor are reference levels for price.
-- gap_lt, gap_lt_avg/hi/lo: distance from long-term anchor; above 'hi' = stretched high; below 'lo' = stretched low.
-- Rvol (rvol, rvol_avg/hi/low): realized volatility level vs its 30d bands.
-- Z-Score (z, avg/hi/lo): standard score; |z| near/above 'hi' or below 'lo' = statistically elevated.
-- Sharpe & Sharpe_Rank: 30d risk-adjusted return; high rank (e.g., >80) = unusually strong recent run.
-- Ivol prem/discount (ivol_pd, avg/hi/lo): option vol premium vs its baseline; large positive = fear/hedging premium.
-- Score.current (model_score): negative = unfavorable composite, positive = favorable.
+Semantics:
+- anchor_gap_pct: price vs LT anchor (%). ±3% mild, ±10% large, ±20% extreme.
+- Trends st/mt/lt: % posture; + above anchor, − below. 'Flat' if |value|<0.6.
+- Divergence (stretched): |st−mt|≥2 and |st−lt|≥3 (percent points).
+- Z-Score (z, avg/hi/lo): ±0.75 meaningful, ±1.5 stretched, ±2.0 extreme.
+- RVol (rvol_avg/hi/low): <6% compressed, 6–15% normal, >15% elevated.
+- Sharpe: <−1 weak, >+1 strong. Sharpe_Rank>70 strong momentum quality.
+- gap_lt_avg/hi/lo: distance vs LT anchor bands; any ≥25% = stretched vs LT bands.
+- ivol_pd/avg/hi/lo: implied-vol premium/discount; large positive = hedging premium.
+- score.current (model_score) and rating summarize stance.
 
-How to judge “what stands out”:
-- Compare each 'current' to its avg/hi/lo band and call out any breaches or proximity (e.g., “near upper band”).
-- Note multi-horizon alignment (e.g., st >> mt ≈ lt below zero = short-term rebound against down background).
-- If Score is extreme, state which components plausibly explain it (trend skew, stretched gaps, high Sharpe rank, vol regime).
-- Prefer nouns/adjectives (“stretched”, “subdued”, “elevated”) over verbs like “buy/sell/should”.
+How to decide "what stands out":
+- Compare current vs avg/hi/lo bands; call out breaches/near-band.
+- Note multi-horizon alignment or opposition (st vs mt/lt).
+- If score is extreme, mention the components that plausibly explain it (trend skew, stretched gaps, z, vol, sharpe rank).
+- Use nouns/adjectives (“stretched/elevated/subdued”), never instructions.
 
-Output JSON with keys:
-- salient_signals: [{insight, evidence[]}]
-- context_and_implications: [{insight, evidence[]}]
-- risk_and_caveats: [{insight, evidence[]}]
-- followup_questions: [string]
-Where 'evidence' are dot paths into the provided JSON (e.g., "gap_lt", "Z-Score.hi", "score.current").
-Always return at least one bullet per section even on quiet days.
+Output strict JSON:
+{ "salient_signals":[{insight,evidence[]}],
+  "context_and_implications":[{insight,evidence[]}],
+  "risk_and_caveats":[{insight,evidence[]}],
+  "followup_questions":[string] }
+Always return ≥1 bullet per section.
 """
+
+
 MODEL_NAME_PRIMARY = "gpt-5-mini"
 MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
 
@@ -470,9 +473,8 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
                                 "type": "input_text",
                                 "text": (
                                     f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                    "Use ONLY this JSON (no outside data). Compare each 'current' value to its "
-                                    "avg/hi/lo bands and call out breaches or proximity. Cite the exact fields "
-                                    "you reference in 'evidence'.\n"
+                                    "Use ONLY this JSON. Compare each current value to its avg/hi/lo bands "
+                                    "to decide if it's stretched or subdued. Cite the exact fields you use in 'evidence'.\n"
                                     + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
                                 ),
                             }
@@ -2216,43 +2218,23 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 #Panel default: closed (we open it after the first run)
 st.session_state.setdefault("ai_open", False)
 
-with st.expander("🧠 Explain this page",
-                 expanded=st.session_state.get("ai_open", False)):
-
-    # Controls
+with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_open", False)):
     c1, c2 = st.columns([1, 1])
-    depth = c1.selectbox(
-        "Depth",
-        ["Quick", "Standard", "Deep"],
-        index=1,
-        key="dd_ai_depth",            # unique key
-    )
-    go = c2.button(
-        "Explain what stands out",
-        use_container_width=True,
-        key="dd_ai_go",               # unique key
-    )
+    depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
+    go = c2.button("Explain what stands out", use_container_width=True, key="dd_ai_go")
 
-    # Runtime diagnostics
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
 
-    # Guard: no row for selected ticker/date
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
-        # Trigger AI on click
         if go:
             ctx = collect_deepdive_context(TICKER, date_str, _row)
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
-                try:
-                    # fresh call; result is cached internally by get_ai_insights
-                    st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
-                except Exception as e:
-                    st.session_state["ai_last_insights"] = {}
-                    st.error(f"AI call failed: {e}")
-            st.session_state["ai_open"] = True  # keep panel open after rerun
+                st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
+            st.session_state["ai_open"] = True
 
         insights = st.session_state.get("ai_last_insights")
 
