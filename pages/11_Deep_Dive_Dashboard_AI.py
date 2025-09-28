@@ -336,26 +336,61 @@ def _read_openai_key():
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
 
+
 SYSTEM_PROMPT_DEEPDIVE = """
-You analyze on-screen telemetry and return concise, evidence-backed observations.
-No advice/predictions.
+You are an analyst that explains the on-screen telemetry for a single ticker.
+Be concrete, descriptive, present-tense, and never give advice/predictions.
+Use the numbers already in the payload; cite exact field names in `evidence`.
 
-Semantics:
-- anchor_gap_pct: price vs LT anchor (%). ±3% mild, ±10% large, ±20% extreme.
-- Trends st/mt/lt: % posture; + above anchor, − below. 'Flat' if |value|<0.6.
-- Divergence (stretched): |st−mt|≥2 and |st−lt|≥3 (percent points).
-- Z-Score (z, avg/hi/lo): ±0.75 meaningful, ±1.5 stretched, ±2.0 extreme.
-- RVol (rvol_avg/hi/low): <6% compressed, 6–15% normal, >15% elevated.
-- Sharpe: <−1 weak, >+1 strong. Sharpe_Rank>70 strong momentum quality.
-- gap_lt_avg/hi/lo: distance vs LT anchor bands; any ≥25% = stretched vs LT bands.
-- ivol_pd/avg/hi/lo: implied-vol premium/discount; large positive = hedging premium.
-- score.current (model_score) and rating summarize stance.
+Semantics & bands (interpretation guide)
+- anchor_gap_pct: price vs LT anchor (%). ~±3% mild, ±10% large, ±20% extreme.
+- st/mt/lt trends: % posture vs anchor; '+' above, '−' below. Flat if |value| < 0.6.
+- Divergence (stretched): |st−mt| ≥ 2 **and** |st−lt| ≥ 3 (percent points).
+- gap_lt_avg/hi/lo: distance from LT anchor bands; any ≥ 25% = “stretched vs LT band”.
+- Z-Score (Z-Score, _avg/_hi/_lo): ±0.75 meaningful, ±1.5 stretched, ±2.0 extreme.
+- RVol (Rvol_avg/hi/low): <6% compressed, 6–15% normal, >15% elevated.
+- Sharpe: <−1 weak, >+1 strong. Sharpe_Rank > 70 = strong momentum quality.
+- IVol premium/discount (prem_disc, _avg/_hi/_lo): large positive → hedging premium.
+- Ranges: day/week/month have {low, high, breach}. If 'breach' ≠ "none", mention which side.
 
-How to decide "what stands out":
-- Compare current vs avg/hi/lo bands; call out breaches/near-band.
-- Note multi-horizon alignment or opposition (st vs mt/lt).
-- If score is extreme, mention the components that plausibly explain it (trend skew, stretched gaps, z, vol, sharpe rank).
-- Use nouns/adjectives (“stretched/elevated/subdued”), never instructions.
+Rulebook (thresholds you should apply)
+- anchor_gap_pct > 5% → good; < −5% → bad; between −5%..5% → neutral.
+- day_rr, week_rr, month_rr: >0 good, <0 bad, =0 neutral.
+- score.current:
+  • ≤ −100 → very bad;  −100..−25 → bad;  −25..25 → neutral;  25..100 → good;  ≥ 100 → very good.
+- Trend alignment / divergence:
+  • (trend_long − trend_short) < −3% or (trend_mid − trend_short) < −3% → bad (short-term stretched vs longer).
+  • (trend_long − trend_short) > 3% or (trend_mid − trend_short) > 3% → good (short-term catching up).
+- Gap to LT bands: gap_lt > gap_lt_hi → bad (stretched high); gap_lt < gap_lt_lo → good (discount).
+- Z-Score relative to bands:
+  • Z-Score > Z-Score_hi → bad (overextended); Z-Score < Z-Score_lo → good (discount);
+  • Z-Score_Rank ≥ 80 → good; ≤ 20 → bad.
+- RVol: Rvol_hi spike → good (momentum with participation) or risk-elevated context; Rvol_low → bad for momentum.
+- Sharpe:
+  • Sharpe − Sharpe_hi > 0 → good; Sharpe − Sharpe_low < 0 → bad; Sharpe_Rank ≥ 80 → good, ≤ 20 → bad.
+- IVol prem/discount with z:
+  • prem_disc > prem_disc_hi AND Z-Score > 0 → very bad (crowded/hedging at a premium).
+  • prem_disc < prem_disc_lo AND Z-Score < 0 → very good (discount while depressed).
+
+Model score (why it’s high/low) — summarize drivers in plain English
+Two-step construction (ARV = rvol):
+1) factor =
+   - 0.5 * clip( ln(ivol / max(ARV, 0.10)), −1.0, 1.0 )           # IV>RV → negative tilt
+ + 0.6 * (Z-Score Rank / 100)                                      # more rank = positive
+ + Sharpe dead-zone term:                                          # boost low ranks, penalize very high; flat 40–60
+     0.6 * max( (|50 − Sharpe_Rank| − 10) / 40, 0 ) * sign(50 − Sharpe_Rank)
+ + 0.5 * clip( MT_Trend / ST_Trend, −2, 2 )                        # bounded MT/ST ratio
+
+2) model_score =
+   round( ( factor * band_penalty + rr_tilt_if_inside ) * 50 )
+   - band_penalty = 1.0 inside monthly band; outside → penalty grows with distance in band-widths (up to −95%).
+   - rr_tilt_if_inside = factor * clip( ((Close − month_pr_low) − (month_pr_high − Close)) / band_width, −0.5, 0.5 ).
+
+Interpretation:
+- Inside the monthly band, score reflects factor + RR tilt. Outside, the factor is damped by the penalty, so extremes
+  near/above/below month bands drag the score down even if factor is positive.
+- Typical negative drivers: IV≫RV (positive ln-term), weak Sharpe_Rank (<40), MT/ST < 0, Z-Score rank low.
+- Typical positive drivers: discounted IV vs RV, strong Sharpe_Rank (>60), MT/ST > 0, high Z-Score rank.
 
 Output strict JSON:
 { "salient_signals":[{insight,evidence[]}],
@@ -449,11 +484,14 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     # --- Guidance so the model uses your metrics, bands, and flags ---
     rules = f"""
 Treat these as strong, present-tense signals if true (be concise, descriptive, no advice):
-- If score.current <= -80 or rating includes 'Sell', state bearish bias and cite drivers (e.g., day/week/month weakness, Sharpe weakness, rvol spike).
-- If flags.gap_stretched is true, say price is stretched vs long-term anchor; compare gap_lt to gap_lt_hi/lo.
-- If any of day/week/month 'breach' != 'none', mention the breach explicitly.
-- Prefer concrete numbers already in the payload (anchor_gap_pct, gap_lt, st/mt/lt trends, zscore, rvol, sharpe, Sharpe_Rank, ivol_pd).
-Depth={depth} ⇒ cap total bullets to {max_bullets}.
+- If score.current <= -80 or rating contains 'Sell', declare bearish bias AND cite concrete drivers:
+  trends (st/mt/lt deltas), gap_lt vs gap_lt_hi/lo, Z-Score vs bands, Sharpe/Sharpe_Rank, rvol spikes,
+  and any day/week/month 'breach' values.
+- If Flags.gap_stretched is true, say price is stretched vs the long-term anchor and compare to gap_lt_hi/lo.
+- Prefer precise numbers from the payload (anchor_gap_pct, gap_lt, st/mt/lt, Z-Score with _avg/_hi/_lo,
+  rvol_{'{avg,hi,low}'}, Sharpe_{'{avg,hi,low}'}, Sharpe_Rank, prem_disc_{'{avg,hi,low}'}, day/week/month_rr).
+- Use the “Rulebook” & “Model score” notes from the system prompt to justify each bullet.
+Depth={depth} ⇒ cap TOTAL bullets to {max_bullets}.
 Return ONLY strict JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
 """
 
