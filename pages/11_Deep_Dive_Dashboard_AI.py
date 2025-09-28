@@ -561,13 +561,24 @@ Return ONLY strict JSON with keys: salient_signals, context_and_implications, ri
             resp = _call(MODEL_NAME_FALLBACK)
 
         raw = _extract_output_text(resp)
+        st.caption(f"Raw AI output (debug): {raw[:500]}")
 
-        # Parse to JSON; if extra text leaked, extract the first JSON object
-        try:
-            data = json.loads(raw or "{}")
-        except Exception:
-            m = re.search(r"\{.*\}", raw or "", re.S)
-            data = json.loads(m.group(0)) if m else {}
+        # Parse to JSON; clean if model leaked commas/text
+        data = {}
+        if raw:
+            try:
+                data = json.loads(raw)
+            except Exception:
+                # Try to extract the first valid {...} block
+                m = re.search(r"\{.*\}", raw, re.S)
+                if m:
+                    try:
+                        data = json.loads(m.group(0))
+                    except Exception:
+                        st.caption("AI JSON parse failed after cleanup")
+                        data = {}
+                else:
+                    st.caption("AI response had no JSON object")
 
     except Exception as e:
         st.caption(f"AI call failed: {e}")
