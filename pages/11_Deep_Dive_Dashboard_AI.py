@@ -13,7 +13,7 @@ from matplotlib import rcParams
 #from matplotlib import rcParams
 #import matplotlib.dates as mdates
 from matplotlib.lines import Line2D
-#import os
+import os
 from matplotlib.ticker import StrMethodFormatter
 import math  # (near your other imports, once)
 import numpy as np
@@ -22,6 +22,14 @@ import numpy as np
 #    "figure.figsize": (9.2, 3.4),   # good aspect for the 3-up rows
 #})
 
+# >>> ADD: OpenAI + utils
+import json, re
+
+try:
+    from openai import OpenAI
+    _OPENAI_READY = True
+except Exception:
+    _OPENAI_READY = False
 
 # -------------------------
 # Page & shared style
@@ -313,6 +321,225 @@ def _window_by_label_with_gutter(df: pd.DataFrame, label: str, date_col: str) ->
 
 rcParams["font.family"] = ["sans-serif"]
 rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
+
+def _read_openai_key():
+    s = st.secrets
+    # 1) root-level key in Streamlit Secrets UI
+    if "OPENAI_API_KEY" in s and s["OPENAI_API_KEY"]:
+        return str(s["OPENAI_API_KEY"])
+    # 2) optional [openai] table if you ever use it
+    if "openai" in s and isinstance(s["openai"], dict):
+        v = s["openai"].get("api_key") or s["openai"].get("API_KEY") or s["openai"].get("key")
+        if v: return str(v)
+    # 3) env var (local dev)
+    return os.getenv("OPENAI_API_KEY")
+
+# >>> ADD: System prompt that bans advice and forces evidence-backed insights
+
+SYSTEM_PROMPT_DEEPDIVE = """
+You analyze on-screen telemetry and return concise, evidence-backed observations.
+No advice/predictions.
+
+Semantics:
+- anchor_gap_pct: price vs LT anchor (%). ±3% mild, ±10% large, ±20% extreme.
+- Trends st/mt/lt: % posture; + above anchor, − below. 'Flat' if |value|<0.6.
+- Divergence (stretched): |st−mt|≥2 and |st−lt|≥3 (percent points).
+- Z-Score (z, avg/hi/lo): ±0.75 meaningful, ±1.5 stretched, ±2.0 extreme.
+- RVol (rvol_avg/hi/low): <6% compressed, 6–15% normal, >15% elevated.
+- Sharpe: <−1 weak, >+1 strong. Sharpe_Rank>70 strong momentum quality.
+- gap_lt_avg/hi/lo: distance vs LT anchor bands; any ≥25% = stretched vs LT bands.
+- ivol_pd/avg/hi/lo: implied-vol premium/discount; large positive = hedging premium.
+- score.current (model_score) and rating summarize stance.
+
+How to decide "what stands out":
+- Compare current vs avg/hi/lo bands; call out breaches/near-band.
+- Note multi-horizon alignment or opposition (st vs mt/lt).
+- If score is extreme, mention the components that plausibly explain it (trend skew, stretched gaps, z, vol, sharpe rank).
+- Use nouns/adjectives (“stretched/elevated/subdued”), never instructions.
+
+Output strict JSON:
+{ "salient_signals":[{insight,evidence[]}],
+  "context_and_implications":[{insight,evidence[]}],
+  "risk_and_caveats":[{insight,evidence[]}],
+  "followup_questions":[string] }
+Always return ≥1 bullet per section.
+"""
+
+
+MODEL_NAME_PRIMARY = "gpt-5-mini"
+MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
+
+# Simple regex guard (server-side belt & suspenders)
+_ADVICE_RE = re.compile(r"\b(buy|sell|short|cover|allocate|should|stop[- ]?loss|take profit|position|hedge)\b", re.I)
+
+def _scrub_advice(text: str) -> str:
+    """Replace any advicey verbs with neutral phrasing."""
+    return _ADVICE_RE.sub("**(removed: advicey verb)**", text)
+
+def _default_insights():
+    """Fallback if API fails — very small, neutral."""
+    return {
+        "salient_signals": [{"insight": "No AI insight available; showing default message.", "evidence": []}],
+        "context_and_implications": [],
+        "risk_and_caveats": [],
+        "followup_questions": ["Try again or adjust the ticker/date."]
+    }
+
+def _extract_output_text(resp) -> str | None:
+    """
+    Works across OpenAI SDK shapes. Returns a plain string or None.
+    """
+    # 1) Modern convenience
+    txt = getattr(resp, "output_text", None)
+    if isinstance(txt, str) and txt.strip():
+        return txt
+
+    # 2) Object-style 'output' -> [ { content: [ { text: ... } ] } ]
+    out = getattr(resp, "output", None)
+    if isinstance(out, list) and out:
+        first = out[0]
+        content = getattr(first, "content", None)
+        if isinstance(content, list) and content:
+            node = content[0]
+            # node may be pydantic object or dict
+            val = getattr(node, "text", None)
+            if not val and isinstance(node, dict):
+                val = node.get("text") or node.get("value")
+            if isinstance(val, str) and val.strip():
+                return val
+
+    # 3) Dict-style responses
+    if isinstance(resp, dict):
+        if isinstance(resp.get("output_text"), str):
+            return resp["output_text"]
+        out = resp.get("output")
+        if isinstance(out, list) and out:
+            content = (out[0] or {}).get("content")
+            if isinstance(content, list) and content:
+                node = content[0] or {}
+                val = node.get("text") or node.get("value")
+                if isinstance(val, str) and val.strip():
+                    return val
+
+    return None
+
+
+@st.cache_data(show_spinner=False, hash_funcs={dict: lambda d: json.dumps(d, sort_keys=True)})
+def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
+    """
+    Calls OpenAI once per (ticker, as_of, depth, context-hash).
+    Expects the compact context dict you already build on-screen.
+    Always returns at least one bullet per section (neutral if needed).
+    """
+
+    # Depth tuning (rough bullet budget)
+    max_bullets = {"Quick": 4, "Standard": 7, "Deep": 10}.get(depth, 7)
+
+    # Bail early if SDK/key isn't ready
+    if not _OPENAI_READY:
+        return _default_insights()
+
+    api_key = _read_openai_key()
+    if not api_key:
+        # st.error("OPENAI_API_KEY not found")  # optional
+        return _default_insights()
+
+    client = OpenAI(api_key=api_key)
+
+    # --- Guidance so the model uses your metrics, bands, and flags ---
+    rules = f"""
+Treat these as strong, present-tense signals if true (be concise, descriptive, no advice):
+- If score.current <= -80 or rating includes 'Sell', state bearish bias and cite drivers (e.g., day/week/month weakness, Sharpe weakness, rvol spike).
+- If flags.gap_stretched is true, say price is stretched vs long-term anchor; compare gap_lt to gap_lt_hi/lo.
+- If any of day/week/month 'breach' != 'none', mention the breach explicitly.
+- Prefer concrete numbers already in the payload (anchor_gap_pct, gap_lt, st/mt/lt trends, zscore, rvol, sharpe, Sharpe_Rank, ivol_pd).
+Depth={depth} ⇒ cap total bullets to {max_bullets}.
+Return ONLY strict JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+"""
+
+    # --- OpenAI call ---
+    try:
+        def _call(model_name: str):
+            return client.responses.create(
+                model=model_name,
+                input=[
+                    {
+                        "role": "system",
+                        "content": [
+                            {
+                                "type": "input_text",
+                                "text": (
+                                    SYSTEM_PROMPT_DEEPDIVE
+                                    + "\n\n"
+                                    + rules
+                                ),
+                            }
+                        ],
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "input_text",
+                                "text": (
+                                    f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
+                                    "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
+                                    "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
+                                    + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
+                                ),
+                            }
+                        ],
+                    },
+                ],
+                max_output_tokens=600,
+            )
+
+        try:
+            resp = _call(MODEL_NAME_PRIMARY)
+        except Exception:
+            resp = _call(MODEL_NAME_FALLBACK)
+
+        raw = _extract_output_text(resp)
+
+        # Parse to JSON; if extra text leaked, extract the first JSON object
+        try:
+            data = json.loads(raw or "{}")
+        except Exception:
+            m = re.search(r"\{.*\}", raw or "", re.S)
+            data = json.loads(m.group(0)) if m else {}
+
+    except Exception as e:
+        st.caption(f"AI call failed: {e}")
+        return _default_insights()
+
+    # --- Post-process / safety scrub ---
+    for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
+        items = data.get(key, [])
+        for it in items:
+            it["insight"] = _scrub_advice(it.get("insight", ""))
+
+    # Trim to depth budget (roughly 1/3 each)
+    def _trim(lst):
+        return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
+
+    data["salient_signals"]          = _trim(data.get("salient_signals", []))
+    data["context_and_implications"] = _trim(data.get("context_and_implications", []))
+    data["risk_and_caveats"]         = _trim(data.get("risk_and_caveats", []))
+    data["followup_questions"]       = (data.get("followup_questions", []) or [])[:max(1, max_bullets // 4)]
+
+    # Ensure at least one bullet per section (neutral fallback)
+    if not data["salient_signals"]:
+        data["salient_signals"] = [{"insight": "Neutral read from on-screen data (no standout patterns); values are within recent ranges.", "evidence": []}]
+    if not data["context_and_implications"]:
+        data["context_and_implications"] = [{"insight": "Context remains mixed; short/mid/long trends and volatility are not extreme.", "evidence": []}]
+    if not data["risk_and_caveats"]:
+        data["risk_and_caveats"] = [{"insight": "Numbers can drift with new prints; treat this view as descriptive, not predictive.", "evidence": []}]
+    if not data["followup_questions"]:
+        data["followup_questions"] = ["Which sub-period (day/week/month) is most informative for this ticker right now?"]
+
+    return data
+
+
 
 # ==============================
 # LAZY LOADERS (ticker-only, CSV sorted by ticker/date)
@@ -1384,7 +1611,21 @@ with mid_stat:
 
     TICKER = _resolve_ticker()
     st.session_state["active_ticker"] = TICKER   # persist for subsequent pages
-
+    
+    # --- AI panel reset on ticker change ---
+    prev = st.session_state.get("ai_prev_ticker")
+    if prev != TICKER:
+        # collapse the expander and forget prior text
+        st.session_state["ai_open"] = False
+        st.session_state["ai_last_insights"] = None
+        st.session_state["ai_last_ctx"] = None
+        st.session_state["ai_last_depth"] = None
+        # clear only this function's cache (safe; it is @st.cache_data)
+        try:
+            get_ai_insights.clear()  # streamlit will no-op if not yet cached
+        except Exception:
+            pass
+        st.session_state["ai_prev_ticker"] = TICKER
 
 
     # ---------- helpers ----------
@@ -1680,6 +1921,394 @@ with mid_stat:
 # optional small spacer
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
+
+def _breach_flag(close, low, high):
+    """Return 'below_low', 'above_high', or 'none' based on close vs range."""
+    try:
+        if close is None or low is None or high is None:
+            return "none"
+        c = float(close); lo = float(low); hi = float(high)
+        if c < lo:  return "below_low"
+        if c > hi:  return "above_high"
+        return "none"
+    except Exception:
+        return "none"
+
+
+# >>> ADD: Use the exact objects you already computed for the Deep Dive visuals.
+def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
+    """Build context from the SAME row you use to render the stat box."""
+    # ——— values directly from your stat box row ———
+    last_price = float(stat_row.get("close"))
+    anchor_val = float(stat_row.get("lt_pt_sm"))
+    anchor_gap_pct= float(stat_row.get("change_pct")*100)
+    day_low   = float(stat_row.get("day_pr_low"))
+    day_high  = float(stat_row.get("day_pr_high"))
+    day_down  = float(stat_row.get("day_dn")*100)
+    day_up  = float(stat_row.get("day_up")*100)
+    day_rr = float(stat_row.get("day_rr_ratio"))
+    week_low  = float(stat_row.get("week_pr_low"))
+    week_high = float(stat_row.get("week_pr_high"))
+    week_down  = float(stat_row.get("week_dn")*100)
+    week_up  = float(stat_row.get("week_up")*100)
+    week_rr = float(stat_row.get("week_rr_ratio"))
+    month_low = float(stat_row.get("month_pr_low"))
+    month_high= float(stat_row.get("month_pr_high"))
+    month_down  = float(stat_row.get("month_dn")*100)
+    month_up  = float(stat_row.get("month_up")*100)
+    month_rr = float(stat_row.get("month_rr_ratio"))
+    ivol = float(stat_row.get("ivol")*100)
+    rvol = float(stat_row.get("rvol")*100)
+    ivolpd = float(stat_row.get("prem_disc")*100) 
+    score_current = stat_row.get("model_score")
+    rating = stat_row.get("rating")
+    day_breach   = _breach_flag(last_price, day_low,   day_high)
+    week_breach  = _breach_flag(last_price, week_low,  week_high)
+    month_breach = _breach_flag(last_price, month_low, month_high)
+
+
+
+#----graphs -----------------
+# ---- G2 (Trend lines) ----
+# Requires: load_g2_ticker(...) from earlier and DATA_DIR defined.
+# G2 loader returns columns normalized to: ['date','st','mt','lt'] for the selected ticker.
+    try:
+        g2_df = load_g2_ticker(DATA_DIR / "qry_graph_data_02.csv", ticker=ticker)
+    except Exception:
+        g2_df = pd.DataFrame()
+
+    trend_short = trend_mid = trend_long = None
+
+    if not g2_df.empty:
+        # ensure datetime + pick last observation at/<= as_of
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g2_df["date"].dtype.kind != "M":
+            g2_df = g2_df.assign(date=pd.to_datetime(g2_df["date"], errors="coerce"))
+
+        g2_row = g2_df.loc[g2_df["date"] <= asof_dt].tail(1)
+        if not g2_row.empty:
+            r = g2_row.iloc[0]
+            trend_short = float(r["st"]) if pd.notna(r["st"]) else None
+            trend_mid   = float(r["mt"]) if pd.notna(r["mt"]) else None
+            trend_long  = float(r["lt"]) if pd.notna(r["lt"]) else None
+
+# ---- G4 (Gap to LT anchor + bands) ----
+# Requires: load_g4_ticker(...) and DATA_DIR defined.
+# G4 loader returns columns: ['date','gap_lt','gap_lt_avg','gap_lt_hi','gap_lt_lo'] for this ticker.
+    try:
+        g4_df = load_g4_ticker(DATA_DIR / "qry_graph_data_04.csv", ticker=ticker)
+    except Exception:
+        g4_df = pd.DataFrame()
+
+        gap_lt = gap_lt_avg = gap_lt_hi = gap_lt_lo = None  # defaults
+
+    if not g4_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g4_df["date"].dtype.kind != "M":
+            g4_df = g4_df.assign(date=pd.to_datetime(g4_df["date"], errors="coerce"))
+
+        g4_row = g4_df.loc[g4_df["date"] <= asof_dt].tail(1)
+        if not g4_row.empty:
+            r = g4_row.iloc[0]
+            # All are numeric already; guard for NaNs
+            gap_lt = float(r["gap_lt"]) if pd.notna(r["gap_lt"]) else None
+            gap_lt_avg = float(r["gap_lt_avg"]) if pd.notna(r["gap_lt_avg"]) else None
+            gap_lt_hi  = float(r["gap_lt_hi"])  if pd.notna(r["gap_lt_hi"])  else None
+            gap_lt_lo  = float(r["gap_lt_lo"])  if pd.notna(r["gap_lt_lo"])  else None
+            # simple, explicit flags the model can latch onto
+            is_gap_stretched = (float(gap_lt) >= float(gap_lt_hi)) or (float(gap_lt) <= float(gap_lt_lo))
+        
+ 
+# ---- G5 (Z-Score 30D + bands) ----
+# Requires: load_g5_ticker(...) and DATA_DIR defined.
+# G5 loader returns columns for this ticker: ['date','z','avg','hi','lo'] (already numeric).
+
+    try:
+        g5_df = load_g5_ticker(DATA_DIR / "qry_graph_data_05.csv", ticker=ticker)
+    except Exception:
+        g5_df = pd.DataFrame()
+
+    zscore = zscore_avg = zscore_hi = zscore_lo = None
+
+    if not g5_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g5_df["date"].dtype.kind != "M":
+            g5_df = g5_df.assign(date=pd.to_datetime(g5_df["date"], errors="coerce"))
+
+        g5_row = g5_df.loc[g5_df["date"] <= asof_dt].tail(1)
+        if not g5_row.empty:
+            r = g5_row.iloc[0]
+            zscore     = float(r["z"])   if pd.notna(r["z"])   else None
+            zscore_avg = float(r["avg"]) if pd.notna(r["avg"]) else None
+            zscore_hi  = float(r["hi"])  if pd.notna(r["hi"])  else None
+            zscore_lo  = float(r["lo"])  if pd.notna(r["lo"])  else None
+
+# ---- G6 (Z-Score Percentile Rank 0..100) ----
+# Requires: load_g6_ticker(...) and DATA_DIR defined.
+# G6 loader returns columns for this ticker: ['date','rank'] (already numeric 0..100).
+    try:
+        g6_df = load_g6_ticker(DATA_DIR / "qry_graph_data_06.csv", ticker=ticker)
+    except Exception:
+        g6_df = pd.DataFrame()
+
+    zscore_rank = None
+
+    if not g6_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g6_df["date"].dtype.kind != "M":
+            g6_df = g6_df.assign(date=pd.to_datetime(g6_df["date"], errors="coerce"))
+
+        g6_row = g6_df.loc[g6_df["date"] <= asof_dt].tail(1)
+        if not g6_row.empty:
+            r = g6_row.iloc[0]
+            zscore_rank = float(r["rank"]) if pd.notna(r["rank"]) else None
+
+
+# ---- G7 (Rvol 30D + bands) ----
+# Requires: load_g7_ticker(...) and DATA_DIR defined.
+# G7 loader returns for this ticker: ['date','rvol','rvol_avg','rvol_hi','rvol_low'] (numeric; % scaled if needed).
+
+    try:
+        g7_df = load_g7_ticker(DATA_DIR / "qry_graph_data_07.csv", ticker=ticker)
+    except Exception:
+        g7_df = pd.DataFrame()
+
+    rvol_avg = rvol_hi = rvol_low = None  # defaults
+
+    if not g7_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g7_df["date"].dtype.kind != "M":
+            g7_df = g7_df.assign(date=pd.to_datetime(g7_df["date"], errors="coerce"))
+
+        g7_row = g7_df.loc[g7_df["date"] <= asof_dt].tail(1)
+        if not g7_row.empty:
+            r = g7_row.iloc[0]
+            rvol_avg = float(r["rvol_avg"]) if pd.notna(r["rvol_avg"]) else None
+            rvol_hi  = float(r["rvol_hi"])  if pd.notna(r["rvol_hi"])  else None
+            rvol_low = float(r["rvol_low"]) if pd.notna(r["rvol_low"]) else None
+
+
+    
+# ---- G8 (Sharpe Ratio 30D + bands) ----
+# Requires: load_g8_ticker(...) and DATA_DIR defined.
+# G8 loader returns (normalized) columns for this ticker: ['date','sharpe','avg','hi','lo'].
+
+    try:
+        g8_df = load_g8_ticker(DATA_DIR / "qry_graph_data_08.csv", ticker=ticker)
+    except Exception:
+        g8_df = pd.DataFrame()
+
+    Sharpe = Sharpe_avg = Sharpe_hi = Sharpe_low = None
+
+    if not g8_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g8_df["date"].dtype.kind != "M":
+            g8_df = g8_df.assign(date=pd.to_datetime(g8_df["date"], errors="coerce"))
+
+        g8_row = g8_df.loc[g8_df["date"] <= asof_dt].tail(1)
+        if not g8_row.empty:
+            r = g8_row.iloc[0]
+            Sharpe     = float(r["sharpe"]) if pd.notna(r["sharpe"]) else None
+            Sharpe_avg = float(r["avg"])    if pd.notna(r["avg"])    else None
+            Sharpe_hi  = float(r["hi"])     if pd.notna(r["hi"])     else None
+            Sharpe_low = float(r["lo"])     if pd.notna(r["lo"])     else None
+
+
+
+
+# ---- G9 (Sharpe Ratio Percentile Rank 0..100) ----
+# Requires: load_g9_ticker(...) and DATA_DIR defined.
+# G9 loader returns for this ticker: ['date','rank'] (numeric; 0..100, auto-scaled if 0..1).
+
+    try:
+        g9_df = load_g9_ticker(DATA_DIR / "qry_graph_data_09.csv", ticker=ticker)
+    except Exception:
+        g9_df = pd.DataFrame()
+
+    Sharpe_Rank = None
+
+    if not g9_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g9_df["date"].dtype.kind != "M":
+            g9_df = g9_df.assign(date=pd.to_datetime(g9_df["date"], errors="coerce"))
+
+        g9_row = g9_df.loc[g9_df["date"] <= asof_dt].tail(1)
+        if not g9_row.empty:
+            v = g9_row.iloc[0]["rank"]
+            Sharpe_Rank = float(v) if pd.notna(v) else None
+
+
+
+# ---- G10 (Ivol Prem/Disc 30D + bands, percent) ----
+# Requires: load_g10_ticker(...) and DATA_DIR defined.
+# G10 loader returns for this ticker: ['date','ivol_pd','avg','hi','lo'] (numeric; % scaled if needed).
+
+    try:
+        g10_df = load_g10_ticker(DATA_DIR / "qry_graph_data_10.csv", ticker=ticker)
+    except Exception:
+        g10_df = pd.DataFrame()
+
+    prem_disc = prem_disc_avg = prem_disc_hi = prem_disc_lo = None
+
+    if not g10_df.empty:
+        asof_dt = pd.to_datetime(as_of, errors="coerce")
+        if g10_df["date"].dtype.kind != "M":
+            g10_df = g10_df.assign(date=pd.to_datetime(g10_df["date"], errors="coerce"))
+
+        g10_row = g10_df.loc[g10_df["date"] <= asof_dt].tail(1)
+        if not g10_row.empty:
+            r = g10_row.iloc[0]
+            prem_disc     = float(r["ivol_pd"]) if pd.notna(r["ivol_pd"]) else None
+            prem_disc_avg = float(r["avg"])     if pd.notna(r["avg"])     else None
+            prem_disc_hi  = float(r["hi"])      if pd.notna(r["hi"])      else None
+            prem_disc_lo  = float(r["lo"])      if pd.notna(r["lo"])      else None
+
+
+
+    
+    return {
+        "as_of": as_of,
+        "ticker": ticker,
+        "price": last_price,
+        "anchor_val": float(anchor_val),
+        "anchor_gap_pct": anchor_gap_pct,
+        "ranges": {
+            "day":   {"low": day_low,   "high": day_high,   "breach": day_breach},
+            "week":  {"low": week_low,  "high": week_high,  "breach": week_breach},
+            "month": {"low": month_low, "high": month_high, "breach": month_breach},
+        },       
+        "vol_stats": {        
+            "ivol": float(ivol) if ivol is not None else None,
+            "rvol": float(rvol) if rvol is not None else None,
+            "ivol_prem_disc": float(ivolpd) if ivolpd is not None else None,
+        },
+        "trend": {"short": trend_short, "mid": trend_mid, "long": trend_long},        
+        "score": {
+            "current": score_current,
+            "rating": rating,
+        },
+        "day_down": day_down,
+        "day_up": day_up,
+        "day_rr": day_rr,
+        "week_down": week_down,
+        "week_up": week_up,
+        "week_rr": week_rr,
+        "month_down": month_down,
+        "month_up": month_up,
+        "month_rr": month_rr,
+        "gap_lt": gap_lt,        
+        "gap_lt_avg": gap_lt_avg,
+        "gap_lt_hi": gap_lt_hi,
+        "gap_lt_lo": gap_lt_lo,
+        "Z-Score": zscore,
+        "Z-Score_avg": zscore_avg,
+        "Z-Score_hi": zscore_hi,
+        "Z-Score_lo": zscore_lo,
+        "Z-Score Rank": zscore_rank,
+        "Rvol_avg": rvol_avg,
+        "Rvol_hi": rvol_hi,
+        "Rvol_low": rvol_low,
+        "Sharpe": Sharpe,
+        "Sharpe_avg": Sharpe_avg,
+        "Sharpe_hi": Sharpe_hi,
+        "Sharpe_low": Sharpe_low,
+        "Sharpe_Rank": Sharpe_Rank,
+        "prem_disc": prem_disc,
+        "prem_disc_avg": prem_disc_avg,
+        "prem_disc_hi": prem_disc_hi,
+        "prem_disc_lo": prem_disc_lo,
+        "Flags": {
+            "gap_stretched": is_gap_stretched,
+            "day_breach":  day_breach,         # you already compute these
+            "week_breach": week_breach,
+            "month_breach": month_breach,
+        }
+    }
+
+#ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
+
+# ==============================
+# AI Insight Panel (Deep Dive)
+# ==============================
+
+#Panel default: closed (we open it after the first run)
+st.session_state.setdefault("ai_open", False)
+
+with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_open", False)):
+    c1, c2 = st.columns([1, 1])
+    depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
+    go = c2.button("Explain what stands out", use_container_width=True, key="dd_ai_go")
+
+    st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
+
+    if _row is None:
+        st.warning("No data available for the selected ticker.")
+    else:
+        if go:
+            ctx = collect_deepdive_context(TICKER, date_str, _row)
+            with st.spinner("Analyzing on-screen telemetry…"):
+                st.session_state["ai_last_ctx"] = ctx
+                st.session_state["ai_last_depth"] = depth
+                st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
+            st.session_state["ai_open"] = True
+
+        insights = st.session_state.get("ai_last_insights")
+
+        # Helpers
+        INSIGHT_KEYS = [
+            "salient_signals",
+            "context_and_implications",
+            "risk_and_caveats",
+            "followup_questions",
+        ]
+
+        def _is_empty_payload(d):
+            if not d or not isinstance(d, dict):
+                return True
+            return not any((d.get(k) or []) for k in INSIGHT_KEYS)
+
+        def _render_section(title, items):
+            if not items:
+                return
+            st.markdown(f"**{title}**")
+            for it in items:
+                insight = it.get("insight", "")
+                ev = " · ".join(it.get("evidence", []))
+                st.markdown(
+                    f"- {insight}  \n"
+                    f"  <span style='opacity:0.6'>evidence: {ev}</span>",
+                    unsafe_allow_html=True,
+                )
+
+        # Empty / no-content case
+        if _is_empty_payload(insights):
+            st.warning("No standout AI insights were returned for this view.")
+            st.markdown(
+                "- The on-screen data may not show strong signals.\n"
+                "- Try **Depth → Deep** and click again.\n"
+                "- You can toggle debug below to see the context the model received."
+            )
+            # Optional debug
+            if st.checkbox("Show AI debug", value=False, key="dd_ai_debug"):
+                st.write("Context snapshot:")
+                st.json(st.session_state.get("ai_last_ctx", {}))
+                st.write("Insights snapshot:")
+                st.json(insights or {})
+        else:
+            # Render insights
+            _render_section("Signals", insights.get("salient_signals"))
+            _render_section("Context", insights.get("context_and_implications"))
+            _render_section("Risk & caveats", insights.get("risk_and_caveats"))
+
+            # Hide follow-ups if you don't want them: comment out below.
+            if insights.get("followup_questions"):
+                st.divider()
+                st.caption("Follow-ups to explore")
+                for q in insights["followup_questions"]:
+                    st.markdown(f"- {q}")
+
+
+                    
 # --- centered Graph 1 row ---
 st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
 left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
@@ -2170,7 +2799,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
     # Left axis: Signal Score
-    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="Model Score")
+    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="Markmentum Score")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
     # Right axis: Close
