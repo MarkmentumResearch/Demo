@@ -504,6 +504,7 @@ Return ONLY strict JSON with keys: salient_signals, context_and_implications, ri
             try:
                 return client.responses.create(
                     model=model_name,
+                    response_format={"type": "json_object"},   # ← add this line
                     input=[
                         {
                             "role": "system",
@@ -535,6 +536,7 @@ Return ONLY strict JSON with keys: salient_signals, context_and_implications, ri
                 # 2) Fallback: classic Chat Completions (widely compatible)
                 chat = client.chat.completions.create(
                     model=model_name,
+                    response_format={"type": "json_object"},  
                     messages=[
                         {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE + "\n\n" + rules},
                         {
