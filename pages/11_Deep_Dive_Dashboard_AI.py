@@ -497,40 +497,61 @@ Return ONLY strict JSON with keys: salient_signals, context_and_implications, ri
 
     # --- OpenAI call ---
     try:
+        ctx_str = json.dumps(context, separators=(",", ":"), ensure_ascii=False)
+
         def _call(model_name: str):
-            return client.responses.create(
-                model=model_name,
-                input=[
-                    {
-                        "role": "system",
-                        "content": [
-                            {
-                                "type": "input_text",
-                                "text": (
-                                    SYSTEM_PROMPT_DEEPDIVE
-                                    + "\n\n"
-                                    + rules
-                                ),
-                            }
-                        ],
-                    },
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "input_text",
-                                "text": (
-                                    f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                    "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
-                                    "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
-                                    + json.dumps(context, separators=(',', ':'), ensure_ascii=False)
-                                ),
-                            }
-                        ],
-                    },
-                ],
-                max_output_tokens=600,
-            )
+            # 1) Try the Responses API (new)
+            try:
+                return client.responses.create(
+                    model=model_name,
+                    input=[
+                        {
+                            "role": "system",
+                            "content": [
+                                {
+                                    "type": "input_text",
+                                    "text": SYSTEM_PROMPT_DEEPDIVE + "\n\n" + rules,
+                                }
+                            ],
+                        },
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "input_text",
+                                    "text": (
+                                        f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
+                                        "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
+                                        "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
+                                        + ctx_str
+                                    ),
+                                }
+                            ],
+                        },
+                    ],
+                    max_output_tokens=600,
+                )
+            except Exception:
+                # 2) Fallback: classic Chat Completions (widely compatible)
+                chat = client.chat.completions.create(
+                    model=model_name,
+                    messages=[
+                        {"role": "system", "content": SYSTEM_PROMPT_DEEPDIVE + "\n\n" + rules},
+                        {
+                            "role": "user",
+                            "content": (
+                                f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
+                                "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
+                                "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
+                                + ctx_str
+                            ),
+                        },
+                    ],
+                    temperature=0.2,
+                    max_tokens=600,
+                )
+                # Wrap it to look like a Responses object for _extract_output_text(...)
+                return {"output_text": chat.choices[0].message.content or ""}
 
         try:
             resp = _call(MODEL_NAME_PRIMARY)
