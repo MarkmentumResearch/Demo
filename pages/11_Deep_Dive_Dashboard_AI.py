@@ -387,8 +387,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
   - If anchor_val < last_price ⇒ say “Negative - Close is ABOVE the long-term anchor" (overextension risk).
   - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
 - Trend mix (Short vs Mid): 
-  - if trend_short > trend_mid ⇒ “Negative - Short-term is ABOVE the mid-term trend”.
-  - if trend_short < trend_mid ⇒ “Positive - Short-term is BELOW the mid-term trend”.
+  - if trend_short > trend_mid ⇒ “Negative - Short-term trend is ABOVE the Mid-term trend”.
+  - if trend_short < trend_mid ⇒ “Positive - Short-term trend is BELOW the Mid-term trend”.
 - Monthly Risk/Reward > 0 → **Positive**; positive number means the reward outweighs the risk.
 - Monthly Risk/Reward < 0 → **Negative**; negative number means the risk outweights the reward.  
 
