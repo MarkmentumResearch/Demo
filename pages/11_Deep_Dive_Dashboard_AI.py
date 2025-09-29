@@ -379,7 +379,7 @@ Rulebook (thresholds you should apply)
 Model score (why it’s high/low) — summarize drivers in plain English
 Two-step construction (ARV = rvol):
 1) factor =
-   - 0.5 * clip( ln(ivol / max(ARV, 0.10)), −1.0, 1.0 )           # IV>RV → negative tilt
+   +0.5 * clip( ln(ivol / max(ARV, 0.10)), −1.0, 1.0 )           # IV>RV → positive tilt
  + 0.6 * (Z-Score Rank / 100)                                      # more rank = positive
  + Sharpe dead-zone term:                                          # boost low ranks, penalize very high; flat 40–60
      0.6 * max( (|50 − Sharpe_Rank| − 10) / 40, 0 ) * sign(50 − Sharpe_Rank)
