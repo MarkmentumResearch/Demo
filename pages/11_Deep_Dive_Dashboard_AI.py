@@ -2113,6 +2113,16 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             gap_lt_lo  = float(r["gap_lt_lo"])  if pd.notna(r["gap_lt_lo"])  else None
             # simple, explicit flags the model can latch onto
             is_gap_stretched = (float(gap_lt) >= float(gap_lt_hi)) or (float(gap_lt) <= float(gap_lt_lo))
+
+    # --- Deterministic relation labels the model MUST use ---
+    trend_mix_text = None
+    if (trend_short is not None) and (trend_mid is not None):
+        if trend_short > trend_mid:
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend"
+        elif trend_short < trend_mid:
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend"
+    else:
+        trend_mix_text = "Neutral - Short-term equals Mid-term"
         
  
 # ---- G5 (Z-Score 30D + bands) ----
@@ -2284,6 +2294,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             "current": score_current,
             "rating": rating,
         },
+        "Trend mix (Short vs Mid)": trend_mix_text,
         "day_down": day_down,
         "day_up": day_up,
         "day_rr": day_rr,
@@ -2361,7 +2372,7 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
                 ts = ctx.get("trend_short")
                 tm = ctx.get("trend_mid")
                 if ts is not None and tm is not None:
-                    ctx["Trend mix (Short vs Mid)"] = "short>mid" if ts > tm else "short<mid" if ts < tm else "short=mid"
+                    ctx["Trend mix (Short vs Mid)"] = "Short-term Trend>Mid-term Trend" if ts > tm else "Short-term Trendt<Mid-term Trend" if ts < tm else "short=mid"
             except Exception:
                 pass
 
