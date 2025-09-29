@@ -603,7 +603,7 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
                 norm.append({"insight": txt, "evidence": ev})
         return norm
 
-    for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
+    for key in ("score_context","salient_signals", "context_and_implications", "risk_and_caveats"):
         data[key] = _normalize_items(data.get(key))
         # Trim to depth budget (roughly 1/3 each)
         def _trim(lst):
