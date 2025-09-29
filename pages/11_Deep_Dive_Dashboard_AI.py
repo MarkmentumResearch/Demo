@@ -538,6 +538,7 @@ Never include formulas, weights, or equations.
                                             "Return only one JSON object with the single key: score_context.\n"
                                             "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
+                                            "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -562,6 +563,7 @@ Never include formulas, weights, or equations.
                                    "Return only one JSON object with the single key: score_context.\n"
                                     "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
+                                    "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -2096,6 +2098,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             trend_mid   = float(r["mt"]) if pd.notna(r["mt"]) else None
             trend_long  = float(r["lt"]) if pd.notna(r["lt"]) else None
 
+
+
+
+
+
 # ---- G4 (Gap to LT anchor + bands) ----
 # Requires: load_g4_ticker(...) and DATA_DIR defined.
 # G4 loader returns columns: ['date','gap_lt','gap_lt_avg','gap_lt_hi','gap_lt_lo'] for this ticker.
@@ -2202,7 +2209,14 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             rvol_hi  = float(r["rvol_hi"])  if pd.notna(r["rvol_hi"])  else None
             rvol_low = float(r["rvol_low"]) if pd.notna(r["rvol_low"]) else None
 
-
+    # --- Deterministic relation labels the model MUST use ---
+    zscore_30D_rank = None
+    if zscore_rank > 70:
+        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility"
+    elif zscore_rank < 30:
+        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility"
+    else:
+        zscore_30D_rank = "Neutral - Recent volatility is within historical volatility"
     
 # ---- G8 (Sharpe Ratio 30D + bands) ----
 # Requires: load_g8_ticker(...) and DATA_DIR defined.
@@ -2322,6 +2336,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "Z-Score_hi": zscore_hi,
         "Z-Score_lo": zscore_lo,
         "Z-Score Rank": zscore_rank,
+        "zscore_30D_rank": zscore_30D_rank,
         "Rvol_avg": rvol_avg,
         "Rvol_hi": rvol_hi,
         "Rvol_low": rvol_low,
