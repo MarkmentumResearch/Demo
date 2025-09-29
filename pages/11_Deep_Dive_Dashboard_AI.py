@@ -384,7 +384,7 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Sharpe Ratio Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
 - Sharpe Ratio Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
 - Sharpe Ratio Rank between 40 and 60 → **Neutral**.
-- Anchor relation (Close vs LT anchor): 
+- Close vs Anchor: 
   - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor” (reversion potential).
   - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor" (overextension risk).
   - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
@@ -2062,6 +2062,14 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     week_breach  = _breach_flag(last_price, week_low,  week_high)
     month_breach = _breach_flag(last_price, month_low, month_high)
 
+    close_vs_anchor = None
+    if (anchor_val is not None) and (last_price is not None):
+        if float(anchor_val) > float(last_price):
+            close_vs_anchor = "Positive - Close is BELOW the long-term anchor"
+        elif float(anchor_val) < float(last_price):
+            close_vs_anchor = "Negative - Close is ABOVE the long-term anchor"
+        else:
+            close_vs_anchor = "Neutral - Close equals the long-term anchor"
 
 
 #----graphs -----------------
@@ -2279,6 +2287,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "price": last_price,
         "anchor_val": float(anchor_val),
         "anchor_gap_pct": anchor_gap_pct,
+        "close_vs_anchor": close_vs_anchor,  
         "ranges": {
             "day":   {"low": day_low,   "high": day_high,   "breach": day_breach},
             "week":  {"low": week_low,  "high": week_high,  "breach": week_breach},
