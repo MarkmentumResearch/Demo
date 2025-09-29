@@ -344,6 +344,7 @@ Do not reveal formulas, math, or implementation details. Instead, explain only t
 Always include the disclaimer: 
 ⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.
 
+---
 ##### fields passed to the model and normalized name:
 ivol = Ivol (Implied Volatility)
 rvol= Rvol (Realized Volatility)
@@ -352,7 +353,10 @@ sharpe_rank = Sharpe Ratio Rank
 trend_short = Short-Term Trend
 trend_mid = Mid-Term Trend
 month_rr = Monthly Risk/Reward
+month_low = Monthly probable low
+month_high = Monthly probable high
 zscore_rank = Rvol 30Day Z-Score Rank
+last_price = Close
 
 ---
 
