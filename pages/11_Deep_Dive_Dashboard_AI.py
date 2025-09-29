@@ -338,72 +338,43 @@ def _read_openai_key():
 
 
 SYSTEM_PROMPT_DEEPDIVE = """
-You are an analyst for Markmentum Research. Explain on-screen telemetry for a single ticker
-in plain English. Be concrete, present-tense, and NEVER give advice or predictions.
+You are an analyst for Markmentum Research. Explain the current Model Score in plain English.
+Be concrete, present-tense, and NEVER give advice or predictions. Do NOT reveal formulas,
+weights, coefficients, or implementation details of the score.
 
-Do NOT reveal formulas, weights, coefficients, or implementation details of the Markmentum Score.
-You may reference only high-level drivers already visible on the page: volatility tilt (IV vs RV),
-momentum quality (Sharpe and its rank), z-score rank, trend alignment (short/mid/long), anchor gap,
-risk/reward tilt, and placement inside the daily/weekly/monthly bands.
+Explain the score only through high-level drivers already visible on the page:
+• Implied vs. realized volatility tilt (Ivol vs Rvol)
+• Momentum quality (Sharpe ratio and Sharpe rank)
+• Z-score rank
+• Trend mix (mid-term vs short-term)
+• Placement inside the monthly range (and any damping/penalty if outside)
+• Inside-range risk/reward tilt
+• Price-target adjustment (if present)
 
-Semantics & bands (interpretation guide)
-- anchor_gap_pct: price vs LT anchor (%). ~±3% mild, ±10% large, ±20% extreme.
-- st/mt/lt trends: % posture vs anchor; '+' above, '−' below. Flat if |value| < 0.6.
-- Divergence (stretched): |st−mt| ≥ 2 **and** |st−lt| ≥ 3 (percent points).
-- gap_lt_avg/hi/lo: distance from LT anchor bands; any ≥ 25% = “stretched vs LT band”.
-- Z-Score (Z-Score, _avg/_hi/_lo): ±0.75 meaningful, ±1.5 stretched, ±2.0 extreme.
-- RVol (Rvol_avg/hi/low): <6% compressed, 6–15% normal, >15% elevated.
-- Sharpe: <−1 weak, >+1 strong. Sharpe_Rank > 70 = strong momentum quality.
-- IVol premium/discount (prem_disc, _avg/_hi/_lo): large positive → hedging premium.
-- Ranges: day/week/month have {low, high, breach}. If 'breach' ≠ "none", mention which side.
+Return ONLY strict JSON with this single key:
+- score_context: {
+    "summary": "one sentence that states positive/negative and the main drivers",
+    "drivers": [
+      {
+        "driver": "Implied vs realized volatility",
+        "assessment": "positive|negative|neutral",
+        "why": "1 short sentence in plain English (no math)",
+        "numbers": ["Ivol 17.5%", "Rvol 9.5%"]     # human labels & units only
+      },
+      {
+        "driver": "Momentum quality (Sharpe rank)",
+        "assessment": "positive|negative|neutral",
+        "why": "…",
+        "numbers": ["Sharpe −1.8", "Sharpe Rank 22"]
+      }
+      // include drivers that are relevant today (3–6 items total)
+    ]
+  }
 
-Rulebook (thresholds you should apply)
-- anchor_gap_pct > 5% → good; < −5% → bad; between −5%..5% → neutral.
-- day_rr, week_rr, month_rr: >0 good, <0 bad, =0 neutral.
-- score.current:
-  • ≤ −100 → very bad;  −100..−25 → bad;  −25..25 → neutral;  25..100 → good;  ≥ 100 → very good.
-- Trend alignment / divergence:
-  • (trend_long − trend_short) < −3% or (trend_mid − trend_short) < −3% → bad (short-term stretched vs longer).
-  • (trend_long − trend_short) > 3% or (trend_mid − trend_short) > 3% → good (short-term catching up).
-- Gap to LT bands: gap_lt > gap_lt_hi → bad (stretched high); gap_lt < gap_lt_lo → good (discount).
-- Z-Score relative to bands:
-  • Z-Score > Z-Score_hi → bad (overextended); Z-Score < Z-Score_lo → good (discount);
-  • Z-Score_Rank ≥ 80 → good; ≤ 20 → bad.
-- RVol: Rvol_hi spike → good (momentum with participation) or risk-elevated context; Rvol_low → bad for momentum.
-- Sharpe:
-  • Sharpe − Sharpe_hi > 0 → good; Sharpe − Sharpe_low < 0 → bad; Sharpe_Rank ≥ 80 → good, ≤ 20 → bad.
-- IVol prem/discount with z:
-  • prem_disc > prem_disc_hi AND Z-Score > 0 → very bad (crowded/hedging at a premium).
-  • prem_disc < prem_disc_lo AND Z-Score < 0 → very good (discount while depressed).
-
-Model score (why it’s high/low) — summarize drivers in plain English
-Two-step construction (ARV = rvol):
-1) factor =
-   +0.5 * clip( ln(ivol / max(ARV, 0.10)), −1.0, 1.0 )           # IV>RV → positive tilt
- + 0.6 * (Z-Score Rank / 100)                                      # more rank = positive
- + Sharpe dead-zone term:                                          # boost low ranks, penalize very high; flat 40–60
-     0.6 * max( (|50 − Sharpe_Rank| − 10) / 40, 0 ) * sign(50 − Sharpe_Rank)
- + 0.5 * clip( MT_Trend / ST_Trend, −2, 2 )                        # bounded MT/ST ratio
-
-2) model_score =
-   round( ( factor * band_penalty + rr_tilt_if_inside ) * 50 )
-   - band_penalty = 1.0 inside monthly band; outside → penalty grows with distance in band-widths (up to −95%).
-   - rr_tilt_if_inside = factor * clip( ((Close − month_pr_low) − (month_pr_high − Close)) / band_width, −0.5, 0.5 ).
-
-Interpretation:
-- Inside the monthly band, score reflects factor + RR tilt. Outside, the factor is damped by the penalty, so extremes
-  near/above/below month bands drag the score down even if factor is positive.
-- Typical negative drivers: IV≫RV (positive ln-term), weak Sharpe_Rank (<40), MT/ST < 0, Z-Score rank low.
-- Typical positive drivers: discounted IV vs RV, strong Sharpe_Rank (>60), MT/ST > 0, high Z-Score rank.
-
-Return ONLY strict JSON with these keys:
-- score_context: list of 1–3 bullets explaining WHY the current score is positive/negative,
-  using the allowed drivers above (no formulas, no weights). Each bullet must include a short
-  rationale and a compact “evidence” array citing field names from the payload.
-- salient_signals: list of bullets for standout metrics (allowed drivers only).
-- context_and_implications: list of bullets that frame the setup (no advice).
-- risk_and_caveats: list of bullets for what could change or invalidate the setup.
-- followup_questions: 2–3 neutral questions an analyst might explore next.
+Rules:
+- Use human labels only. Do NOT print raw field names (e.g., 'anchor_gap_pct') or any equations.
+- Prefer concrete, short phrases and show compact numbers with units where obvious.
+- If price is outside the monthly range, call out the damping/penalty in words (no math).
 """
 
 
@@ -489,15 +460,9 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
 
     # --- Guidance so the model uses your metrics, bands, and flags ---
     rules = """
-Treat these as strong, present-tense observations (concise, descriptive, no advice):
-- If score.current is very negative or rating contains 'Sell', state bearish bias AND cite concrete drivers:
-  volatility tilt (ivol vs rvol), momentum quality (Sharpe, Sharpe_Rank), zscore_rank, trend alignment (st/mt/lt),
-  anchor_gap_pct and gap_lt vs gap_lt_hi/lo, risk/reward (day/week/month_rr), and band placement.
-- Prefer precise numbers from the payload; cite exact field names in 'evidence'.
-- Do not disclose formulas, weights, or coefficients.
-
-Return ONLY strict JSON with keys:
-score_context, salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+Only return the JSON key 'score_context' exactly as specified in the system instructions.
+Do not output any other keys. Use human labels and units in 'numbers'; avoid raw column names.
+Never include formulas, weights, or equations.
 """
 
     # --- OpenAI call ---
@@ -526,10 +491,8 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
                                 {
                                     "type": "input_text",
                                     "text": (
-                                        f"Return at most {max_bullets} total bullets.\n\n"
-                                        "You MUST return JSON with keys: score_context, salient_signals, context_and_implications, risk_and_caveats, followup_questions.\n"
-                                        "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands to decide if it's stretched or subdued.\n"
-                                        "Cite exact field names in 'evidence'.\n"
+                                        "Return only one JSON object with the single key: score_context.\n"
+                                        "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                         + ctx_str
                                     ),
                                 }
@@ -548,9 +511,8 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
                         {
                             "role": "user",
                             "content": (
-                                f"Return at most {max_bullets} total bullets.\n\n"
-                                "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
-                                "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
+                                "Return only one JSON object with the single key: score_context.\n"
+                                "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                 + ctx_str
                             ),
                         },
@@ -591,39 +553,33 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
         return _default_insights()
 
     # --- Post-process / safety scrub ---
-    def _normalize_items(items):
-        norm = []
+    def _norm_driver_list(items):
+        out = []
         for it in (items or []):
-            if isinstance(it, str):
-                norm.append({"insight": _scrub_advice(it), "evidence": []})
-            elif isinstance(it, dict):
-                txt = _scrub_advice(it.get("insight", ""))
-                ev  = it.get("evidence", [])
-                if not isinstance(ev, list): ev = []
-                norm.append({"insight": txt, "evidence": ev})
-        return norm
+            if isinstance(it, dict):
+                drv = str(it.get("driver","")).strip()
+                ass = str(it.get("assessment","")).strip().lower()
+                why = str(it.get("why","")).strip()
+                nums = it.get("numbers", [])
+                if not isinstance(nums, list): nums = []
+                # scrub advicey verbs from 'why'
+                why = _scrub_advice(why)
+                out.append({"driver": drv, "assessment": ass, "why": why, "numbers": [str(x) for x in nums]})
+            elif isinstance(it, str):
+                # turn a bare string into a minimal driver line
+                out.append({"driver": "", "assessment": "", "why": _scrub_advice(it), "numbers": []})
+        return out
 
-    for key in ("score_context","salient_signals", "context_and_implications", "risk_and_caveats"):
-        data[key] = _normalize_items(data.get(key))
-        # Trim to depth budget (roughly 1/3 each)
-        def _trim(lst):
-            return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
-        
-    data["score_context"] = _normalize_items(data.get("score_context"))
-    data["salient_signals"]          = _trim(data.get("salient_signals", []))
-    data["context_and_implications"] = _trim(data.get("context_and_implications", []))
-    data["risk_and_caveats"]         = _trim(data.get("risk_and_caveats", []))
-    data["followup_questions"]       = (data.get("followup_questions", []) or [])[:max(1, max_bullets // 4)]
+    # Keep only the one section
+    sc = data.get("score_context") or {}
+    drivers = _norm_driver_list(sc.get("drivers"))
+    summary = _scrub_advice(sc.get("summary",""))
 
-    # Ensure at least one bullet per section (neutral fallback)
-    if not data["salient_signals"]:
-        data["salient_signals"] = [{"insight": "Neutral read from on-screen data (no standout patterns); values are within recent ranges.", "evidence": []}]
-    if not data["context_and_implications"]:
-        data["context_and_implications"] = [{"insight": "Context remains mixed; short/mid/long trends and volatility are not extreme.", "evidence": []}]
-    if not data["risk_and_caveats"]:
-        data["risk_and_caveats"] = [{"insight": "Numbers can drift with new prints; treat this view as descriptive, not predictive.", "evidence": []}]
-    if not data["followup_questions"]:
-        data["followup_questions"] = ["Which sub-period (day/week/month) is most informative for this ticker right now?"]
+    data = {"score_context": {"summary": summary, "drivers": drivers}}
+
+    # Ensure at least one driver
+    if not data["score_context"]["drivers"]:
+        data["score_context"]["drivers"] = [{"driver":"—","assessment":"neutral","why":"No clear driver surfaced from current inputs.","numbers":[]}]
 
     return data
 
@@ -2162,6 +2118,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         g7_df = pd.DataFrame()
 
     rvol_avg = rvol_hi = rvol_low = None  # defaults
+    
 
     if not g7_df.empty:
         asof_dt = pd.to_datetime(as_of, errors="coerce")
@@ -2319,14 +2276,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 # AI Insight Panel (Deep Dive)
 # ==============================
 
-#Panel default: closed (we open it after the first run)
+# Panel default: closed (we open it after the first run)
 st.session_state.setdefault("ai_open", False)
 
-with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_open", False)):
-    c1, c2 = st.columns([1, 1])
-    #depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
-    depth = "Deep"
-    go = c2.button("Markmentum Score Explanation", use_container_width=True, key="dd_ai_go")
+with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
+    go = st.button("Explain what stands out", use_container_width=True, key="dd_ai_go")
 
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
     st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
@@ -2335,71 +2289,64 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
         st.warning("No data available for the selected ticker.")
     else:
         if go:
+            # Build context from on-screen data
             ctx = collect_deepdive_context(TICKER, date_str, _row)
+
+            # If your context uses rvol but the model expects 'ARV', alias it here:
+            if "rvol" in ctx and "ARV" not in ctx:
+                ctx["ARV"] = ctx["rvol"]
+
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
-                st.session_state["ai_last_depth"] = depth
                 st.session_state["ai_last_insights"] = get_ai_insights(ctx)
             st.session_state["ai_open"] = True
 
         insights = st.session_state.get("ai_last_insights")
 
-        # Helpers
-        INSIGHT_KEYS = [
-            "score_context",
-            "salient_signals",
-            "context_and_implications",
-            "risk_and_caveats",
-        ]
-
-        def _is_empty_payload(d):
+        # -------- helpers --------
+        def _is_empty_score_context(d: dict | None) -> bool:
             if not d or not isinstance(d, dict):
                 return True
-            return not any((d.get(k) or []) for k in INSIGHT_KEYS)
+            sc = d.get("score_context") or {}
+            if not isinstance(sc, dict):
+                return True
+            summary = (sc.get("summary") or "").strip()
+            drivers = sc.get("drivers") or []
+            return not summary and not drivers
 
-        def _render_section(title, items):
-            if not items:
-                return
-            st.markdown(f"**{title}**")
-            for it in items:
-                insight = it.get("insight", "")
-                ev = " · ".join(it.get("evidence", []))
-                st.markdown(
-                    f"- {insight}  \n"
-                    f"  <span style='opacity:0.6'>evidence: {ev}</span>",
-                    unsafe_allow_html=True,
-                )
-
-        # Empty / no-content case
-        #if not data.get("score_context"):
-        #    data["score_context"] = [{"insight": "No concise score context available from current inputs.", "evidence": []}]
-
-
-        if _is_empty_payload(insights):
+        # -------- render --------
+        if _is_empty_score_context(insights):
             st.warning("No standout AI insights were returned for this view.")
             st.markdown(
-                "- The on-screen data may not show strong signals.\n"
+                "- The on-screen data may not show strong drivers right now.\n"
                 "- You can toggle debug below to see the context the model received."
             )
-            # Optional debug
             if st.checkbox("Show AI debug", value=False, key="dd_ai_debug"):
                 st.write("Context snapshot:")
                 st.json(st.session_state.get("ai_last_ctx", {}))
                 st.write("Insights snapshot:")
                 st.json(insights or {})
         else:
-            # Render insights
-            _render_section("Model Score", insights.get("score_context"))
-            _render_section("Signals", insights.get("salient_signals"))
-            _render_section("Context", insights.get("context_and_implications"))
-            _render_section("Risk & caveats", insights.get("risk_and_caveats"))
+            sc = insights.get("score_context", {})  # <-- use insights, not 'data'
+            # Title
+            st.subheader("Model Score")
 
-            # Hide follow-ups if you don't want them: comment out below.
-            ##if insights.get("followup_questions"):
-            #    st.divider()
-            #    st.caption("Follow-ups to explore")
-            #    for q in insights["followup_questions"]:
-            #        st.markdown(f"- {q}")
+            # Summary
+            summary = (sc.get("summary") or "").strip()
+            if summary:
+                st.markdown(f"- **Summary:** {summary}")
+
+            # Drivers
+            drivers = sc.get("drivers") or []
+            for d in drivers:
+                driver_name = (d.get("driver") or "Driver").strip()
+                assessment = (d.get("assessment") or "neutral").strip()
+                why = (d.get("why") or "").strip()
+                st.markdown(f"- **{driver_name}** — {assessment}. {why}")
+
+                nums = [str(n).strip() for n in (d.get("numbers") or []) if str(n).strip()]
+                if nums:
+                    st.caption("Key numbers: " + "; ".join(nums))
 
 
                     
