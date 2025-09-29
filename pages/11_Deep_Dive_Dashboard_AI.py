@@ -357,18 +357,19 @@ month_low = Monthly probable low
 month_high = Monthly probable high
 zscore_rank = Rvol 30Day Z-Score Rank
 last_price = Close
-
+Long Term Anchor = anchor_val
+Close to Long Term Anchor = anchor_gap_pct (percentage change)
 ---
 
 ### What the Model Score reflects (conceptual components):
-- **Implied Volatility Premium/Discount:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
+- **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (better entry potential), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank (Zscore Rank)**: Measures price stretch relative to historical volatility. A higher Z-Score rank (extended move) is positive, a lower rank (reset condition) is negative.
-- **Trends (Short-term vs Mid-term)**: Short-term trend below Mid-Term trend is considered positive as these tend to converge and diverge on a cyclical basis;  if short-term trend is above Mid-term trend is considered negative. 
-- **Monthly Risk/Reward Tilt** (month_rr): Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
+- **Rvol 30Day Z-Score Rank**: Measures price stretch relative to historical volatility. A higher Z-Score rank (extended move) is positive, a lower rank (reset condition) is negative.
+- **Trends**: Short-term trend below Mid-Term trend is considered positive as these tend to converge and diverge on a cyclical basis;  if Short-term trend is above Mid-term trend is considered negative. 
+- **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
-- **Close to Long Term Anchor:  Close (last_price) compared to Long Term Anchor (anchor_val) as a percentage change (anchor_gap_pct).  If close is above then stock could correct, if close is below stock could rally to the long term anchor.  
+- **Close to Long Term Anchor**:  Close (last_price) compared to Long Term Anchor (anchor_val) as a percentage change (anchor_gap_pct).  If close is above then stock could correct, if close is below stock could rally to the long term anchor.  
 
 ---
 
