@@ -338,11 +338,13 @@ def _read_openai_key():
 
 
 SYSTEM_PROMPT_DEEPDIVE = """
-You are an analyst for Markmentum Research. 
-Provide context on the model score without revealing formulas or weights. 
-Focus on drivers such as volatility, Sharpe quality, risk/reward alignment, and anchor gaps. 
-Do not output equations or proprietary logic. 
-Always explain the score in plain English so that a non-technical investor can understand why it is positive or negative.
+You are an analyst for Markmentum Research. Explain on-screen telemetry for a single ticker
+in plain English. Be concrete, present-tense, and NEVER give advice or predictions.
+
+Do NOT reveal formulas, weights, coefficients, or implementation details of the Markmentum Score.
+You may reference only high-level drivers already visible on the page: volatility tilt (IV vs RV),
+momentum quality (Sharpe and its rank), z-score rank, trend alignment (short/mid/long), anchor gap,
+risk/reward tilt, and placement inside the daily/weekly/monthly bands.
 
 Semantics & bands (interpretation guide)
 - anchor_gap_pct: price vs LT anchor (%). ~±3% mild, ±10% large, ±20% extreme.
@@ -394,12 +396,14 @@ Interpretation:
 - Typical negative drivers: IV≫RV (positive ln-term), weak Sharpe_Rank (<40), MT/ST < 0, Z-Score rank low.
 - Typical positive drivers: discounted IV vs RV, strong Sharpe_Rank (>60), MT/ST > 0, high Z-Score rank.
 
-Output strict JSON:
-{ "salient_signals":[{insight,evidence[]}],
-  "context_and_implications":[{insight,evidence[]}],
-  "risk_and_caveats":[{insight,evidence[]}],
-  "followup_questions":[string] }
-Always return ≥1 bullet per section.
+Return ONLY strict JSON with these keys:
+- score_context: list of 1–3 bullets explaining WHY the current score is positive/negative,
+  using the allowed drivers above (no formulas, no weights). Each bullet must include a short
+  rationale and a compact “evidence” array citing field names from the payload.
+- salient_signals: list of bullets for standout metrics (allowed drivers only).
+- context_and_implications: list of bullets that frame the setup (no advice).
+- risk_and_caveats: list of bullets for what could change or invalidate the setup.
+- followup_questions: 2–3 neutral questions an analyst might explore next.
 """
 
 
@@ -470,7 +474,7 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     """
 
     # Depth tuning (rough bullet budget)
-    max_bullets = {"Quick": 4, "Standard": 7, "Deep": 10}.get(depth, 7)
+    max_bullets = 7
 
     # Bail early if SDK/key isn't ready
     if not _OPENAI_READY:
@@ -484,17 +488,16 @@ def get_ai_insights(context: dict, depth: str = "Standard") -> dict:
     client = OpenAI(api_key=api_key)
 
     # --- Guidance so the model uses your metrics, bands, and flags ---
-    rules = f"""
-Treat these as strong, present-tense signals if true (be concise, descriptive, no advice):
-- If score.current <= -80 or rating contains 'Sell', declare bearish bias AND cite concrete drivers:
-  trends (st/mt/lt deltas), gap_lt vs gap_lt_hi/lo, Z-Score vs bands, Sharpe/Sharpe_Rank, rvol spikes,
-  and any day/week/month 'breach' values.
-- If Flags.gap_stretched is true, say price is stretched vs the long-term anchor and compare to gap_lt_hi/lo.
-- Prefer precise numbers from the payload (anchor_gap_pct, gap_lt, st/mt/lt, Z-Score with _avg/_hi/_lo,
-  rvol_{'{avg,hi,low}'}, Sharpe_{'{avg,hi,low}'}, Sharpe_Rank, prem_disc_{'{avg,hi,low}'}, day/week/month_rr).
-- Use the “Rulebook” & “Model score” notes from the system prompt to justify each bullet.
-Depth={depth} ⇒ cap TOTAL bullets to {max_bullets}.
-Return ONLY strict JSON with keys: salient_signals, context_and_implications, risk_and_caveats, followup_questions.
+    rules = """
+Treat these as strong, present-tense observations (concise, descriptive, no advice):
+- If score.current is very negative or rating contains 'Sell', state bearish bias AND cite concrete drivers:
+  volatility tilt (ivol vs rvol), momentum quality (Sharpe, Sharpe_Rank), zscore_rank, trend alignment (st/mt/lt),
+  anchor_gap_pct and gap_lt vs gap_lt_hi/lo, risk/reward (day/week/month_rr), and band placement.
+- Prefer precise numbers from the payload; cite exact field names in 'evidence'.
+- Do not disclose formulas, weights, or coefficients.
+
+Return ONLY strict JSON with keys:
+score_context, salient_signals, context_and_implications, risk_and_caveats, followup_questions.
 """
 
     # --- OpenAI call ---
@@ -523,9 +526,10 @@ Return ONLY strict JSON with keys: salient_signals, context_and_implications, ri
                                 {
                                     "type": "input_text",
                                     "text": (
-                                        f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
-                                        "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
-                                        "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
+                                        f"Return at most {max_bullets} total bullets.\n\n"
+                                        "You MUST return JSON with keys: score_context, salient_signals, context_and_implications, risk_and_caveats, followup_questions.\n"
+                                        "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands to decide if it's stretched or subdued.\n"
+                                        "Cite exact field names in 'evidence'.\n"
                                         + ctx_str
                                     ),
                                 }
@@ -2311,12 +2315,12 @@ st.session_state.setdefault("ai_open", False)
 with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_open", False)):
     c1, c2 = st.columns([1, 1])
     #depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
-    depth = "Standard"
+    depth = "Deep"
     go = c2.button("Markmentum Score Explanation", use_container_width=True, key="dd_ai_go")
 
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
     st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
-    
+
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
@@ -2332,10 +2336,10 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
 
         # Helpers
         INSIGHT_KEYS = [
+            "score_context",
             "salient_signals",
             "context_and_implications",
             "risk_and_caveats",
-            "followup_questions",
         ]
 
         def _is_empty_payload(d):
@@ -2361,7 +2365,6 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
             st.warning("No standout AI insights were returned for this view.")
             st.markdown(
                 "- The on-screen data may not show strong signals.\n"
-                "- Try **Depth → Deep** and click again.\n"
                 "- You can toggle debug below to see the context the model received."
             )
             # Optional debug
