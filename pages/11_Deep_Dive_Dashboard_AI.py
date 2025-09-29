@@ -358,7 +358,7 @@ month_high = Monthly probable high
 zscore_rank = Rvol 30Day Z-Score Rank
 last_price = Close
 Long Term Anchor = anchor_val
-Close to Long Term Anchor = anchor_gap_pct (percentage change)
+Close to Long Term Anchor = (anchor_val/last_price)-1
 month_breach = Close/last_price is outside either monthly probable range low or monthly probable range high
 ---
 
