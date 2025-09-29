@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-PM,PHILIP MORRIS INTERNATIONAL INC.,Consumer Staples,2025-09-26,-193.0,-36.0,157.0
-WSM,"WILLIAMS-SONOMA, INC.",Consumer Discretionary,2025-09-26,-146.0,-52.0,94.0
-TPL,TEXAS PACIFIC LAND ,Energy,2025-09-26,-137.0,-38.0,99.0
-CAH,"CARDINAL HEALTH, INC.",Health Care,2025-09-26,-136.0,-35.0,101.0
-TRV,"THE TRAVELERS COMPANIES, INC.",Financials,2025-09-26,-133.0,-34.0,99.0
-ED,"CONSOLIDATED EDISON, INC.",Utilities,2025-09-26,-130.0,-27.0,103.0
-ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-09-26,-130.0,-24.0,106.0
-AZO,"AUTOZONE, INC.",Consumer Discretionary,2025-09-26,-129.0,-8.0,121.0
-FVX,5 YR TSY YLD NDX,Bonds & Yields,2025-09-26,-122.0,-61.0,61.0
-NVR,"NVR, INC.",Consumer Discretionary,2025-09-26,-122.0,-91.0,31.0
+PM,PHILIP MORRIS INTERNATIONAL INC.,Consumer Staples,2025-09-26,-96.0,-18.0,78.0
+WSM,"WILLIAMS-SONOMA, INC.",Consumer Discretionary,2025-09-26,-73.0,-26.0,47.0
+TPL,TEXAS PACIFIC LAND ,Energy,2025-09-26,-69.0,-19.0,50.0
+CAH,"CARDINAL HEALTH, INC.",Health Care,2025-09-26,-68.0,-17.0,51.0
+TRV,"THE TRAVELERS COMPANIES, INC.",Financials,2025-09-26,-67.0,-17.0,50.0
+AZO,"AUTOZONE, INC.",Consumer Discretionary,2025-09-26,-65.0,-4.0,61.0
+ED,"CONSOLIDATED EDISON, INC.",Utilities,2025-09-26,-65.0,-14.0,51.0
+ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-09-26,-65.0,-12.0,53.0
+NVR,"NVR, INC.",Consumer Discretionary,2025-09-26,-62.0,-46.0,16.0
+DHI,"D.R. HORTON, INC.",Consumer Discretionary,2025-09-26,-60.0,-25.0,35.0
