@@ -358,7 +358,7 @@ month_high = Monthly probable high
 zscore_rank = Rvol 30Day Z-Score Rank
 last_price = Close
 Long Term Anchor = anchor_val
-anchor_gap_pct = ((Long Term Anchor / last_price) - 1); Close to Long Term Anchor expressed as a percentage
+anchor_gap_pct = ((Long Term Anchor / last_price) - 1); Long Term Anchor to Close expressed as a percentage
 month_breach = last_price is outside either Monthly probable low or Monthly probable high
 ---
 
@@ -381,9 +381,9 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Sharpe Ratio Rank > 80 → **negative**; crowded and/or stretched momentum and not a good entry point.
 - Sharpe Ratio Rank < 20 → **positive**; better entry potential and downward pressure could subside.  
 - Sharpe Ratio Rank between 40 and 60 → **neutral**.
-- Close to Long Term Anchor >5% → **positive**; reversal potential
-- Close to Long Term Anchor <-5% → **negative**; overextension risk
-- Close to Long Term Anchor >=-5% and <+5% → **neutral**
+- Long Term Anchor to Close>5% → **positive**; reversal potential
+- Long Term Anchor to Close <-5% → **negative**; overextension risk
+- Long Term Anchor to Close >=-5% and <+5% → **neutral**
 - Short-Term Trend < Mid-Term Trend → **positive**; Trend convergence would move stock price higher.
 - Short-Term Trend > Mid-Term Trend → **negative**; Trend convergence would move stock price lower.
 - Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
@@ -403,7 +403,7 @@ Return only strict JSON in this structure:
         "why": "One plain-English explanation (no math, no formulas)",
         "numbers": ["Key numbers if useful, written in user-friendly format (e.g., 'IV 18%, Rvol 12%')"]
       }
-      // Only include 3–6 drivers that matter most today
+      // Only include all drivers
     ]
   }
 }
