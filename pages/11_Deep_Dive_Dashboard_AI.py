@@ -2371,8 +2371,8 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
                 )
 
         # Empty / no-content case
-        if not data.get("score_context"):
-            data["score_context"] = [{"insight": "No concise score context available from current inputs.", "evidence": []}]
+        #if not data.get("score_context"):
+        #    data["score_context"] = [{"insight": "No concise score context available from current inputs.", "evidence": []}]
 
 
         if _is_empty_payload(insights):
