@@ -377,13 +377,17 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ### Direction rules to follow:
 - Ivol > Rvol → **positive**.  
 - Ivol < Rvol → **negative**.  
+- Rvol 30Day Z-Score Rank: High = positive; Low = negative.
 - Sharpe Ratio Rank > 80 → **negative**; crowded and/or stretched momentum and not a good entry point.
 - Sharpe Ratio Rank < 20 → **positive**; better entry potential and downward pressure could subside.  
-- Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
-- Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
+- Sharpe Ratio Rank between 40 and 60 → **neutral**.
+- Close to Long Term Anchor >5% → **positive**; reversal potential
+- Close to Long Term Anchor <-5% → **negative**; overextension risk
+- Close to Long Term Anchor >=-5% and <+5% → **neutral**
 - Short-Term Trend < Mid-Term Trend → **positive**; Trend convergence would move stock price higher.
 - Short-Term Trend > Mid-Term Trend → **negative**; Trend convergence would move stock price lower.
-- Rvol 30Day Z-Score Rank: High = positive; Low = negative.
+- Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
+- Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
 
 ---
 
@@ -527,7 +531,7 @@ Never include formulas, weights, or equations.
                                     "type": "input_text",
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
-                                            "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative).\n"
+                                            "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -550,7 +554,7 @@ Never include formulas, weights, or equations.
                             "role": "user",
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
-                                    "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative).\n"
+                                    "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
