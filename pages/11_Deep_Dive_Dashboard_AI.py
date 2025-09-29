@@ -537,7 +537,7 @@ Never include formulas, weights, or equations.
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
                                             "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
-                                            "When describing anchor and trend relations, use 'close_vs_anchor' and 'trend_relation' from the JSON context if present.\n"
+                                            "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -561,7 +561,7 @@ Never include formulas, weights, or equations.
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
                                     "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
-                                    "When describing anchor and trend relations, use 'close_vs_anchor' and 'trend_relation' from the JSON context if present.\n"
+                                    "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -2361,7 +2361,7 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
                 ts = ctx.get("trend_short")
                 tm = ctx.get("trend_mid")
                 if ts is not None and tm is not None:
-                    ctx["trend_relation"] = "short>mid" if ts > tm else "short<mid" if ts < tm else "short=mid"
+                    ctx["Trend mix (Short vs Mid)"] = "short>mid" if ts > tm else "short<mid" if ts < tm else "short=mid"
             except Exception:
                 pass
 
