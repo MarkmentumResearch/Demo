@@ -548,7 +548,7 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
                         {
                             "role": "user",
                             "content": (
-                                f"Depth: {depth}. Return at most {max_bullets} total bullets.\n\n"
+                                f"Return at most {max_bullets} total bullets.\n\n"
                                 "Use ONLY this JSON. Compare each *current* value to its avg/hi/lo bands "
                                 "to decide if it's stretched or subdued. Cite exact field names in 'evidence'.\n"
                                 + ctx_str
@@ -591,15 +591,25 @@ score_context, salient_signals, context_and_implications, risk_and_caveats, foll
         return _default_insights()
 
     # --- Post-process / safety scrub ---
+    def _normalize_items(items):
+        norm = []
+        for it in (items or []):
+            if isinstance(it, str):
+                norm.append({"insight": _scrub_advice(it), "evidence": []})
+            elif isinstance(it, dict):
+                txt = _scrub_advice(it.get("insight", ""))
+                ev  = it.get("evidence", [])
+                if not isinstance(ev, list): ev = []
+                norm.append({"insight": txt, "evidence": ev})
+        return norm
+
     for key in ("salient_signals", "context_and_implications", "risk_and_caveats"):
-        items = data.get(key, [])
-        for it in items:
-            it["insight"] = _scrub_advice(it.get("insight", ""))
-
-    # Trim to depth budget (roughly 1/3 each)
-    def _trim(lst):
-        return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
-
+        data[key] = _normalize_items(data.get(key))
+        # Trim to depth budget (roughly 1/3 each)
+        def _trim(lst):
+            return lst[:max(1, max_bullets // 3)] if isinstance(lst, list) else []
+        
+    data["score_context"] = _normalize_items(data.get("score_context"))
     data["salient_signals"]          = _trim(data.get("salient_signals", []))
     data["context_and_implications"] = _trim(data.get("context_and_implications", []))
     data["risk_and_caveats"]         = _trim(data.get("risk_and_caveats", []))
@@ -2329,7 +2339,7 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
             with st.spinner("Analyzing on-screen telemetry…"):
                 st.session_state["ai_last_ctx"] = ctx
                 st.session_state["ai_last_depth"] = depth
-                st.session_state["ai_last_insights"] = get_ai_insights(ctx, depth=depth)
+                st.session_state["ai_last_insights"] = get_ai_insights(ctx)
             st.session_state["ai_open"] = True
 
         insights = st.session_state.get("ai_last_insights")
@@ -2361,6 +2371,10 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
                 )
 
         # Empty / no-content case
+        if not data.get("score_context"):
+            data["score_context"] = [{"insight": "No concise score context available from current inputs.", "evidence": []}]
+
+
         if _is_empty_payload(insights):
             st.warning("No standout AI insights were returned for this view.")
             st.markdown(
@@ -2375,16 +2389,17 @@ with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_ope
                 st.json(insights or {})
         else:
             # Render insights
+            _render_section("Model Score", insights.get("score_context"))
             _render_section("Signals", insights.get("salient_signals"))
             _render_section("Context", insights.get("context_and_implications"))
             _render_section("Risk & caveats", insights.get("risk_and_caveats"))
 
             # Hide follow-ups if you don't want them: comment out below.
-            if insights.get("followup_questions"):
-                st.divider()
-                st.caption("Follow-ups to explore")
-                for q in insights["followup_questions"]:
-                    st.markdown(f"- {q}")
+            ##if insights.get("followup_questions"):
+            #    st.divider()
+            #    st.caption("Follow-ups to explore")
+            #    for q in insights["followup_questions"]:
+            #        st.markdown(f"- {q}")
 
 
                     
