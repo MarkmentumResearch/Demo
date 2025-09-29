@@ -343,13 +343,18 @@ Be concrete, present-tense, and NEVER give advice or predictions. Do NOT reveal 
 weights, coefficients, or implementation details of the score.
 
 Explain the score only through high-level drivers already visible on the page:
-• Implied vs. realized volatility tilt (Ivol vs Rvol)
+• Implied vs realized volatility tilt (IV vs ARV)
 • Momentum quality (Sharpe ratio and Sharpe rank)
 • Z-score rank
 • Trend mix (mid-term vs short-term)
 • Placement inside the monthly range (and any damping/penalty if outside)
-• Inside-range risk/reward tilt
+• Inside-range risk/reward tilt (monthly)
 • Price-target adjustment (if present)
+
+Direction rules (use these when deciding positive/negative wording):
+• Ivol vs Rvol: if Ivol > Rvol the tilt is **positive**; if IV < ARV it is **negative**.
+• Monthly RR tilt (inside the band): closer to the **lower** band = **positive**, closer to the **upper** band = **negative**; if price is **outside** the band, note that RR tilt is not applied and a placement penalty/damping is applied instead.
+• Range placement: outside the monthly range → **penalty/damping**; inside → neutral placement.
 
 Return ONLY strict JSON with this single key:
 - score_context: {
@@ -359,24 +364,23 @@ Return ONLY strict JSON with this single key:
         "driver": "Implied vs realized volatility",
         "assessment": "positive|negative|neutral",
         "why": "1 short sentence in plain English (no math)",
-        "numbers": ["Ivol 17.5%", "Rvol 9.5%"]     # human labels & units only
+        "numbers": ["Implied 17.5%", "Realized (ARV) 9.5%"]
       },
       {
-        "driver": "Momentum quality (Sharpe rank)",
+        "driver": "Monthly risk/reward tilt",
         "assessment": "positive|negative|neutral",
         "why": "…",
-        "numbers": ["Sharpe −1.8", "Sharpe Rank 22"]
+        "numbers": ["Monthly low 18.6", "Monthly high 40.7", "Close 34.9"]
       }
-      // include drivers that are relevant today (3–6 items total)
+      // include only the relevant 3–6 drivers today
     ]
   }
 
 Rules:
-- Use human labels only. Do NOT print raw field names (e.g., 'anchor_gap_pct') or any equations.
-- Prefer concrete, short phrases and show compact numbers with units where obvious.
+- Use human labels only. Do NOT print raw field names or any equations.
+- Prefer concise phrases and compact numbers with units where obvious.
 - If price is outside the monthly range, call out the damping/penalty in words (no math).
 """
-
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
 MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
