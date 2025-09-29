@@ -358,7 +358,7 @@ month_high = Monthly probable high
 zscore_rank = Rvol 30Day Z-Score Rank
 last_price = Close
 Long Term Anchor = anchor_val
-anchor_gap_pct = ((Long Term Anchor / last_price) - 1); Long Term Anchor to Close expressed as a percentage
+anchor_gap_pct = ((anchor_val / last_price) - 1); Long Term Anchor to Close expressed as a percentage
 month_breach = last_price is outside either Monthly probable low or Monthly probable high
 ---
 
@@ -381,11 +381,14 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Sharpe Ratio Rank > 80 → **negative**; crowded and/or stretched momentum and not a good entry point.
 - Sharpe Ratio Rank < 20 → **positive**; better entry potential and downward pressure could subside.  
 - Sharpe Ratio Rank between 40 and 60 → **neutral**.
-- Long Term Anchor to Close>5% → **positive**; reversal potential
-- Long Term Anchor to Close <-5% → **negative**; overextension risk
-- Long Term Anchor to Close >=-5% and <+5% → **neutral**
-- Short-Term Trend < Mid-Term Trend → **positive**; Trend convergence would move stock price higher.
-- Short-Term Trend > Mid-Term Trend → **negative**; Trend convergence would move stock price lower.
+- Anchor relation (Close vs LT anchor): 
+  - If anchor_val > last_price ⇒ say “close is BELOW the long-term anchor - positive” (reversion potential).
+  - If anchor_val < last_price ⇒ say “close is ABOVE the long-term anchor - negative" (overextension risk).
+  - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
+- Trend mix (Short vs Mid): 
+  - Compare the numeric trend values: if trend_short > trend_mid ⇒ “short-term is ABOVE the mid-term trend - negative”; 
+    if trend_short < trend_mid ⇒ “short-term is BELOW the mid-term trend - positive”.
+  -Treat “more positive” (or “less negative”) as higher.
 - Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
 - Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
 
