@@ -495,8 +495,11 @@ Never include formulas, weights, or equations.
                                 {
                                     "type": "input_text",
                                     "text": (
-                                        "Return only one JSON object with the single key: score_context.\n"
-                                        "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
+                                            "Return only one JSON object with the single key: score_context.\n"
+                                            "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative), "
+                                            "monthly RR tilt: nearer the lower band → negative, nearer the upper band → positive; "
+                                            "outside band → range penalty and no RR tilt.\n"
+                                            "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                         + ctx_str
                                     ),
                                 }
@@ -515,8 +518,11 @@ Never include formulas, weights, or equations.
                         {
                             "role": "user",
                             "content": (
-                                "Return only one JSON object with the single key: score_context.\n"
-                                "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
+                                   "Return only one JSON object with the single key: score_context.\n"
+                                    "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative), "
+                                    "monthly RR tilt: nearer the lower band → negative, nearer the upper band → positive; "
+                                    "outside band → range penalty and no RR tilt.\n"
+                                    "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                 + ctx_str
                             ),
                         },
@@ -2295,6 +2301,14 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
         if go:
             # Build context from on-screen data
             ctx = collect_deepdive_context(TICKER, date_str, _row)
+
+            lo = ctx.get("month_pr_low"); hi = ctx.get("month_pr_high"); cl = ctx.get("close")
+            try:
+                if lo is not None and hi is not None and cl is not None and (hi - lo) != 0:
+                        ctx["month_rr_tilt"] = ((cl - lo) - (hi - cl)) / (hi - lo)
+            except Exception:
+                pass
+
 
             # If your context uses rvol but the model expects 'ARV', alias it here:
             if "rvol" in ctx and "ARV" not in ctx:
