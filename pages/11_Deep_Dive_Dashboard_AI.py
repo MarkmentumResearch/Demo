@@ -360,6 +360,7 @@ last_price = Close
 Long Term Anchor = anchor_val
 anchor_gap_pct = ((anchor_val / last_price) - 1); Long Term Anchor to Close expressed as a percentage
 month_breach = last_price is outside either Monthly probable low or Monthly probable high
+Long Term Anchor to Close = (anchor_val - last_price)
 ---
 
 ### What the Model Score reflects (conceptual components):
@@ -370,7 +371,7 @@ month_breach = last_price is outside either Monthly probable low or Monthly prob
 - **Trends**: Short-term trend below Mid-Term trend is considered positive as these tend to converge and diverge on a cyclical basis;  if Short-term trend is above Mid-term trend is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
-- **Long Term Anchor to Close**:  Long Term Anchor (anchor_val) - Close (last_price). If close is below stock could rally to the long term anchor; If close is above then stock could correct, 
+- **Long Term Anchor to Close**:  A positive number indicates stock price could rally to the long term anchor; A negative number indicates stock price could correct.
 
 ---
 
