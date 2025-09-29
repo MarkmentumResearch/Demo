@@ -368,7 +368,7 @@ Long Term Anchor to Close = (anchor_val - last_price)
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (better entry potential), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
 - **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may subside, a lower Z-Score rank is negative as realized volatility may emerge.
-- **Trends**: Short-term Trend and Mid-term Trend tend to converge and diverge on a cyclical basis.  If Short-Term Trend less than Mid-Term trend is considered positive; If Short-term Trend is higher than Mid-Term Trend is considered negative. 
+- **Trends**: trend_short and trend_mid to converge and diverge on a cyclical basis.  If trend_short less than trend_mid is considered positive; If trend_short is higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
 - **Long Term Anchor to Close**:  A positive number indicates stock price could rally to the long term anchor; A negative number indicates stock price could correct.
