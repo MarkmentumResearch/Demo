@@ -523,8 +523,8 @@ Never include formulas, weights, or equations.
                                     "type": "input_text",
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
-                                            "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative), "
-                                            "monthly RR tilt: nearer the lower band → negative, nearer the upper band → positive; "
+                                            "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative).\n"
+                                            "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                         + ctx_str
@@ -546,8 +546,8 @@ Never include formulas, weights, or equations.
                             "role": "user",
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
-                                    "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative), "
-                                    "monthly RR tilt: nearer the lower band → negative, nearer the upper band → positive; "
+                                    "Apply the direction rules from the system message: (IV>ARV → positive; IV<ARV → negative).\n"
+                                    "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                 + ctx_str
