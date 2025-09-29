@@ -537,6 +537,7 @@ Never include formulas, weights, or equations.
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
                                             "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
+                                            "When describing anchor and trend relations, use 'close_vs_anchor' and 'trend_relation' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -560,6 +561,7 @@ Never include formulas, weights, or equations.
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
                                     "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
+                                    "When describing anchor and trend relations, use 'close_vs_anchor' and 'trend_relation' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -2348,6 +2350,21 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
                         ctx["month_rr_tilt"] = ((cl - lo) - (hi - cl)) / (hi - lo)
             except Exception:
                 pass
+            
+            # ---- Deterministic helpers for wording ----
+            try:
+                av = ctx.get("anchor_val")
+                cp = ctx.get("last_price") or ctx.get("close")
+                if av is not None and cp is not None:
+                    ctx["close_vs_anchor"] = "below" if av > cp else "above" if av < cp else "equal"
+
+                ts = ctx.get("trend_short")
+                tm = ctx.get("trend_mid")
+                if ts is not None and tm is not None:
+                    ctx["trend_relation"] = "short>mid" if ts > tm else "short<mid" if ts < tm else "short=mid"
+            except Exception:
+                pass
+
 
 
             # If your context uses rvol but the model expects 'ARV', alias it here:
