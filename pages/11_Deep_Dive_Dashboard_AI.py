@@ -366,7 +366,7 @@ month_breach = last_price is outside either Monthly probable low or Monthly prob
 - **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (better entry potential), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank**: Measures price stretch relative to historical volatility. A higher Z-Score rank (extended move) is positive, a lower rank (reset condition) is negative.
+- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may subside, a lower Z-Score rank is negative as realized volatility may emerge.
 - **Trends**: Short-term trend below Mid-Term trend is considered positive as these tend to converge and diverge on a cyclical basis;  if Short-term trend is above Mid-term trend is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
@@ -375,22 +375,22 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ---
 
 ### Direction rules to follow:
-- Ivol > Rvol → **positive**.  
-- Ivol < Rvol → **negative**.  
-- Rvol 30Day Z-Score Rank: High = positive; Low = negative.
-- Sharpe Ratio Rank > 80 → **negative**; crowded and/or stretched momentum and not a good entry point.
-- Sharpe Ratio Rank < 20 → **positive**; better entry potential and downward pressure could subside.  
-- Sharpe Ratio Rank between 40 and 60 → **neutral**.
+- Ivol > Rvol → **Positive**.  
+- Ivol < Rvol → **Negative**.  
+- Rvol 30Day Z-Score Rank: High = Positive; Low = Negative.
+- Sharpe Ratio Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
+- Sharpe Ratio Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
+- Sharpe Ratio Rank between 40 and 60 → **Neutral**.
 - Anchor relation (Close vs LT anchor): 
-  - If anchor_val > last_price ⇒ say “close is BELOW the long-term anchor - positive” (reversion potential).
-  - If anchor_val < last_price ⇒ say “close is ABOVE the long-term anchor - negative" (overextension risk).
+  - If anchor_val > last_price ⇒ say “Positive - Close is BELOW the long-term anchor” (reversion potential).
+  - If anchor_val < last_price ⇒ say “Negative - Close is ABOVE the long-term anchor" (overextension risk).
   - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
 - Trend mix (Short vs Mid): 
-  - Compare the numeric trend values: if trend_short > trend_mid ⇒ “short-term is ABOVE the mid-term trend - negative”; 
-    if trend_short < trend_mid ⇒ “short-term is BELOW the mid-term trend - positive”.
-  -Treat “more positive” (or “less negative”) as higher.
-- Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
-- Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
+  - Compare the numeric trend values: if trend_short > trend_mid ⇒ “Negative - Short-term is ABOVE the mid-term trend”; 
+    if trend_short < trend_mid ⇒ “Positive - Short-term is BELOW the mid-term trend”.
+  -Treat “More Positive” (or “Less Negative”) as higher.
+- Monthly Risk/Reward > 0 → **Positive**; positive number means the reward outweighs the risk.
+- Monthly Risk/Reward < 0 → **Negative**; negative number means the risk outweights the reward.  
 
 ---
 
