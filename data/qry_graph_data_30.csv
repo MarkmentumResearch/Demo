@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score
-NVR,"NVR, INC.",Consumer Discretionary,2025-09-26,-46.0
-EFNL,ISHARES:MSCI FINLAND,Foreign,2025-09-26,-36.0
-SHY,ISHARES:1-3 TRS BD ETF,Bonds & Yields,2025-09-26,-31.0
-EIS,ISHARES:MSCI ISRAEL,Foreign,2025-09-26,-30.0
-FVX,5 YR TSY YLD NDX,Bonds & Yields,2025-09-26,-30.0
-IT,"GARTNER, INC.",Information Technology,2025-09-26,-29.0
-TIP,ISHARES:TIPS BD ETF,Bonds & Yields,2025-09-26,-29.0
-HYG,ISHARES:IBOXX $HY CORP,Bonds & Yields,2025-09-26,-26.0
-INTU,INTUIT INC.,Information Technology,2025-09-26,-26.0
-POOL,POOL ,Consumer Discretionary,2025-09-26,-26.0
+NVR,"NVR, INC.",Consumer Discretionary,2025-09-26,-53.0
+EFNL,ISHARES:MSCI FINLAND,Foreign,2025-09-26,-42.0
+SHY,ISHARES:1-3 TRS BD ETF,Bonds & Yields,2025-09-26,-36.0
+FVX,5 YR TSY YLD NDX,Bonds & Yields,2025-09-26,-35.0
+EIS,ISHARES:MSCI ISRAEL,Foreign,2025-09-26,-34.0
+IT,"GARTNER, INC.",Information Technology,2025-09-26,-33.0
+TIP,ISHARES:TIPS BD ETF,Bonds & Yields,2025-09-26,-33.0
+HYG,ISHARES:IBOXX $HY CORP,Bonds & Yields,2025-09-26,-30.0
+INTU,INTUIT INC.,Information Technology,2025-09-26,-30.0
+POOL,POOL ,Consumer Discretionary,2025-09-26,-30.0
