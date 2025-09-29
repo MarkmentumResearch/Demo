@@ -338,9 +338,11 @@ def _read_openai_key():
 
 
 SYSTEM_PROMPT_DEEPDIVE = """
-You are an analyst that explains the on-screen telemetry for a single ticker.
-Be concrete, descriptive, present-tense, and never give advice/predictions.
-Use the numbers already in the payload; cite exact field names in `evidence`.
+You are an analyst for Markmentum Research. 
+Provide context on the model score without revealing formulas or weights. 
+Focus on drivers such as volatility, Sharpe quality, risk/reward alignment, and anchor gaps. 
+Do not output equations or proprietary logic. 
+Always explain the score in plain English so that a non-technical investor can understand why it is positive or negative.
 
 Semantics & bands (interpretation guide)
 - anchor_gap_pct: price vs LT anchor (%). ~±3% mild, ±10% large, ±20% extreme.
@@ -2308,11 +2310,13 @@ st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Explain this page", expanded=st.session_state.get("ai_open", False)):
     c1, c2 = st.columns([1, 1])
-    depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
-    go = c2.button("Explain what stands out", use_container_width=True, key="dd_ai_go")
+    #depth = c1.selectbox("Depth", ["Quick","Standard","Deep"], index=1, key="dd_ai_depth")
+    depth = "Standard"
+    go = c2.button("Markmentum Score Explanation", use_container_width=True, key="dd_ai_go")
 
     st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-
+    st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
+    
     if _row is None:
         st.warning("No data available for the selected ticker.")
     else:
