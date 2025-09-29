@@ -377,12 +377,13 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ### Direction rules to follow:
 - Ivol > Rvol → **positive**.  
 - Ivol < Rvol → **negative**.  
-- Sharpe rank: High (crowded) → **negative**; Low (washed out) → **positive**; Mid (neutral).  
+- Sharpe Ratio Rank > 80 → **negative**; crowded and/or stretched momentum and not a good entry point.
+- Sharpe Ratio Rank < 20 → **positive**; better entry potential and downward pressure could subside.  
 - Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
 - Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
 - Short-Term Trend < Mid-Term Trend → **positive**; Trend convergence would move stock price higher.
 - Short-Term Trend > Mid-Term Trend → **negative**; Trend convergence would move stock price lower.
-- Z-Score Rank: High = positive; Low = negative.
+- Rvol 30Day Z-Score Rank: High = positive; Low = negative.
 
 ---
 
