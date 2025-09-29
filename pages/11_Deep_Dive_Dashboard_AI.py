@@ -359,6 +359,7 @@ zscore_rank = Rvol 30Day Z-Score Rank
 last_price = Close
 Long Term Anchor = anchor_val
 Close to Long Term Anchor = anchor_gap_pct (percentage change)
+month_breach = Close/last_price is outside either monthly probable range low or monthly probable range high
 ---
 
 ### What the Model Score reflects (conceptual components):
@@ -377,8 +378,10 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Ivol > Rvol → **positive**.  
 - Ivol < Rvol → **negative**.  
 - Sharpe rank: High (crowded) → **negative**; Low (washed out) → **positive**; Mid (neutral).  
-- Monthly Risk/Reward = negative number means risk outweighs the reward, postive number means the reward outweighs the risk. If null or close is outside the monthly probable low or high then a penalty is applied.
-- Trend Convergence/Divergence: Short-term trend below Mid-term trend equals positive divergence.  Short-term trend above Mid-term trend equals negative divergence.  Short-term trend near Mid-term trend means convergence or neutral position.  
+- Monthly Risk/Reward > 0 → **positive**; positive number means the reward outweighs the risk.
+- Monthly Risk/Reward < 0 → **negative**; negative number means the risk outweights the reward.  
+- Short-Term Trend < Mid-Term Trend → **positive**; Trend convergence would move stock price higher.
+- Short-Term Trend > Mid-Term Trend → **negative**; Trend convergence would move stock price lower.
 - Z-Score Rank: High = positive; Low = negative.
 
 ---
