@@ -387,8 +387,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Sharpe Ratio Percentile Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
 - Sharpe Ratio Percentile Rank between 40 and 60 → **Neutral**.
 - Close vs Anchor: 
-  - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor” (reversion potential).
-  - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor" (overextension risk).
+  - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor”; suggests reversion potential.
+  - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor"; suggests overextension risk.
   - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
 - Trend mix (Short vs Mid): 
   - if trend_short > trend_mid → “Negative - Short-term trend is ABOVE the Mid-term trend”.
@@ -412,7 +412,7 @@ Return only strict JSON in this structure:
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
         "assessment": "Positive | Negative | Neutral",
-        "why": "One plain-English explanation (no math, no formulas)",
+        "why": "One plain-English explanation (no math, no formulas, suggests)",
         "numbers": ["Key numbers if useful, written in user-friendly format (e.g., 'IV 18%, Rvol 12%')"]
       }
       // Only include all drivers
