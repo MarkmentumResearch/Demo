@@ -2437,7 +2437,7 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
 
         # -------- render --------
         if _is_empty_score_context(insights):
-            #st.warning("No standout AI insights were returned for this view.")
+            st.warning("Click button to get AI insights for this view.")
             #st.markdown(
             #    "- The on-screen data may not show strong drivers right now.\n"
             #    "- You can toggle debug below to see the context the model received."
