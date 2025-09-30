@@ -2494,6 +2494,14 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # Stat Box - End
 # -------------------------
 
+# just above the expander, after you’ve got stat_row
+score_current = float(stat_row.get("model_score", 0) or 0)
+rating = str(stat_row.get("rating") or "").strip()
+extreme = abs(score_current) >= 25
+
+st.session_state.setdefault("ai_open", extreme)
+with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state["ai_open"]):
+    ...
 
 # ==============================
 # AI Insight Panel (Deep Dive)
@@ -2506,6 +2514,13 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
     c_left, c_mid, c_right = st.columns([1, 3, 3], gap="small")
     with c_left:
         go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
+
+    _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
+    _prev_tkr = st.session_state.get("prev_ticker")
+    if _prev_tkr and _prev_tkr != _active_tkr:
+        st.session_state["ai_open"] = False
+    st.session_state["prev_ticker"] = _active_tkr
+
 
     #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
     st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
