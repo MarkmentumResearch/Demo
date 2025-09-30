@@ -21,6 +21,8 @@ import numpy as np
 #    "figure.dpi": 110,
 #    "figure.figsize": (9.2, 3.4),   # good aspect for the 3-up rows
 #})
+import re
+
 
 # >>> ADD: OpenAI + utils
 import json, re
@@ -336,7 +338,41 @@ def _read_openai_key():
     return os.getenv("OPENAI_API_KEY")
 
 # >>> ADD: System prompt that bans advice and forces evidence-backed insights
+import re
 
+# Run this on each AI line before rendering
+def sanitize_ai_line(t: str) -> str:
+    # 1) Sharpe wording: force the full phrase; prevent doubles
+    t = re.sub(r"\bsharpe\s*ratio\b(?!\s*percentile\s*rank)", 
+               "Sharpe Ratio Percentile Rank", t, flags=re.I)
+    t = re.sub(r"(Sharpe Ratio Percentile Rank)(?:\s+Percentile\s+Rank)+",
+               r"\1", t, flags=re.I)
+
+    # 2) Tone: keep observational, not prescriptive
+    reps = [
+        (r"\bpositive outlook\b", "reads as Buy in our framework"),
+        (r"\bnegative outlook\b", "reads as Sell in our framework"),
+        (r"\bentry\s*point\b", "favorable reading in our metrics"),
+        (r"\broom for upside\b", "Close below the long-term anchor"),
+        (r"\b(reversion|mean[- ]?reversion)\s+potential\b",
+         "a setup that has tended to mean-revert historically"),
+        (r"\bdownward pressure\b", "downside skew"),
+        (r"\bvolatility may subside\b",
+         "volatility has often cooled in subsequent periods (historically)"),
+        (r"\bsuggesting potential for\b", "consistent with"),
+        (r"\bindicating\b", "consistent with"),
+    ]
+    for pat, repl in reps:
+        t = re.sub(pat, repl, t, flags=re.I)
+
+    # 3) Capitalize assessment words
+    t = re.sub(r"\b(positive|negative|neutral)\b",
+               lambda m: m.group(1).capitalize(), t)
+
+    return t
+
+def sanitize_ai_lines(lines):
+    return [sanitize_ai_line(x) for x in lines]
 
 SYSTEM_PROMPT_DEEPDIVE = """
 You are an analyst for Markmentum Research. Your job is to explain the current Markmentum Score in plain English.
@@ -2559,7 +2595,7 @@ if _show_ai_panel:
             if go:
                 # Build context from on-screen data
                 ctx = collect_deepdive_context(TICKER, date_str, _row)
-
+                
                 lo = ctx.get("month_pr_low"); hi = ctx.get("month_pr_high"); cl = ctx.get("close")
                 try:
                     if lo is not None and hi is not None and cl is not None and (hi - lo) != 0:
@@ -2593,7 +2629,7 @@ if _show_ai_panel:
                     st.session_state["ai_open"] = True
 
             insights = st.session_state.get("ai_last_insights")
-
+            
             # -------- helpers --------
             def _is_empty_score_context(d: dict | None) -> bool:
                 if not d or not isinstance(d, dict):
