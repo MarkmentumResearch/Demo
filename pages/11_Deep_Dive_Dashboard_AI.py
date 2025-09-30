@@ -405,7 +405,7 @@ score_current = Markmentum Score
 - **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (consistent with market pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (consistent with market not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (has historically coincided with less downward pressure), high Sharpe percentile ranks are negative (has historically coincided with crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may/could subside, a lower Z-Score rank is negative as realized volatility may/could emerge.
+- **Rvol 30Day Z-Score Rank**: Measures recent volatility to its historical baseliney.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
