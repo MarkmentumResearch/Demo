@@ -549,7 +549,7 @@ Never include formulas, weights, or equations.
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                             "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
-                                            "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
+                                            "When describing Monthly Risk/Reward, use 'month_risk_rewardk' from the JSON context if present.\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                         + ctx_str
@@ -575,7 +575,7 @@ Never include formulas, weights, or equations.
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                     "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
-                                    "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
+                                    "When describing Monthly Risk/Reward, use 'month_risk_rewardk' from the JSON context if present.\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
                                 + ctx_str
@@ -2106,7 +2106,14 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             close_vs_anchor = "Negative - Close is ABOVE the long-term anchor"
         else:
             close_vs_anchor = "Neutral - Close equals the long-term anchor"
-
+    # --- Deterministic relation labels the model MUST use ---
+    month_risk_reward = None
+    if month_rr > 0:
+        month_risk_reward = "Postive - Reward outweighs the risk on a long-term horizon."
+    elif month_rr < 0:
+        month_risk_reward = "Negative - Risk outweighs the reward on a long-term horizon."
+    else:
+        month_risk_reward = "Neutral - Reward and risk are in balance."
 
 #----graphs -----------------
 # ---- G2 (Trend lines) ----
@@ -2368,6 +2375,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "month_down": month_down,
         "month_up": month_up,
         "month_rr": month_rr,
+        "month_risk_reward": month_risk_reward,
         "gap_lt": gap_lt,        
         "gap_lt_avg": gap_lt_avg,
         "gap_lt_hi": gap_lt_hi,
