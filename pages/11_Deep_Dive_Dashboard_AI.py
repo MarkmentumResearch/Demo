@@ -383,8 +383,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Rvol 30Day Z-Score Rank < 70 → **Positive**.
 - Rvol 30Day Z-Score Rank < 30 → **Negative**.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
-- Sharpe Ratio Percentile Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
-- Sharpe Ratio Percentile Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
+- Sharpe Ratio Percentile Rank > 80 → **Negative**; suggests crowded and/or stretched momentum and not a good entry point.
+- Sharpe Ratio Percentile Rank < 20 → **Positive**; suggests better entry potential and downward pressure could subside.  
 - Sharpe Ratio Percentile Rank between 40 and 60 → **Neutral**.
 - Close vs Anchor: 
   - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor”; suggests reversion potential.
@@ -2312,9 +2312,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     sharpe_30D_rank = None
     if Sharpe_Rank < 20:
-        sharpe_30D_rank = "Postive - better entry potential and downward pressure could subside."
+        sharpe_30D_rank = "Postive - suggests downward pressure could subside."
     elif Sharpe_Rank > 80:
-        sharpe_30D_rank = "Negative -Crowded and/or stretched momentum and not a good entry point."
+        sharpe_30D_rank = "Negative - suggests crowding and/or stretched momentum."
     else:
         sharpe_30D_rank = "Neutral - Middle range is neutral"
 
