@@ -2507,7 +2507,7 @@ if _row is not None:
     _row_rating = str(_row.get("rating") or "").strip()
     # 2) if blank, derive from the numeric MM Score using our helper
     if not _row_rating:
-        _row_rating = 'neutral'
+        _row_rating = "Neutral"
 
 _show_ai_panel = bool(_row_rating) and _row_rating.lower() != "neutral"
 
