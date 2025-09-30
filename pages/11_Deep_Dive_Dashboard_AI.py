@@ -428,7 +428,7 @@ Return only strict JSON in this structure:
 - Summaries must highlight **Why the score is Positive or Negative**.  
 - Keep explanations concise, intuitive, and user-facing.
 - Use suggests and not predictive sounding.
-- Say Sharpe Ratio Percentile Rank, not Sharpe Ratio
+- Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
@@ -628,6 +628,9 @@ Never include formulas, weights, or equations.
                 ass = labels.get(ass_raw, ass_raw.capitalize())
                 why = str(it.get("why","")).strip()
                 nums = it.get("numbers", [])
+                # NEW: canonicalize "Sharpe Ratio" → "Sharpe Ratio Percentile Rank"
+                drv = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", drv, flags=re.I)
+                why = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", why, flags=re.I)
                 if not isinstance(nums, list): nums = []
                 # scrub advicey verbs from 'why'
                 why = _scrub_advice(why)
