@@ -2401,6 +2401,92 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 
 #ctx = collect_deepdive_context(TICKER, AS_OF_DATE_STR, stat_row)
 
+                    
+# --- centered Graph 1 row ---
+st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
+left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
+with mid_g1:
+    # ==============================
+    # Graph 1 — centered, 90° dates, legend bottom-center, **5-day gutter both ends**
+    # ==============================
+
+
+    #st.markdown('<div style="height: 36px;"></div>', unsafe_allow_html=True)
+
+    _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
+    _range_sel  = st.session_state.get("range_sel", "All")
+
+    g1 = load_g1_ticker(FILE_G1, _active_tkr)
+    if g1.empty:
+        st.info("No data available for the selected ticker/timeframe.")
+    else:
+        g1 = g1.copy()
+        g1["date"] = pd.to_datetime(g1["date"], errors="coerce")
+        g1 = g1.dropna(subset=["date"]).sort_values("date").reset_index(drop=True)
+        g1w = apply_window_with_gutter(g1, _range_sel, date_col="date", gutter_days=5)
+
+        _EXCEL_BLUE   = globals().get("EXCEL_BLUE",   "#4472C4")
+        _EXCEL_ORANGE = globals().get("EXCEL_ORANGE", "#ED7D31")
+        _EXCEL_GRAY   = globals().get("EXCEL_GRAY",   "#A6A6A6")
+        _EXCEL_BLACK  = globals().get("EXCEL_BLACK",  "#000000")
+
+        rcParams["font.family"] = ["sans-serif"]
+        rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
+
+        # Graph #1 – bigger and a bit taller
+        fig, ax = plt.subplots(figsize=(12, 5))
+        fig.subplots_adjust(left=0.035, right=0.995, top=0.86, bottom=0.30)
+        fig.set_facecolor("white")
+        # Day PR (gray) lines
+        ax.plot(g1w["date"], g1w["day_pr_low"],  color=_EXCEL_GRAY,   linewidth=1)
+        ax.plot(g1w["date"], g1w["day_pr_high"], color=_EXCEL_GRAY,   linewidth=1)
+        # Week PR (orange) lines
+        ax.plot(g1w["date"], g1w["week_pr_low"],  color=_EXCEL_ORANGE, linewidth=1)
+        ax.plot(g1w["date"], g1w["week_pr_high"], color=_EXCEL_ORANGE, linewidth=1)
+        # Month PR (black) lines
+        ax.plot(g1w["date"], g1w["month_pr_low"],  color=_EXCEL_BLACK, linewidth=1.2)
+        ax.plot(g1w["date"], g1w["month_pr_high"], color=_EXCEL_BLACK, linewidth=1.2)
+        # Close (Excel blue) — thinner
+        ax.plot(g1w["date"], g1w["close"], color=_EXCEL_BLUE, linewidth=1.5)
+
+        # Biweekly ticks with 90° rotation
+        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+        ax.tick_params(axis="x", labelrotation=90, labelsize=8)
+
+        # >>> FORCE 5-DAY GUTTER ON BOTH ENDS <<<
+        pad = pd.Timedelta(days=5)
+        dmin = g1w["date"].min()
+        dmax = g1w["date"].max()
+        ax.set_xlim(dmin - pad, dmax + pad)
+
+        # Title + subtle grid
+        ax.set_title(f"{_active_tkr} – Probable Ranges", fontsize=14, pad=4)
+        ax.grid(True, axis="both", alpha=0.18)
+        ax.tick_params(axis="y", labelsize=10)
+
+        # Legend: bottom-centered
+        handles = [
+            Line2D([], [], color=_EXCEL_BLUE,   lw=1.5, label="Close"),
+            Line2D([], [], color=_EXCEL_GRAY,   lw=2,   label="Day PR"),
+            Line2D([], [], color=_EXCEL_ORANGE, lw=2,   label="Week PR"),
+            Line2D([], [], color=_EXCEL_BLACK,  lw=2,   label="Month PR"),
+        ]
+        ax.legend(handles=handles, loc="upper center", ncol=4, frameon=False,
+                  bbox_to_anchor=(0.5, -0.23))
+        #from __future__ import annotations  # optional; if you use the | type hints above
+        # ...
+        add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
+        st.pyplot(fig, clear_figure=True, use_container_width=True)
+
+# optional small spacer
+st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+
+# -------------------------
+# Stat Box - End
+# -------------------------
+
+
 # ==============================
 # AI Insight Panel (Deep Dive)
 # ==============================
@@ -2503,90 +2589,6 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
                     st.caption("Key numbers: " + "; ".join(nums))
 
 
-                    
-# --- centered Graph 1 row ---
-st.markdown('<div id="g1-wide"></div>', unsafe_allow_html=True)
-left_g1, mid_g1, right_g1 = st.columns([1,4,1], gap="small")
-with mid_g1:
-    # ==============================
-    # Graph 1 — centered, 90° dates, legend bottom-center, **5-day gutter both ends**
-    # ==============================
-
-
-    #st.markdown('<div style="height: 36px;"></div>', unsafe_allow_html=True)
-
-    _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
-    _range_sel  = st.session_state.get("range_sel", "All")
-
-    g1 = load_g1_ticker(FILE_G1, _active_tkr)
-    if g1.empty:
-        st.info("No data available for the selected ticker/timeframe.")
-    else:
-        g1 = g1.copy()
-        g1["date"] = pd.to_datetime(g1["date"], errors="coerce")
-        g1 = g1.dropna(subset=["date"]).sort_values("date").reset_index(drop=True)
-        g1w = apply_window_with_gutter(g1, _range_sel, date_col="date", gutter_days=5)
-
-        _EXCEL_BLUE   = globals().get("EXCEL_BLUE",   "#4472C4")
-        _EXCEL_ORANGE = globals().get("EXCEL_ORANGE", "#ED7D31")
-        _EXCEL_GRAY   = globals().get("EXCEL_GRAY",   "#A6A6A6")
-        _EXCEL_BLACK  = globals().get("EXCEL_BLACK",  "#000000")
-
-        rcParams["font.family"] = ["sans-serif"]
-        rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
-
-        # Graph #1 – bigger and a bit taller
-        fig, ax = plt.subplots(figsize=(12, 5))
-        fig.subplots_adjust(left=0.035, right=0.995, top=0.86, bottom=0.30)
-        fig.set_facecolor("white")
-        # Day PR (gray) lines
-        ax.plot(g1w["date"], g1w["day_pr_low"],  color=_EXCEL_GRAY,   linewidth=1)
-        ax.plot(g1w["date"], g1w["day_pr_high"], color=_EXCEL_GRAY,   linewidth=1)
-        # Week PR (orange) lines
-        ax.plot(g1w["date"], g1w["week_pr_low"],  color=_EXCEL_ORANGE, linewidth=1)
-        ax.plot(g1w["date"], g1w["week_pr_high"], color=_EXCEL_ORANGE, linewidth=1)
-        # Month PR (black) lines
-        ax.plot(g1w["date"], g1w["month_pr_low"],  color=_EXCEL_BLACK, linewidth=1.2)
-        ax.plot(g1w["date"], g1w["month_pr_high"], color=_EXCEL_BLACK, linewidth=1.2)
-        # Close (Excel blue) — thinner
-        ax.plot(g1w["date"], g1w["close"], color=_EXCEL_BLUE, linewidth=1.5)
-
-        # Biweekly ticks with 90° rotation
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        ax.tick_params(axis="x", labelrotation=90, labelsize=8)
-
-        # >>> FORCE 5-DAY GUTTER ON BOTH ENDS <<<
-        pad = pd.Timedelta(days=5)
-        dmin = g1w["date"].min()
-        dmax = g1w["date"].max()
-        ax.set_xlim(dmin - pad, dmax + pad)
-
-        # Title + subtle grid
-        ax.set_title(f"{_active_tkr} – Probable Ranges", fontsize=14, pad=4)
-        ax.grid(True, axis="both", alpha=0.18)
-        ax.tick_params(axis="y", labelsize=10)
-
-        # Legend: bottom-centered
-        handles = [
-            Line2D([], [], color=_EXCEL_BLUE,   lw=1.5, label="Close"),
-            Line2D([], [], color=_EXCEL_GRAY,   lw=2,   label="Day PR"),
-            Line2D([], [], color=_EXCEL_ORANGE, lw=2,   label="Week PR"),
-            Line2D([], [], color=_EXCEL_BLACK,  lw=2,   label="Month PR"),
-        ]
-        ax.legend(handles=handles, loc="upper center", ncol=4, frameon=False,
-                  bbox_to_anchor=(0.5, -0.23))
-        #from __future__ import annotations  # optional; if you use the | type hints above
-        # ...
-        add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
-        st.pyplot(fig, clear_figure=True, use_container_width=True)
-
-# optional small spacer
-st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-
-# -------------------------
-# Stat Box - End
-# -------------------------
 
 #st.markdown("""
 #<style>
