@@ -2188,9 +2188,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     trend_mix_text = None
     if (trend_short is not None) and (trend_mid is not None):
         if trend_short > trend_mid:
-            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Consistent with overextension risk."
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. A setup consistent with overextension risk."
         elif trend_short < trend_mid:
-            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Consistent with reversion potential."
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. A setup consistent with reversion potential."
     else:
         trend_mix_text = "Neutral - Short-term equals Mid-term"
         
@@ -2267,11 +2267,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     zscore_30D_rank = None
     if zscore_rank > 70:
-        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility."
+        zscore_30D_rank = "Postive - Recent volatility is ABOVE its historical baseline."
     elif zscore_rank < 30:
-        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility."
+        zscore_30D_rank = "Negative - Recent volatility is Below its historical baseline."
     else:
-        zscore_30D_rank = "Neutral - Recent volatility is within historical volatility"
+        zscore_30D_rank = "Neutral - Recent volatility is within its historical baseline."
     
 # ---- G8 (Sharpe Ratio 30D + bands) ----
 # Requires: load_g8_ticker(...) and DATA_DIR defined.
@@ -2323,11 +2323,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     sharpe_30D_rank = None
     if Sharpe_Rank < 20:
-        sharpe_30D_rank = "Postive - has historically coincided with less downward pressure."
+        sharpe_30D_rank = "Postive - relative to history, consistent with less downward pressure."
     elif Sharpe_Rank > 80:
-        sharpe_30D_rank = "Negative - consistent with crowding and/or stretched momentum."
+        sharpe_30D_rank = "Negative - relative to history, consistent with crowding and/or stretched momentum."
     else:
-        sharpe_30D_rank = "Neutral - Middle range is neutral"
+        sharpe_30D_rank = "Neutral - relative to history, middle range is neutral"
 
 
 # ---- G10 (Ivol Prem/Disc 30D + bands, percent) ----
