@@ -2500,52 +2500,61 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # ==============================
 
 # Panel default: closed (we open it after the first run)
+# Show AI panel only when rating is neither blank nor Neutral
+_row_rating = ""
+if _row is not None:
+    # 1) use the rating column if present
+    _row_rating = str(_row.get("rating") or "").strip()
+    # 2) if blank, derive from the numeric MM Score using our helper
+    if not _row_rating:
+        _row_rating = _rating_from_score(_row.get("MM Score") or _row.get("mm_score"))
 
+_show_ai_panel = bool(_row_rating) and _row_rating.lower() != "neutral"
 
 st.session_state.setdefault("ai_open", False)
+if _show_ai_panel:
+    with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
+        c_left, c_mid, c_right = st.columns([1, 3, 3], gap="small")
+        with c_left:
+            go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
 
-with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
-    c_left, c_mid, c_right = st.columns([1, 3, 3], gap="small")
-    with c_left:
-        go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
-
-    _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
-    _prev_tkr = st.session_state.get("prev_ticker")
-    if _prev_tkr and _prev_tkr != _active_tkr:
-        st.session_state["ai_open"] = False
-    st.session_state["prev_ticker"] = _active_tkr
+        _active_tkr = (st.session_state.get("active_ticker", "SPY") or "SPY").upper()
+        _prev_tkr = st.session_state.get("prev_ticker")
+        if _prev_tkr and _prev_tkr != _active_tkr:
+            st.session_state["ai_open"] = False
+        st.session_state["prev_ticker"] = _active_tkr
 
 
-    #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-    st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
+        #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
+        st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
 
-    if _row is None:
-        st.warning("No data available for the selected ticker.")
-    else:
-        if go:
-            # Build context from on-screen data
-            ctx = collect_deepdive_context(TICKER, date_str, _row)
+        if _row is None:
+            st.warning("No data available for the selected ticker.")
+        else:
+            if go:
+                # Build context from on-screen data
+                ctx = collect_deepdive_context(TICKER, date_str, _row)
 
-            lo = ctx.get("month_pr_low"); hi = ctx.get("month_pr_high"); cl = ctx.get("close")
-            try:
-                if lo is not None and hi is not None and cl is not None and (hi - lo) != 0:
-                        ctx["month_rr_tilt"] = ((cl - lo) - (hi - cl)) / (hi - lo)
-            except Exception:
-                pass
+                lo = ctx.get("month_pr_low"); hi = ctx.get("month_pr_high"); cl = ctx.get("close")
+                try:
+                    if lo is not None and hi is not None and cl is not None and (hi - lo) != 0:
+                            ctx["month_rr_tilt"] = ((cl - lo) - (hi - cl)) / (hi - lo)
+                except Exception:
+                    pass
             
-            # ---- Deterministic helpers for wording ----
-            try:
-                av = ctx.get("anchor_val")
-                cp = ctx.get("last_price") or ctx.get("close")
-                if av is not None and cp is not None:
-                    ctx["close_vs_anchor"] = "below" if av > cp else "above" if av < cp else "equal"
+                # ---- Deterministic helpers for wording ----
+                try:
+                    av = ctx.get("anchor_val")
+                    cp = ctx.get("last_price") or ctx.get("close")
+                    if av is not None and cp is not None:
+                        ctx["close_vs_anchor"] = "below" if av > cp else "above" if av < cp else "equal"
 
-                ts = ctx.get("trend_short")
-                tm = ctx.get("trend_mid")
-                if ts is not None and tm is not None:
-                    ctx["Trend mix (Short vs Mid)"] = "Short-term Trend>Mid-term Trend" if ts > tm else "Short-term Trendt<Mid-term Trend" if ts < tm else "short=mid"
-            except Exception:
-                pass
+                    ts = ctx.get("trend_short")
+                    tm = ctx.get("trend_mid")
+                    if ts is not None and tm is not None:
+                        ctx["Trend mix (Short vs Mid)"] = "Short-term Trend>Mid-term Trend" if ts > tm else "Short-term Trendt<Mid-term Trend" if ts < tm else "short=mid"
+                except Exception:
+                    pass
 
 
 
