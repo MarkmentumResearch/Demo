@@ -2188,9 +2188,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     trend_mix_text = None
     if (trend_short is not None) and (trend_mid is not None):
         if trend_short > trend_mid:
-            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Divergence of trends consistent with overextension risk."
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Consistent with overextension risk."
         elif trend_short < trend_mid:
-            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends consistent with reversion potential."
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Consistent with reversion potential."
     else:
         trend_mix_text = "Neutral - Short-term equals Mid-term"
         
@@ -2267,9 +2267,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     zscore_30D_rank = None
     if zscore_rank > 70:
-        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility which may subside."
+        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility."
     elif zscore_rank < 30:
-        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility which may may emerge"
+        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility."
     else:
         zscore_30D_rank = "Neutral - Recent volatility is within historical volatility"
     
