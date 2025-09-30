@@ -2564,7 +2564,7 @@ _ticker = _active_tkr
 def plot_g2_trend(df: pd.DataFrame, ticker: str):
     fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
-    ax.plot(df["date"], df["st"], label="ST Term",  linewidth=1.6, color=EXCEL_BLUE)
+    ax.plot(df["date"], df["st"], label="Short Term",  linewidth=1.6, color=EXCEL_BLUE)
     ax.plot(df["date"], df["mt"], label="Mid Term", linewidth=1.6, color=EXCEL_ORANGE)
     ax.plot(df["date"], df["lt"], label="Long Term",linewidth=1.6, color="black")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
