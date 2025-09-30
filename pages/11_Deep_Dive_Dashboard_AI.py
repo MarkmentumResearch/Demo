@@ -2502,12 +2502,24 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # Panel default: closed (we open it after the first run)
 # Show AI panel only when rating is neither blank nor Neutral
 _row_rating = ""
+_show_ai_panel = False
 if _row is not None:
-    # 1) use the rating column if present
-    _row_rating = str(_row.get("rating") or "").strip()
-    # 2) if blank, derive from the numeric MM Score using our helper
+    rv = _row.get("rating")
 
-_show_ai_panel = bool(_row_rating) and _row_rating.casefold() != "neutral"
+    # robust missing check: None, blank, pandas NA/NaN, and neutral-ish strings
+    try:
+        import pandas as pd  # already imported elsewhere; safe if repeated
+        is_missing = (rv is None) or pd.isna(rv)
+    except Exception:
+        is_missing = (rv is None)
+
+    if not is_missing:
+        s = str(rv).strip()
+        is_missing = (s == "" or s.lower() in {"neutral", "nan", "na", "none", "null"})
+        if not is_missing:
+            _row_rating = s
+
+    _show_ai_panel = not is_missing
 
 st.session_state.setdefault("ai_open", False)
 if _show_ai_panel:
