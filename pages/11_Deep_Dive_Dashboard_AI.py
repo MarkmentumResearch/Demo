@@ -405,7 +405,7 @@ score_current = Markmentum Score
 - **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (consistent with market pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (consistent with market not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (has historically coincided with less downward pressure), high Sharpe percentile ranks are negative (has historically coincided with crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank**: Measures recent volatility to its historical baseliney.
+- **Rvol 30Day Z-Score Rank**: Measures recent volatility to its historical baseline. Only say whether above or below historical baseline.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
@@ -416,8 +416,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ### Direction rules to follow:
 - Ivol > Rvol → **Positive**; consistent with market pricing in higher risk premium.
 - Ivol < Rvol → **Negative**; consistent with market not pricing in higher risk premium, sign of complancency.
-- Rvol 30Day Z-Score Rank < 70 → **Positive**.
-- Rvol 30Day Z-Score Rank < 30 → **Negative**.
+- Rvol 30Day Z-Score Rank < 70 → **Positive**; Only say whether above or below historical baseline.
+- Rvol 30Day Z-Score Rank < 30 → **Negative**; Only say whether above or below historical baseline.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
 - Sharpe Ratio Percentile Rank > 80 → **Negative**; consistent with crowding and/or stretched momentum.
 - Sharpe Ratio Percentile Rank < 20 → **Positive**; has historically coincided with less downward pressure.  
