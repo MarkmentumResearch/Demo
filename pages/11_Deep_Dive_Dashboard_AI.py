@@ -2109,11 +2109,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     month_risk_reward = None
     if month_rr > 0:
-        month_risk_reward = "Postive - Reward outweighs the risk on a long-term horizon."
+        month_risk_reward = "Postive - Suggests the reward outweighs the risk on a long-term horizon."
     elif month_rr < 0:
-        month_risk_reward = "Negative - Risk outweighs the reward on a long-term horizon."
+        month_risk_reward = "Negative - Suggests the risk outweighs the reward on a long-term horizon."
     else:
-        month_risk_reward = "Neutral - Reward and risk are in balance."
+        month_risk_reward = "Neutral - Suggests the reward and the risk are in balance."
 
 #----graphs -----------------
 # ---- G2 (Trend lines) ----
