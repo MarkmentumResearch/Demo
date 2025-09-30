@@ -378,8 +378,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ---
 
 ### Direction rules to follow:
-- Ivol > Rvol → **Positive**.  
-- Ivol < Rvol → **Negative**.  
+- Ivol > Rvol → **Positive**; market is pricing in higher risk premium.
+- Ivol < Rvol → **Negative**; market is not pricing in higher risk premium, sign of complancency.
 - Rvol 30Day Z-Score Rank < 70 → **Positive**.
 - Rvol 30Day Z-Score Rank < 30 → **Negative**.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
@@ -407,11 +407,11 @@ Prices closer to the lower band are positive (more upside than downside), closer
 Return only strict JSON in this structure:
 {
   "score_context": {
-    "summary": "One sentence summary of Markmentum score and Rating, whether the score is positive/negative and the main reasons",
+    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the main reasons",
     "drivers": [
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
-        "assessment": "positive | negative | neutral",
+        "assessment": "Positive | Negative | Neutral",
         "why": "One plain-English explanation (no math, no formulas)",
         "numbers": ["Key numbers if useful, written in user-friendly format (e.g., 'IV 18%, Rvol 12%')"]
       }
