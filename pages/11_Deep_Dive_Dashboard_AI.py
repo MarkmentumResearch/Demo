@@ -339,7 +339,7 @@ def _read_openai_key():
 
 
 SYSTEM_PROMPT_DEEPDIVE = """
-You are an analyst for Markmentum Research. Your job is to explain the current Model Score in plain English.
+You are an analyst for Markmentum Research. Your job is to explain the current Markmentum Score in plain English.
 
 Do not reveal formulas, math, or implementation details. Instead, explain only the context and drivers that are already visible on the page. 
 Always include the disclaimer: 
@@ -407,7 +407,7 @@ Prices closer to the lower band are positive (more upside than downside), closer
 Return only strict JSON in this structure:
 {
   "score_context": {
-    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the broad reasons",
+    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the high level reasons",
     "drivers": [
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
@@ -427,6 +427,7 @@ Return only strict JSON in this structure:
 - Focus on **what the numbers mean**, not how they are calculated.  
 - Summaries must highlight **Why the score is Positive or Negative**.  
 - Keep explanations concise, intuitive, and user-facing.
+- Use suggests and not predictive sounding.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
