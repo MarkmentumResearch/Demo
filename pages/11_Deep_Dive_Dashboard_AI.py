@@ -428,6 +428,7 @@ Return only strict JSON in this structure:
 - Summaries must highlight **Why the score is Positive or Negative**.  
 - Keep explanations concise, intuitive, and user-facing.
 - Use suggests and not predictive sounding.
+- Say Sharpe Ratio Percentile Rank, not Sharpe Ratio
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
