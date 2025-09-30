@@ -370,7 +370,7 @@ score_current = Markmentum Score
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (better entry potential), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
 - **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may subside, a lower Z-Score rank is negative as realized volatility may emerge.
-- **Trend Mix (Short vs Mid)**: trend_short and trend_mid to converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
+- **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
 - **Long Term Anchor to Close**:  A positive number suggests room for upside if momentum shifts; A negative number suggests mean reversion risk exists.  
@@ -2177,9 +2177,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     trend_mix_text = None
     if (trend_short is not None) and (trend_mid is not None):
         if trend_short > trend_mid:
-            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Convergence of trends could be negative."
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Divergence of trends suggests overextension risk."
         elif trend_short < trend_mid:
-            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends could be positive."
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends suggests reversion potential."
     else:
         trend_mix_text = "Neutral - Short-term equals Mid-term"
         
