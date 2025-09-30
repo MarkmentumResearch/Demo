@@ -2403,7 +2403,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
-    go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
+    c_left, c_mid, c_right = st.columns([3, 1, 3], gap="small")
+    with c_mid:
+        go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
 
     #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
     st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
@@ -2475,7 +2477,7 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
         else:
             sc = insights.get("score_context", {})  # <-- use insights, not 'data'
             # Title
-            st.subheader("Model Score")
+            st.subheader("Score")
 
             # Summary
             summary = (sc.get("summary") or "").strip()
@@ -2993,7 +2995,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     ax2 = ax.twinx()
     ax2.plot(df["date"], df["close"], color="black", linewidth=1.4, label="Close")
 
-    ax.set_title(f"{_active_tkr} – Model Score", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – Score", fontsize=12, pad=6)
     ax.grid(True, linewidth=0.4, alpha=0.4)
 
     # X axis (biweekly Mondays) with 5-day gutter
@@ -3007,7 +3009,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     # Combined legend below
     from matplotlib.lines import Line2D
     handles = [
-        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="Model Score"),
+        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="Score"),
         Line2D([0], [0], color="black",    linewidth=1.4, label="Close"),
     ]
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
