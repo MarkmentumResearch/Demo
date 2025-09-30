@@ -549,6 +549,7 @@ Never include formulas, weights, or equations.
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
                                             "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
+                                            "When describing Ivol & Rvol use 'ivol_rvol' from the JSON context if present.\n"
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                             "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
@@ -575,6 +576,7 @@ Never include formulas, weights, or equations.
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
                                     "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
+                                    "When describing Ivol & Rvol use 'ivol_rvol' from the JSON context if present.\n"
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                     "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
@@ -2118,6 +2120,15 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     else:
         month_risk_reward = "Neutral - Consistent with the reward and the risk tilt being in balance."
 
+    # --- Deterministic relation labels the model MUST use ---
+    ivol_rvol = None
+    if ivol > rvol:
+        ivol_rvol = "Postive - Consistent with market pricing in higher risk premium."
+    elif ivol<rvol:
+        ivol_rvol = "Negative - Consistent with market not pricing in higher risk premium, sign of complancency"
+    else:
+        ivol_rvol = "Neutral"
+
 #----graphs -----------------
 # ---- G2 (Trend lines) ----
 # Requires: load_g2_ticker(...) from earlier and DATA_DIR defined.
@@ -2369,6 +2380,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             "rating": rating,
         },
         "Trend mix (Short vs Mid)": trend_mix_text,
+        "ivol_rvol":ivol_rvol,
         "day_down": day_down,
         "day_up": day_up,
         "day_rr": day_rr,
