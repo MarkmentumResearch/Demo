@@ -683,7 +683,7 @@ if lock_axes_and_order:
 else:
     ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
 
-x48 = alt.X("model_score_daily_change:Q", title="Markmentum Score Daily Change", scale=alt.Scale(domain=ms_dom))
+x48 = alt.X("model_score_daily_change:Q", title="Score Daily Change", scale=alt.Scale(domain=ms_dom))
 
 hint = "'Click to open Deep Dive'"
 base48 = (
@@ -756,7 +756,7 @@ if lock_axes_and_order:
 else:
     ms_dom3 = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
 
-xMTD = alt.X("model_score_mtd_change:Q", title="Model Score MTD Change", scale=alt.Scale(domain=ms_dom3))
+xMTD = alt.X("model_score_mtd_change:Q", title="Score MTD Change", scale=alt.Scale(domain=ms_dom3))
 
 baseMTD = (
     alt.Chart(viewMTD)
