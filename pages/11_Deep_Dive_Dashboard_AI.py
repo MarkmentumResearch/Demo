@@ -622,7 +622,9 @@ Never include formulas, weights, or equations.
         for it in (items or []):
             if isinstance(it, dict):
                 drv = str(it.get("driver","")).strip()
-                ass = str(it.get("assessment","")).strip().lower()
+                ass_raw = str(it.get("assessment","")).strip().lower()
+                labels = {"positive": "Positive", "negative": "Negative", "neutral": "Neutral"}
+                ass = labels.get(ass_raw, ass_raw.capitalize())
                 why = str(it.get("why","")).strip()
                 nums = it.get("numbers", [])
                 if not isinstance(nums, list): nums = []
@@ -2404,7 +2406,7 @@ st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
     c_left, c_mid, c_right = st.columns([3, 1, 3], gap="small")
-    with c_mid:
+    with c_left:
         go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
 
     #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
@@ -2488,7 +2490,7 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
             drivers = sc.get("drivers") or []
             for d in drivers:
                 driver_name = (d.get("driver") or "Driver").strip()
-                assessment = (d.get("assessment") or "neutral").strip()
+                assessment = (d.get("assessment") or "neutral").strip().capitalize()
                 why = (d.get("why") or "").strip()
                 st.markdown(f"- **{driver_name}** — {assessment}. {why}")
 
