@@ -2378,9 +2378,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
-    go = st.button("Explain what stands out", use_container_width=True, key="dd_ai_go")
+    go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
 
-    st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
+    #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
     st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
 
     if _row is None:
