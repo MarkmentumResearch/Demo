@@ -429,8 +429,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Trend mix (Short vs Mid): 
   - if trend_short > trend_mid → “Negative - Short-term trend is ABOVE the Mid-term trend”.
   - if trend_short < trend_mid → “Positive - Short-term trend is BELOW the Mid-term trend”.
-- Monthly Risk/Reward > 0 → **Positive**; More reward than risk within the monthly band.
-- Monthly Risk/Reward < 0 → **Negative**; More risk than reward within the monthly band.  
+- Monthly Risk/Reward > 0 → **Positive**; Only say more reward than risk within the monthly band.
+- Monthly Risk/Reward < 0 → **Negative**; Only say more risk than reward within the monthly band.  
 - Markmentum Score Rating:
     - below <-100 → Strong Sell
     - between -100 and -25 → Sell
