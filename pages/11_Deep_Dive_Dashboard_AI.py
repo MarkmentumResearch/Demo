@@ -407,7 +407,7 @@ score_current = Markmentum Score
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (historically has coincided with downward pressure easing), high Sharpe percentile ranks are negative (historically has coincided with crowded / stretched momentum). Middle range (~40–60) is neutral.
 - **Rvol 30Day Z-Score Rank**: Measures recent volatility to its historical baseline. Only say whether above or below historical baseline.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
-- **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
+- **Monthly Risk/Reward**: Risk vs reward ratio. Positive suggests tilt consistent with reward outweighing risk.  Negative suggests tilt consistent with risk outweighing the reward. 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
 - **Long Term Anchor to Close**:  A positive number is consistent with room for upside if momentum shifts; A negative number is consistent with mean reversion risk.  
 
@@ -429,8 +429,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Trend mix (Short vs Mid): 
   - if trend_short > trend_mid → “Negative - Short-term trend is ABOVE the Mid-term trend”.
   - if trend_short < trend_mid → “Positive - Short-term trend is BELOW the Mid-term trend”.
-- Monthly Risk/Reward > 0 → **Positive**; consistent with the reward tilt outweighing the risk.
-- Monthly Risk/Reward < 0 → **Negative**; consistent with the risk tilt outweighting the reward.  
+- Monthly Risk/Reward > 0 → **Positive**; Tilt consistent with the reward outweighing the risk.
+- Monthly Risk/Reward < 0 → **Negative**; Tilt consistent with the risk outweighting the reward.  
 - Markmentum Score Rating:
     - below <-100 → Strong Sell
     - between -100 and -25 → Sell
@@ -2150,11 +2150,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     month_risk_reward = None
     if month_rr > 0:
-        month_risk_reward = "Postive - Consistent with the reward tilt outweighing the risk on a long-term horizon."
+        month_risk_reward = "Postive - Tilt is consistent with the reward outweighing the risk on a long-term horizon."
     elif month_rr < 0:
-        month_risk_reward = "Negative - Consistent with the risk tilt outweighing the reward on a long-term horizon."
+        month_risk_reward = "Negative - Tilt is consistent with the risk outweighing the reward on a long-term horizon."
     else:
-        month_risk_reward = "Neutral - Consistent with the reward and the risk tilt being in balance."
+        month_risk_reward = "Neutral - Consistent with the reward and the risk being in balance."
 
     # --- Deterministic relation labels the model MUST use ---
     ivol_rvol = None
