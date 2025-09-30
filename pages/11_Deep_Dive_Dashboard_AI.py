@@ -378,9 +378,9 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ### Direction rules to follow:
 - Ivol > Rvol → **Positive**.  
 - Ivol < Rvol → **Negative**.  
-- Rvol 30Day Z-Score Rank < 80 → **Positive**.
-- Rvol 30Day Z-Score Rank < 20 → **Negative**.
-- Rvol 30Day Z-Score Rank between 40 and 60  → **Neutral**.
+- Rvol 30Day Z-Score Rank < 70 → **Positive**.
+- Rvol 30Day Z-Score Rank < 30 → **Negative**.
+- Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
 - Sharpe Ratio Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
 - Sharpe Ratio Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
 - Sharpe Ratio Rank between 40 and 60 → **Neutral**.

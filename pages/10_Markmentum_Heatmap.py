@@ -706,7 +706,7 @@ neg48 = base48.transform_filter("datum.model_score_daily_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
               .encode(text=alt.Text("model_score_daily_change:Q", format=",.0f"))
 
-chart48 = (bars48 + pos48 + neg48).properties(title="Markmentum Score Daily Change Ranking", height=chart_height).configure_title(anchor="middle")
+chart48 = (bars48 + pos48 + neg48).properties(title="Score Daily Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # -------------------------
 # Chart #2: Sharpe Percentile Rank (unchanged)
@@ -720,7 +720,7 @@ if lock_axes_and_order:
 else:
     ms_dom2 = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
 
-xWTD = alt.X("model_score_wtd_change:Q", title="Model Score WTD Change", scale=alt.Scale(domain=ms_dom2))
+xWTD = alt.X("model_score_wtd_change:Q", title="Score WTD Change", scale=alt.Scale(domain=ms_dom2))
 
 
 baseWTD = (
@@ -743,7 +743,7 @@ negWTD = baseWTD.transform_filter("datum.model_score_wtd_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
               .encode(text=alt.Text("model_score_wtd_change:Q", format=",.0f"))
 
-chartWTD = (barsWTD + posWTD + negWTD).properties(title="Markmentum Score WTD Change Ranking", height=chart_height).configure_title(anchor="middle")
+chartWTD = (barsWTD + posWTD + negWTD).properties(title="Score WTD Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # -------------------------
 # Chart #3: Sharpe Ratio  (now with padded domain)
@@ -778,7 +778,7 @@ negMTD = baseMTD.transform_filter("datum.model_score_mtd_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
               .encode(text=alt.Text("model_score_mtd_change:Q", format=",.0f"))
 
-chartMTD = (barsMTD + posMTD + negMTD).properties(title="Markmentum Score MTD Change Ranking", height=chart_height).configure_title(anchor="middle")
+chartMTD = (barsMTD + posMTD + negMTD).properties(title="Score MTD Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # -------------------------
 # Chart #4: Sharpe Ratio 30-Day Change  (now with padded domain)
@@ -791,7 +791,7 @@ if lock_axes_and_order:
 else:
     ms_dom4 = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
 
-xQTD = alt.X("model_score_qtd_change:Q", title="Markmentum Score QTD Change", scale=alt.Scale(domain=ms_dom4))
+xQTD = alt.X("model_score_qtd_change:Q", title="Score QTD Change", scale=alt.Scale(domain=ms_dom4))
 
 baseQTD = (
     alt.Chart(viewQTD)
@@ -813,7 +813,7 @@ negQTD = baseQTD.transform_filter("datum.model_score_qtd_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
               .encode(text=alt.Text("model_score_qtd_change:Q", format=",.0f"))
 
-chartQTD = (barsQTD + posQTD + negQTD).properties(title="Markmentum Score QTD Change Ranking", height=chart_height).configure_title(anchor="middle")
+chartQTD = (barsQTD + posQTD + negQTD).properties(title="Score QTD Change Ranking", height=chart_height).configure_title(anchor="middle")
 
 # Render in 4 columns (centered row; wraps on smaller screens)
 cA, cB, cC, cD = st.columns(4)
