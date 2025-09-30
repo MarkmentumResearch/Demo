@@ -373,7 +373,7 @@ score_current = Markmentum Score
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid to converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
-- **Long Term Anchor to Close**:  A positive number indicates stock price could rally to the long term anchor; A negative number indicates stock price could correct.
+- **Long Term Anchor to Close**:  A positive number suggests room for upside if momentum shifts; A negative number suggests mean reversion risk exists.  
 
 ---
 
@@ -407,7 +407,7 @@ Prices closer to the lower band are positive (more upside than downside), closer
 Return only strict JSON in this structure:
 {
   "score_context": {
-    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the main reasons",
+    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the broad reasons",
     "drivers": [
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
