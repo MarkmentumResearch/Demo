@@ -2558,31 +2558,31 @@ if _show_ai_panel:
 
 
 
-            # If your context uses rvol but the model expects 'ARV', alias it here:
-            if "rvol" in ctx and "ARV" not in ctx:
-                ctx["ARV"] = ctx["rvol"]
+                # If your context uses rvol but the model expects 'ARV', alias it here:
+                if "rvol" in ctx and "ARV" not in ctx:
+                    ctx["ARV"] = ctx["rvol"]
 
-            with st.spinner("Analyzing on-screen telemetry…"):
-                st.session_state["ai_last_ctx"] = ctx
-                st.session_state["ai_last_insights"] = get_ai_insights(ctx)
-            st.session_state["ai_open"] = True
+                with st.spinner("Analyzing on-screen telemetry…"):
+                    st.session_state["ai_last_ctx"] = ctx
+                    st.session_state["ai_last_insights"] = get_ai_insights(ctx)
+                    st.session_state["ai_open"] = True
 
-        insights = st.session_state.get("ai_last_insights")
+            insights = st.session_state.get("ai_last_insights")
 
-        # -------- helpers --------
-        def _is_empty_score_context(d: dict | None) -> bool:
-            if not d or not isinstance(d, dict):
-                return True
-            sc = d.get("score_context") or {}
-            if not isinstance(sc, dict):
-                return True
-            summary = (sc.get("summary") or "").strip()
-            drivers = sc.get("drivers") or []
-            return not summary and not drivers
+            # -------- helpers --------
+            def _is_empty_score_context(d: dict | None) -> bool:
+                if not d or not isinstance(d, dict):
+                    return True
+                sc = d.get("score_context") or {}
+                if not isinstance(sc, dict):
+                    return True
+                summary = (sc.get("summary") or "").strip()
+                drivers = sc.get("drivers") or []
+                return not summary and not drivers
 
-        # -------- render --------
-        if _is_empty_score_context(insights):
-            st.warning("Click button to get AI insights for this view.")
+            # -------- render --------
+            if _is_empty_score_context(insights):
+                st.warning("Click button to get AI insights for this view.")
             #st.markdown(
             #    "- The on-screen data may not show strong drivers right now.\n"
             #    "- You can toggle debug below to see the context the model received."
@@ -2592,27 +2592,27 @@ if _show_ai_panel:
             #    st.json(st.session_state.get("ai_last_ctx", {}))
             #    st.write("Insights snapshot:")
             #    st.json(insights or {})
-        else:
-            sc = insights.get("score_context", {})  # <-- use insights, not 'data'
-            # Title
-            st.subheader("Score")
+            else:
+                sc = insights.get("score_context", {})  # <-- use insights, not 'data'
+                # Title
+                st.subheader("Score")
 
-            # Summary
-            summary = (sc.get("summary") or "").strip()
-            if summary:
-                st.markdown(f"- **Summary:** {summary}")
+                # Summary
+                summary = (sc.get("summary") or "").strip()
+                if summary:
+                    st.markdown(f"- **Summary:** {summary}")
 
-            # Drivers
-            drivers = sc.get("drivers") or []
-            for d in drivers:
-                driver_name = (d.get("driver") or "Driver").strip()
-                assessment = (d.get("assessment") or "neutral").strip().capitalize()
-                why = (d.get("why") or "").strip()
-                st.markdown(f"- **{driver_name}** — {assessment}. {why}")
+                # Drivers
+                drivers = sc.get("drivers") or []
+                for d in drivers:
+                    driver_name = (d.get("driver") or "Driver").strip()
+                    assessment = (d.get("assessment") or "neutral").strip().capitalize()
+                    why = (d.get("why") or "").strip()
+                    st.markdown(f"- **{driver_name}** — {assessment}. {why}")
 
-                nums = [str(n).strip() for n in (d.get("numbers") or []) if str(n).strip()]
-                if nums:
-                    st.caption("Key numbers: " + "; ".join(nums))
+                    nums = [str(n).strip() for n in (d.get("numbers") or []) if str(n).strip()]
+                    if nums:
+                        st.caption("Key numbers: " + "; ".join(nums))
 
 
 
