@@ -366,35 +366,35 @@ score_current = Markmentum Score
 ---
 
 ### What the Markmentum Score reflects (conceptual components):
-- **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
-    If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
-- **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (suggests downward pressure could subside), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as it suggests realized volatility may subside, a lower Z-Score rank is negative as it suggests realized volatility may emerge.
+- **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (consistent with market pricing in higher risk premium). 
+    If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (consistent with market not pricing in higher risk premium, sign of complancency).
+- **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (has historically coincided with less downward pressure), high Sharpe percentile ranks are negative (has historically coincided with crowded / stretched momentum). Middle range (~40–60) is neutral.
+- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may/could subside, a lower Z-Score rank is negative as realized volatility may/could emerge.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
-- **Long Term Anchor to Close**:  A positive number suggests room for upside if momentum shifts; A negative number suggests mean reversion risk exists.  
+- **Long Term Anchor to Close**:  A positive number is consistent with room for upside if momentum shifts; A negative number is consistent with mean reversion risk.  
 
 ---
 
 ### Direction rules to follow:
-- Ivol > Rvol → **Positive**; market is pricing in higher risk premium.
-- Ivol < Rvol → **Negative**; market is not pricing in higher risk premium, sign of complancency.
+- Ivol > Rvol → **Positive**; consistent with market pricing in higher risk premium.
+- Ivol < Rvol → **Negative**; consistent with market not pricing in higher risk premium, sign of complancency.
 - Rvol 30Day Z-Score Rank < 70 → **Positive**.
 - Rvol 30Day Z-Score Rank < 30 → **Negative**.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
-- Sharpe Ratio Percentile Rank > 80 → **Negative**; suggests crowded and/or stretched momentum and not a good entry point.
-- Sharpe Ratio Percentile Rank < 20 → **Positive**; suggests better entry potential and downward pressure could subside.  
+- Sharpe Ratio Percentile Rank > 80 → **Negative**; consistent with crowding and/or stretched momentum.
+- Sharpe Ratio Percentile Rank < 20 → **Positive**; has historically coincided with less downward pressure.  
 - Sharpe Ratio Percentile Rank between 40 and 60 → **Neutral**.
 - Close vs Anchor: 
-  - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor”; suggests reversion potential.
-  - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor"; suggests overextension risk.
+  - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor”; consistent with room for upside if momentum shifts.
+  - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor"; consistent with mean reversion risk.
   - Use the numeric comparison of anchor_val and last_price only (do not infer from percentages).
 - Trend mix (Short vs Mid): 
   - if trend_short > trend_mid → “Negative - Short-term trend is ABOVE the Mid-term trend”.
   - if trend_short < trend_mid → “Positive - Short-term trend is BELOW the Mid-term trend”.
-- Monthly Risk/Reward > 0 → **Positive**; positive number means the reward outweighs the risk.
-- Monthly Risk/Reward < 0 → **Negative**; negative number means the risk outweights the reward.  
+- Monthly Risk/Reward > 0 → **Positive**; consistent with the reward tilt outweighing the risk.
+- Monthly Risk/Reward < 0 → **Negative**; consistent with the risk tilt outweighting the reward.  
 - Markmentum Score Rating:
     - below <-100 → Strong Sell
     - between -100 and -25 → Sell
@@ -431,7 +431,7 @@ Return only strict JSON in this structure:
 - Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
 - Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
 - Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure.
-- Nonallowed verbs: **indicates, indicating**.  Use of these verbs will be blocked or overwritten.
+- **Nonallowed verbs**: **indicates, indicating**.  Use of these verbs will be blocked or overwritten.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
@@ -2112,11 +2112,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     month_risk_reward = None
     if month_rr > 0:
-        month_risk_reward = "Postive - Suggests the reward outweighs the risk on a long-term horizon."
+        month_risk_reward = "Postive - Consistent with the reward tilt outweighing the risk on a long-term horizon."
     elif month_rr < 0:
-        month_risk_reward = "Negative - Suggests the risk outweighs the reward on a long-term horizon."
+        month_risk_reward = "Negative - Consistent with the risk tilt outweighing the reward on a long-term horizon."
     else:
-        month_risk_reward = "Neutral - Suggests the reward and the risk are in balance."
+        month_risk_reward = "Neutral - Consistent with the reward and the risk tilt being in balance."
 
 #----graphs -----------------
 # ---- G2 (Trend lines) ----
@@ -2177,9 +2177,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     trend_mix_text = None
     if (trend_short is not None) and (trend_mid is not None):
         if trend_short > trend_mid:
-            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Divergence of trends suggests overextension risk."
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Divergence of trends consistent with overextension risk."
         elif trend_short < trend_mid:
-            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends suggests reversion potential."
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends consistent with reversion potential."
     else:
         trend_mix_text = "Neutral - Short-term equals Mid-term"
         
@@ -2256,9 +2256,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     zscore_30D_rank = None
     if zscore_rank > 70:
-        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility suggesting volatility may subside."
+        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility which may subside."
     elif zscore_rank < 30:
-        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility suggesting volatility may emerge"
+        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility which may may emerge"
     else:
         zscore_30D_rank = "Neutral - Recent volatility is within historical volatility"
     
@@ -2312,9 +2312,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     sharpe_30D_rank = None
     if Sharpe_Rank < 20:
-        sharpe_30D_rank = "Postive - suggests downward pressure could subside."
+        sharpe_30D_rank = "Postive - has historically coincided with less downward pressure."
     elif Sharpe_Rank > 80:
-        sharpe_30D_rank = "Negative - suggests crowding and/or stretched momentum."
+        sharpe_30D_rank = "Negative - consistent with crowding and/or stretched momentum."
     else:
         sharpe_30D_rank = "Neutral - Middle range is neutral"
 
