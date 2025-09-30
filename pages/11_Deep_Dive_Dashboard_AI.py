@@ -2623,7 +2623,16 @@ if _show_ai_panel:
                     nums = [str(n).strip() for n in (d.get("numbers") or []) if str(n).strip()]
                     if nums:
                         st.caption("Key numbers: " + "; ".join(nums))
-
+        st.caption(
+    "**Disclaimer**: The Markmentum Score and Rating are automated outputs provided for "
+    "informational and educational purposes only and **do not constitute investment advice, "
+    "an offer, recommendation, or a solicitation**. We make no representation or warranty as to "
+    "accuracy, completeness, or timeliness; values may change without notice. **You are solely "
+    "responsible for your investment decisions and assume all risk. Markmentum Research and its "
+    "affiliates shall not be liable for any losses or damages (including direct, indirect, "
+    "incidental, consequential, or special) arising from the use of or reliance on these outputs.** "
+    "Past performance is not indicative of future results."
+)
 
 
 #st.markdown("""
