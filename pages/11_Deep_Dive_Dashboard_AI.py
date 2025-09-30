@@ -2502,7 +2502,7 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # Panel default: closed (we open it after the first run)
 
 
-st.session_state.setdefault("ai_open", False)
+#st.session_state.setdefault("ai_open", False)
 
 score_current = float(stat_row.get("model_score", 0) or 0)
 rating = str(stat_row.get("rating") or "").strip()
