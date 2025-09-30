@@ -2539,7 +2539,7 @@ if _show_ai_panel:
 
 
         #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-        st.caption("⚠️ “Read the disclosure below and consult your financial advisor before acting on any information.")
+        st.caption("⚠️ Read the disclosure below and consult your financial advisor before acting on any information.")
 
         if _row is None:
             st.warning("No data available for the selected ticker.")
