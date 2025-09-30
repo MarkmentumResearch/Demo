@@ -586,7 +586,7 @@ Never include formulas, weights, or equations.
             resp = _call(MODEL_NAME_FALLBACK)
 
         raw = _extract_output_text(resp)
-        st.caption(f"Raw AI output (debug): {raw[:500]}")
+        #st.caption(f"Raw AI output (debug): {raw[:500]}")
 
         # Parse to JSON; clean if model leaked commas/text
         data = {}
@@ -2437,16 +2437,16 @@ with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.
 
         # -------- render --------
         if _is_empty_score_context(insights):
-            st.warning("No standout AI insights were returned for this view.")
-            st.markdown(
-                "- The on-screen data may not show strong drivers right now.\n"
-                "- You can toggle debug below to see the context the model received."
-            )
-            if st.checkbox("Show AI debug", value=False, key="dd_ai_debug"):
-                st.write("Context snapshot:")
-                st.json(st.session_state.get("ai_last_ctx", {}))
-                st.write("Insights snapshot:")
-                st.json(insights or {})
+            #st.warning("No standout AI insights were returned for this view.")
+            #st.markdown(
+            #    "- The on-screen data may not show strong drivers right now.\n"
+            #    "- You can toggle debug below to see the context the model received."
+            #)
+            #if st.checkbox("Show AI debug", value=False, key="dd_ai_debug"):
+            #    st.write("Context snapshot:")
+            #    st.json(st.session_state.get("ai_last_ctx", {}))
+            #    st.write("Insights snapshot:")
+            #    st.json(insights or {})
         else:
             sc = insights.get("score_context", {})  # <-- use insights, not 'data'
             # Title
