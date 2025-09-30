@@ -429,6 +429,9 @@ Return only strict JSON in this structure:
 - Keep explanations concise, intuitive, and user-facing.
 - Use suggests and not predictive sounding.
 - Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
+- Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
+- Do NOT use: buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure.
+- Never give personal or actionable advice.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
@@ -629,8 +632,8 @@ Never include formulas, weights, or equations.
                 why = str(it.get("why","")).strip()
                 nums = it.get("numbers", [])
                 # NEW: canonicalize "Sharpe Ratio" → "Sharpe Ratio Percentile Rank"
-                drv = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", drv, flags=re.I)
-                why = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", why, flags=re.I)
+                #drv = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", drv, flags=re.I)
+                #why = re.sub(r"\bsharpe\s*ratio\b", "Sharpe Ratio Percentile Rank", why, flags=re.I)
                 if not isinstance(nums, list): nums = []
                 # scrub advicey verbs from 'why'
                 why = _scrub_advice(why)
@@ -2174,9 +2177,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     trend_mix_text = None
     if (trend_short is not None) and (trend_mid is not None):
         if trend_short > trend_mid:
-            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend"
+            trend_mix_text = "Negative - Short-term trend is ABOVE the Mid-term trend. Convergence of trends could be negative."
         elif trend_short < trend_mid:
-            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend"
+            trend_mix_text = "Positive - Short-term trend is BELOW the Mid-term trend. Convergence of trends could be positive."
     else:
         trend_mix_text = "Neutral - Short-term equals Mid-term"
         
@@ -2536,7 +2539,7 @@ if _show_ai_panel:
 
 
         #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-        st.caption("⚠️ Read disclaimer and always consult with your financial advisor before making investment decisions.")
+        st.caption("⚠️ “Read the disclosure below and consult your financial advisor before acting on any information.")
 
         if _row is None:
             st.warning("No data available for the selected ticker.")
@@ -2624,14 +2627,14 @@ if _show_ai_panel:
                     if nums:
                         st.caption("Key numbers: " + "; ".join(nums))
         st.caption(
-    "**Disclaimer**: The Markmentum Score and Rating are automated outputs provided for "
-    "informational and educational purposes only and **do not constitute investment advice, "
-    "an offer, recommendation, or a solicitation**. We make no representation or warranty as to "
-    "accuracy, completeness, or timeliness; values may change without notice. **You are solely "
-    "responsible for your investment decisions and assume all risk. Markmentum Research and its "
-    "affiliates shall not be liable for any losses or damages (including direct, indirect, "
-    "incidental, consequential, or special) arising from the use of or reliance on these outputs.** "
-    "Past performance is not indicative of future results."
+    "**Disclaimer**: The Markmentum Score and Rating are automated outputs provided for informational "
+    "and educational purposes only and **do not constitute investment advice, an offer, recommendation, "
+    "or solicitation**, nor do they create a **fiduciary** relationship. Information is provided **“as is”** "
+    "and **“as available”** without warranty of any kind as to accuracy, completeness, or timeliness; values "
+    "may change without notice. **You are solely responsible for your investment decisions and assume all risk. "
+    "To the maximum extent permitted by law, Markmentum Research and its affiliates shall not be liable for any "
+    "losses or damages (including direct, indirect, incidental, consequential, or special) arising from the use "
+    "of or reliance on these outputs.** Past performance is not indicative of future results."
 )
 
 
