@@ -1756,6 +1756,24 @@ with mid_stat:
         try: return f"{int(round(float(x)))}"
         except: return ""
 
+    def _rating_from_score(s):
+        """Map numeric model score to label."""
+        try:
+            v = float(s)
+        except (TypeError, ValueError):
+            return ""
+        if v < -100:
+            return "Strong Sell"
+        if -100 <= v < -25:
+            return "Sell"
+        if -25 <= v <= 25:
+            return "Neutral"
+        if 25 < v <= 100:
+            return "Buy"
+        return "Strong Buy"  # v > 100
+
+
+
     def _fmt_date(x):
         try: return pd.to_datetime(x).strftime("%m/%d/%Y")
         except: return ""
