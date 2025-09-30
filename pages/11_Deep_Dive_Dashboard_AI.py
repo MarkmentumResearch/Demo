@@ -369,7 +369,7 @@ score_current = Markmentum Score
 - **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (suggests downward pressure could subside), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
-- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as realized volatility may subside, a lower Z-Score rank is negative as realized volatility may emerge.
+- **Rvol 30Day Z-Score Rank**: Measures recent volatility to historical volatility. A higher Z-Score rank is positive as it suggests realized volatility may subside, a lower Z-Score rank is negative as it suggests realized volatility may emerge.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high). 
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
@@ -2256,9 +2256,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     zscore_30D_rank = None
     if zscore_rank > 70:
-        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility"
+        zscore_30D_rank = "Postive - Recent volatility is ABOVE historical volatility suggesting volatility may subside."
     elif zscore_rank < 30:
-        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility"
+        zscore_30D_rank = "Negative - Recent volatility is Below historical volatility suggesting volatility may emerge"
     else:
         zscore_30D_rank = "Neutral - Recent volatility is within historical volatility"
     
