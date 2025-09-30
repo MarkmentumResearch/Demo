@@ -433,7 +433,7 @@ MODEL_NAME_PRIMARY = "gpt-5-mini"
 MODEL_NAME_FALLBACK = "gpt-4o-mini"  # tried only if the first one errors
 
 # Simple regex guard (server-side belt & suspenders)
-_ADVICE_RE = re.compile(r"\b(buy|sell|cover|allocate|should|stop[- ]?loss|take profit|position|hedge)\b", re.I)
+_ADVICE_RE = re.compile(r"\b(cover|allocate|should|stop[- ]?loss|take profit|position)\b", re.I)
 
 def _scrub_advice(text: str) -> str:
     """Replace any advicey verbs with neutral phrasing."""
