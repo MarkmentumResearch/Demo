@@ -407,7 +407,7 @@ score_current = Markmentum Score
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (historically has coincided with downward pressure easing), high Sharpe percentile ranks are negative (historically has coincided with crowded / stretched momentum). Middle range (~40–60) is neutral.
 - **Rvol 30Day Z-Score Rank**: Measures recent volatility to its historical baseline. Only say whether above or below historical baseline.
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
-- **Monthly Risk/Reward**: Risk vs reward ratio. Positive suggests tilt consistent with reward outweighing risk.  Negative suggests tilt consistent with risk outweighing the reward. 
+- **Monthly Risk/Reward**: Risk vs reward ratio. Positive more reward than risk within the monthly band. Negative more risk than reward within the monthly band
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
 - **Long Term Anchor to Close**:  A positive number is consistent with room for upside if momentum shifts; A negative number is consistent with mean reversion risk.  
 
