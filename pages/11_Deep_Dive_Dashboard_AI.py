@@ -419,7 +419,7 @@ Return only strict JSON in this structure:
 ### Rules:
 - Use **plain English**. Never output formulas, equations, coefficients, or implementation details.  
 - Focus on **what the numbers mean**, not how they are calculated.  
-- Summaries must highlight **why the score is positive or negative**.  
+- Summaries must highlight **Why the score is Positive or Negative**.  
 - Keep explanations concise, intuitive, and user-facing.
 """
 
@@ -537,7 +537,7 @@ Never include formulas, weights, or equations.
                                     "type": "input_text",
                                     "text": (
                                             "Return only one JSON object with the single key: score_context.\n"
-                                            "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
+                                            "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
@@ -562,7 +562,7 @@ Never include formulas, weights, or equations.
                             "role": "user",
                             "content": (
                                    "Return only one JSON object with the single key: score_context.\n"
-                                    "Apply the direction rules from the system message: (Ivol>Rvol → positive; Ivol<Rvol → negative).\n"
+                                    "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
