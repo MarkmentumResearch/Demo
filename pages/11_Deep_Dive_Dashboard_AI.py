@@ -350,7 +350,7 @@ Always include the disclaimer:
 ivol = Ivol (Implied Volatility)
 rvol= Rvol (Realized Volatility)
 prem_disc = Implied Volatility Premium or Discount (Ivol/Rvol)
-sharpe_rank = Sharpe Ratio Rank
+sharpe_rank = Sharpe Ratio Percentile Rank
 trend_short = Short-Term Trend
 trend_mid = Mid-Term Trend
 month_rr = Monthly Risk/Reward
@@ -382,9 +382,9 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Rvol 30Day Z-Score Rank < 70 → **Positive**.
 - Rvol 30Day Z-Score Rank < 30 → **Negative**.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
-- Sharpe Ratio Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
-- Sharpe Ratio Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
-- Sharpe Ratio Rank between 40 and 60 → **Neutral**.
+- Sharpe Ratio Percentile Rank > 80 → **Negative**; crowded and/or stretched momentum and not a good entry point.
+- Sharpe Ratio Percentile Rank < 20 → **Positive**; better entry potential and downward pressure could subside.  
+- Sharpe Ratio Percentile Rank between 40 and 60 → **Neutral**.
 - Close vs Anchor: 
   - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor” (reversion potential).
   - If anchor_val < last_price → say “Negative - Close is ABOVE the long-term anchor" (overextension risk).
@@ -540,7 +540,7 @@ Never include formulas, weights, or equations.
                                             "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
-                                            "When describing Sharpe Ratio Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
+                                            "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -566,7 +566,7 @@ Never include formulas, weights, or equations.
                                     "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
-                                    "When describing Sharpe Ratio Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
+                                    "When describing Sharpe Ratio Percentile Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
