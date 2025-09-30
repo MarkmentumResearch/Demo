@@ -362,9 +362,10 @@ Long Term Anchor = anchor_val
 anchor_gap_pct = ((anchor_val / last_price) - 1); Long Term Anchor to Close expressed as a percentage
 month_breach = last_price is outside either Monthly probable low or Monthly probable high
 Long Term Anchor to Close = (anchor_val - last_price)
+score_current = Markmentum Score
 ---
 
-### What the Model Score reflects (conceptual components):
+### What the Markmentum Score reflects (conceptual components):
 - **Implied Volatility Premium/Discount**:  Implied Volatility Premium or Discount. If implied volatility (Ivol) is higher than realized volatility (Rvol), this is Implied Volatility Premium and is generally a positive driver (market is pricing in higher risk premium). 
     If Ivol is lower than Rvol, this is Implied Volatility Discount and is a negative driver (market is not pricing in higher risk premium, sign of complancency).
 - **Sharpe Ratio Percentile Rank**: Measures return vs risk free asset. Low Sharpe percentile ranks are positive (better entry potential), high Sharpe percentile ranks are negative (crowded / stretched momentum). Middle range (~40–60) is neutral.
@@ -394,14 +395,19 @@ Prices closer to the lower band are positive (more upside than downside), closer
   - if trend_short < trend_mid → “Positive - Short-term trend is BELOW the Mid-term trend”.
 - Monthly Risk/Reward > 0 → **Positive**; positive number means the reward outweighs the risk.
 - Monthly Risk/Reward < 0 → **Negative**; negative number means the risk outweights the reward.  
-
+- Markmentum Score Rating:
+    - below <-100 → Strong Sell
+    - between -100 and -25 → Sell
+    - between -25 and 25 → Neutral
+    - between 50 and 100 → Buy
+    - above 100 → Strong Buy
 ---
 
 ### Output format:
 Return only strict JSON in this structure:
 {
   "score_context": {
-    "summary": "One sentence summary of whether the score is positive/negative and the main reasons",
+    "summary": "One sentence summary of Markmentum score and Rating, whether the score is positive/negative and the main reasons",
     "drivers": [
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
