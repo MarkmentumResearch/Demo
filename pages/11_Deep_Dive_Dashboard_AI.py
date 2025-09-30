@@ -540,6 +540,7 @@ Never include formulas, weights, or equations.
                                             "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                             "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                             "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
+                                            "When describing Sharpe Ratio Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
                                             "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                             "outside band → range penalty and no RR tilt.\n"
                                             "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -565,6 +566,7 @@ Never include formulas, weights, or equations.
                                     "Apply the direction rules from the system message: (Ivol>Rvol → Positive; Ivol<Rvol → Negative).\n"
                                     "When describing anchor and trend relations, use 'close_vs_anchor' and 'Trend mix (Short vs Mid)' from the JSON context if present.\n"
                                     "When describing Rvol 30Day Z-Score Rank, use 'zscore_30D_rank' from the JSON context if present.\n"
+                                    "When describing Sharpe Ratio Rank, use 'sharpe_30D_rank' from the JSON context if present.\n"
                                     "Monthly Risk/Reward: Risk/Reward ratio based on the close in relation to Monthly Probable Low (month_low) and Monthly Probable High (month_high).\n"
                                     "outside band → range penalty and no RR tilt.\n"
                                     "Use ONLY this shape. Do not include any extra text outside the JSON.\n"
@@ -2266,7 +2268,14 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         if not g9_row.empty:
             v = g9_row.iloc[0]["rank"]
             Sharpe_Rank = float(v) if pd.notna(v) else None
-
+    # --- Deterministic relation labels the model MUST use ---
+    sharpe_30D_rank = None
+    if Sharpe_Rank < 20:
+        sharpe_30D_rank = "Postive - better entry potential and downward pressure could subside."
+    elif Sharpe_Rank > 80:
+        sharpe_30D_rank = "Negative -Crowded and/or stretched momentum and not a good entry point."
+    else:
+        sharpe_30D_rank = "Neutral - Middle range is neutral"
 
 
 # ---- G10 (Ivol Prem/Disc 30D + bands, percent) ----
@@ -2346,6 +2355,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
         "Sharpe_hi": Sharpe_hi,
         "Sharpe_low": Sharpe_low,
         "Sharpe_Rank": Sharpe_Rank,
+        "sharpe_30D_rank": sharpe_30D_rank,
         "prem_disc": prem_disc,
         "prem_disc_avg": prem_disc_avg,
         "prem_disc_hi": prem_disc_hi,
