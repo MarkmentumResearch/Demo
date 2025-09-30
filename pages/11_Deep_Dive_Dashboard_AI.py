@@ -2359,11 +2359,11 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
     # --- Deterministic relation labels the model MUST use ---
     sharpe_30D_rank = None
     if Sharpe_Rank < 20:
-        sharpe_30D_rank = "Postive - relative to history, consistent with less downward pressure."
+        sharpe_30D_rank = "Postive - relative to its historical baseline. Historically has coincided with easing of downward pressure."
     elif Sharpe_Rank > 80:
-        sharpe_30D_rank = "Negative - relative to history, consistent with crowding and/or stretched momentum."
+        sharpe_30D_rank = "Negative - relative to its historical baseline. Historically has coincided with crowding and/or stretched momentum."
     else:
-        sharpe_30D_rank = "Neutral - relative to history, middle range is neutral"
+        sharpe_30D_rank = "Neutral - relative to its historical baseline, middle range is neutral"
 
 
 # ---- G10 (Ivol Prem/Disc 30D + bands, percent) ----
