@@ -432,6 +432,7 @@ Return only strict JSON in this structure:
 - Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
 - Do NOT use: buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure, indicates, indicating.
 - Never give personal or actionable advice.
+- Never use: indicates, indicating.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
