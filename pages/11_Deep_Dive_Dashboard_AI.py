@@ -2494,22 +2494,21 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 # Stat Box - End
 # -------------------------
 
-# just above the expander, after you’ve got stat_row
-score_current = float(stat_row.get("model_score", 0) or 0)
-rating = str(stat_row.get("rating") or "").strip()
-extreme = abs(score_current) >= 25
-
-st.session_state.setdefault("ai_open", extreme)
-with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state["ai_open"]):
-    ...
 
 # ==============================
 # AI Insight Panel (Deep Dive)
 # ==============================
 
 # Panel default: closed (we open it after the first run)
+
+
 st.session_state.setdefault("ai_open", False)
 
+score_current = float(stat_row.get("model_score", 0) or 0)
+rating = str(stat_row.get("rating") or "").strip()
+extreme = abs(score_current) >= 25
+
+st.session_state.setdefault("ai_open", extreme)
 with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
     c_left, c_mid, c_right = st.columns([1, 3, 3], gap="small")
     with c_left:
