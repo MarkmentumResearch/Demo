@@ -2406,7 +2406,7 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
 st.session_state.setdefault("ai_open", False)
 
 with st.expander("🧠 Markmentum Score Explanation", expanded=st.session_state.get("ai_open", False)):
-    c_left, c_mid, c_right = st.columns([3, 1, 3], gap="small")
+    c_left, c_mid, c_right = st.columns([1, 3, 3], gap="small")
     with c_left:
         go = st.button("Click Here", use_container_width=True, key="dd_ai_go")
 
