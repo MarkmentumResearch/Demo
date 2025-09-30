@@ -2536,7 +2536,7 @@ if _show_ai_panel:
 
 
         #st.caption(f"AI diag → sdk={_OPENAI_READY}, key={'yes' if _read_openai_key() else 'no'}")
-        st.caption("⚠️ The Markmentum Score is for informational purposes only and not intended as investment advice. Please consult with your financial advisor before making investment decisions.")
+        st.caption("⚠️ Read disclaimer and always consult with your financial advisor before making investment decisions.")
 
         if _row is None:
             st.warning("No data available for the selected ticker.")
