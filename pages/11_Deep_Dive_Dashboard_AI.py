@@ -34,6 +34,7 @@ except Exception:
 # -------------------------
 # Page & shared style
 # -------------------------
+st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
 st.markdown("""
 <style>
