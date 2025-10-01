@@ -419,8 +419,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 - Rvol 30Day Z-Score Rank > 70 → **Positive**; Only say above its historical baseline.
 - Rvol 30Day Z-Score Rank < 30 → **Negative**; Only say below its historical baseline.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
-- Sharpe Ratio Percentile Rank > 80 → **Negative**; consistent with crowding and/or stretched momentum.
-- Sharpe Ratio Percentile Rank < 20 → **Positive**; historically has coincided with downward pressure easing.  
+- Sharpe Ratio Percentile Rank > 70 → **Negative**; consistent with crowding and/or stretched momentum.
+- Sharpe Ratio Percentile Rank < 30 → **Positive**; historically has coincided with downward pressure easing.  
 - Sharpe Ratio Percentile Rank between 40 and 60 → **Neutral**.
 - Close vs Anchor: 
   - If anchor_val > last_price → say “Positive - Close is BELOW the long-term anchor”; consistent with room for upside if momentum shifts.
@@ -2358,9 +2358,9 @@ def collect_deepdive_context(ticker: str, as_of: str, stat_row) -> dict:
             Sharpe_Rank = float(v) if pd.notna(v) else None
     # --- Deterministic relation labels the model MUST use ---
     sharpe_30D_rank = None
-    if Sharpe_Rank < 20:
+    if Sharpe_Rank < 30:
         sharpe_30D_rank = "Postive - relative to its historical baseline. Historically has coincided with easing of downward pressure."
-    elif Sharpe_Rank > 80:
+    elif Sharpe_Rank > 70:
         sharpe_30D_rank = "Negative - relative to its historical baseline. Historically has coincided with crowding and/or stretched momentum."
     else:
         sharpe_30D_rank = "Neutral - relative to its historical baseline, middle range is neutral"
