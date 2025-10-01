@@ -143,7 +143,7 @@ We deliver volatility-adjusted probable ranges, proprietary model scoring, and a
   Drill down into any category to see per-ticker heatmaps and bar-chart rankings by timeframe, providing both a top-down and bottom-up view of momentum shifts.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
-  Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus broad S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
+  Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
   <li><b>Contact</b> – Have questions or feedback? Send us a note and we’ll get back to you as soon as possible.</li>  
 </ul>
 
