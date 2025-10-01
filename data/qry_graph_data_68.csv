@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
-PAM,PAMPA ENERGIA SA,MR Discretion,2025-09-30,-121.0,-37.0,84.0
-IT,"GARTNER, INC.",Information Technology,2025-09-30,-101.0,-33.0,68.0
-TPL,TEXAS PACIFIC LAND ,Energy,2025-09-30,-101.0,-21.0,80.0
-CRESY,CRESUD INC.,MR Discretion,2025-09-30,-96.0,-3.0,93.0
-CLX,THE CLOROX COMPANY,Consumer Staples,2025-09-30,-91.0,-5.0,86.0
-RSG,"REPUBLIC SERVICES, INC.",Industrials,2025-09-30,-90.0,-7.0,83.0
-CPB,CAMPBELL SOUP COMPANY,Consumer Staples,2025-09-30,-89.0,-7.0,82.0
-AJG,ARTHUR J. GALLAGHER & CO.,Financials,2025-09-30,-85.0,-14.0,71.0
-CNC,CENTENE ,Health Care,2025-09-30,-83.0,4.0,87.0
-VLTO,VERALTO ,Industrials,2025-09-30,-82.0,-23.0,59.0
+CTAS,CINTAS ,Industrials,2025-09-30,-79.0,-23.0,56.0
+GLATF,GLOBAL ATOMIC ,MR Discretion,2025-09-30,-78.0,-22.0,56.0
+PGR,THE PROGRESSIVE ,Financials,2025-09-30,-70.0,-18.0,52.0
+CME,CME GROUP INC.,Financials,2025-09-30,-59.0,-20.0,39.0
+DLR,"DIGITAL REALTY TRUST, INC.",Real Estate,2025-09-30,-59.0,-13.0,46.0
+WMT,WALMART INC.,Consumer Staples,2025-09-30,-54.0,-1.0,53.0
+ADBE,ADOBE INC.,Information Technology,2025-09-30,-50.0,-14.0,36.0
+GDDY,GODADDY INC.,Information Technology,2025-09-30,-50.0,-9.0,41.0
+IRM,IRON MOUNTAIN INC.,Real Estate,2025-09-30,-50.0,-24.0,26.0
+IT,"GARTNER, INC.",Information Technology,2025-09-30,-50.0,-31.0,19.0
