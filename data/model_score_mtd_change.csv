@@ -1,636 +1,636 @@
 Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_score,previous_model_score
-2025-09-30,A,"AGILENT TECHNOLOGIES, INC.",Health Care,Health Care,10.0,8.0,-2.0
-2025-09-30,AAPL,APPLE INC.,Information Technology,Information Technology,1.0,8.0,7.0
-2025-09-30,ABBV,ABBVIE INC.,Health Care,Health Care,16.0,18.0,2.0
-2025-09-30,ABNB,"AIRBNB, INC.",Consumer Discretionary,Consumer Discretionary,88.0,68.0,-20.0
-2025-09-30,ABT,ABBOTT LABORATORIES,Health Care,Health Care,18.0,48.0,30.0
-2025-09-30,ACGL,ARCH CAPITAL GROUP LTD.,Financials,Financials,32.0,25.0,-7.0
-2025-09-30,ACN,ACCENTURE PUBLIC LIMITED COMPANY,Information Technology,Information Technology,68.0,48.0,-20.0
-2025-09-30,ADBE,ADOBE INC.,Information Technology,Information Technology,50.0,30.0,-20.0
-2025-09-30,ADI,"ANALOG DEVICES, INC.",Information Technology,Information Technology,17.0,22.0,5.0
-2025-09-30,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,-2.0,2.0,4.0
-2025-09-30,ADP,"AUTOMATIC DATA PROCESSING, INC.",Industrials,Industrials,50.0,37.0,-13.0
-2025-09-30,ADSK,"AUTODESK, INC.",Information Technology,Information Technology,-46.0,-12.0,34.0
-2025-09-30,AEE,AMEREN ,Utilities,Utilities,44.0,36.0,-8.0
-2025-09-30,AEP,"AMERICAN ELECTRIC POWER COMPANY, INC.",Utilities,Utilities,54.0,33.0,-21.0
-2025-09-30,AES,THE AES ,Utilities,Utilities,29.0,47.0,18.0
-2025-09-30,AFL,AFLAC INC.,Financials,Financials,6.0,-19.0,-25.0
-2025-09-30,AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,Financials,72.0,65.0,-7.0
-2025-09-30,AIZ,"ASSURANT, INC.",Financials,Financials,30.0,34.0,4.0
-2025-09-30,AJG,ARTHUR J. GALLAGHER & CO.,Financials,Financials,26.0,-14.0,-40.0
-2025-09-30,AKAM,"AKAMAI TECHNOLOGIES, INC.",Information Technology,Information Technology,66.0,43.0,-23.0
-2025-09-30,ALB,ALBEMARLE ,Materials,Materials,36.0,28.0,-8.0
-2025-09-30,ALGN,"ALIGN TECHNOLOGY, INC.",Health Care,Health Care,106.0,59.0,-47.0
-2025-09-30,ALL,THE ALLSTATE ,Financials,Financials,16.0,19.0,3.0
-2025-09-30,ALLE,ALLEGION PUBLIC LIMITED COMPANY,Industrials,Industrials,4.0,35.0,31.0
-2025-09-30,AMAT,"APPLIED MATERIALS, INC.",Information Technology,Information Technology,3.0,-1.0,-4.0
-2025-09-30,AMCR,AMCOR PLC,Materials,Materials,81.0,81.0,0.0
-2025-09-30,AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,Information Technology,80.0,36.0,-44.0
-2025-09-30,AME,"AMETEK, INC.",Industrials,Industrials,16.0,36.0,20.0
-2025-09-30,AMGN,AMGEN INC.,Health Care,Health Care,94.0,59.0,-35.0
-2025-09-30,AMP,"AMERIPRISE FINANCIAL, INC.",Financials,Financials,-13.0,-13.0,0.0
-2025-09-30,AMT,AMERICAN TOWER ,Real Estate,Real Estate,56.0,63.0,7.0
-2025-09-30,AMZN,"AMAZON.COM, INC.",Consumer Discretionary,Consumer Discretionary,0.0,35.0,35.0
-2025-09-30,ANET,"ARISTA NETWORKS, INC.",Information Technology,Information Technology,82.0,50.0,-32.0
-2025-09-30,AON,AON PLC,Financials,Financials,-4.0,21.0,25.0
-2025-09-30,AOS,A. O. SMITH ,Industrials,Industrials,-75.0,-30.0,45.0
-2025-09-30,APA,APA ,Energy,Energy,13.0,16.0,3.0
-2025-09-30,APD,"AIR PRODUCTS AND CHEMICALS, INC.",Materials,Materials,26.0,48.0,22.0
-2025-09-30,APH,AMPHENOL ,Information Technology,Information Technology,40.0,23.0,-17.0
-2025-09-30,APO,"APOLLO GLOBAL MANAGEMENT, INC.",Financials,Financials,16.0,26.0,10.0
-2025-09-30,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,21.0,15.0,-6.0
-2025-09-30,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,-13.0,-14.0,-1.0
-2025-09-30,ASC,ARDMORE SHIPPING ,Discretionary,MR Discretion,37.0,54.0,17.0
-2025-09-30,ATO,ATMOS ENERGY ,Utilities,Utilities,11.0,30.0,19.0
-2025-09-30,AVB,"AVALONBAY COMMUNITIES, INC.",Real Estate,Real Estate,-12.0,-31.0,-19.0
-2025-09-30,AVGO,BROADCOM INC.,Information Technology,Information Technology,-5.0,-32.0,-27.0
-2025-09-30,AVY,AVERY DENNISON ,Materials,Materials,83.0,62.0,-21.0
-2025-09-30,AWK,"AMERICAN WATER WORKS COMPANY, INC.",Utilities,Utilities,16.0,47.0,31.0
-2025-09-30,AXON,"AXON ENTERPRISE, INC.",Industrials,Industrials,37.0,-9.0,-46.0
-2025-09-30,AXP,AMERICAN EXPRESS COMPANY,Financials,Financials,39.0,39.0,0.0
-2025-09-30,AZO,"AUTOZONE, INC.",Consumer Discretionary,Consumer Discretionary,-17.0,-10.0,7.0
-2025-09-30,BA,THE BOEING COMPANY,Industrials,Industrials,9.0,30.0,21.0
-2025-09-30,BAC,BANK OF AMERICA ,Financials,Financials,31.0,36.0,5.0
-2025-09-30,BALL,BALL ,Materials,Materials,12.0,54.0,42.0
-2025-09-30,BAX,BAXTER INTERNATIONAL INC.,Health Care,Health Care,100.0,50.0,-50.0
-2025-09-30,BBY,"BEST BUY CO., INC.",Consumer Discretionary,Consumer Discretionary,-34.0,-22.0,12.0
-2025-09-30,BDX,"BECTON, DICKINSON AND COMPANY",Health Care,Health Care,33.0,23.0,-10.0
-2025-09-30,BEN,"FRANKLIN RESOURCES, INC.",Financials,Financials,26.0,51.0,25.0
-2025-09-30,BF.B,BROWN-FORMAN ,Consumer Staples,Consumer Staples,-11.0,10.0,21.0
-2025-09-30,BG,BUNGE LIMITED,Consumer Staples,Consumer Staples,9.0,15.0,6.0
-2025-09-30,BIIB,BIOGEN INC.,Health Care,Health Care,-5.0,-5.0,-0.0
-2025-09-30,BK,THE BANK OF NEW YORK MELLON ,Financials,Financials,8.0,50.0,42.0
-2025-09-30,BKNG,BOOKING HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,64.0,86.0,22.0
-2025-09-30,BKR,BAKER HUGHES COMPANY,Energy,Energy,10.0,38.0,28.0
-2025-09-30,BLDR,"BUILDERS FIRSTSOURCE, INC.",Industrials,Industrials,-8.0,17.0,25.0
-2025-09-30,BLK,"BLACKROCK, INC.",Financials,Financials,-22.0,19.0,41.0
-2025-09-30,BMY,BRISTOL-MYERS SQUIBB COMPANY,Health Care,Health Care,76.0,64.0,-12.0
-2025-09-30,BR,"BROADRIDGE FINANCIAL SOLUTIONS, INC.",Industrials,Industrials,69.0,35.0,-34.0
-2025-09-30,BRK.B,"BERKSHIRE HATHAWAY INC.,",Financials,Financials,-11.0,-17.0,-6.0
-2025-09-30,BRO,"BROWN & BROWN, INC.",Financials,Financials,97.0,63.0,-34.0
-2025-09-30,BSX,BOSTON SCIENTIFIC ,Health Care,Health Care,43.0,70.0,27.0
-2025-09-30,BTC=F,BITCOIN FUTURES,Futures,Futures,40.0,12.0,-28.0
-2025-09-30,BTI,BRITISH AMERICAN TOBACCO P.L.C.,CE - Dividend Portfolio,MR Discretion,-53.0,-3.0,50.0
-2025-09-30,BTU,PEABODY ENERGY ,CE - Cap Gain,MR Discretion,45.0,6.0,-39.0
-2025-09-30,BX,BLACKSTONE INC,Financials,Financials,26.0,70.0,44.0
-2025-09-30,BXP,"BOSTON PROPERTIES, INC.",Real Estate,Real Estate,-10.0,-19.0,-9.0
-2025-09-30,C,CITIGROUP INC.,Financials,Financials,14.0,43.0,29.0
-2025-09-30,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,21.0,40.0,19.0
-2025-09-30,CAH,"CARDINAL HEALTH, INC.",Health Care,Health Care,-73.0,-21.0,52.0
-2025-09-30,CARR,CARRIER GLOBAL ,Industrials,Industrials,97.0,42.0,-55.0
-2025-09-30,CAT,CATERPILLAR INC.,Industrials,Industrials,-55.0,6.0,61.0
-2025-09-30,CB,CHUBB LTD,Financials,Financials,12.0,-14.0,-26.0
-2025-09-30,CBOE,"CBOE GLOBAL MARKETS, INC.",Financials,Financials,-25.0,11.0,36.0
-2025-09-30,CBRE,"CBRE GROUP, INC.",Real Estate,Real Estate,-36.0,-3.0,33.0
-2025-09-30,CCI,CROWN CASTLE INC.,Real Estate,Real Estate,50.0,49.0,-1.0
-2025-09-30,CCJ,CAMECO ,Discretionary,MR Discretion,-46.0,25.0,71.0
-2025-09-30,CCL,CARNIVAL CORP,Consumer Discretionary,Consumer Discretionary,-16.0,25.0,41.0
-2025-09-30,CDNS,"CADENCE DESIGN SYSTEMS, INC.",Information Technology,Information Technology,-6.0,-23.0,-17.0
-2025-09-30,CDW,CDW ,Information Technology,Information Technology,95.0,61.0,-34.0
-2025-09-30,CEG,CONSTELLATION ENERGY .,Utilities,Utilities,38.0,24.0,-14.0
-2025-09-30,CF,"CF INDUSTRIES HOLDINGS, INC.",Materials,Materials,34.0,4.0,-30.0
-2025-09-30,CFG,"CITIZENS FINANCIAL GROUP, INC.",Financials,Financials,18.0,42.0,24.0
-2025-09-30,CHD,"CHURCH & DWIGHT CO., INC.",Consumer Staples,Consumer Staples,51.0,48.0,-3.0
-2025-09-30,CHRW,"C.H. ROBINSON WORLDWIDE, INC.",Industrials,Industrials,41.0,43.0,2.0
-2025-09-30,CHTR,"CHARTER COMMUNICATIONS, INC.",Communication Services,Communication Services,18.0,-17.0,-35.0
-2025-09-30,CI,THE CIGNA GROUP,Health Care,Health Care,86.0,64.0,-22.0
-2025-09-30,CINF,CINCINNATI FINANCIAL ,Financials,Financials,34.0,29.0,-5.0
-2025-09-30,CIVI,"CIVITAS RESOURCES, INC.",CE - Dividend Portfolio,MR Discretion,16.0,13.0,-3.0
-2025-09-30,CL,COLGATE-PALMOLIVE COMPANY,Consumer Staples,Consumer Staples,48.0,57.0,9.0
-2025-09-30,CLX,THE CLOROX COMPANY,Consumer Staples,Consumer Staples,-42.0,-5.0,37.0
-2025-09-30,CMBT,CMB.TECH NV,Discretionary,MR Discretion,-20.0,-7.0,13.0
-2025-09-30,CMCSA,COMCAST ,Communication Services,Communication Services,75.0,63.0,-12.0
-2025-09-30,CME,CME GROUP INC.,Financials,Financials,-30.0,17.0,47.0
-2025-09-30,CMG,"CHIPOTLE MEXICAN GRILL, INC.",Consumer Discretionary,Consumer Discretionary,125.0,87.0,-38.0
-2025-09-30,CMI,CUMMINS INC.,Industrials,Industrials,14.0,37.0,23.0
-2025-09-30,CMRE,COSTAMARE INC.,Discretionary,MR Discretion,34.0,43.0,9.0
-2025-09-30,CMS,CMS ENERGY ,Utilities,Utilities,-17.0,14.0,31.0
-2025-09-30,CNC,CENTENE ,Health Care,Health Care,68.0,4.0,-64.0
-2025-09-30,CNP,"CENTERPOINT ENERGY, INC.",Utilities,Utilities,22.0,45.0,23.0
-2025-09-30,CNR,"CORE NATURAL RESOURCES, INC.",CE - Cap Gain,MR Discretion,30.0,15.0,-15.0
-2025-09-30,COF,CAPITAL ONE FINANCIAL ,Financials,Financials,14.0,44.0,30.0
-2025-09-30,COIN,"COINBASE GLOBAL, INC.",Financials,Financials,-34.0,18.0,52.0
-2025-09-30,COO,"THE COOPER COMPANIES, INC.",Health Care,Health Care,-19.0,15.0,34.0
-2025-09-30,COP,CONOCOPHILLIPS,Energy,Energy,19.0,26.0,7.0
-2025-09-30,COR,"CENCORA, INC.",Health Care,Health Care,-6.0,13.0,19.0
-2025-09-30,COST,COSTCO WHOLESALE ,Consumer Staples,Consumer Staples,-8.0,49.0,57.0
-2025-09-30,CPAY,"FLEETCOR TECHNOLOGIES, INC.",Financials,Financials,92.0,78.0,-14.0
-2025-09-30,CPB,CAMPBELL SOUP COMPANY,Consumer Staples,Consumer Staples,-33.0,-7.0,26.0
-2025-09-30,CPER,UNITED STATES COPPER IDX,Copper (CPER),Commodities,32.0,8.0,-24.0
-2025-09-30,CPRT,"COPART, INC.",Industrials,Industrials,36.0,32.0,-4.0
-2025-09-30,CPT,CAMDEN PROPERTY TRUST,Real Estate,Real Estate,9.0,4.0,-5.0
-2025-09-30,CRESY,CRESUD INC.,CE - Cap Gain,MR Discretion,-60.0,-3.0,57.0
-2025-09-30,CRL,CHARLES RIVER LABORATORIES,Health Care,Health Care,-10.0,12.0,22.0
-2025-09-30,CRM,"SALESFORCE, INC.",Information Technology,Information Technology,66.0,54.0,-12.0
-2025-09-30,CRWD,"CROWDSTRIKE HOLDINGS, INC.",Information Technology,Information Technology,-80.0,4.0,84.0
-2025-09-30,CSCO,"CISCO SYSTEMS, INC.",Information Technology,Information Technology,55.0,45.0,-10.0
-2025-09-30,CSGP,"COSTAR GROUP, INC.",Real Estate,Real Estate,36.0,42.0,6.0
-2025-09-30,CSX,CSX ,Industrials,Industrials,-8.0,5.0,13.0
-2025-09-30,CTAS,CINTAS ,Industrials,Industrials,-16.0,54.0,70.0
-2025-09-30,CTRA,COTERRA ENERGY INC.,Energy,Energy,68.0,58.0,-10.0
-2025-09-30,CTSH,COGNIZANT TECHNOLOGY SOLUTIONS ,Information Technology,Information Technology,88.0,62.0,-26.0
-2025-09-30,CTVA,"CORTEVA, INC.",Materials,Materials,35.0,66.0,31.0
-2025-09-30,CVS,CVS HEALTH ,Health Care,Health Care,23.0,20.0,-3.0
-2025-09-30,CVX,CHEVRON ,Energy,Energy,26.0,43.0,17.0
-2025-09-30,CZR,"CAESARS ENTERTAINMENT, INC.",Consumer Discretionary,Consumer Discretionary,-6.0,-5.0,1.0
-2025-09-30,D,"DOMINION ENERGY, INC.",Utilities,Utilities,-13.0,13.0,26.0
-2025-09-30,DAL,"DELTA AIR LINES, INC.",Industrials,Industrials,15.0,16.0,1.0
-2025-09-30,DASH,"DOORDASH, INC.",Consumer Discretionary,Consumer Discretionary,77.0,45.0,-32.0
-2025-09-30,DAY,CERIDIAN HCM HOLDING INC.,Industrials,Industrials,44.0,39.0,-5.0
-2025-09-30,DBB,INVESCO DB MS BMTL,Base Metals (DBB),Commodities,-45.0,-9.0,36.0
-2025-09-30,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,-5.0,-10.0,-5.0
-2025-09-30,DDOG,"DATADOG, INC.",Information Technology,Information Technology,-17.0,18.0,35.0
-2025-09-30,DE,DEERE & COMPANY,Industrials,Industrials,32.0,69.0,37.0
-2025-09-30,DECK,DECKERS OUTDOOR ,Consumer Discretionary,Consumer Discretionary,37.0,42.0,5.0
-2025-09-30,DELL,DELL TECHNOLOGIES INC.,Information Technology,Information Technology,-31.0,-4.0,27.0
-2025-09-30,DG,DOLLAR GENERAL ,Consumer Staples,Consumer Staples,71.0,56.0,-15.0
-2025-09-30,DGX,QUEST DIAGNOSTICS INC.,Health Care,Health Care,4.0,14.0,10.0
-2025-09-30,DHI,"D.R. HORTON, INC.",Consumer Discretionary,Consumer Discretionary,-31.0,-24.0,7.0
-2025-09-30,DHR,DANAHER ,Health Care,Health Care,38.0,44.0,6.0
-2025-09-30,DHT,"DHT HOLDINGS, INC.",CE - Dividend Portfolio,MR Discretion,9.0,-13.0,-22.0
-2025-09-30,DIA,SPDR DOW JONES INDUS AVG,Dow Jones 30 Index,Sector & Style ETFs,-6.0,7.0,13.0
-2025-09-30,DIS,THE WALT DISNEY COMPANY,Communication Services,Communication Services,56.0,66.0,10.0
-2025-09-30,DJI,DOW JONES INDUSTRIAL AVERAGE INDEX,Index,Indices,-9.0,-7.0,2.0
-2025-09-30,DLR,"DIGITAL REALTY TRUST, INC.",Real Estate,Real Estate,-12.0,8.0,20.0
-2025-09-30,DLTR,"DOLLAR TREE, INC.",Consumer Staples,Consumer Staples,41.0,46.0,5.0
-2025-09-30,DOC,"HEALTHDOC PROPERTIES, INC.",Real Estate,Real Estate,6.0,-0.0,-6.0
-2025-09-30,DOV,DOVER ,Industrials,Industrials,26.0,45.0,19.0
-2025-09-30,DOW,DOW INC.,Materials,Materials,67.0,35.0,-32.0
-2025-09-30,DPZ,"DOMINO'S PIZZA, INC.",Consumer Discretionary,Consumer Discretionary,54.0,48.0,-6.0
-2025-09-30,DRI,"DARDEN RESTAURANTS, INC.",Consumer Discretionary,Consumer Discretionary,19.0,49.0,30.0
-2025-09-30,DTE,DTE ENERGY COMPANY,Utilities,Utilities,37.0,32.0,-5.0
-2025-09-30,DUK,DUKE ENERGY ,Utilities,Utilities,42.0,39.0,-3.0
-2025-09-30,DVA,DAVITA INC.,Health Care,Health Care,63.0,52.0,-11.0
-2025-09-30,DVN,DEVON ENERGY ,Energy,Energy,19.0,21.0,2.0
-2025-09-30,DXCM,"DEXCOM, INC.",Health Care,Health Care,4.0,44.0,40.0
-2025-09-30,EA,ELECTRONIC ARTS INC.,Communication Services,Communication Services,-7.0,2.0,9.0
-2025-09-30,EBAY,EBAY INC.,Consumer Discretionary,Consumer Discretionary,2.0,-29.0,-31.0
-2025-09-30,EC,ECOPETROL SA,CE - Dividend Portfolio,MR Discretion,10.0,13.0,3.0
-2025-09-30,ECH,ISHARES:MSCI CHILE,Chile,Foreign,-24.0,-20.0,4.0
-2025-09-30,ECL,ECOLAB INC.,Materials,Materials,63.0,51.0,-12.0
-2025-09-30,ED,"CONSOLIDATED EDISON, INC.",Utilities,Utilities,-67.0,-12.0,55.0
-2025-09-30,EDEN,ISHARES:MSCI DENMARK,Denmark,Foreign,36.0,19.0,-17.0
-2025-09-30,EDV,VANGUARD EXT DUR T;ETF,Bonds,Bonds & Yields,-21.0,-5.0,16.0
-2025-09-30,EFNL,ISHARES:MSCI FINLAND,Finland,Foreign,-8.0,-39.0,-31.0
-2025-09-30,EFX,EQUIFAX INC.,Industrials,Industrials,20.0,-17.0,-37.0
-2025-09-30,EG,"EVEREST GROUP, LTD.",Financials,Financials,-6.0,23.0,29.0
-2025-09-30,EIDO,ISHARES:MSCI INDONESIA,Indonesia,Foreign,37.0,34.0,-3.0
-2025-09-30,EIRL,ISHARES:MSCI IRELAND,Ireland,Foreign,-6.0,19.0,25.0
-2025-09-30,EIS,ISHARES:MSCI ISRAEL,Israel,Foreign,-5.0,15.0,20.0
-2025-09-30,EIX,EDISON INTERNATIONAL,Utilities,Utilities,63.0,39.0,-24.0
-2025-09-30,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,61.0,40.0,-21.0
-2025-09-30,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,35.0,-13.0,-48.0
-2025-09-30,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,89.0,47.0,-42.0
-2025-09-30,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,79.0,50.0,-29.0
-2025-09-30,ENPH,"ENPHASE ENERGY, INC.",Information Technology,Information Technology,57.0,37.0,-20.0
-2025-09-30,ENZL,ISHARES:MSCI NEW ZLND,New Zlnd,Foreign,-15.0,11.0,26.0
-2025-09-30,EOG,"EOG RESOURCES, INC.",Energy,Energy,69.0,82.0,13.0
-2025-09-30,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,61.0,51.0,-10.0
-2025-09-30,EPHE,ISHARES:MSCI PHILIPPINES,Philippines,Foreign,-73.0,-29.0,44.0
-2025-09-30,EPOL,ISHARES:MSCI POLAND,Poland,Foreign,70.0,31.0,-39.0
-2025-09-30,EPU,ISHARES:MSCI PERU,Peru,Foreign,-4.0,9.0,13.0
-2025-09-30,EQIX,"EQUINIX, INC.",Real Estate,Real Estate,14.0,-2.0,-16.0
-2025-09-30,EQR,EQUITY RESIDENTIAL,Real Estate,Real Estate,3.0,-7.0,-10.0
-2025-09-30,EQT,EQT ,Energy,Energy,20.0,-4.0,-24.0
-2025-09-30,ERIE,ERIE INDEMNITY COMPANY,Financials,Financials,41.0,52.0,11.0
-2025-09-30,ES,EVERSOURCE ENERGY,Utilities,Utilities,-31.0,-7.0,24.0
-2025-09-30,ES=F,E-MINI S&P 500 FUTURES,Futures,Futures,-32.0,-10.0,22.0
-2025-09-30,ESS,"ESSEX PROPERTY TRUST, INC.",Real Estate,Real Estate,-18.0,-26.0,-8.0
-2025-09-30,ETN,EATON  PUBLIC LIMITED COMPANY,Industrials,Industrials,50.0,27.0,-23.0
-2025-09-30,ETR,ENTERGY ,Utilities,Utilities,60.0,47.0,-13.0
-2025-09-30,EVRG,"EVERGY, INC.",Utilities,Utilities,35.0,17.0,-18.0
-2025-09-30,EW,EDWARDS LIFESCIENCES ,Health Care,Health Care,33.0,46.0,13.0
-2025-09-30,EWA,ISHARES:MSCI AUSTRALIA,Australia,Foreign,-38.0,-15.0,23.0
-2025-09-30,EWC,ISHARES:MSCI CANADA,Canada,Foreign,14.0,22.0,8.0
-2025-09-30,EWD,ISHARES:MSCI SWEDEN,Sweden,Foreign,-3.0,-20.0,-17.0
-2025-09-30,EWG,ISHARES:MSCI GERMANY,Germany,Foreign,28.0,48.0,20.0
-2025-09-30,EWH,ISHARES:MSCI HONG KONG,Hong Kong,Foreign,17.0,56.0,39.0
-2025-09-30,EWI,ISHARES:MSCI ITALY,Italy,Foreign,22.0,42.0,20.0
-2025-09-30,EWJ,ISHARES:MSCI JAPAN,Japan,Foreign,24.0,28.0,4.0
-2025-09-30,EWK,ISHARES:MSCI BELGIUM,Belgium,Foreign,-14.0,-9.0,5.0
-2025-09-30,EWL,ISHARES:MSCI SWITZERLAND,Switzerland,Foreign,21.0,15.0,-6.0
-2025-09-30,EWM,ISHARES:MSCI MALAYSIA,Malaysia,Foreign,0.0,19.0,19.0
-2025-09-30,EWN,ISHARES:MSCI NETHERLANDS,Netherlands,Foreign,10.0,-1.0,-11.0
-2025-09-30,EWO,ISHARES:MSCI AUSTRIA,Austria,Foreign,-76.0,-49.0,27.0
-2025-09-30,EWP,ISHARES:MSCI SPAIN,Spain,Foreign,18.0,33.0,15.0
-2025-09-30,EWQ,ISHARES:MSCI FRANCE,France,Foreign,32.0,9.0,-23.0
-2025-09-30,EWS,ISHARES:MSCI SINGAPORE,Singapore,Foreign,-36.0,-26.0,10.0
-2025-09-30,EWT,ISHARES:MSCI TAIWAN,Taiwan,Foreign,19.0,3.0,-16.0
-2025-09-30,EWU,ISHARES:MSCI UK,UK,Foreign,2.0,32.0,30.0
-2025-09-30,EWW,ISHARES:MSCI MEXICO,Mexico,Foreign,0.0,9.0,9.0
-2025-09-30,EWY,ISHARES:MSCI S KOREA,S Korea,Foreign,15.0,-1.0,-16.0
-2025-09-30,EWZ,ISHARES:MSCI BRAZIL,Brazil,Foreign,10.0,11.0,1.0
-2025-09-30,EXC,EXELON ,Utilities,Utilities,4.0,20.0,16.0
-2025-09-30,EXE,EXPAND ENERGY ,Energy,Energy,-77.0,-2.0,75.0
-2025-09-30,EXPD,EXPEDITORS INTERNATIONAL OF WASHINGTON,Industrials,Industrials,31.0,19.0,-12.0
-2025-09-30,EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,Consumer Discretionary,51.0,61.0,10.0
-2025-09-30,EXR,EXTRA SPACE STORAGE INC.,Real Estate,Real Estate,12.0,6.0,-6.0
-2025-09-30,F,FORD MOTOR COMPANY,Consumer Discretionary,Consumer Discretionary,-2.0,24.0,26.0
-2025-09-30,FANG,"DIAMONDBACK ENERGY, INC.",Energy,Energy,6.0,27.0,21.0
-2025-09-30,FAST,FASTENAL COMPANY,Industrials,Industrials,44.0,61.0,17.0
-2025-09-30,FCX,FREEPORT-MCMORAN INC.,Materials,Materials,31.0,28.0,-3.0
-2025-09-30,FDS,FACTSET RESEARCH SYSTEMS INC.,Financials,Financials,84.0,57.0,-27.0
-2025-09-30,FDX,FEDEX ,Industrials,Industrials,-5.0,-4.0,1.0
-2025-09-30,FE,FIRSTENERGY CORP.,Utilities,Utilities,1.0,24.0,23.0
-2025-09-30,FFIV,"F5, INC.",Information Technology,Information Technology,101.0,62.0,-39.0
-2025-09-30,FI,"FISERV, INC.",Financials,Financials,124.0,93.0,-31.0
-2025-09-30,FICO,FAIR ISAAC ,Information Technology,Information Technology,78.0,50.0,-28.0
-2025-09-30,FIS,FIDELITY NATIONAL INFORMATION SERVICES,Financials,Financials,1.0,56.0,55.0
-2025-09-30,FITB,FIFTH THIRD BANCORP,Financials,Financials,-18.0,-2.0,16.0
-2025-09-30,FOXA,FOX ,Communication Services,Communication Services,12.0,17.0,5.0
-2025-09-30,FRO,FRONTLINE PLC,CE - Dividend Portfolio,MR Discretion,9.0,26.0,17.0
-2025-09-30,FRT,FEDERAL REALTY INVESTMENT TRUST,Real Estate,Real Estate,-18.0,-19.0,-1.0
-2025-09-30,FSLR,"FIRST SOLAR, INC.",Information Technology,Information Technology,3.0,30.0,27.0
-2025-09-30,FTI,TECHNIPFMC PLC,CE - Cap Gain,MR Discretion,-1.0,43.0,44.0
-2025-09-30,FTNT,"FORTINET, INC.",Information Technology,Information Technology,-77.0,-29.0,48.0
-2025-09-30,FTV,FORTIVE ,Industrials,Industrials,14.0,-18.0,-32.0
-2025-09-30,FVX,5 YR TSY YLD NDX,Yields,Bonds & Yields,-58.0,-30.0,28.0
-2025-09-30,FXA,INVESCO:AU DOLLAR,Currency,Currencies,18.0,27.0,9.0
-2025-09-30,FXB,INVESCO:GBP STERLING,Currency,Currencies,12.0,19.0,7.0
-2025-09-30,FXC,INVESCO:CANADIAN DOLLAR,Currency,Currencies,27.0,50.0,23.0
-2025-09-30,FXE,INVESCO:EURO,Currency,Currencies,-30.0,-0.0,30.0
-2025-09-30,FXY,INVESCO:JAPANESE YEN,Currency,Currencies,18.0,49.0,31.0
-2025-09-30,GD,GENERAL DYNAMICS ,Industrials,Industrials,2.0,33.0,31.0
-2025-09-30,GDDY,GODADDY INC.,Information Technology,Information Technology,106.0,73.0,-33.0
-2025-09-30,GDX,VANECK:GOLD MINERS,Gold,Commodities,10.0,19.0,9.0
-2025-09-30,GDXJ,VANECK:JR GOLD MINERS,Gold,Commodities,9.0,17.0,8.0
-2025-09-30,GE,GENERAL ELECTRIC COMPANY,Industrials,Industrials,2.0,49.0,47.0
-2025-09-30,GEHC,GE HEALTHCARE TECHNOLOGIES INC.,Health Care,Health Care,14.0,13.0,-1.0
-2025-09-30,GEN,GEN DIGITAL INC.,Information Technology,Information Technology,84.0,74.0,-10.0
-2025-09-30,GEOS,GEOSPACE TECHNOLOGIES ,Discretionary,MR Discretion,34.0,44.0,10.0
-2025-09-30,GEV,GE VERNOVA INC.,Utilities,Utilities,108.0,74.0,-34.0
-2025-09-30,GGB,GERDAU SA,CE - Dividend Portfolio,MR Discretion,-14.0,-4.0,10.0
-2025-09-30,GILD,"GILEAD SCIENCES, INC.",Health Care,Health Care,20.0,-6.0,-26.0
-2025-09-30,GIS,"GENERAL MILLS, INC.",Consumer Staples,Consumer Staples,-26.0,24.0,50.0
-2025-09-30,GL,GLOBE LIFE INC.,Financials,Financials,59.0,42.0,-17.0
-2025-09-30,GLATF,GLOBAL ATOMIC ,Discretionary,MR Discretion,-61.0,-14.0,47.0
-2025-09-30,GLD,SPDR GOLD,Gold,Commodities,-20.0,23.0,43.0
-2025-09-30,GLW,CORNING INC.,Information Technology,Information Technology,-9.0,19.0,28.0
-2025-09-30,GM,GENERAL MOTORS COMPANY,Consumer Discretionary,Consumer Discretionary,29.0,34.0,5.0
-2025-09-30,GNK,GENCO SHIPPING & TRADING LIMITED,CE - Dividend Portfolio,MR Discretion,25.0,48.0,23.0
-2025-09-30,GNRC,GENERAC HOLDINGS INC.,Industrials,Industrials,31.0,2.0,-29.0
-2025-09-30,GOOGL,ALPHABET INC.,Communication Services,Communication Services,4.0,22.0,18.0
-2025-09-30,GPC,GENUINE PARTS COMPANY,Consumer Discretionary,Consumer Discretionary,-18.0,-14.0,4.0
-2025-09-30,GPN,GLOBAL PAYMENTS INC.,Financials,Financials,19.0,20.0,1.0
-2025-09-30,GREK,GLBL X MSCI GREECE,Greece,Foreign,94.0,47.0,-47.0
-2025-09-30,GRMN,GARMIN LTD,Consumer Discretionary,Consumer Discretionary,20.0,35.0,15.0
-2025-09-30,GS,"THE GOLDMAN SACHS GROUP, INC.",Financials,Financials,-39.0,11.0,50.0
-2025-09-30,GWW,"W.W. GRAINGER, INC.",Industrials,Industrials,75.0,56.0,-19.0
-2025-09-30,HAL,HALLIBURTON COMPANY,Energy,Energy,-3.0,7.0,10.0
-2025-09-30,HAS,"HASBRO, INC.",Consumer Discretionary,Consumer Discretionary,16.0,50.0,34.0
-2025-09-30,HBAN,HUNTINGTON BANCSHARES INC.,Financials,Financials,26.0,35.0,9.0
-2025-09-30,HCA,"HCA HEALTHCARE, INC.",Health Care,Health Care,6.0,-7.0,-13.0
-2025-09-30,HD,"THE HOME DEPOT, INC.",Consumer Discretionary,Consumer Discretionary,-28.0,-16.0,12.0
-2025-09-30,HIG,THE HARTFORD FINANCIAL SERVICES GROUP,Financials,Financials,63.0,54.0,-9.0
-2025-09-30,HII,"HUNTINGTON INGALLS INDUSTRIES, INC.",Industrials,Industrials,6.0,39.0,33.0
-2025-09-30,HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,41.0,61.0,20.0
-2025-09-30,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",CE - Cap Gain,MR Discretion,23.0,13.0,-10.0
-2025-09-30,HOLX,"HOLOGIC, INC.",Health Care,Health Care,26.0,14.0,-12.0
-2025-09-30,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,80.0,70.0,-10.0
-2025-09-30,HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,Information Technology,-4.0,26.0,30.0
-2025-09-30,HPQ,HP INC.,Information Technology,Information Technology,8.0,10.0,2.0
-2025-09-30,HRL,HORMEL FOODS ,Consumer Staples,Consumer Staples,-1.0,39.0,40.0
-2025-09-30,HSIC,"HENRY SCHEIN, INC.",Health Care,Health Care,72.0,48.0,-24.0
-2025-09-30,HST,"HOST HOTELS & RESORTS, INC.",Real Estate,Real Estate,-24.0,-18.0,6.0
-2025-09-30,HSY,THE HERSHEY COMPANY,Consumer Staples,Consumer Staples,64.0,44.0,-20.0
-2025-09-30,HUBB,HUBBELL INC.,Industrials,Industrials,-63.0,-21.0,42.0
-2025-09-30,HUM,HUMANA INC.,Health Care,Health Care,25.0,26.0,1.0
-2025-09-30,HWM,HOWMET AEROSPACE INC.,Industrials,Industrials,42.0,22.0,-20.0
-2025-09-30,HYG,ISHARES:IBOXX $HY CORP,Bonds,Bonds & Yields,-40.0,-30.0,10.0
-2025-09-30,IBKR,"INTERACTIVE BROKERS GROUP, INC.",Financials,Financials,89.0,45.0,-44.0
-2025-09-30,IBM,INTERNATIONAL BUSINESS MACHINES ,Information Technology,Information Technology,-77.0,-2.0,75.0
-2025-09-30,ICE,"INTERCONTINENTAL EXCHANGE, INC.",Financials,Financials,42.0,86.0,44.0
-2025-09-30,ICL,ICL GROUP LTD,Discretionary,MR Discretion,9.0,4.0,-5.0
-2025-09-30,IDXX,"IDEXX LABORATORIES, INC.",Health Care,Health Care,-26.0,-13.0,13.0
-2025-09-30,IEF,ISHARES:7-10 TRS BD ETF,Bonds,Bonds & Yields,-48.0,-22.0,26.0
-2025-09-30,IEX,IDEX ,Industrials,Industrials,55.0,32.0,-23.0
-2025-09-30,IFF,INTERNATIONAL FLAVORS & FRAGRANCES INC.,Materials,Materials,114.0,77.0,-37.0
-2025-09-30,INCY,INCYTE ,Health Care,Health Care,-16.0,-7.0,9.0
-2025-09-30,INDA,ISHARES:MSCI INDIA,India,Foreign,-77.0,-4.0,73.0
-2025-09-30,INTC,INTEL ,Information Technology,Information Technology,7.0,5.0,-2.0
-2025-09-30,INTU,INTUIT INC.,Information Technology,Information Technology,-91.0,-25.0,66.0
-2025-09-30,INVH,INVITATION HOMES INC.,Real Estate,Real Estate,74.0,44.0,-30.0
-2025-09-30,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,45.0,46.0,1.0
-2025-09-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,3.0,13.0,10.0
-2025-09-30,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,-40.0,-15.0,25.0
-2025-09-30,IR,INGERSOLL RAND INC.,Industrials,Industrials,-7.0,-21.0,-14.0
-2025-09-30,IRM,IRON MOUNTAIN INC.,Real Estate,Real Estate,27.0,-4.0,-31.0
-2025-09-30,ISRG,"INTUITIVE SURGICAL, INC.",Health Care,Health Care,-6.0,55.0,61.0
-2025-09-30,IT,"GARTNER, INC.",Information Technology,Information Technology,24.0,-33.0,-57.0
-2025-09-30,ITW,ILLINOIS TOOL WORKS INC.,Industrials,Industrials,-4.0,11.0,15.0
-2025-09-30,IVZ,INVESCO LTD.,Financials,Financials,17.0,38.0,21.0
-2025-09-30,IWD,ISHARES:RUSS 1000 VL ETF,Value (IWD),Sector & Style ETFs,14.0,28.0,14.0
-2025-09-30,IWF,ISHARES:RUSS 1000 GR ETF,Growth (IWF),Sector & Style ETFs,29.0,16.0,-13.0
-2025-09-30,IWM,ISHARES:RUSS 2000 ETF,Small Caps,Sector & Style ETFs,23.0,31.0,8.0
-2025-09-30,J,JACOBS SOLUTIONS INC.,Industrials,Industrials,3.0,31.0,28.0
-2025-09-30,JBHT,"J. B. HUNT TRANSPORT SERVICES, INC.",Industrials,Industrials,32.0,46.0,14.0
-2025-09-30,JBL,JABIL INC.,Information Technology,Information Technology,50.0,26.0,-24.0
-2025-09-30,JCI,JOHNSON CONTROLS INTERNATIONAL PLC,Industrials,Industrials,-14.0,30.0,44.0
-2025-09-30,JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,Financials,16.0,73.0,57.0
-2025-09-30,JNJ,JOHNSON & JOHNSON,Health Care,Health Care,8.0,31.0,23.0
-2025-09-30,JPM,JPMORGAN CHASE & CO.,Financials,Financials,-19.0,24.0,43.0
-2025-09-30,K,KELLANOVA,Consumer Staples,Consumer Staples,-37.0,31.0,68.0
-2025-09-30,KDP,KEURIG DR PEPPER INC.,Consumer Staples,Consumer Staples,40.0,69.0,29.0
-2025-09-30,KEY,KEYCORP,Financials,Financials,-11.0,9.0,20.0
-2025-09-30,KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,Information Technology,-36.0,6.0,42.0
-2025-09-30,KHC,THE KRAFT HEINZ COMPANY,Consumer Staples,Consumer Staples,-12.0,7.0,19.0
-2025-09-30,KIM,KIMCO REALTY .,Real Estate,Real Estate,14.0,14.0,-0.0
-2025-09-30,KKR,KKR & CO. INC.,Financials,Financials,20.0,-6.0,-26.0
-2025-09-30,KLAC,KLA ,Information Technology,Information Technology,27.0,1.0,-26.0
-2025-09-30,KMB,KIMBERLY-CLARK ,Consumer Staples,Consumer Staples,5.0,40.0,35.0
-2025-09-30,KMI,"KINDER MORGAN, INC.",Energy,Energy,-2.0,11.0,13.0
-2025-09-30,KMX,"CARMAX, INC.",Consumer Discretionary,Consumer Discretionary,61.0,50.0,-11.0
-2025-09-30,KO,THE COCA-COLA COMPANY,Consumer Staples,Consumer Staples,45.0,50.0,5.0
-2025-09-30,KR,THE KROGER CO.,Consumer Staples,Consumer Staples,51.0,71.0,20.0
-2025-09-30,KVUE,KENVUE INC.,Consumer Staples,Consumer Staples,16.0,65.0,49.0
-2025-09-30,L,LOEWS ,Financials,Financials,9.0,18.0,9.0
-2025-09-30,LDOS,"LEIDOS HOLDINGS, INC.",Industrials,Industrials,20.0,48.0,28.0
-2025-09-30,LEN,LENNAR ,Consumer Discretionary,Consumer Discretionary,-9.0,-4.0,5.0
-2025-09-30,LH,LABORATORY  OF AMERICA HOLDINGS,Health Care,Health Care,8.0,30.0,22.0
-2025-09-30,LHX,"L3HARRIS TECHNOLOGIES, INC.",Industrials,Industrials,-44.0,14.0,58.0
-2025-09-30,LII,LENNOX INTERNATIONAL INC.,Industrials,Industrials,25.0,5.0,-20.0
-2025-09-30,LIN,LINDE PUBLIC LIMITED COMPANY,Materials,Materials,-22.0,1.0,23.0
-2025-09-30,LKQ,LKQ ,Consumer Discretionary,Consumer Discretionary,95.0,52.0,-43.0
-2025-09-30,LLY,ELI LILLY AND COMPANY,Health Care,Health Care,7.0,-19.0,-26.0
-2025-09-30,LMT,LOCKHEED MARTIN ,Industrials,Industrials,14.0,5.0,-9.0
-2025-09-30,LNT,ALLIANT ENERGY ,Utilities,Utilities,19.0,23.0,4.0
-2025-09-30,LOW,"LOWE'S COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,-13.0,-6.0,7.0
-2025-09-30,LQD,ISHARES:IBOXX $IG CORP,Bonds,Bonds & Yields,-91.0,-37.0,54.0
-2025-09-30,LRCX,LAM RESEARCH ,Information Technology,Information Technology,-43.0,1.0,44.0
-2025-09-30,LULU,LULULEMON ATHLETICA INC.,Consumer Discretionary,Consumer Discretionary,-8.0,-40.0,-32.0
-2025-09-30,LUV,SOUTHWEST AIRLINES CO.,Industrials,Industrials,40.0,31.0,-9.0
-2025-09-30,LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,Consumer Discretionary,52.0,70.0,18.0
-2025-09-30,LW,"LAMB WESTON HOLDINGS, INC.",Consumer Staples,Consumer Staples,26.0,32.0,6.0
-2025-09-30,LYB,LYONDELLBASELL INDUSTRIES NV,Materials,Materials,78.0,57.0,-21.0
-2025-09-30,LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,Communication Services,-2.0,0.0,2.0
-2025-09-30,MA,MASTERCARD INC..,Financials,Financials,3.0,3.0,-0.0
-2025-09-30,MAA,"MID-AMERICA APARTMENT COMMUNITIES, INC.",Real Estate,Real Estate,50.0,24.0,-26.0
-2025-09-30,MAR,"MARRIOTT INTERNATIONAL, INC.",Consumer Discretionary,Consumer Discretionary,58.0,57.0,-1.0
-2025-09-30,MAS,MASCO ,Industrials,Industrials,-33.0,-8.0,25.0
-2025-09-30,MCD,MCDONALD'S ,Consumer Discretionary,Consumer Discretionary,21.0,18.0,-3.0
-2025-09-30,MCHI,ISHARES:MSCI CHINA,China,Foreign,-8.0,23.0,31.0
-2025-09-30,MCHP,MICROCHIP TECHNOLOGY INC.,Information Technology,Information Technology,13.0,44.0,31.0
-2025-09-30,MCK,MCKESSON ,Health Care,Health Care,0.0,4.0,4.0
-2025-09-30,MCO,MOODY'S ,Financials,Financials,51.0,32.0,-19.0
-2025-09-30,MDLZ,"MONDELEZ INTERNATIONAL, INC.",Consumer Staples,Consumer Staples,49.0,24.0,-25.0
-2025-09-30,MDT,MEDTRONIC PUBLIC LIMITED COMPANY,Health Care,Health Care,-3.0,-17.0,-14.0
-2025-09-30,MDY,SPDR S&P MIDCAP 400 ETF,Mid-Caps (MDY),Sector & Style ETFs,-24.0,-9.0,15.0
-2025-09-30,MET,"METLIFE, INC.",Financials,Financials,7.0,-0.0,-7.0
-2025-09-30,META,"META PLATFORMS, INC.",Communication Services,Communication Services,79.0,42.0,-37.0
-2025-09-30,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,65.0,66.0,1.0
-2025-09-30,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,-42.0,-27.0,15.0
-2025-09-30,MKC,"MCCORMICK & COMPANY, INC.",Consumer Staples,Consumer Staples,44.0,39.0,-5.0
-2025-09-30,MKTX,MARKETAXESS HOLDINGS INC.,Financials,Financials,11.0,65.0,54.0
-2025-09-30,MLM,"MARTIN MARIETTA MATERIALS, INC.",Materials,Materials,14.0,37.0,23.0
-2025-09-30,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,87.0,56.0,-31.0
-2025-09-30,MMM,3M COMPANY,Industrials,Industrials,41.0,53.0,12.0
-2025-09-30,MNST,MONSTER BEVERAGE ,Consumer Staples,Consumer Staples,-11.0,20.0,31.0
-2025-09-30,MO,"ALTRIA GROUP, INC.",Consumer Staples,Consumer Staples,-27.0,-13.0,14.0
-2025-09-30,MOH,"MOLINA HEALTHCARE, INC.",Health Care,Health Care,56.0,-10.0,-66.0
-2025-09-30,MOS,THE MOSAIC COMPANY,Materials,Materials,34.0,2.0,-32.0
-2025-09-30,MP,MP MATERIALS CORP,Discretionary,MR Discretion,58.0,91.0,33.0
-2025-09-30,MPC,MARATHON PETROLEUM ,Energy,Energy,18.0,19.0,1.0
-2025-09-30,MPWR,"MONOLITHIC POWER SYSTEMS, INC.",Information Technology,Information Technology,0.0,26.0,26.0
-2025-09-30,MRK,"MERCK & CO., INC.",Health Care,Health Care,28.0,36.0,8.0
-2025-09-30,MRNA,"MODERNA, INC.",Health Care,Health Care,-8.0,-20.0,-12.0
-2025-09-30,MS,MORGAN STANLEY,Financials,Financials,2.0,22.0,20.0
-2025-09-30,MSCI,MSCI INC.,Financials,Financials,39.0,34.0,-5.0
-2025-09-30,MSFT,MICROSOFT ,Information Technology,Information Technology,15.0,19.0,4.0
-2025-09-30,MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,Information Technology,-23.0,-3.0,20.0
-2025-09-30,MTB,M&T BANK ,Financials,Financials,12.0,24.0,12.0
-2025-09-30,MTCH,"MATCH GROUP, INC.",Communication Services,Communication Services,-24.0,-11.0,13.0
-2025-09-30,MTD,METTLER-TOLEDO INTERNATIONAL INC.,Health Care,Health Care,14.0,24.0,10.0
-2025-09-30,MTUM,ISHARES:MSCI USA MOM FCT,Momentum (MTUM),Sector & Style ETFs,-39.0,18.0,57.0
-2025-09-30,MU,"MICRON TECHNOLOGY, INC.",Information Technology,Information Technology,-20.0,4.0,24.0
-2025-09-30,NCLH,NORWEGIAN CRUISE LINE HOLDINGS LTD.,Consumer Discretionary,Consumer Discretionary,-53.0,-23.0,30.0
-2025-09-30,NDAQ,"NASDAQ, INC.",Financials,Financials,46.0,45.0,-1.0
-2025-09-30,NDSN,NORDSON ,Industrials,Industrials,30.0,33.0,3.0
-2025-09-30,NDX,NASDAQ 100 INDEX,Index,Indices,22.0,-9.0,-31.0
-2025-09-30,NEE,"NEXTERA ENERGY, INC.",Utilities,Utilities,-31.0,5.0,36.0
-2025-09-30,NEM,NEWMONT ,Materials,Materials,25.0,38.0,13.0
-2025-09-30,NFLX,"NETFLIX, INC.",Communication Services,Communication Services,8.0,58.0,50.0
-2025-09-30,NI,NISOURCE INC.,Utilities,Utilities,23.0,-0.0,-23.0
-2025-09-30,NKE,"NIKE, INC.",Consumer Discretionary,Consumer Discretionary,30.0,54.0,24.0
-2025-09-30,NOC,NORTHROP GRUMMAN ,Industrials,Industrials,9.0,45.0,36.0
-2025-09-30,NORW,GLBL X MSCI NORWAY ETF,Norway,Foreign,-2.0,19.0,21.0
-2025-09-30,NOV,NOV INC.,Discretionary,MR Discretion,-12.0,-8.0,4.0
-2025-09-30,NOW,"SERVICENOW, INC.",Information Technology,Information Technology,12.0,14.0,2.0
-2025-09-30,NQ=F,NASDAQ 100 FUTURES,Futures,Futures,21.0,-11.0,-32.0
-2025-09-30,NRG,"NRG ENERGY, INC.",Utilities,Utilities,13.0,10.0,-3.0
-2025-09-30,NSC,NORFOLK SOUTHERN ,Industrials,Industrials,10.0,-1.0,-11.0
-2025-09-30,NTAP,"NETAPP, INC.",Information Technology,Information Technology,-43.0,-24.0,19.0
-2025-09-30,NTRS,NORTHERN TRUST ,Financials,Financials,-1.0,27.0,28.0
-2025-09-30,NUE,NUCOR ,Materials,Materials,27.0,40.0,13.0
-2025-09-30,NVDA,NVIDIA ,Information Technology,Information Technology,46.0,42.0,-4.0
-2025-09-30,NVR,"NVR, INC.",Consumer Discretionary,Consumer Discretionary,-53.0,-35.0,18.0
-2025-09-30,NWSA,NEWS ,Communication Services,Communication Services,-56.0,2.0,58.0
-2025-09-30,NXPI,NXP SEMICONDUCTORS NV,Information Technology,Information Technology,51.0,53.0,2.0
-2025-09-30,O,REALTY INCOME ,Real Estate,Real Estate,-3.0,8.0,11.0
-2025-09-30,ODFL,"OLD DOMINION FREIGHT LINE, INC.",Industrials,Industrials,123.0,63.0,-60.0
-2025-09-30,OEF,ISHARES:S&P 100,Size (OEF),Sector & Style ETFs,-31.0,7.0,38.0
-2025-09-30,OKE,"ONEOK, INC.",Energy,Energy,17.0,66.0,49.0
-2025-09-30,OMC,OMNICOM GROUP INC.,Communication Services,Communication Services,16.0,23.0,7.0
-2025-09-30,ON,ON SEMICONDUCTOR ,Information Technology,Information Technology,-37.0,-15.0,22.0
-2025-09-30,ORCL,ORACLE ,Information Technology,Information Technology,37.0,11.0,-26.0
-2025-09-30,ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,Consumer Discretionary,62.0,40.0,-22.0
-2025-09-30,OTIS,OTIS WORLDWIDE ,Industrials,Industrials,24.0,-12.0,-36.0
-2025-09-30,OXY,OCCIDENTAL PETROLEUM ,Energy,Energy,19.0,24.0,5.0
-2025-09-30,PAM,PAMPA ENERGIA SA,CE - Cap Gain,MR Discretion,-66.0,-37.0,29.0
-2025-09-30,PANW,"PALO ALTO NETWORKS, INC.",Information Technology,Information Technology,28.0,30.0,2.0
-2025-09-30,PAYC,"PAYCOM SOFTWARE, INC.",Industrials,Industrials,13.0,49.0,36.0
-2025-09-30,PAYX,"PAYCHEX, INC.",Industrials,Industrials,11.0,68.0,57.0
-2025-09-30,PBR,BRAZILIAN PETROLEUM  - PETROBRAS,CE - Dividend Portfolio,MR Discretion,-8.0,16.0,24.0
-2025-09-30,PCAR,PACCAR INC,Industrials,Industrials,15.0,37.0,22.0
-2025-09-30,PCG,PG&E ,Utilities,Utilities,58.0,37.0,-21.0
-2025-09-30,PEG,PUBLIC SERVICE ENTERPRISE GROUP INC.,Utilities,Utilities,-48.0,-25.0,23.0
-2025-09-30,PEP,"PEPSICO, INC.",Consumer Staples,Consumer Staples,-22.0,-9.0,13.0
-2025-09-30,PFE,PFIZER INC.,Health Care,Health Care,20.0,-14.0,-34.0
-2025-09-30,PFG,"PRINCIPAL FINANCIAL GROUP, INC.",Financials,Financials,26.0,30.0,4.0
-2025-09-30,PG,THE PROCTER & GAMBLE COMPANY,Consumer Staples,Consumer Staples,55.0,36.0,-19.0
-2025-09-30,PGR,THE PROGRESSIVE ,Financials,Financials,94.0,56.0,-38.0
-2025-09-30,PH,PARKER-HANNIFIN ,Industrials,Industrials,-7.0,8.0,15.0
-2025-09-30,PHM,"PULTEGROUP, INC.",Consumer Discretionary,Consumer Discretionary,-35.0,-25.0,10.0
-2025-09-30,PKG,PACKAGING  OF AMERICA,Materials,Materials,30.0,35.0,5.0
-2025-09-30,PLD,"PROLOGIS, INC.",Real Estate,Real Estate,17.0,22.0,5.0
-2025-09-30,PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,Information Technology,29.0,42.0,13.0
-2025-09-30,PM,PHILIP MORRIS INTERNATIONAL INC.,Consumer Staples,Consumer Staples,-66.0,-14.0,52.0
-2025-09-30,PNC,"THE PNC FINANCIAL SERVICES GROUP, INC.",Financials,Financials,-18.0,-9.0,9.0
-2025-09-30,PNR,PENTAIR PUBLIC LIMITED COMPANY,Industrials,Industrials,3.0,10.0,7.0
-2025-09-30,PNW,PINNACLE WEST CAPITAL ,Utilities,Utilities,26.0,28.0,2.0
-2025-09-30,PODD,INSULET ,Health Care,Health Care,53.0,45.0,-8.0
-2025-09-30,POOL,POOL ,Consumer Discretionary,Consumer Discretionary,-75.0,-31.0,44.0
-2025-09-30,POWA,INVESCO DEF EQTY ETF,Defensive (DEF),Sector & Style ETFs,-9.0,18.0,27.0
-2025-09-30,PPG,"PPG INDUSTRIES, INC.",Materials,Materials,72.0,52.0,-20.0
-2025-09-30,PPL,PPL ,Utilities,Utilities,14.0,46.0,32.0
-2025-09-30,PRU,"PRUDENTIAL FINANCIAL, INC.",Financials,Financials,63.0,56.0,-7.0
-2025-09-30,PSA,PUBLIC STORAGE.,Real Estate,Real Estate,34.0,23.0,-11.0
-2025-09-30,PSKY,PARAMOUNT SKYDANCE ,Communication Services,Communication Services,6.0,0.0,-6.0
-2025-09-30,PSX,PHILLIPS 66,Energy,Energy,23.0,26.0,3.0
-2025-09-30,PTC,PTC INC.,Information Technology,Information Technology,-39.0,-6.0,33.0
-2025-09-30,PWR,"QUANTA SERVICES, INC.",Industrials,Industrials,33.0,22.0,-11.0
-2025-09-30,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,4.0,31.0,27.0
-2025-09-30,QAT,ISHARES:MSCI QATAR,Qatar,Foreign,7.0,33.0,26.0
-2025-09-30,QCOM,QUALCOMM INC.,Information Technology,Information Technology,27.0,19.0,-8.0
-2025-09-30,QQQ,INVESCO QQQ TRUST 1,Secular Growth,Sector & Style ETFs,23.0,10.0,-13.0
-2025-09-30,QUAL,ISHARES:MSCI USA QF,Quality (QUAL),Sector & Style ETFs,-3.0,9.0,12.0
-2025-09-30,RCL,ROYAL CARIBBEAN CRUISES LTD.,Consumer Discretionary,Consumer Discretionary,20.0,40.0,20.0
-2025-09-30,REG,REGENCY CENTERS ,Real Estate,Real Estate,37.0,2.0,-35.0
-2025-09-30,REGN,"REGENERON PHARMACEUTICALS, INC.",Health Care,Health Care,-36.0,-13.0,23.0
-2025-09-30,RF,REGIONS FINANCIAL ,Financials,Financials,-31.0,-19.0,12.0
-2025-09-30,RIG,TRANSOCEAN LTD,Discretionary,MR Discretion,44.0,55.0,11.0
-2025-09-30,RJF,"RAYMOND JAMES FINANCIAL, INC.",Financials,Financials,18.0,48.0,30.0
-2025-09-30,RL,RALPH LAUREN ,Consumer Discretionary,Consumer Discretionary,-42.0,-13.0,29.0
-2025-09-30,RMD,RESMED INC.,Health Care,Health Care,2.0,-25.0,-27.0
-2025-09-30,ROK,"ROCKWELL AUTOMATION, INC.",Industrials,Industrials,-19.0,-13.0,6.0
-2025-09-30,ROKU,"ROKU, INC.",Discretionary,MR Discretion,-20.0,-7.0,13.0
-2025-09-30,ROL,"ROLLINS, INC.",Industrials,Industrials,3.0,8.0,5.0
-2025-09-30,ROP,"ROPER TECHNOLOGIES, INC.",Information Technology,Information Technology,16.0,44.0,28.0
-2025-09-30,ROST,"ROSS STORES, INC.",Consumer Discretionary,Consumer Discretionary,20.0,30.0,10.0
-2025-09-30,RSG,"REPUBLIC SERVICES, INC.",Industrials,Industrials,-66.0,-7.0,59.0
-2025-09-30,RSP,INVESCO S&P500 EWGHT,Cyclicals (RSP),Sector & Style ETFs,-7.0,8.0,15.0
-2025-09-30,RTX,RTX ,Industrials,Industrials,-29.0,20.0,49.0
-2025-09-30,RUT,RUSSELL 2000 INDEX,Index,Indices,16.0,14.0,-2.0
-2025-09-30,RVTY,"REVVITY, INC.",Health Care,Health Care,-13.0,-23.0,-10.0
-2025-09-30,SBAC,SBA COMMUNICATIONS ,Real Estate,Real Estate,-82.0,-27.0,55.0
-2025-09-30,SBLK,STAR BULK CARRIERS CORP.,CE - Dividend Portfolio,MR Discretion,4.0,-8.0,-12.0
-2025-09-30,SBUX,STARBUCKS ,Consumer Discretionary,Consumer Discretionary,78.0,64.0,-14.0
-2025-09-30,SCHW,THE CHARLES SCHWAB ,Financials,Financials,73.0,51.0,-22.0
-2025-09-30,SD,"SANDRIDGE ENERGY, INC.",Discretionary,MR Discretion,9.0,19.0,10.0
-2025-09-30,SDY,SPDR S&P DIVIDEND,Dividend Yield (SDY),Sector & Style ETFs,43.0,45.0,2.0
-2025-09-30,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,2.0,18.0,16.0
-2025-09-30,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds & Yields,-39.0,-43.0,-4.0
-2025-09-30,SILJ,ETFMG PRIME JR SILVR MNR,Silver,Commodities,12.0,17.0,5.0
-2025-09-30,SJM,THE J. M. SMUCKER COMPANY,Consumer Staples,Consumer Staples,-10.0,8.0,18.0
-2025-09-30,SLB,SCHLUMBERGER N.V.,Energy,Energy,13.0,10.0,-3.0
-2025-09-30,SLV,ISHARES:SILVER TRUST,Silver,Commodities,-11.0,15.0,26.0
-2025-09-30,SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,Information Technology,-5.0,2.0,7.0
-2025-09-30,SNA,SNAP-ON INC.,Industrials,Industrials,-9.0,20.0,29.0
-2025-09-30,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,44.0,22.0,-22.0
-2025-09-30,SO,THE SOUTHERN COMPANY,Utilities,Utilities,-77.0,11.0,88.0
-2025-09-30,SOLV,SOLVENTUM ,Health Care,Health Care,65.0,45.0,-20.0
-2025-09-30,SPG,"SIMON PROPERTY GROUP, INC.",Real Estate,Real Estate,15.0,7.0,-8.0
-2025-09-30,SPGI,S&P GLOBAL INC.,Financials,Financials,62.0,39.0,-23.0
-2025-09-30,SPHB,INVESCO S&P500 HI BE,High Beta (SPHB),Sector & Style ETFs,-14.0,21.0,35.0
-2025-09-30,SPLV,INVESCO S&P500 LOWVL,Low Beta (SPLV),Sector & Style ETFs,-53.0,-23.0,30.0
-2025-09-30,SPX,S&P 500 INDEX,Index,Indices,-31.0,-10.0,21.0
-2025-09-30,SPY,SPDR S&P 500 ETF,S&P500 Index,Sector & Style ETFs,-30.0,4.0,34.0
-2025-09-30,SRE,SEMPRA,Utilities,Utilities,-30.0,9.0,39.0
-2025-09-30,STE,STERIS PUBLIC LIMITED COMPANY,Health Care,Health Care,15.0,6.0,-9.0
-2025-09-30,STIP,ISHARES:0-5 TIPS BD ETF,Bonds,Bonds & Yields,-46.0,-31.0,15.0
-2025-09-30,STLA,STELLANTIS NV,CE - Dividend Portfolio,MR Discretion,0.0,-18.0,-18.0
-2025-09-30,STLD,"STEEL DYNAMICS, INC.",Materials,Materials,-3.0,9.0,12.0
-2025-09-30,STNG,SCORPIO TANKERS INC.,CE - Cap Gain,MR Discretion,11.0,26.0,15.0
-2025-09-30,STT,STATE STREET ,Financials,Financials,-5.0,23.0,28.0
-2025-09-30,STX,SEAGATE TECHNOLOGY HOLDINGS,Information Technology,Information Technology,-13.0,11.0,24.0
-2025-09-30,STZ,"CONSTELLATION BRANDS, INC.",Consumer Staples,Consumer Staples,45.0,70.0,25.0
-2025-09-30,SW,SMURFIT WESTROCK PUBLIC LIMITED COMPANY,Materials,Materials,42.0,52.0,10.0
-2025-09-30,SWK,"STANLEY BLACK & DECKER, INC.",Industrials,Industrials,-15.0,-9.0,6.0
-2025-09-30,SWKS,"SKYWORKS SOLUTIONS, INC.",Information Technology,Information Technology,0.0,4.0,4.0
-2025-09-30,SYF,SYNCHRONY FINANCIAL,Financials,Financials,27.0,46.0,19.0
-2025-09-30,SYK,STRYKER ,Health Care,Health Care,21.0,48.0,27.0
-2025-09-30,SYY,SYSCO ,Consumer Staples,Consumer Staples,-5.0,-22.0,-17.0
-2025-09-30,T,AT&T INC.,Communication Services,Communication Services,-6.0,27.0,33.0
-2025-09-30,TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,Consumer Staples,80.0,54.0,-26.0
-2025-09-30,TDG,TRANSDIGM GROUP INC.,Industrials,Industrials,-76.0,-34.0,42.0
-2025-09-30,TDW,TIDEWATER INC.,CE - Cap Gain,MR Discretion,-18.0,-11.0,7.0
-2025-09-30,TDY,TELEDYNE TECHNOLOGIES INC.,Information Technology,Information Technology,12.0,13.0,1.0
-2025-09-30,TECH,BIO-TECHNE ,Health Care,Health Care,-24.0,-17.0,7.0
-2025-09-30,TECK,TECK RESOURCES LIMITED,Discretionary,MR Discretion,40.0,0.0,-40.0
-2025-09-30,TEL,TE CONNECTIVITY LTD,Information Technology,Information Technology,-2.0,33.0,35.0
-2025-09-30,TER,"TERADYNE, INC.",Information Technology,Information Technology,9.0,19.0,10.0
-2025-09-30,TFC,TRUIST FINANCIAL ,Financials,Financials,36.0,52.0,16.0
-2025-09-30,TGT,TARGET ,Consumer Staples,Consumer Staples,54.0,57.0,3.0
-2025-09-30,THD,ISHARES:MSCI THAI,Thai,Foreign,10.0,-19.0,-29.0
-2025-09-30,TIP,ISHARES:TIPS BD ETF,Bonds,Bonds & Yields,54.0,27.0,-27.0
-2025-09-30,TJX,"THE TJX COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,19.0,29.0,10.0
-2025-09-30,TKO,"TKO GROUP HOLDINGS, INC.",Communication Services,Communication Services,23.0,27.0,4.0
-2025-09-30,TLT,ISHARES:20+ TRS BD ETF,Bonds,Bonds & Yields,-31.0,-8.0,23.0
-2025-09-30,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,-25.0,-11.0,14.0
-2025-09-30,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,-21.0,1.0,22.0
-2025-09-30,TNX,10 Y TSY YLD NDX,Yields,Bonds & Yields,-46.0,-26.0,20.0
-2025-09-30,TPL,TEXAS PACIFIC LAND ,Energy,Energy,13.0,-21.0,-34.0
-2025-09-30,TPR,"TAPESTRY, INC.",Consumer Discretionary,Consumer Discretionary,59.0,52.0,-7.0
-2025-09-30,TRGP,TARGA RESOURCES CORP.,Energy,Energy,52.0,23.0,-29.0
-2025-09-30,TRMB,TRIMBLE INC.,Information Technology,Information Technology,53.0,49.0,-4.0
-2025-09-30,TROW,"T. ROWE PRICE GROUP, INC.",Financials,Financials,-50.0,-30.0,20.0
-2025-09-30,TRV,"THE TRAVELERS COMPANIES, INC.",Financials,Financials,44.0,48.0,4.0
-2025-09-30,TS,TENARIS SA,Discretionary,MR Discretion,-59.0,-11.0,48.0
-2025-09-30,TSCO,TRACTOR SUPPLY COMPANY,Consumer Discretionary,Consumer Discretionary,-10.0,19.0,29.0
-2025-09-30,TSLA,"TESLA, INC.",Consumer Discretionary,Consumer Discretionary,47.0,6.0,-41.0
-2025-09-30,TSN,"TYSON FOODS, INC.",Consumer Staples,Consumer Staples,51.0,64.0,13.0
-2025-09-30,TT,TRANE TECHNOLOGIES PLC,Industrials,Industrials,42.0,26.0,-16.0
-2025-09-30,TTD,"THE TRADE DESK, INC.",Communication Services,Communication Services,45.0,61.0,16.0
-2025-09-30,TTWO,"TAKE-TWO INTERACTIVE SOFTWARE, INC.",Communication Services,Communication Services,-34.0,8.0,42.0
-2025-09-30,TUR,ISHARES:MSCI TURKEY,Turkey,Foreign,6.0,34.0,28.0
-2025-09-30,TXN,TEXAS INSTRUMENTS INC.,Information Technology,Information Technology,66.0,74.0,8.0
-2025-09-30,TXT,TEXTRON INC.,Industrials,Industrials,-18.0,8.0,26.0
-2025-09-30,TYL,"TYLER TECHNOLOGIES, INC.",Information Technology,Information Technology,29.0,38.0,9.0
-2025-09-30,TYX,30 Y TSY YLD NDX,Yields,Bonds & Yields,30.0,18.0,-12.0
-2025-09-30,UAL,"UNITED AIRLINES HOLDINGS, INC.",Industrials,Industrials,1.0,3.0,2.0
-2025-09-30,UBER,"UBER TECHNOLOGIES, INC.",Industrials,Industrials,-16.0,20.0,36.0
-2025-09-30,UDR,"UDR, INC.",Real Estate,Real Estate,46.0,36.0,-10.0
-2025-09-30,UHS,"UNIVERSAL HEALTH SERVICES, INC.",Health Care,Health Care,32.0,3.0,-29.0
-2025-09-30,ULTA,"ULTA BEAUTY, INC.",Consumer Discretionary,Consumer Discretionary,49.0,19.0,-30.0
-2025-09-30,UNG,UNITED STATES NAT GAS,Natural Gas (UNG),Commodities,-14.0,36.0,50.0
-2025-09-30,UNH,UNITEDHEALTH GROUP INC.,Health Care,Health Care,14.0,-2.0,-16.0
-2025-09-30,UNP,UNION PACIFIC ,Industrials,Industrials,23.0,-6.0,-29.0
-2025-09-30,UPS,"UNITED PARCEL SERVICE, INC.",Industrials,Industrials,87.0,49.0,-38.0
-2025-09-30,URI,"UNITED RENTALS, INC.",Industrials,Industrials,-25.0,-15.0,10.0
-2025-09-30,URNM,SPROTT URANIUM MINERS,CE - Cap Gain,MR Discretion,-9.0,8.0,17.0
-2025-09-30,USB,U.S. BANCORP,Financials,Financials,12.0,16.0,4.0
-2025-09-30,USO,UNITED STATES OIL FUND,WTI Crude (USO),Commodities,-8.0,49.0,57.0
-2025-09-30,UUP,INVESCO DB USD IDX BL,Currency,Currencies,18.0,44.0,26.0
-2025-09-30,V,VISA INC.,Financials,Financials,81.0,72.0,-9.0
-2025-09-30,VAL,VALARIS LIMITED,CE - Cap Gain,MR Discretion,-33.0,-17.0,16.0
-2025-09-30,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,47.0,59.0,12.0
-2025-09-30,VIX,CBOE MKT VOLATILITY IDX,Volatility - NYSE,Indices,-28.0,35.0,63.0
-2025-09-30,VLO,VALERO ENERGY ,Energy,Energy,19.0,17.0,-2.0
-2025-09-30,VLTO,VERALTO ,Industrials,Industrials,-82.0,-23.0,59.0
-2025-09-30,VMC,VULCAN MATERIALS COMPANY,Materials,Materials,3.0,29.0,26.0
-2025-09-30,VNM,VANECK:VIETNAM,Vietnam,Foreign,-16.0,-13.0,3.0
-2025-09-30,VRSK,"VERISK ANALYTICS, INC.",Industrials,Industrials,114.0,76.0,-38.0
-2025-09-30,VRSN,"VERISIGN, INC.",Information Technology,Information Technology,21.0,-11.0,-32.0
-2025-09-30,VRTX,VERTEX PHARMACEUTICALS INC.,Health Care,Health Care,116.0,61.0,-55.0
-2025-09-30,VST,VISTRA CORP.,Utilities,Utilities,75.0,58.0,-17.0
-2025-09-30,VTR,"VENTAS, INC.",Real Estate,Real Estate,71.0,51.0,-20.0
-2025-09-30,VTRS,VIATRIS INC.,Health Care,Health Care,25.0,25.0,-0.0
-2025-09-30,VXN,CBOE NASDAQ MKT VOL NDX,Volatility - Nasdaq,Indices,12.0,9.0,-3.0
-2025-09-30,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,-37.0,-10.0,27.0
-2025-09-30,WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIES ,Industrials,Industrials,22.0,2.0,-20.0
-2025-09-30,WAT,WATERS ,Health Care,Health Care,68.0,37.0,-31.0
-2025-09-30,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,-65.0,-1.0,64.0
-2025-09-30,WDAY,"WORKDAY, INC.",Information Technology,Information Technology,-34.0,-8.0,26.0
-2025-09-30,WDC,WESTERN DIGITAL ,Information Technology,Information Technology,-12.0,15.0,27.0
-2025-09-30,WEC,"WEC ENERGY GROUP, INC.",Utilities,Utilities,-15.0,9.0,24.0
-2025-09-30,WELL,WELLTOWER INC.,Real Estate,Real Estate,51.0,35.0,-16.0
-2025-09-30,WFC,WELLS FARGO & COMPANY,Financials,Financials,0.0,28.0,28.0
-2025-09-30,WM,"WASTE MANAGEMENT, INC.",Industrials,Industrials,56.0,70.0,14.0
-2025-09-30,WMB,"THE WILLIAMS COMPANIES, INC.",Energy,Energy,-14.0,7.0,21.0
-2025-09-30,WMT,WALMART INC.,Consumer Staples,Consumer Staples,25.0,36.0,11.0
-2025-09-30,WRB,W. R. BERKLEY ,Financials,Financials,-9.0,31.0,40.0
-2025-09-30,WSM,"WILLIAMS-SONOMA, INC.",Consumer Discretionary,Consumer Discretionary,11.0,-21.0,-32.0
-2025-09-30,WST,"WEST PHARMACEUTICAL SERVICES, INC.",Health Care,Health Care,-13.0,25.0,38.0
-2025-09-30,WTW,WILLIS TOWERS WATSON,Financials,Financials,5.0,26.0,21.0
-2025-09-30,WY,WEYERHAEUSER COMPANY,Real Estate,Real Estate,48.0,37.0,-11.0
-2025-09-30,WYNN,"WYNN RESORTS, LIMITED",Consumer Discretionary,Consumer Discretionary,24.0,38.0,14.0
-2025-09-30,XEL,XCEL ENERGY INC.,Utilities,Utilities,-4.0,2.0,6.0
-2025-09-30,XES,SPDR S&P OIL&GAS E&S,Discretionary,MR Discretion,16.0,21.0,5.0
-2025-09-30,XLB,SEL SECTOR:MATRLS SPDR,Materials,Sector & Style ETFs,33.0,36.0,3.0
-2025-09-30,XLC,SEL SECTOR:COMM SVC SPDR,Communication Services,Sector & Style ETFs,-1.0,25.0,26.0
-2025-09-30,XLE,SEL SECTOR:ENERGY SPDR,Energy,Sector & Style ETFs,25.0,32.0,7.0
-2025-09-30,XLF,SEL SECTOR:FINL S SPDR,Financials,Sector & Style ETFs,21.0,33.0,12.0
-2025-09-30,XLI,SEL SECTOR:INDUST SPDR,Industrials,Sector & Style ETFs,43.0,26.0,-17.0
-2025-09-30,XLK,SEL SECTOR:TECH SPDR,Information Technology,Sector & Style ETFs,18.0,3.0,-15.0
-2025-09-30,XLP,SEL SECTOR:C STP SPDR,Consumer Staples,Sector & Style ETFs,8.0,39.0,31.0
-2025-09-30,XLRE,SEL SECTOR:RL EST SPDR,Real Estate,Sector & Style ETFs,3.0,39.0,36.0
-2025-09-30,XLU,SEL SECTOR:UTIL SPDR,Utilities,Sector & Style ETFs,32.0,21.0,-11.0
-2025-09-30,XLV,SEL SECTOR:H CARE SPDR,Health Care,Sector & Style ETFs,34.0,26.0,-8.0
-2025-09-30,XLY,SEL SECTOR:C DSC SPDR,Consumer Discretionary,Sector & Style ETFs,23.0,32.0,9.0
-2025-09-30,XOM,EXXON MOBIL ,Energy,Energy,14.0,28.0,14.0
-2025-09-30,XOP,SPDR S&P OIL&GAS EXP,CE - Cap Gain,MR Discretion,15.0,23.0,8.0
-2025-09-30,XYL,XYLEM INC.,Industrials,Industrials,40.0,28.0,-12.0
-2025-09-30,XYZ,"BLOCK, INC.",Financials,Financials,-27.0,-4.0,23.0
-2025-09-30,YUM,"YUM! BRANDS, INC.",Consumer Discretionary,Consumer Discretionary,8.0,1.0,-7.0
-2025-09-30,ZBH,"ZIMMER BIOMET HOLDINGS, INC.",Health Care,Health Care,56.0,47.0,-9.0
-2025-09-30,ZBRA,ZEBRA TECHNOLOGIES ,Information Technology,Information Technology,5.0,48.0,43.0
-2025-09-30,ZTS,ZOETIS INC.,Health Care,Health Care,78.0,61.0,-17.0
+2025-09-30,A,"AGILENT TECHNOLOGIES, INC.",Health Care,Health Care,19.0,1.0,-18.0
+2025-09-30,AAPL,APPLE INC.,Information Technology,Information Technology,1.0,-3.0,-4.0
+2025-09-30,ABBV,ABBVIE INC.,Health Care,Health Care,21.0,5.0,-16.0
+2025-09-30,ABNB,"AIRBNB, INC.",Consumer Discretionary,Consumer Discretionary,34.0,7.0,-27.0
+2025-09-30,ABT,ABBOTT LABORATORIES,Health Care,Health Care,23.0,1.0,-22.0
+2025-09-30,ACGL,ARCH CAPITAL GROUP LTD.,Financials,Financials,73.0,34.0,-39.0
+2025-09-30,ACN,ACCENTURE PUBLIC LIMITED COMPANY,Information Technology,Information Technology,24.0,8.0,-16.0
+2025-09-30,ADBE,ADOBE INC.,Information Technology,Information Technology,-1.0,-14.0,-13.0
+2025-09-30,ADI,"ANALOG DEVICES, INC.",Information Technology,Information Technology,43.0,33.0,-10.0
+2025-09-30,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,35.0,24.0,-11.0
+2025-09-30,ADP,"AUTOMATIC DATA PROCESSING, INC.",Industrials,Industrials,26.0,22.0,-4.0
+2025-09-30,ADSK,"AUTODESK, INC.",Information Technology,Information Technology,8.0,20.0,12.0
+2025-09-30,AEE,AMEREN ,Utilities,Utilities,-13.0,15.0,28.0
+2025-09-30,AEP,"AMERICAN ELECTRIC POWER COMPANY, INC.",Utilities,Utilities,2.0,17.0,15.0
+2025-09-30,AES,THE AES ,Utilities,Utilities,22.0,21.0,-1.0
+2025-09-30,AFL,AFLAC INC.,Financials,Financials,14.0,-27.0,-41.0
+2025-09-30,AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,Financials,45.0,10.0,-35.0
+2025-09-30,AIZ,"ASSURANT, INC.",Financials,Financials,18.0,8.0,-10.0
+2025-09-30,AJG,ARTHUR J. GALLAGHER & CO.,Financials,Financials,36.0,-9.0,-45.0
+2025-09-30,AKAM,"AKAMAI TECHNOLOGIES, INC.",Information Technology,Information Technology,18.0,-3.0,-21.0
+2025-09-30,ALB,ALBEMARLE ,Materials,Materials,29.0,6.0,-23.0
+2025-09-30,ALGN,"ALIGN TECHNOLOGY, INC.",Health Care,Health Care,52.0,-2.0,-54.0
+2025-09-30,ALL,THE ALLSTATE ,Financials,Financials,36.0,-6.0,-42.0
+2025-09-30,ALLE,ALLEGION PUBLIC LIMITED COMPANY,Industrials,Industrials,8.0,4.0,-4.0
+2025-09-30,AMAT,"APPLIED MATERIALS, INC.",Information Technology,Information Technology,-42.0,-16.0,26.0
+2025-09-30,AMCR,AMCOR PLC,Materials,Materials,-8.0,15.0,23.0
+2025-09-30,AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,Information Technology,-16.0,-4.0,12.0
+2025-09-30,AME,"AMETEK, INC.",Industrials,Industrials,22.0,11.0,-11.0
+2025-09-30,AMGN,AMGEN INC.,Health Care,Health Care,37.0,3.0,-34.0
+2025-09-30,AMP,"AMERIPRISE FINANCIAL, INC.",Financials,Financials,28.0,-9.0,-37.0
+2025-09-30,AMT,AMERICAN TOWER ,Real Estate,Real Estate,-47.0,-18.0,29.0
+2025-09-30,AMZN,"AMAZON.COM, INC.",Consumer Discretionary,Consumer Discretionary,33.0,44.0,11.0
+2025-09-30,ANET,"ARISTA NETWORKS, INC.",Information Technology,Information Technology,14.0,21.0,7.0
+2025-09-30,AON,AON PLC,Financials,Financials,61.0,52.0,-9.0
+2025-09-30,AOS,A. O. SMITH ,Industrials,Industrials,3.0,8.0,5.0
+2025-09-30,APA,APA ,Energy,Energy,14.0,5.0,-9.0
+2025-09-30,APD,"AIR PRODUCTS AND CHEMICALS, INC.",Materials,Materials,51.0,54.0,3.0
+2025-09-30,APH,AMPHENOL ,Information Technology,Information Technology,-28.0,0.0,28.0
+2025-09-30,APO,"APOLLO GLOBAL MANAGEMENT, INC.",Financials,Financials,-21.0,1.0,22.0
+2025-09-30,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,13.0,-3.0,-16.0
+2025-09-30,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,24.0,8.0,-16.0
+2025-09-30,ASC,ARDMORE SHIPPING ,Discretionary,MR Discretion,41.0,36.0,-5.0
+2025-09-30,ATO,ATMOS ENERGY ,Utilities,Utilities,8.0,3.0,-5.0
+2025-09-30,AVB,"AVALONBAY COMMUNITIES, INC.",Real Estate,Real Estate,14.0,-31.0,-45.0
+2025-09-30,AVGO,BROADCOM INC.,Information Technology,Information Technology,-16.0,23.0,39.0
+2025-09-30,AVY,AVERY DENNISON ,Materials,Materials,18.0,1.0,-17.0
+2025-09-30,AWK,"AMERICAN WATER WORKS COMPANY, INC.",Utilities,Utilities,28.0,3.0,-25.0
+2025-09-30,AXON,"AXON ENTERPRISE, INC.",Industrials,Industrials,36.0,53.0,17.0
+2025-09-30,AXP,AMERICAN EXPRESS COMPANY,Financials,Financials,34.0,15.0,-19.0
+2025-09-30,AZO,"AUTOZONE, INC.",Consumer Discretionary,Consumer Discretionary,50.0,34.0,-16.0
+2025-09-30,BA,THE BOEING COMPANY,Industrials,Industrials,56.0,48.0,-8.0
+2025-09-30,BAC,BANK OF AMERICA ,Financials,Financials,16.0,6.0,-10.0
+2025-09-30,BALL,BALL ,Materials,Materials,-38.0,-12.0,26.0
+2025-09-30,BAX,BAXTER INTERNATIONAL INC.,Health Care,Health Care,66.0,10.0,-56.0
+2025-09-30,BBY,"BEST BUY CO., INC.",Consumer Discretionary,Consumer Discretionary,0.0,2.0,2.0
+2025-09-30,BDX,"BECTON, DICKINSON AND COMPANY",Health Care,Health Care,23.0,3.0,-20.0
+2025-09-30,BEN,"FRANKLIN RESOURCES, INC.",Financials,Financials,12.0,17.0,5.0
+2025-09-30,BF.B,BROWN-FORMAN ,Consumer Staples,Consumer Staples,27.0,12.0,-15.0
+2025-09-30,BG,BUNGE LIMITED,Consumer Staples,Consumer Staples,17.0,6.0,-11.0
+2025-09-30,BIIB,BIOGEN INC.,Health Care,Health Care,22.0,5.0,-17.0
+2025-09-30,BK,THE BANK OF NEW YORK MELLON ,Financials,Financials,-6.0,12.0,18.0
+2025-09-30,BKNG,BOOKING HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,31.0,14.0,-17.0
+2025-09-30,BKR,BAKER HUGHES COMPANY,Energy,Energy,18.0,19.0,1.0
+2025-09-30,BLDR,"BUILDERS FIRSTSOURCE, INC.",Industrials,Industrials,23.0,27.0,4.0
+2025-09-30,BLK,"BLACKROCK, INC.",Financials,Financials,-9.0,-3.0,6.0
+2025-09-30,BMY,BRISTOL-MYERS SQUIBB COMPANY,Health Care,Health Care,75.0,35.0,-40.0
+2025-09-30,BR,"BROADRIDGE FINANCIAL SOLUTIONS, INC.",Industrials,Industrials,53.0,57.0,4.0
+2025-09-30,BRK.B,"BERKSHIRE HATHAWAY INC.,",Financials,Financials,3.0,-18.0,-21.0
+2025-09-30,BRO,"BROWN & BROWN, INC.",Financials,Financials,46.0,6.0,-40.0
+2025-09-30,BSX,BOSTON SCIENTIFIC ,Health Care,Health Care,52.0,39.0,-13.0
+2025-09-30,BTC=F,BITCOIN FUTURES,Futures,Futures,-78.0,-30.0,48.0
+2025-09-30,BTI,BRITISH AMERICAN TOBACCO P.L.C.,CE - Dividend Portfolio,MR Discretion,4.0,38.0,34.0
+2025-09-30,BTU,PEABODY ENERGY ,CE - Cap Gain,MR Discretion,12.0,-3.0,-15.0
+2025-09-30,BX,BLACKSTONE INC,Financials,Financials,30.0,44.0,14.0
+2025-09-30,BXP,"BOSTON PROPERTIES, INC.",Real Estate,Real Estate,45.0,15.0,-30.0
+2025-09-30,C,CITIGROUP INC.,Financials,Financials,13.0,8.0,-5.0
+2025-09-30,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,33.0,-4.0,-37.0
+2025-09-30,CAH,"CARDINAL HEALTH, INC.",Health Care,Health Care,-32.0,-16.0,16.0
+2025-09-30,CARR,CARRIER GLOBAL ,Industrials,Industrials,25.0,20.0,-5.0
+2025-09-30,CAT,CATERPILLAR INC.,Industrials,Industrials,-59.0,-16.0,43.0
+2025-09-30,CB,CHUBB LTD,Financials,Financials,17.0,-14.0,-31.0
+2025-09-30,CBOE,"CBOE GLOBAL MARKETS, INC.",Financials,Financials,-101.0,-28.0,73.0
+2025-09-30,CBRE,"CBRE GROUP, INC.",Real Estate,Real Estate,68.0,65.0,-3.0
+2025-09-30,CCI,CROWN CASTLE INC.,Real Estate,Real Estate,-27.0,3.0,30.0
+2025-09-30,CCJ,CAMECO ,Discretionary,MR Discretion,-42.0,2.0,44.0
+2025-09-30,CCL,CARNIVAL CORP,Consumer Discretionary,Consumer Discretionary,28.0,44.0,16.0
+2025-09-30,CDNS,"CADENCE DESIGN SYSTEMS, INC.",Information Technology,Information Technology,13.0,32.0,19.0
+2025-09-30,CDW,CDW ,Information Technology,Information Technology,37.0,8.0,-29.0
+2025-09-30,CEG,CONSTELLATION ENERGY .,Utilities,Utilities,-30.0,-2.0,28.0
+2025-09-30,CF,"CF INDUSTRIES HOLDINGS, INC.",Materials,Materials,20.0,-14.0,-34.0
+2025-09-30,CFG,"CITIZENS FINANCIAL GROUP, INC.",Financials,Financials,7.0,6.0,-1.0
+2025-09-30,CHD,"CHURCH & DWIGHT CO., INC.",Consumer Staples,Consumer Staples,39.0,27.0,-12.0
+2025-09-30,CHRW,"C.H. ROBINSON WORLDWIDE, INC.",Industrials,Industrials,28.0,11.0,-17.0
+2025-09-30,CHTR,"CHARTER COMMUNICATIONS, INC.",Communication Services,Communication Services,21.0,-20.0,-41.0
+2025-09-30,CI,THE CIGNA GROUP,Health Care,Health Care,66.0,24.0,-42.0
+2025-09-30,CINF,CINCINNATI FINANCIAL ,Financials,Financials,41.0,1.0,-40.0
+2025-09-30,CIVI,"CIVITAS RESOURCES, INC.",CE - Dividend Portfolio,MR Discretion,54.0,36.0,-18.0
+2025-09-30,CL,COLGATE-PALMOLIVE COMPANY,Consumer Staples,Consumer Staples,40.0,24.0,-16.0
+2025-09-30,CLX,THE CLOROX COMPANY,Consumer Staples,Consumer Staples,16.0,17.0,1.0
+2025-09-30,CMBT,CMB.TECH NV,Discretionary,MR Discretion,-26.0,-23.0,3.0
+2025-09-30,CMCSA,COMCAST ,Communication Services,Communication Services,50.0,18.0,-32.0
+2025-09-30,CME,CME GROUP INC.,Financials,Financials,-84.0,-20.0,64.0
+2025-09-30,CMG,"CHIPOTLE MEXICAN GRILL, INC.",Consumer Discretionary,Consumer Discretionary,54.0,10.0,-44.0
+2025-09-30,CMI,CUMMINS INC.,Industrials,Industrials,8.0,10.0,2.0
+2025-09-30,CMRE,COSTAMARE INC.,Discretionary,MR Discretion,33.0,21.0,-12.0
+2025-09-30,CMS,CMS ENERGY ,Utilities,Utilities,-37.0,-5.0,32.0
+2025-09-30,CNC,CENTENE ,Health Care,Health Care,62.0,-6.0,-68.0
+2025-09-30,CNP,"CENTERPOINT ENERGY, INC.",Utilities,Utilities,-6.0,25.0,31.0
+2025-09-30,CNR,"CORE NATURAL RESOURCES, INC.",CE - Cap Gain,MR Discretion,-5.0,4.0,9.0
+2025-09-30,COF,CAPITAL ONE FINANCIAL ,Financials,Financials,52.0,53.0,1.0
+2025-09-30,COIN,"COINBASE GLOBAL, INC.",Financials,Financials,-20.0,1.0,21.0
+2025-09-30,COO,"THE COOPER COMPANIES, INC.",Health Care,Health Care,-47.0,-34.0,13.0
+2025-09-30,COP,CONOCOPHILLIPS,Energy,Energy,20.0,9.0,-11.0
+2025-09-30,COR,"CENCORA, INC.",Health Care,Health Care,5.0,1.0,-4.0
+2025-09-30,COST,COSTCO WHOLESALE ,Consumer Staples,Consumer Staples,-5.0,0.0,5.0
+2025-09-30,CPAY,"FLEETCOR TECHNOLOGIES, INC.",Financials,Financials,28.0,0.0,-28.0
+2025-09-30,CPB,CAMPBELL SOUP COMPANY,Consumer Staples,Consumer Staples,16.0,19.0,3.0
+2025-09-30,CPER,UNITED STATES COPPER IDX,Copper (CPER),Commodities,34.0,-4.0,-38.0
+2025-09-30,CPRT,"COPART, INC.",Industrials,Industrials,70.0,37.0,-33.0
+2025-09-30,CPT,CAMDEN PROPERTY TRUST,Real Estate,Real Estate,35.0,4.0,-31.0
+2025-09-30,CRESY,CRESUD INC.,CE - Cap Gain,MR Discretion,-32.0,2.0,34.0
+2025-09-30,CRL,CHARLES RIVER LABORATORIES,Health Care,Health Care,37.0,26.0,-11.0
+2025-09-30,CRM,"SALESFORCE, INC.",Information Technology,Information Technology,-1.0,-5.0,-4.0
+2025-09-30,CRWD,"CROWDSTRIKE HOLDINGS, INC.",Information Technology,Information Technology,-60.0,-13.0,47.0
+2025-09-30,CSCO,"CISCO SYSTEMS, INC.",Information Technology,Information Technology,-27.0,9.0,36.0
+2025-09-30,CSGP,"COSTAR GROUP, INC.",Real Estate,Real Estate,19.0,45.0,26.0
+2025-09-30,CSX,CSX ,Industrials,Industrials,-60.0,-15.0,45.0
+2025-09-30,CTAS,CINTAS ,Industrials,Industrials,-83.0,-23.0,60.0
+2025-09-30,CTRA,COTERRA ENERGY INC.,Energy,Energy,4.0,14.0,10.0
+2025-09-30,CTSH,COGNIZANT TECHNOLOGY SOLUTIONS ,Information Technology,Information Technology,56.0,26.0,-30.0
+2025-09-30,CTVA,"CORTEVA, INC.",Materials,Materials,28.0,35.0,7.0
+2025-09-30,CVS,CVS HEALTH ,Health Care,Health Care,24.0,6.0,-18.0
+2025-09-30,CVX,CHEVRON ,Energy,Energy,30.0,22.0,-8.0
+2025-09-30,CZR,"CAESARS ENTERTAINMENT, INC.",Consumer Discretionary,Consumer Discretionary,7.0,-9.0,-16.0
+2025-09-30,D,"DOMINION ENERGY, INC.",Utilities,Utilities,-54.0,-7.0,47.0
+2025-09-30,DAL,"DELTA AIR LINES, INC.",Industrials,Industrials,59.0,45.0,-14.0
+2025-09-30,DASH,"DOORDASH, INC.",Consumer Discretionary,Consumer Discretionary,-26.0,6.0,32.0
+2025-09-30,DAY,CERIDIAN HCM HOLDING INC.,Industrials,Industrials,35.0,21.0,-14.0
+2025-09-30,DBB,INVESCO DB MS BMTL,Base Metals (DBB),Commodities,3.0,-2.0,-5.0
+2025-09-30,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,12.0,-8.0,-20.0
+2025-09-30,DDOG,"DATADOG, INC.",Information Technology,Information Technology,-16.0,-14.0,2.0
+2025-09-30,DE,DEERE & COMPANY,Industrials,Industrials,-13.0,12.0,25.0
+2025-09-30,DECK,DECKERS OUTDOOR ,Consumer Discretionary,Consumer Discretionary,82.0,57.0,-25.0
+2025-09-30,DELL,DELL TECHNOLOGIES INC.,Information Technology,Information Technology,-99.0,-33.0,66.0
+2025-09-30,DG,DOLLAR GENERAL ,Consumer Staples,Consumer Staples,-5.0,20.0,25.0
+2025-09-30,DGX,QUEST DIAGNOSTICS INC.,Health Care,Health Care,8.0,-6.0,-14.0
+2025-09-30,DHI,"D.R. HORTON, INC.",Consumer Discretionary,Consumer Discretionary,34.0,18.0,-16.0
+2025-09-30,DHR,DANAHER ,Health Care,Health Care,27.0,6.0,-21.0
+2025-09-30,DHT,"DHT HOLDINGS, INC.",CE - Dividend Portfolio,MR Discretion,27.0,37.0,10.0
+2025-09-30,DIA,SPDR DOW JONES INDUS AVG,Dow Jones 30 Index,Sector & Style ETFs,-11.0,-15.0,-4.0
+2025-09-30,DIS,THE WALT DISNEY COMPANY,Communication Services,Communication Services,25.0,8.0,-17.0
+2025-09-30,DJI,DOW JONES INDUSTRIAL AVERAGE INDEX,Index,Indices,-15.0,-29.0,-14.0
+2025-09-30,DLR,"DIGITAL REALTY TRUST, INC.",Real Estate,Real Estate,-57.0,-13.0,44.0
+2025-09-30,DLTR,"DOLLAR TREE, INC.",Consumer Staples,Consumer Staples,-14.0,33.0,47.0
+2025-09-30,DOC,"HEALTHDOC PROPERTIES, INC.",Real Estate,Real Estate,18.0,-13.0,-31.0
+2025-09-30,DOV,DOVER ,Industrials,Industrials,6.0,3.0,-3.0
+2025-09-30,DOW,DOW INC.,Materials,Materials,39.0,-10.0,-49.0
+2025-09-30,DPZ,"DOMINO'S PIZZA, INC.",Consumer Discretionary,Consumer Discretionary,53.0,25.0,-28.0
+2025-09-30,DRI,"DARDEN RESTAURANTS, INC.",Consumer Discretionary,Consumer Discretionary,36.0,32.0,-4.0
+2025-09-30,DTE,DTE ENERGY COMPANY,Utilities,Utilities,-24.0,5.0,29.0
+2025-09-30,DUK,DUKE ENERGY ,Utilities,Utilities,-31.0,4.0,35.0
+2025-09-30,DVA,DAVITA INC.,Health Care,Health Care,32.0,0.0,-32.0
+2025-09-30,DVN,DEVON ENERGY ,Energy,Energy,20.0,9.0,-11.0
+2025-09-30,DXCM,"DEXCOM, INC.",Health Care,Health Care,51.0,24.0,-27.0
+2025-09-30,EA,ELECTRONIC ARTS INC.,Communication Services,Communication Services,13.0,-5.0,-18.0
+2025-09-30,EBAY,EBAY INC.,Consumer Discretionary,Consumer Discretionary,14.0,24.0,10.0
+2025-09-30,EC,ECOPETROL SA,CE - Dividend Portfolio,MR Discretion,13.0,-3.0,-16.0
+2025-09-30,ECH,ISHARES:MSCI CHILE,Chile,Foreign,27.0,18.0,-9.0
+2025-09-30,ECL,ECOLAB INC.,Materials,Materials,31.0,-7.0,-38.0
+2025-09-30,ED,"CONSOLIDATED EDISON, INC.",Utilities,Utilities,-63.0,-28.0,35.0
+2025-09-30,EDEN,ISHARES:MSCI DENMARK,Denmark,Foreign,28.0,-23.0,-51.0
+2025-09-30,EDV,VANGUARD EXT DUR T;ETF,Bonds,Bonds,-43.0,-23.0,20.0
+2025-09-30,EFNL,ISHARES:MSCI FINLAND,Finland,Foreign,-7.0,-42.0,-35.0
+2025-09-30,EFX,EQUIFAX INC.,Industrials,Industrials,7.0,-33.0,-40.0
+2025-09-30,EG,"EVEREST GROUP, LTD.",Financials,Financials,5.0,7.0,2.0
+2025-09-30,EIDO,ISHARES:MSCI INDONESIA,Indonesia,Foreign,11.0,3.0,-8.0
+2025-09-30,EIRL,ISHARES:MSCI IRELAND,Ireland,Foreign,3.0,-11.0,-14.0
+2025-09-30,EIS,ISHARES:MSCI ISRAEL,Israel,Foreign,6.0,-2.0,-8.0
+2025-09-30,EIX,EDISON INTERNATIONAL,Utilities,Utilities,25.0,9.0,-16.0
+2025-09-30,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,-11.0,-4.0,7.0
+2025-09-30,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,41.0,-12.0,-53.0
+2025-09-30,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,27.0,-8.0,-35.0
+2025-09-30,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,-31.0,-4.0,27.0
+2025-09-30,ENPH,"ENPHASE ENERGY, INC.",Information Technology,Information Technology,30.0,-3.0,-33.0
+2025-09-30,ENZL,ISHARES:MSCI NEW ZLND,New Zlnd,Foreign,25.0,32.0,7.0
+2025-09-30,EOG,"EOG RESOURCES, INC.",Energy,Energy,26.0,19.0,-7.0
+2025-09-30,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,27.0,5.0,-22.0
+2025-09-30,EPHE,ISHARES:MSCI PHILIPPINES,Philippines,Foreign,37.0,14.0,-23.0
+2025-09-30,EPOL,ISHARES:MSCI POLAND,Poland,Foreign,4.0,0.0,-4.0
+2025-09-30,EPU,ISHARES:MSCI PERU,Peru,Foreign,14.0,-5.0,-19.0
+2025-09-30,EQIX,"EQUINIX, INC.",Real Estate,Real Estate,17.0,-4.0,-21.0
+2025-09-30,EQR,EQUITY RESIDENTIAL,Real Estate,Real Estate,44.0,12.0,-32.0
+2025-09-30,EQT,EQT ,Energy,Energy,13.0,-13.0,-26.0
+2025-09-30,ERIE,ERIE INDEMNITY COMPANY,Financials,Financials,-26.0,-3.0,23.0
+2025-09-30,ES,EVERSOURCE ENERGY,Utilities,Utilities,-25.0,-18.0,7.0
+2025-09-30,ES=F,E-MINI S&P 500 FUTURES,Futures,Futures,-33.0,-28.0,5.0
+2025-09-30,ESS,"ESSEX PROPERTY TRUST, INC.",Real Estate,Real Estate,12.0,-28.0,-40.0
+2025-09-30,ETN,EATON  PUBLIC LIMITED COMPANY,Industrials,Industrials,-31.0,3.0,34.0
+2025-09-30,ETR,ENTERGY ,Utilities,Utilities,-15.0,18.0,33.0
+2025-09-30,EVRG,"EVERGY, INC.",Utilities,Utilities,-13.0,4.0,17.0
+2025-09-30,EW,EDWARDS LIFESCIENCES ,Health Care,Health Care,49.0,37.0,-12.0
+2025-09-30,EWA,ISHARES:MSCI AUSTRALIA,Australia,Foreign,23.0,22.0,-1.0
+2025-09-30,EWC,ISHARES:MSCI CANADA,Canada,Foreign,7.0,-5.0,-12.0
+2025-09-30,EWD,ISHARES:MSCI SWEDEN,Sweden,Foreign,56.0,13.0,-43.0
+2025-09-30,EWG,ISHARES:MSCI GERMANY,Germany,Foreign,34.0,-17.0,-51.0
+2025-09-30,EWH,ISHARES:MSCI HONG KONG,Hong Kong,Foreign,30.0,39.0,9.0
+2025-09-30,EWI,ISHARES:MSCI ITALY,Italy,Foreign,25.0,13.0,-12.0
+2025-09-30,EWJ,ISHARES:MSCI JAPAN,Japan,Foreign,25.0,5.0,-20.0
+2025-09-30,EWK,ISHARES:MSCI BELGIUM,Belgium,Foreign,53.0,32.0,-21.0
+2025-09-30,EWL,ISHARES:MSCI SWITZERLAND,Switzerland,Foreign,48.0,17.0,-31.0
+2025-09-30,EWM,ISHARES:MSCI MALAYSIA,Malaysia,Foreign,1.0,-5.0,-6.0
+2025-09-30,EWN,ISHARES:MSCI NETHERLANDS,Netherlands,Foreign,22.0,-14.0,-36.0
+2025-09-30,EWO,ISHARES:MSCI AUSTRIA,Austria,Foreign,-13.0,-9.0,4.0
+2025-09-30,EWP,ISHARES:MSCI SPAIN,Spain,Foreign,12.0,2.0,-10.0
+2025-09-30,EWQ,ISHARES:MSCI FRANCE,France,Foreign,20.0,-14.0,-34.0
+2025-09-30,EWS,ISHARES:MSCI SINGAPORE,Singapore,Foreign,20.0,9.0,-11.0
+2025-09-30,EWT,ISHARES:MSCI TAIWAN,Taiwan,Foreign,-52.0,-18.0,34.0
+2025-09-30,EWU,ISHARES:MSCI UK,UK,Foreign,23.0,22.0,-1.0
+2025-09-30,EWW,ISHARES:MSCI MEXICO,Mexico,Foreign,0.0,-9.0,-9.0
+2025-09-30,EWY,ISHARES:MSCI S KOREA,S Korea,Foreign,-54.0,-21.0,33.0
+2025-09-30,EWZ,ISHARES:MSCI BRAZIL,Brazil,Foreign,6.0,-3.0,-9.0
+2025-09-30,EXC,EXELON ,Utilities,Utilities,-10.0,1.0,11.0
+2025-09-30,EXE,EXPAND ENERGY ,Energy,Energy,-13.0,-13.0,0.0
+2025-09-30,EXPD,EXPEDITORS INTERNATIONAL OF WASHINGTON,Industrials,Industrials,34.0,-2.0,-36.0
+2025-09-30,EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,Consumer Discretionary,39.0,33.0,-6.0
+2025-09-30,EXR,EXTRA SPACE STORAGE INC.,Real Estate,Real Estate,56.0,19.0,-37.0
+2025-09-30,F,FORD MOTOR COMPANY,Consumer Discretionary,Consumer Discretionary,10.0,5.0,-5.0
+2025-09-30,FANG,"DIAMONDBACK ENERGY, INC.",Energy,Energy,11.0,9.0,-2.0
+2025-09-30,FAST,FASTENAL COMPANY,Industrials,Industrials,45.0,33.0,-12.0
+2025-09-30,FCX,FREEPORT-MCMORAN INC.,Materials,Materials,42.0,11.0,-31.0
+2025-09-30,FDS,FACTSET RESEARCH SYSTEMS INC.,Financials,Financials,34.0,18.0,-16.0
+2025-09-30,FDX,FEDEX ,Industrials,Industrials,0.0,-28.0,-28.0
+2025-09-30,FE,FIRSTENERGY CORP.,Utilities,Utilities,9.0,10.0,1.0
+2025-09-30,FFIV,"F5, INC.",Information Technology,Information Technology,25.0,28.0,3.0
+2025-09-30,FI,"FISERV, INC.",Financials,Financials,62.0,27.0,-35.0
+2025-09-30,FICO,FAIR ISAAC ,Information Technology,Information Technology,26.0,-15.0,-41.0
+2025-09-30,FIS,FIDELITY NATIONAL INFORMATION SERVICES,Financials,Financials,9.0,-12.0,-21.0
+2025-09-30,FITB,FIFTH THIRD BANCORP,Financials,Financials,30.0,30.0,0.0
+2025-09-30,FOXA,FOX ,Communication Services,Communication Services,17.0,2.0,-15.0
+2025-09-30,FRO,FRONTLINE PLC,CE - Dividend Portfolio,MR Discretion,6.0,6.0,0.0
+2025-09-30,FRT,FEDERAL REALTY INVESTMENT TRUST,Real Estate,Real Estate,17.0,5.0,-12.0
+2025-09-30,FSLR,"FIRST SOLAR, INC.",Information Technology,Information Technology,-4.0,-5.0,-1.0
+2025-09-30,FTI,TECHNIPFMC PLC,CE - Cap Gain,MR Discretion,12.0,19.0,7.0
+2025-09-30,FTNT,"FORTINET, INC.",Information Technology,Information Technology,0.0,-28.0,-28.0
+2025-09-30,FTV,FORTIVE ,Industrials,Industrials,12.0,-19.0,-31.0
+2025-09-30,FVX,5 YR TSY YLD NDX,Yields,Yields,-7.0,-41.0,-34.0
+2025-09-30,FXA,INVESCO:AU DOLLAR,Currency,Currencies,20.0,6.0,-14.0
+2025-09-30,FXB,INVESCO:GBP STERLING,Currency,Currencies,43.0,22.0,-21.0
+2025-09-30,FXC,INVESCO:CANADIAN DOLLAR,Currency,Currencies,22.0,3.0,-19.0
+2025-09-30,FXE,INVESCO:EURO,Currency,Currencies,-24.0,-33.0,-9.0
+2025-09-30,FXY,INVESCO:JAPANESE YEN,Currency,Currencies,27.0,3.0,-24.0
+2025-09-30,GD,GENERAL DYNAMICS ,Industrials,Industrials,18.0,15.0,-3.0
+2025-09-30,GDDY,GODADDY INC.,Information Technology,Information Technology,17.0,-9.0,-26.0
+2025-09-30,GDX,VANECK:GOLD MINERS,Gold,Commodities,16.0,5.0,-11.0
+2025-09-30,GDXJ,VANECK:JR GOLD MINERS,Gold,Commodities,15.0,3.0,-12.0
+2025-09-30,GE,GENERAL ELECTRIC COMPANY,Industrials,Industrials,5.0,23.0,18.0
+2025-09-30,GEHC,GE HEALTHCARE TECHNOLOGIES INC.,Health Care,Health Care,47.0,15.0,-32.0
+2025-09-30,GEN,GEN DIGITAL INC.,Information Technology,Information Technology,33.0,14.0,-19.0
+2025-09-30,GEOS,GEOSPACE TECHNOLOGIES ,Discretionary,MR Discretion,21.0,-1.0,-22.0
+2025-09-30,GEV,GE VERNOVA INC.,Utilities,Utilities,0.0,24.0,24.0
+2025-09-30,GGB,GERDAU SA,CE - Dividend Portfolio,MR Discretion,34.0,21.0,-13.0
+2025-09-30,GILD,"GILEAD SCIENCES, INC.",Health Care,Health Care,22.0,44.0,22.0
+2025-09-30,GIS,"GENERAL MILLS, INC.",Consumer Staples,Consumer Staples,5.0,-5.0,-10.0
+2025-09-30,GL,GLOBE LIFE INC.,Financials,Financials,18.0,25.0,7.0
+2025-09-30,GLATF,GLOBAL ATOMIC ,Discretionary,MR Discretion,-19.0,-30.0,-11.0
+2025-09-30,GLD,SPDR GOLD,Gold,Commodities,12.0,7.0,-5.0
+2025-09-30,GLW,CORNING INC.,Information Technology,Information Technology,5.0,2.0,-3.0
+2025-09-30,GM,GENERAL MOTORS COMPANY,Consumer Discretionary,Consumer Discretionary,25.0,8.0,-17.0
+2025-09-30,GNK,GENCO SHIPPING & TRADING LIMITED,CE - Dividend Portfolio,MR Discretion,18.0,24.0,6.0
+2025-09-30,GNRC,GENERAC HOLDINGS INC.,Industrials,Industrials,50.0,56.0,6.0
+2025-09-30,GOOGL,ALPHABET INC.,Communication Services,Communication Services,10.0,5.0,-5.0
+2025-09-30,GPC,GENUINE PARTS COMPANY,Consumer Discretionary,Consumer Discretionary,29.0,18.0,-11.0
+2025-09-30,GPN,GLOBAL PAYMENTS INC.,Financials,Financials,41.0,27.0,-14.0
+2025-09-30,GREK,GLBL X MSCI GREECE,Greece,Foreign,14.0,8.0,-6.0
+2025-09-30,GRMN,GARMIN LTD,Consumer Discretionary,Consumer Discretionary,21.0,0.0,-21.0
+2025-09-30,GS,"THE GOLDMAN SACHS GROUP, INC.",Financials,Financials,-39.0,-15.0,24.0
+2025-09-30,GWW,"W.W. GRAINGER, INC.",Industrials,Industrials,46.0,13.0,-33.0
+2025-09-30,HAL,HALLIBURTON COMPANY,Energy,Energy,1.0,-5.0,-6.0
+2025-09-30,HAS,"HASBRO, INC.",Consumer Discretionary,Consumer Discretionary,16.0,23.0,7.0
+2025-09-30,HBAN,HUNTINGTON BANCSHARES INC.,Financials,Financials,15.0,10.0,-5.0
+2025-09-30,HCA,"HCA HEALTHCARE, INC.",Health Care,Health Care,42.0,11.0,-31.0
+2025-09-30,HD,"THE HOME DEPOT, INC.",Consumer Discretionary,Consumer Discretionary,18.0,20.0,2.0
+2025-09-30,HIG,THE HARTFORD FINANCIAL SERVICES GROUP,Financials,Financials,57.0,18.0,-39.0
+2025-09-30,HII,"HUNTINGTON INGALLS INDUSTRIES, INC.",Industrials,Industrials,27.0,24.0,-3.0
+2025-09-30,HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,41.0,33.0,-8.0
+2025-09-30,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",CE - Cap Gain,MR Discretion,24.0,-3.0,-27.0
+2025-09-30,HOLX,"HOLOGIC, INC.",Health Care,Health Care,-18.0,-6.0,12.0
+2025-09-30,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,40.0,11.0,-29.0
+2025-09-30,HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,Information Technology,-10.0,1.0,11.0
+2025-09-30,HPQ,HP INC.,Information Technology,Information Technology,26.0,20.0,-6.0
+2025-09-30,HRL,HORMEL FOODS ,Consumer Staples,Consumer Staples,-26.0,-28.0,-2.0
+2025-09-30,HSIC,"HENRY SCHEIN, INC.",Health Care,Health Care,23.0,-1.0,-24.0
+2025-09-30,HST,"HOST HOTELS & RESORTS, INC.",Real Estate,Real Estate,19.0,15.0,-4.0
+2025-09-30,HSY,THE HERSHEY COMPANY,Consumer Staples,Consumer Staples,7.0,22.0,15.0
+2025-09-30,HUBB,HUBBELL INC.,Industrials,Industrials,4.0,16.0,12.0
+2025-09-30,HUM,HUMANA INC.,Health Care,Health Care,56.0,40.0,-16.0
+2025-09-30,HWM,HOWMET AEROSPACE INC.,Industrials,Industrials,-28.0,0.0,28.0
+2025-09-30,HYG,ISHARES:IBOXX $HY CORP,Bonds,Bonds,-26.0,-33.0,-7.0
+2025-09-30,IBKR,"INTERACTIVE BROKERS GROUP, INC.",Financials,Financials,7.0,12.0,5.0
+2025-09-30,IBM,INTERNATIONAL BUSINESS MACHINES ,Information Technology,Information Technology,0.0,-11.0,-11.0
+2025-09-30,ICE,"INTERCONTINENTAL EXCHANGE, INC.",Financials,Financials,-46.0,12.0,58.0
+2025-09-30,ICL,ICL GROUP LTD,Discretionary,MR Discretion,49.0,13.0,-36.0
+2025-09-30,IDXX,"IDEXX LABORATORIES, INC.",Health Care,Health Care,28.0,28.0,0.0
+2025-09-30,IEF,ISHARES:7-10 TRS BD ETF,Bonds,Bonds,10.0,10.0,0.0
+2025-09-30,IEX,IDEX ,Industrials,Industrials,24.0,-20.0,-44.0
+2025-09-30,IFF,INTERNATIONAL FLAVORS & FRAGRANCES INC.,Materials,Materials,48.0,14.0,-34.0
+2025-09-30,INCY,INCYTE ,Health Care,Health Care,57.0,37.0,-20.0
+2025-09-30,INDA,ISHARES:MSCI INDIA,India,Foreign,-18.0,13.0,31.0
+2025-09-30,INTC,INTEL ,Information Technology,Information Technology,13.0,-5.0,-18.0
+2025-09-30,INTU,INTUIT INC.,Information Technology,Information Technology,-76.0,-25.0,51.0
+2025-09-30,INVH,INVITATION HOMES INC.,Real Estate,Real Estate,13.0,-19.0,-32.0
+2025-09-30,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,53.0,19.0,-34.0
+2025-09-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,16.0,3.0,-13.0
+2025-09-30,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,26.0,24.0,-2.0
+2025-09-30,IR,INGERSOLL RAND INC.,Industrials,Industrials,6.0,-25.0,-31.0
+2025-09-30,IRM,IRON MOUNTAIN INC.,Real Estate,Real Estate,-3.0,-24.0,-21.0
+2025-09-30,ISRG,"INTUITIVE SURGICAL, INC.",Health Care,Health Care,11.0,-14.0,-25.0
+2025-09-30,IT,"GARTNER, INC.",Information Technology,Information Technology,20.0,-31.0,-51.0
+2025-09-30,ITW,ILLINOIS TOOL WORKS INC.,Industrials,Industrials,31.0,26.0,-5.0
+2025-09-30,IVZ,INVESCO LTD.,Financials,Financials,17.0,12.0,-5.0
+2025-09-30,IWD,ISHARES:RUSS 1000 VL ETF,Value (IWD),Sector & Style ETFs,7.0,2.0,-5.0
+2025-09-30,IWF,ISHARES:RUSS 1000 GR ETF,Growth (IWF),Sector & Style ETFs,-50.0,-13.0,37.0
+2025-09-30,IWM,ISHARES:RUSS 2000 ETF,Small Caps,Sector & Style ETFs,4.0,0.0,-4.0
+2025-09-30,J,JACOBS SOLUTIONS INC.,Industrials,Industrials,3.0,10.0,7.0
+2025-09-30,JBHT,"J. B. HUNT TRANSPORT SERVICES, INC.",Industrials,Industrials,12.0,9.0,-3.0
+2025-09-30,JBL,JABIL INC.,Information Technology,Information Technology,-29.0,5.0,34.0
+2025-09-30,JCI,JOHNSON CONTROLS INTERNATIONAL PLC,Industrials,Industrials,4.0,-1.0,-5.0
+2025-09-30,JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,Financials,35.0,18.0,-17.0
+2025-09-30,JNJ,JOHNSON & JOHNSON,Health Care,Health Care,17.0,17.0,0.0
+2025-09-30,JPM,JPMORGAN CHASE & CO.,Financials,Financials,-8.0,3.0,11.0
+2025-09-30,K,KELLANOVA,Consumer Staples,Consumer Staples,3.0,12.0,9.0
+2025-09-30,KDP,KEURIG DR PEPPER INC.,Consumer Staples,Consumer Staples,-9.0,-5.0,4.0
+2025-09-30,KEY,KEYCORP,Financials,Financials,26.0,26.0,0.0
+2025-09-30,KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,Information Technology,-5.0,-16.0,-11.0
+2025-09-30,KHC,THE KRAFT HEINZ COMPANY,Consumer Staples,Consumer Staples,21.0,16.0,-5.0
+2025-09-30,KIM,KIMCO REALTY .,Real Estate,Real Estate,53.0,31.0,-22.0
+2025-09-30,KKR,KKR & CO. INC.,Financials,Financials,45.0,69.0,24.0
+2025-09-30,KLAC,KLA ,Information Technology,Information Technology,-53.0,-15.0,38.0
+2025-09-30,KMB,KIMBERLY-CLARK ,Consumer Staples,Consumer Staples,21.0,24.0,3.0
+2025-09-30,KMI,"KINDER MORGAN, INC.",Energy,Energy,-66.0,-18.0,48.0
+2025-09-30,KMX,"CARMAX, INC.",Consumer Discretionary,Consumer Discretionary,58.0,26.0,-32.0
+2025-09-30,KO,THE COCA-COLA COMPANY,Consumer Staples,Consumer Staples,9.0,21.0,12.0
+2025-09-30,KR,THE KROGER CO.,Consumer Staples,Consumer Staples,-49.0,-5.0,44.0
+2025-09-30,KVUE,KENVUE INC.,Consumer Staples,Consumer Staples,27.0,17.0,-10.0
+2025-09-30,L,LOEWS ,Financials,Financials,18.0,5.0,-13.0
+2025-09-30,LDOS,"LEIDOS HOLDINGS, INC.",Industrials,Industrials,16.0,19.0,3.0
+2025-09-30,LEN,LENNAR ,Consumer Discretionary,Consumer Discretionary,46.0,31.0,-15.0
+2025-09-30,LH,LABORATORY  OF AMERICA HOLDINGS,Health Care,Health Care,16.0,11.0,-5.0
+2025-09-30,LHX,"L3HARRIS TECHNOLOGIES, INC.",Industrials,Industrials,-21.0,4.0,25.0
+2025-09-30,LII,LENNOX INTERNATIONAL INC.,Industrials,Industrials,-17.0,18.0,35.0
+2025-09-30,LIN,LINDE PUBLIC LIMITED COMPANY,Materials,Materials,2.0,-6.0,-8.0
+2025-09-30,LKQ,LKQ ,Consumer Discretionary,Consumer Discretionary,45.0,-2.0,-47.0
+2025-09-30,LLY,ELI LILLY AND COMPANY,Health Care,Health Care,10.0,-17.0,-27.0
+2025-09-30,LMT,LOCKHEED MARTIN ,Industrials,Industrials,24.0,-7.0,-31.0
+2025-09-30,LNT,ALLIANT ENERGY ,Utilities,Utilities,-24.0,-1.0,23.0
+2025-09-30,LOW,"LOWE'S COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,32.0,27.0,-5.0
+2025-09-30,LQD,ISHARES:IBOXX $IG CORP,Bonds,Bonds,-41.0,-36.0,5.0
+2025-09-30,LRCX,LAM RESEARCH ,Information Technology,Information Technology,-26.0,-14.0,12.0
+2025-09-30,LULU,LULULEMON ATHLETICA INC.,Consumer Discretionary,Consumer Discretionary,-10.0,-38.0,-28.0
+2025-09-30,LUV,SOUTHWEST AIRLINES CO.,Industrials,Industrials,42.0,4.0,-38.0
+2025-09-30,LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,Consumer Discretionary,51.0,46.0,-5.0
+2025-09-30,LW,"LAMB WESTON HOLDINGS, INC.",Consumer Staples,Consumer Staples,31.0,16.0,-15.0
+2025-09-30,LYB,LYONDELLBASELL INDUSTRIES NV,Materials,Materials,46.0,-1.0,-47.0
+2025-09-30,LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,Communication Services,75.0,56.0,-19.0
+2025-09-30,MA,MASTERCARD INC..,Financials,Financials,78.0,60.0,-18.0
+2025-09-30,MAA,"MID-AMERICA APARTMENT COMMUNITIES, INC.",Real Estate,Real Estate,43.0,5.0,-38.0
+2025-09-30,MAR,"MARRIOTT INTERNATIONAL, INC.",Consumer Discretionary,Consumer Discretionary,2.0,-12.0,-14.0
+2025-09-30,MAS,MASCO ,Industrials,Industrials,14.0,13.0,-1.0
+2025-09-30,MCD,MCDONALD'S ,Consumer Discretionary,Consumer Discretionary,73.0,52.0,-21.0
+2025-09-30,MCHI,ISHARES:MSCI CHINA,China,Foreign,-13.0,-5.0,8.0
+2025-09-30,MCHP,MICROCHIP TECHNOLOGY INC.,Information Technology,Information Technology,-12.0,-14.0,-2.0
+2025-09-30,MCK,MCKESSON ,Health Care,Health Care,19.0,-7.0,-26.0
+2025-09-30,MCO,MOODY'S ,Financials,Financials,19.0,38.0,19.0
+2025-09-30,MDLZ,"MONDELEZ INTERNATIONAL, INC.",Consumer Staples,Consumer Staples,8.0,25.0,17.0
+2025-09-30,MDT,MEDTRONIC PUBLIC LIMITED COMPANY,Health Care,Health Care,-10.0,7.0,17.0
+2025-09-30,MDY,SPDR S&P MIDCAP 400 ETF,Mid-Caps (MDY),Sector & Style ETFs,15.0,13.0,-2.0
+2025-09-30,MET,"METLIFE, INC.",Financials,Financials,17.0,-8.0,-25.0
+2025-09-30,META,"META PLATFORMS, INC.",Communication Services,Communication Services,34.0,43.0,9.0
+2025-09-30,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,60.0,45.0,-15.0
+2025-09-30,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,20.0,15.0,-5.0
+2025-09-30,MKC,"MCCORMICK & COMPANY, INC.",Consumer Staples,Consumer Staples,-22.0,0.0,22.0
+2025-09-30,MKTX,MARKETAXESS HOLDINGS INC.,Financials,Financials,6.0,-14.0,-20.0
+2025-09-30,MLM,"MARTIN MARIETTA MATERIALS, INC.",Materials,Materials,12.0,16.0,4.0
+2025-09-30,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,31.0,-2.0,-33.0
+2025-09-30,MMM,3M COMPANY,Industrials,Industrials,34.0,5.0,-29.0
+2025-09-30,MNST,MONSTER BEVERAGE ,Consumer Staples,Consumer Staples,-8.0,0.0,8.0
+2025-09-30,MO,"ALTRIA GROUP, INC.",Consumer Staples,Consumer Staples,53.0,42.0,-11.0
+2025-09-30,MOH,"MOLINA HEALTHCARE, INC.",Health Care,Health Care,60.0,-9.0,-69.0
+2025-09-30,MOS,THE MOSAIC COMPANY,Materials,Materials,18.0,-15.0,-33.0
+2025-09-30,MP,MP MATERIALS CORP,Discretionary,MR Discretion,44.0,50.0,6.0
+2025-09-30,MPC,MARATHON PETROLEUM ,Energy,Energy,25.0,4.0,-21.0
+2025-09-30,MPWR,"MONOLITHIC POWER SYSTEMS, INC.",Information Technology,Information Technology,-5.0,0.0,5.0
+2025-09-30,MRK,"MERCK & CO., INC.",Health Care,Health Care,22.0,5.0,-17.0
+2025-09-30,MRNA,"MODERNA, INC.",Health Care,Health Care,-10.0,-15.0,-5.0
+2025-09-30,MS,MORGAN STANLEY,Financials,Financials,1.0,2.0,1.0
+2025-09-30,MSCI,MSCI INC.,Financials,Financials,14.0,-16.0,-30.0
+2025-09-30,MSFT,MICROSOFT ,Information Technology,Information Technology,-40.0,-5.0,35.0
+2025-09-30,MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,Information Technology,49.0,55.0,6.0
+2025-09-30,MTB,M&T BANK ,Financials,Financials,14.0,8.0,-6.0
+2025-09-30,MTCH,"MATCH GROUP, INC.",Communication Services,Communication Services,41.0,38.0,-3.0
+2025-09-30,MTD,METTLER-TOLEDO INTERNATIONAL INC.,Health Care,Health Care,29.0,17.0,-12.0
+2025-09-30,MTUM,ISHARES:MSCI USA MOM FCT,Momentum (MTUM),Sector & Style ETFs,-47.0,-5.0,42.0
+2025-09-30,MU,"MICRON TECHNOLOGY, INC.",Information Technology,Information Technology,0.0,-7.0,-7.0
+2025-09-30,NCLH,NORWEGIAN CRUISE LINE HOLDINGS LTD.,Consumer Discretionary,Consumer Discretionary,26.0,21.0,-5.0
+2025-09-30,NDAQ,"NASDAQ, INC.",Financials,Financials,5.0,42.0,37.0
+2025-09-30,NDSN,NORDSON ,Industrials,Industrials,16.0,4.0,-12.0
+2025-09-30,NDX,NASDAQ 100 INDEX,Index,Indices,-52.0,-33.0,19.0
+2025-09-30,NEE,"NEXTERA ENERGY, INC.",Utilities,Utilities,-20.0,-19.0,1.0
+2025-09-30,NEM,NEWMONT ,Materials,Materials,27.0,17.0,-10.0
+2025-09-30,NFLX,"NETFLIX, INC.",Communication Services,Communication Services,27.0,27.0,0.0
+2025-09-30,NI,NISOURCE INC.,Utilities,Utilities,-30.0,-15.0,15.0
+2025-09-30,NKE,"NIKE, INC.",Consumer Discretionary,Consumer Discretionary,38.0,31.0,-7.0
+2025-09-30,NOC,NORTHROP GRUMMAN ,Industrials,Industrials,10.0,23.0,13.0
+2025-09-30,NORW,GLBL X MSCI NORWAY ETF,Norway,Foreign,8.0,-4.0,-12.0
+2025-09-30,NOV,NOV INC.,Discretionary,MR Discretion,30.0,13.0,-17.0
+2025-09-30,NOW,"SERVICENOW, INC.",Information Technology,Information Technology,14.0,-19.0,-33.0
+2025-09-30,NQ=F,NASDAQ 100 FUTURES,Futures,Futures,-52.0,-34.0,18.0
+2025-09-30,NRG,"NRG ENERGY, INC.",Utilities,Utilities,-47.0,-24.0,23.0
+2025-09-30,NSC,NORFOLK SOUTHERN ,Industrials,Industrials,-38.0,-23.0,15.0
+2025-09-30,NTAP,"NETAPP, INC.",Information Technology,Information Technology,6.0,9.0,3.0
+2025-09-30,NTRS,NORTHERN TRUST ,Financials,Financials,14.0,6.0,-8.0
+2025-09-30,NUE,NUCOR ,Materials,Materials,55.0,43.0,-12.0
+2025-09-30,NVDA,NVIDIA ,Information Technology,Information Technology,-43.0,15.0,58.0
+2025-09-30,NVR,"NVR, INC.",Consumer Discretionary,Consumer Discretionary,9.0,-3.0,-12.0
+2025-09-30,NWSA,NEWS ,Communication Services,Communication Services,-48.0,-21.0,27.0
+2025-09-30,NXPI,NXP SEMICONDUCTORS NV,Information Technology,Information Technology,17.0,4.0,-13.0
+2025-09-30,O,REALTY INCOME ,Real Estate,Real Estate,-5.0,-16.0,-11.0
+2025-09-30,ODFL,"OLD DOMINION FREIGHT LINE, INC.",Industrials,Industrials,63.0,-2.0,-65.0
+2025-09-30,OEF,ISHARES:S&P 100,Size (OEF),Sector & Style ETFs,-38.0,-19.0,19.0
+2025-09-30,OKE,"ONEOK, INC.",Energy,Energy,24.0,-2.0,-26.0
+2025-09-30,OMC,OMNICOM GROUP INC.,Communication Services,Communication Services,25.0,8.0,-17.0
+2025-09-30,ON,ON SEMICONDUCTOR ,Information Technology,Information Technology,-4.0,-14.0,-10.0
+2025-09-30,ORCL,ORACLE ,Information Technology,Information Technology,-70.0,-18.0,52.0
+2025-09-30,ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,Consumer Discretionary,21.0,24.0,3.0
+2025-09-30,OTIS,OTIS WORLDWIDE ,Industrials,Industrials,16.0,-25.0,-41.0
+2025-09-30,OXY,OCCIDENTAL PETROLEUM ,Energy,Energy,17.0,8.0,-9.0
+2025-09-30,PAM,PAMPA ENERGIA SA,CE - Cap Gain,MR Discretion,-44.0,-30.0,14.0
+2025-09-30,PANW,"PALO ALTO NETWORKS, INC.",Information Technology,Information Technology,37.0,6.0,-31.0
+2025-09-30,PAYC,"PAYCOM SOFTWARE, INC.",Industrials,Industrials,33.0,20.0,-13.0
+2025-09-30,PAYX,"PAYCHEX, INC.",Industrials,Industrials,23.0,18.0,-5.0
+2025-09-30,PBR,BRAZILIAN PETROLEUM  - PETROBRAS,CE - Dividend Portfolio,MR Discretion,-41.0,-6.0,35.0
+2025-09-30,PCAR,PACCAR INC,Industrials,Industrials,24.0,17.0,-7.0
+2025-09-30,PCG,PG&E ,Utilities,Utilities,19.0,4.0,-15.0
+2025-09-30,PEG,PUBLIC SERVICE ENTERPRISE GROUP INC.,Utilities,Utilities,-40.0,29.0,69.0
+2025-09-30,PEP,"PEPSICO, INC.",Consumer Staples,Consumer Staples,55.0,41.0,-14.0
+2025-09-30,PFE,PFIZER INC.,Health Care,Health Care,27.0,-8.0,-35.0
+2025-09-30,PFG,"PRINCIPAL FINANCIAL GROUP, INC.",Financials,Financials,33.0,11.0,-22.0
+2025-09-30,PG,THE PROCTER & GAMBLE COMPANY,Consumer Staples,Consumer Staples,68.0,28.0,-40.0
+2025-09-30,PGR,THE PROGRESSIVE ,Financials,Financials,25.0,-18.0,-43.0
+2025-09-30,PH,PARKER-HANNIFIN ,Industrials,Industrials,25.0,22.0,-3.0
+2025-09-30,PHM,"PULTEGROUP, INC.",Consumer Discretionary,Consumer Discretionary,30.0,16.0,-14.0
+2025-09-30,PKG,PACKAGING  OF AMERICA,Materials,Materials,17.0,9.0,-8.0
+2025-09-30,PLD,"PROLOGIS, INC.",Real Estate,Real Estate,12.0,3.0,-9.0
+2025-09-30,PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,Information Technology,-60.0,-6.0,54.0
+2025-09-30,PM,PHILIP MORRIS INTERNATIONAL INC.,Consumer Staples,Consumer Staples,19.0,-11.0,-30.0
+2025-09-30,PNC,"THE PNC FINANCIAL SERVICES GROUP, INC.",Financials,Financials,34.0,28.0,-6.0
+2025-09-30,PNR,PENTAIR PUBLIC LIMITED COMPANY,Industrials,Industrials,-7.0,-17.0,-10.0
+2025-09-30,PNW,PINNACLE WEST CAPITAL ,Utilities,Utilities,10.0,21.0,11.0
+2025-09-30,PODD,INSULET ,Health Care,Health Care,84.0,58.0,-26.0
+2025-09-30,POOL,POOL ,Consumer Discretionary,Consumer Discretionary,-13.0,3.0,16.0
+2025-09-30,POWA,INVESCO DEF EQTY ETF,Defensive (DEF),Sector & Style ETFs,23.0,17.0,-6.0
+2025-09-30,PPG,"PPG INDUSTRIES, INC.",Materials,Materials,40.0,0.0,-40.0
+2025-09-30,PPL,PPL ,Utilities,Utilities,19.0,14.0,-5.0
+2025-09-30,PRU,"PRUDENTIAL FINANCIAL, INC.",Financials,Financials,27.0,3.0,-24.0
+2025-09-30,PSA,PUBLIC STORAGE.,Real Estate,Real Estate,31.0,1.0,-30.0
+2025-09-30,PSKY,PARAMOUNT SKYDANCE ,Communication Services,Communication Services,6.0,-17.0,-23.0
+2025-09-30,PSX,PHILLIPS 66,Energy,Energy,23.0,8.0,-15.0
+2025-09-30,PTC,PTC INC.,Information Technology,Information Technology,38.0,44.0,6.0
+2025-09-30,PWR,"QUANTA SERVICES, INC.",Industrials,Industrials,-34.0,4.0,38.0
+2025-09-30,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,33.0,12.0,-21.0
+2025-09-30,QAT,ISHARES:MSCI QATAR,Qatar,Foreign,-10.0,2.0,12.0
+2025-09-30,QCOM,QUALCOMM INC.,Information Technology,Information Technology,38.0,0.0,-38.0
+2025-09-30,QQQ,INVESCO QQQ TRUST 1,Secular Growth,Sector & Style ETFs,-53.0,-16.0,37.0
+2025-09-30,QUAL,ISHARES:MSCI USA QF,Quality (QUAL),Sector & Style ETFs,-4.0,-10.0,-6.0
+2025-09-30,RCL,ROYAL CARIBBEAN CRUISES LTD.,Consumer Discretionary,Consumer Discretionary,53.0,44.0,-9.0
+2025-09-30,REG,REGENCY CENTERS ,Real Estate,Real Estate,23.0,20.0,-3.0
+2025-09-30,REGN,"REGENERON PHARMACEUTICALS, INC.",Health Care,Health Care,36.0,38.0,2.0
+2025-09-30,RF,REGIONS FINANCIAL ,Financials,Financials,31.0,20.0,-11.0
+2025-09-30,RIG,TRANSOCEAN LTD,Discretionary,MR Discretion,43.0,37.0,-6.0
+2025-09-30,RJF,"RAYMOND JAMES FINANCIAL, INC.",Financials,Financials,22.0,23.0,1.0
+2025-09-30,RL,RALPH LAUREN ,Consumer Discretionary,Consumer Discretionary,30.0,32.0,2.0
+2025-09-30,RMD,RESMED INC.,Health Care,Health Care,-3.0,25.0,28.0
+2025-09-30,ROK,"ROCKWELL AUTOMATION, INC.",Industrials,Industrials,-1.0,-15.0,-14.0
+2025-09-30,ROKU,"ROKU, INC.",Discretionary,MR Discretion,-11.0,-14.0,-3.0
+2025-09-30,ROL,"ROLLINS, INC.",Industrials,Industrials,-40.0,-11.0,29.0
+2025-09-30,ROP,"ROPER TECHNOLOGIES, INC.",Information Technology,Information Technology,-29.0,11.0,40.0
+2025-09-30,ROST,"ROSS STORES, INC.",Consumer Discretionary,Consumer Discretionary,23.0,12.0,-11.0
+2025-09-30,RSG,"REPUBLIC SERVICES, INC.",Industrials,Industrials,34.0,-2.0,-36.0
+2025-09-30,RSP,INVESCO S&P500 EWGHT,Cyclicals (RSP),Sector & Style ETFs,20.0,15.0,-5.0
+2025-09-30,RTX,RTX ,Industrials,Industrials,-13.0,3.0,16.0
+2025-09-30,RUT,RUSSELL 2000 INDEX,Index,Indices,-2.0,-15.0,-13.0
+2025-09-30,RVTY,"REVVITY, INC.",Health Care,Health Care,25.0,-21.0,-46.0
+2025-09-30,SBAC,SBA COMMUNICATIONS ,Real Estate,Real Estate,-65.0,-34.0,31.0
+2025-09-30,SBLK,STAR BULK CARRIERS CORP.,CE - Dividend Portfolio,MR Discretion,23.0,49.0,26.0
+2025-09-30,SBUX,STARBUCKS ,Consumer Discretionary,Consumer Discretionary,-2.0,0.0,2.0
+2025-09-30,SCHW,THE CHARLES SCHWAB ,Financials,Financials,-13.0,12.0,25.0
+2025-09-30,SD,"SANDRIDGE ENERGY, INC.",Discretionary,MR Discretion,12.0,9.0,-3.0
+2025-09-30,SDY,SPDR S&P DIVIDEND,Dividend Yield (SDY),Sector & Style ETFs,6.0,-12.0,-18.0
+2025-09-30,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,31.0,32.0,1.0
+2025-09-30,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,-38.0,-9.0,29.0
+2025-09-30,SILJ,ETFMG PRIME JR SILVR MNR,Silver,Commodities,21.0,4.0,-17.0
+2025-09-30,SJM,THE J. M. SMUCKER COMPANY,Consumer Staples,Consumer Staples,14.0,14.0,0.0
+2025-09-30,SLB,SCHLUMBERGER N.V.,Energy,Energy,37.0,20.0,-17.0
+2025-09-30,SLV,ISHARES:SILVER TRUST,Silver,Commodities,16.0,5.0,-11.0
+2025-09-30,SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,Information Technology,-65.0,-32.0,33.0
+2025-09-30,SNA,SNAP-ON INC.,Industrials,Industrials,-5.0,-9.0,-4.0
+2025-09-30,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,-32.0,-17.0,15.0
+2025-09-30,SO,THE SOUTHERN COMPANY,Utilities,Utilities,-51.0,-17.0,34.0
+2025-09-30,SOLV,SOLVENTUM ,Health Care,Health Care,15.0,0.0,-15.0
+2025-09-30,SPG,"SIMON PROPERTY GROUP, INC.",Real Estate,Real Estate,15.0,-11.0,-26.0
+2025-09-30,SPGI,S&P GLOBAL INC.,Financials,Financials,26.0,36.0,10.0
+2025-09-30,SPHB,INVESCO S&P500 HI BE,High Beta (SPHB),Sector & Style ETFs,-21.0,-6.0,15.0
+2025-09-30,SPLV,INVESCO S&P500 LOWVL,Low Beta (SPLV),Sector & Style ETFs,22.0,18.0,-4.0
+2025-09-30,SPX,S&P 500 INDEX,Index,Indices,-31.0,-30.0,1.0
+2025-09-30,SPY,SPDR S&P 500 ETF,S&P500 Index,Sector & Style ETFs,-29.0,-16.0,13.0
+2025-09-30,SRE,SEMPRA,Utilities,Utilities,-24.0,-1.0,23.0
+2025-09-30,STE,STERIS PUBLIC LIMITED COMPANY,Health Care,Health Care,30.0,10.0,-20.0
+2025-09-30,STIP,ISHARES:0-5 TIPS BD ETF,Bonds,Bonds,4.0,2.0,-2.0
+2025-09-30,STLA,STELLANTIS NV,CE - Dividend Portfolio,MR Discretion,14.0,-14.0,-28.0
+2025-09-30,STLD,"STEEL DYNAMICS, INC.",Materials,Materials,4.0,-6.0,-10.0
+2025-09-30,STNG,SCORPIO TANKERS INC.,CE - Cap Gain,MR Discretion,12.0,8.0,-4.0
+2025-09-30,STT,STATE STREET ,Financials,Financials,1.0,-1.0,-2.0
+2025-09-30,STX,SEAGATE TECHNOLOGY HOLDINGS,Information Technology,Information Technology,14.0,1.0,-13.0
+2025-09-30,STZ,"CONSTELLATION BRANDS, INC.",Consumer Staples,Consumer Staples,-2.0,-2.0,0.0
+2025-09-30,SW,SMURFIT WESTROCK PUBLIC LIMITED COMPANY,Materials,Materials,43.0,29.0,-14.0
+2025-09-30,SWK,"STANLEY BLACK & DECKER, INC.",Industrials,Industrials,20.0,7.0,-13.0
+2025-09-30,SWKS,"SKYWORKS SOLUTIONS, INC.",Information Technology,Information Technology,10.0,-5.0,-15.0
+2025-09-30,SYF,SYNCHRONY FINANCIAL,Financials,Financials,89.0,75.0,-14.0
+2025-09-30,SYK,STRYKER ,Health Care,Health Care,30.0,29.0,-1.0
+2025-09-30,SYY,SYSCO ,Consumer Staples,Consumer Staples,-8.0,11.0,19.0
+2025-09-30,T,AT&T INC.,Communication Services,Communication Services,39.0,51.0,12.0
+2025-09-30,TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,Consumer Staples,69.0,43.0,-26.0
+2025-09-30,TDG,TRANSDIGM GROUP INC.,Industrials,Industrials,-39.0,-29.0,10.0
+2025-09-30,TDW,TIDEWATER INC.,CE - Cap Gain,MR Discretion,46.0,39.0,-7.0
+2025-09-30,TDY,TELEDYNE TECHNOLOGIES INC.,Information Technology,Information Technology,-50.0,-4.0,46.0
+2025-09-30,TECH,BIO-TECHNE ,Health Care,Health Care,4.0,-13.0,-17.0
+2025-09-30,TECK,TECK RESOURCES LIMITED,Discretionary,MR Discretion,34.0,-10.0,-44.0
+2025-09-30,TEL,TE CONNECTIVITY LTD,Information Technology,Information Technology,2.0,9.0,7.0
+2025-09-30,TER,"TERADYNE, INC.",Information Technology,Information Technology,26.0,5.0,-21.0
+2025-09-30,TFC,TRUIST FINANCIAL ,Financials,Financials,16.0,13.0,-3.0
+2025-09-30,TGT,TARGET ,Consumer Staples,Consumer Staples,-39.0,-13.0,26.0
+2025-09-30,THD,ISHARES:MSCI THAI,Thai,Foreign,22.0,17.0,-5.0
+2025-09-30,TIP,ISHARES:TIPS BD ETF,Bonds,Bonds,-7.0,-35.0,-28.0
+2025-09-30,TJX,"THE TJX COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,10.0,2.0,-8.0
+2025-09-30,TKO,"TKO GROUP HOLDINGS, INC.",Communication Services,Communication Services,11.0,-3.0,-14.0
+2025-09-30,TLT,ISHARES:20+ TRS BD ETF,Bonds,Bonds,-36.0,-25.0,11.0
+2025-09-30,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,38.0,28.0,-10.0
+2025-09-30,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,73.0,56.0,-17.0
+2025-09-30,TNX,10 Y TSY YLD NDX,Yields,Yields,33.0,-22.0,-55.0
+2025-09-30,TPL,TEXAS PACIFIC LAND ,Energy,Energy,16.0,-12.0,-28.0
+2025-09-30,TPR,"TAPESTRY, INC.",Consumer Discretionary,Consumer Discretionary,-24.0,12.0,36.0
+2025-09-30,TRGP,TARGA RESOURCES CORP.,Energy,Energy,-23.0,-3.0,20.0
+2025-09-30,TRMB,TRIMBLE INC.,Information Technology,Information Technology,-39.0,12.0,51.0
+2025-09-30,TROW,"T. ROWE PRICE GROUP, INC.",Financials,Financials,16.0,11.0,-5.0
+2025-09-30,TRV,"THE TRAVELERS COMPANIES, INC.",Financials,Financials,50.0,22.0,-28.0
+2025-09-30,TS,TENARIS SA,Discretionary,MR Discretion,-7.0,-2.0,5.0
+2025-09-30,TSCO,TRACTOR SUPPLY COMPANY,Consumer Discretionary,Consumer Discretionary,72.0,69.0,-3.0
+2025-09-30,TSLA,"TESLA, INC.",Consumer Discretionary,Consumer Discretionary,38.0,-5.0,-43.0
+2025-09-30,TSN,"TYSON FOODS, INC.",Consumer Staples,Consumer Staples,30.0,4.0,-26.0
+2025-09-30,TT,TRANE TECHNOLOGIES PLC,Industrials,Industrials,-32.0,0.0,32.0
+2025-09-30,TTD,"THE TRADE DESK, INC.",Communication Services,Communication Services,-9.0,-5.0,4.0
+2025-09-30,TTWO,"TAKE-TWO INTERACTIVE SOFTWARE, INC.",Communication Services,Communication Services,8.0,-5.0,-13.0
+2025-09-30,TUR,ISHARES:MSCI TURKEY,Turkey,Foreign,1.0,6.0,5.0
+2025-09-30,TXN,TEXAS INSTRUMENTS INC.,Information Technology,Information Technology,32.0,13.0,-19.0
+2025-09-30,TXT,TEXTRON INC.,Industrials,Industrials,0.0,-10.0,-10.0
+2025-09-30,TYL,"TYLER TECHNOLOGIES, INC.",Information Technology,Information Technology,14.0,39.0,25.0
+2025-09-30,TYX,30 Y TSY YLD NDX,Yields,Yields,63.0,19.0,-44.0
+2025-09-30,UAL,"UNITED AIRLINES HOLDINGS, INC.",Industrials,Industrials,66.0,48.0,-18.0
+2025-09-30,UBER,"UBER TECHNOLOGIES, INC.",Industrials,Industrials,-3.0,0.0,3.0
+2025-09-30,UDR,"UDR, INC.",Real Estate,Real Estate,24.0,0.0,-24.0
+2025-09-30,UHS,"UNIVERSAL HEALTH SERVICES, INC.",Health Care,Health Care,32.0,-7.0,-39.0
+2025-09-30,ULTA,"ULTA BEAUTY, INC.",Consumer Discretionary,Consumer Discretionary,-50.0,-15.0,35.0
+2025-09-30,UNG,UNITED STATES NAT GAS,Natural Gas (UNG),Commodities,4.0,-8.0,-12.0
+2025-09-30,UNH,UNITEDHEALTH GROUP INC.,Health Care,Health Care,14.0,-20.0,-34.0
+2025-09-30,UNP,UNION PACIFIC ,Industrials,Industrials,17.0,-17.0,-34.0
+2025-09-30,UPS,"UNITED PARCEL SERVICE, INC.",Industrials,Industrials,39.0,-4.0,-43.0
+2025-09-30,URI,"UNITED RENTALS, INC.",Industrials,Industrials,48.0,27.0,-21.0
+2025-09-30,URNM,SPROTT URANIUM MINERS,CE - Cap Gain,MR Discretion,-3.0,-5.0,-2.0
+2025-09-30,USB,U.S. BANCORP,Financials,Financials,24.0,15.0,-9.0
+2025-09-30,USO,UNITED STATES OIL FUND,WTI Crude (USO),Commodities,13.0,31.0,18.0
+2025-09-30,UUP,INVESCO DB USD IDX BL,Currency,Currencies,26.0,20.0,-6.0
+2025-09-30,V,VISA INC.,Financials,Financials,35.0,13.0,-22.0
+2025-09-30,VAL,VALARIS LIMITED,CE - Cap Gain,MR Discretion,17.0,15.0,-2.0
+2025-09-30,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,17.0,4.0,-13.0
+2025-09-30,VIX,CBOE MKT VOLATILITY IDX,Volatility - NYSE,Indices,-47.0,-23.0,24.0
+2025-09-30,VLO,VALERO ENERGY ,Energy,Energy,30.0,6.0,-24.0
+2025-09-30,VLTO,VERALTO ,Industrials,Industrials,13.0,32.0,19.0
+2025-09-30,VMC,VULCAN MATERIALS COMPANY,Materials,Materials,10.0,14.0,4.0
+2025-09-30,VNM,VANECK:VIETNAM,Vietnam,Foreign,36.0,20.0,-16.0
+2025-09-30,VRSK,"VERISK ANALYTICS, INC.",Industrials,Industrials,73.0,27.0,-46.0
+2025-09-30,VRSN,"VERISIGN, INC.",Information Technology,Information Technology,27.0,36.0,9.0
+2025-09-30,VRTX,VERTEX PHARMACEUTICALS INC.,Health Care,Health Care,44.0,-8.0,-52.0
+2025-09-30,VST,VISTRA CORP.,Utilities,Utilities,-12.0,26.0,38.0
+2025-09-30,VTR,"VENTAS, INC.",Real Estate,Real Estate,12.0,28.0,16.0
+2025-09-30,VTRS,VIATRIS INC.,Health Care,Health Care,43.0,30.0,-13.0
+2025-09-30,VXN,CBOE NASDAQ MKT VOL NDX,Volatility - Nasdaq,Indices,-2.0,-31.0,-29.0
+2025-09-30,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,47.0,43.0,-4.0
+2025-09-30,WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIES ,Industrials,Industrials,25.0,-6.0,-31.0
+2025-09-30,WAT,WATERS ,Health Care,Health Care,18.0,-13.0,-31.0
+2025-09-30,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,-48.0,-13.0,35.0
+2025-09-30,WDAY,"WORKDAY, INC.",Information Technology,Information Technology,7.0,-18.0,-25.0
+2025-09-30,WDC,WESTERN DIGITAL ,Information Technology,Information Technology,12.0,5.0,-7.0
+2025-09-30,WEC,"WEC ENERGY GROUP, INC.",Utilities,Utilities,-50.0,-11.0,39.0
+2025-09-30,WELL,WELLTOWER INC.,Real Estate,Real Estate,-7.0,14.0,21.0
+2025-09-30,WFC,WELLS FARGO & COMPANY,Financials,Financials,4.0,-2.0,-6.0
+2025-09-30,WM,"WASTE MANAGEMENT, INC.",Industrials,Industrials,11.0,16.0,5.0
+2025-09-30,WMB,"THE WILLIAMS COMPANIES, INC.",Energy,Energy,-54.0,-8.0,46.0
+2025-09-30,WMT,WALMART INC.,Consumer Staples,Consumer Staples,-57.0,-1.0,56.0
+2025-09-30,WRB,W. R. BERKLEY ,Financials,Financials,-5.0,5.0,10.0
+2025-09-30,WSM,"WILLIAMS-SONOMA, INC.",Consumer Discretionary,Consumer Discretionary,15.0,37.0,22.0
+2025-09-30,WST,"WEST PHARMACEUTICAL SERVICES, INC.",Health Care,Health Care,2.0,11.0,9.0
+2025-09-30,WTW,WILLIS TOWERS WATSON,Financials,Financials,19.0,3.0,-16.0
+2025-09-30,WY,WEYERHAEUSER COMPANY,Real Estate,Real Estate,20.0,-18.0,-38.0
+2025-09-30,WYNN,"WYNN RESORTS, LIMITED",Consumer Discretionary,Consumer Discretionary,6.0,11.0,5.0
+2025-09-30,XEL,XCEL ENERGY INC.,Utilities,Utilities,-26.0,-7.0,19.0
+2025-09-30,XES,SPDR S&P OIL&GAS E&S,Discretionary,MR Discretion,15.0,4.0,-11.0
+2025-09-30,XLB,SEL SECTOR:MATRLS SPDR,Materials,Sector & Style ETFs,40.0,21.0,-19.0
+2025-09-30,XLC,SEL SECTOR:COMM SVC SPDR,Communication Services,Sector & Style ETFs,6.0,3.0,-3.0
+2025-09-30,XLE,SEL SECTOR:ENERGY SPDR,Energy,Sector & Style ETFs,26.0,17.0,-9.0
+2025-09-30,XLF,SEL SECTOR:FINL S SPDR,Financials,Sector & Style ETFs,13.0,4.0,-9.0
+2025-09-30,XLI,SEL SECTOR:INDUST SPDR,Industrials,Sector & Style ETFs,-24.0,0.0,24.0
+2025-09-30,XLK,SEL SECTOR:TECH SPDR,Information Technology,Sector & Style ETFs,-57.0,-20.0,37.0
+2025-09-30,XLP,SEL SECTOR:C STP SPDR,Consumer Staples,Sector & Style ETFs,-15.0,5.0,20.0
+2025-09-30,XLRE,SEL SECTOR:RL EST SPDR,Real Estate,Sector & Style ETFs,12.0,12.0,0.0
+2025-09-30,XLU,SEL SECTOR:UTIL SPDR,Utilities,Sector & Style ETFs,-28.0,1.0,29.0
+2025-09-30,XLV,SEL SECTOR:H CARE SPDR,Health Care,Sector & Style ETFs,24.0,-5.0,-29.0
+2025-09-30,XLY,SEL SECTOR:C DSC SPDR,Consumer Discretionary,Sector & Style ETFs,10.0,5.0,-5.0
+2025-09-30,XOM,EXXON MOBIL ,Energy,Energy,21.0,13.0,-8.0
+2025-09-30,XOP,SPDR S&P OIL&GAS EXP,CE - Cap Gain,MR Discretion,17.0,11.0,-6.0
+2025-09-30,XYL,XYLEM INC.,Industrials,Industrials,-15.0,5.0,20.0
+2025-09-30,XYZ,"BLOCK, INC.",Financials,Financials,52.0,52.0,0.0
+2025-09-30,YUM,"YUM! BRANDS, INC.",Consumer Discretionary,Consumer Discretionary,6.0,-20.0,-26.0
+2025-09-30,ZBH,"ZIMMER BIOMET HOLDINGS, INC.",Health Care,Health Care,40.0,18.0,-22.0
+2025-09-30,ZBRA,ZEBRA TECHNOLOGIES ,Information Technology,Information Technology,5.0,14.0,9.0
+2025-09-30,ZTS,ZOETIS INC.,Health Care,Health Care,40.0,13.0,-27.0
