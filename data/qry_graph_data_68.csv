@@ -1,0 +1,11 @@
+Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
+CTAS,CINTAS ,Industrials,2025-09-30,-79.0,-23.0,56.0
+GLATF,GLOBAL ATOMIC ,MR Discretion,2025-09-30,-78.0,-22.0,56.0
+PGR,THE PROGRESSIVE ,Financials,2025-09-30,-70.0,-18.0,52.0
+CME,CME GROUP INC.,Financials,2025-09-30,-59.0,-20.0,39.0
+DLR,"DIGITAL REALTY TRUST, INC.",Real Estate,2025-09-30,-59.0,-13.0,46.0
+WMT,WALMART INC.,Consumer Staples,2025-09-30,-54.0,-1.0,53.0
+ADBE,ADOBE INC.,Information Technology,2025-09-30,-50.0,-14.0,36.0
+GDDY,GODADDY INC.,Information Technology,2025-09-30,-50.0,-9.0,41.0
+IRM,IRON MOUNTAIN INC.,Real Estate,2025-09-30,-50.0,-24.0,26.0
+IT,"GARTNER, INC.",Information Technology,2025-09-30,-50.0,-31.0,19.0
