@@ -2680,7 +2680,7 @@ if _show_ai_panel:
     "or solicitation**, nor do they create a **fiduciary** relationship. Information is provided **“as is”** "
     "and **“as available”** without warranty of any kind as to accuracy, completeness, or timeliness; values "
     "may change without notice. **You are solely responsible for your investment decisions and assume all risk. "
-    "To the maximum extent permitted by law, Markmentum Research and its affiliates shall not be liable for any "
+    "To the maximum extent permitted by law, Markmentum Research LLC and its affiliates shall not be liable for any "
     "losses or damages (including direct, indirect, incidental, consequential, or special) arising from the use "
     "of or reliance on these outputs.** Past performance is not indicative of future results."
 )
