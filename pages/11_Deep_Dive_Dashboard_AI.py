@@ -3099,7 +3099,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     ax2 = ax.twinx()
     ax2.plot(df["date"], df["close"], color="black", linewidth=1.4, label="Close")
 
-    ax.set_title(f"{_active_tkr} – Score", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – MM Score", fontsize=12, pad=6)
     ax.grid(True, linewidth=0.4, alpha=0.4)
 
     # X axis (biweekly Mondays) with 5-day gutter
@@ -3113,7 +3113,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     # Combined legend below
     from matplotlib.lines import Line2D
     handles = [
-        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="Score"),
+        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="MM Score"),
         Line2D([0], [0], color="black",    linewidth=1.4, label="Close"),
     ]
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
