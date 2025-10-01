@@ -1,0 +1,11 @@
+Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
+CMG,"CHIPOTLE MEXICAN GRILL, INC.",Consumer Discretionary,2025-09-30,125.0,87.0,-38.0
+FI,"FISERV, INC.",Financials,2025-09-30,124.0,93.0,-31.0
+ODFL,"OLD DOMINION FREIGHT LINE, INC.",Industrials,2025-09-30,123.0,63.0,-60.0
+VRTX,VERTEX PHARMACEUTICALS INC.,Health Care,2025-09-30,116.0,61.0,-55.0
+IFF,INTERNATIONAL FLAVORS & FRAGRANCES INC.,Materials,2025-09-30,114.0,77.0,-37.0
+VRSK,"VERISK ANALYTICS, INC.",Industrials,2025-09-30,114.0,76.0,-38.0
+GEV,GE VERNOVA INC.,Utilities,2025-09-30,108.0,74.0,-34.0
+ALGN,"ALIGN TECHNOLOGY, INC.",Health Care,2025-09-30,106.0,59.0,-47.0
+GDDY,GODADDY INC.,Information Technology,2025-09-30,106.0,73.0,-33.0
+FFIV,"F5, INC.",Information Technology,2025-09-30,101.0,62.0,-39.0
