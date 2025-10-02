@@ -60,10 +60,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .tbl th, .tbl td { border: 1px solid #d9d9d9; padding: 6px 8px; font-size: 13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
 .center { text-align: center; }
-.right  { text-align: right; white-space: nowrap; }
-/* Center ONLY the table headers for Ticker and Percent/Shares */
-.tbl thead th.Ticker { text-align: center; }
-.tbl thead th.col-value  { text-align: center; }            
+.right  { text-align: right; white-space: nowrap; }    
 
 /* --- Column widths (desktop defaults) --- */
 .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){
