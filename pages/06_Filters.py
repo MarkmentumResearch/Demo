@@ -410,7 +410,7 @@ with r3c3:
     <li><b>Chase List</b> — Strong positive momentum; price is more likely to push higher in the near term. Best for continuation setups—just watch position size/overextension risk.</li>
     <li><b>No Chase List</b> — Momentum looks stretched/exhausted; higher odds of a pullback or sideways consolidation. Better to wait for a reset.</li>
     <li><b>Watch List</b> — Early improvement after weakness; potential bottoming behavior. Look for higher lows, relative strength, and confirmation.</li>
-    <li><b>Upcycle</b> — Downtrend appears spent and turning up; early stage of a new uptrend. Favor breakouts through resistance and pullback buys into support.</li>
+    <li><b>Up Cycle</b> — Downtrend appears spent and turning up; early stage of a new uptrend. Favor breakouts through resistance and pullback buys into support.</li>
   </ol>
   <div style="font-size: 12px; color: gray;">
   Tip: These are probabilistic signals, not advice. Always pair with your risk management and timeframe.
