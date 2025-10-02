@@ -62,6 +62,9 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .center { text-align:center; }
 .right  { text-align:right; white-space:nowrap; }
+/* Center ONLY the table headers for Ticker and Percent/Shares */
+.tbl thead th.col-ticker { text-align: center; }
+.tbl thead th.col-value  { text-align: center; }            
 
 /* Column widths (desktop defaults) */
 th.col-company, td.col-company { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
