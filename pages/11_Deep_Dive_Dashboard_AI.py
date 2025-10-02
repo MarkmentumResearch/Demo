@@ -467,8 +467,8 @@ Return only strict JSON in this structure:
 - Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
 - Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
 - Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure.
-- **Banned verbs**: **indicates, indicating**.  Use of these verbs will be blocked or overwritten.
-- When discussing **Rvol 30Day Z-Score Rank*** only discuss whether above or below historical baseline.
+- **Banned verbs**: indicates, indicating.  Use of these verbs will be blocked or overwritten.
+- When discussing "Rvol 30Day Z-Score Rank" only discuss whether above or below historical baseline.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
