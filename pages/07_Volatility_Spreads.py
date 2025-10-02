@@ -61,6 +61,9 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .tbl th { background: #f2f2f2; font-weight: 700; text-align: left; }
 .center { text-align: center; }
 .right  { text-align: right; white-space: nowrap; }
+/* Center ONLY the table headers for Ticker and the numeric value column */
+.tbl thead th.col-ticker { text-align: center; }
+.tbl thead th.col-value  { text-align: center; }            
 
 /* --- Column widths & no-wrap (override any inline styles) --- */
 .tbl thead th:nth-child(1), .tbl tbody td:nth-child(1){
@@ -208,9 +211,9 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     <thead>
       <tr>
         <th style="min-width:42ch">Company</th>
-        <th style="width:74px">Ticker</th>
+        <th style="width:74px" class="col-ticker">Ticker</th>
         <th style="min-width:25ch">Category</th>
-        <th style="width:90px" class="right">{value_label}</th>
+        <th style="width:90px" class="right col-value">{value_label}</th>
       </tr>
     </thead>
     <tbody>
