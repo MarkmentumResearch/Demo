@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-09-30,236.98
-PFE,PFIZER INC.,Health Care,2025-09-30,164.86
-INTC,INTEL ,Information Technology,2025-09-30,124.81
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-09-30,86.28
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-09-30,74.35
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-09-30,70.76
-WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-09-30,56.74
-HYG,ISHARES:IBOXX $HY CORP,Bonds,2025-09-30,54.97
-RIG,TRANSOCEAN LTD,MR Discretion,2025-09-30,54.97
-AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-09-30,48.39
+NVDA,NVIDIA ,Information Technology,2025-10-01,173.84
+INTC,INTEL ,Information Technology,2025-10-01,162.64
+PFE,PFIZER INC.,Health Care,2025-10-01,150.87
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-01,98.12
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-01,73.57
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-01,72.54
+AES,THE AES ,Utilities,2025-10-01,58.98
+HYG,ISHARES:IBOXX $HY CORP,Bonds,2025-10-01,58.04
+NKE,"NIKE, INC.",Consumer Discretionary,2025-10-01,57.92
+KVUE,KENVUE INC.,Consumer Staples,2025-10-01,50.56
