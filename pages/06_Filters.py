@@ -237,7 +237,7 @@ def _fmt_millions(val):
 
 def _fmt_num(val):
     try:
-        return f"{float(val):,.2f}"
+        return f"{float(val):,.1f}"
     except:
         return "—"
 
