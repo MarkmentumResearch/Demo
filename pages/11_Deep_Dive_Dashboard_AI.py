@@ -2976,7 +2976,7 @@ def plot_g8_sharpe(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
-    ax.set_title(f"{_active_tkr} – 30D Sharpe Ratio", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – 30-Day Sharpe Ratio", fontsize=12, pad=6)
     #ax.set_ylabel("Sharpe Ratio")
     #from matplotlib.ticker import StrMethodFormatter
     ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.2f}"))
