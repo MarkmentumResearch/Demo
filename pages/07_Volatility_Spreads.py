@@ -178,7 +178,7 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
 
 def _fmt_1dec(val):
     try:
-        return f"{float(val):,.1f}"
+        return f"{float(val):,.0f}"
     except Exception:
         return "—"
 
