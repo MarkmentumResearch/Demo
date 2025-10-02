@@ -2855,7 +2855,7 @@ def plot_g5_zscore(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
-    ax.set_title(f"{_active_tkr} – 30D Rvol Z-Score", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – 30-Day Rvol Z-Score", fontsize=12, pad=6)
     #ax.set_ylabel("Z-Score")
     #from matplotlib.ticker import StrMethodFormatter
     ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.2f}"))
@@ -2907,7 +2907,7 @@ def plot_g7_rvol(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["rvol_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
     ax.axhline(y=df["rvol_low"].iloc[0], color="green", linewidth=1.2, label="Low")
 
-    ax.set_title(f"{_active_tkr} – Rvol 30D", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – Rvol 30-Day", fontsize=12, pad=6)
     #ax.set_ylabel("Percent")
     from matplotlib.ticker import PercentFormatter
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
