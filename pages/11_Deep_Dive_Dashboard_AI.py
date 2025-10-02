@@ -409,7 +409,7 @@ score_current = Markmentum Score
 - **Trend Mix (Short vs Mid)**: trend_short and trend_mid converge and diverge on a cyclical basis.  trend_short less than trend_mid is considered positive; trend_short higher than trend_mid is considered negative. 
 - **Monthly Risk/Reward**: If positive only say more reward than risk within the monthly band. If negative only say more risk than reward within the monthly band
 Prices closer to the lower band are positive (more upside than downside), closer to the upper band are negative. Outside the band, this tilt is replaced by a placement penalty/damping.
-- **Long Term Anchor to Close**:  A positive number is consistent with room for upside if momentum shifts; A negative number is consistent with mean reversion risk.  
+- **Long Term Anchor to Close**:  A positive number is consistent with room for upside; A negative number is consistent with mean reversion risk.  
 
 ---
 
