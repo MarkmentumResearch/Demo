@@ -108,7 +108,7 @@ Markets + Momentum = Markmentum Research.  The equation to redefine trading, inv
 </p>
 
 <p style="font-weight:600; margin:12px 0 18px;">
-We deliver volatility-adjusted probable ranges, proprietary scoring, market reads, and probability-driven signals signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused insights. Zero noise.
+We deliver volatility-adjusted probable ranges, proprietary scoring, market reads, and probability-driven signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused insights. Zero noise.
 </p>
 
 <p style="font-weight:600; margin:12px 0 18px;">You're the captain. We provide the coordinates. Let us help you navigate markets with clarity and confidence.</p>
