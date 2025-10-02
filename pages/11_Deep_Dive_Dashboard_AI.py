@@ -443,7 +443,7 @@ Prices closer to the lower band are positive (more upside than downside), closer
 Return only strict JSON in this structure:
 {
   "score_context": {
-    "summary": "One sentence summary of Markmentum score, number and Rating, whether the score is positive/negative and the high level reasons",
+    "summary": "One sentence summary of Ticker, Markmentum score, number and Rating, whether the score is positive/negative and the high level reasons",
     "drivers": [
       {
         "driver": "Driver name (e.g., Implied vs Realized Volatility)",
