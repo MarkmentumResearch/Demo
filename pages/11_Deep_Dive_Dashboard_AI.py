@@ -451,7 +451,7 @@ Return only strict JSON in this structure:
         "why": "One plain-English explanation (no math, no formulas, suggests)",
         "numbers": ["Key numbers if useful, written in user-friendly format (e.g., 'IV 18%, Rvol 12%')"]
       }
-      // Include all drivers. Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure. When discussing "Rvol 30Day Z-Score Rank" only discuss whether above or below historical baseline.
+      // Include all drivers. 
     ]
   }
 }
@@ -462,13 +462,13 @@ Return only strict JSON in this structure:
 - Use **plain English**. Never output formulas, equations, coefficients, or implementation details.  
 - Focus on **what the numbers mean**, not how they are calculated.  
 - Summaries must highlight **Why the score is Positive or Negative**.  
+- When discussing "Rvol 30Day Z-Score Rank" only discuss whether above or below historical baseline and DO NOT include the why.
 - Keep explanations concise, intuitive, and user-facing.
 - Use suggests and not predictive sounding.
 - Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
 - Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
 - Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure.
 - **Banned verbs**: indicates, indicating.  Use of these verbs will be blocked or overwritten.
-- When discussing "Rvol 30Day Z-Score Rank" only discuss whether above or below historical baseline.
 """
 
 MODEL_NAME_PRIMARY = "gpt-5-mini"
