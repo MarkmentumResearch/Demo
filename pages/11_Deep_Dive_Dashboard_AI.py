@@ -416,8 +416,8 @@ Prices closer to the lower band are positive (more upside than downside), closer
 ### Direction rules to follow:
 - Ivol > Rvol → **Positive**; consistent with market pricing in higher risk premium.
 - Ivol < Rvol → **Negative**; consistent with market not pricing in higher risk premium, sign of complancency.
-- Rvol 30Day Z-Score Rank > 70 → **Positive**; Only say above its historical baseline.
-- Rvol 30Day Z-Score Rank < 30 → **Negative**; Only say below its historical baseline.
+- Rvol 30Day Z-Score Rank > 70 → Only say above its historical baseline.
+- Rvol 30Day Z-Score Rank < 30 → Only say below its historical baseline.
 - Rvol 30Day Z-Score Rank between 30 and 70  → **Neutral**.
 - Sharpe Ratio Percentile Rank > 70 → **Negative**; consistent with crowding and/or stretched momentum.
 - Sharpe Ratio Percentile Rank < 30 → **Positive**; historically has coincided with downward pressure easing.  
@@ -467,7 +467,7 @@ Return only strict JSON in this structure:
 - Always use the exact phrase "Sharpe Ratio Percentile Rank" everywhere; never shorten to "Sharpe Ratio".
 - Use data-only, non-prescriptive language. Allowed verbs: "is", "shows", "reflects", "is consistent with", "may suggest".
 - Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure.
-- **Nonallowed verbs**: **indicates, indicating**.  Use of these verbs will be blocked or overwritten.
+- **Banned verbs**: **indicates, indicating**.  Use of these verbs will be blocked or overwritten.
 - When discussing **Rvol 30Day Z-Score Rank*** only discuss whether above or below historical baseline.
 """
 
