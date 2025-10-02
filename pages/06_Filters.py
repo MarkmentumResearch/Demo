@@ -379,11 +379,11 @@ _render_card_custom(r2c1, titles[3], dfs[3], vcol, "% Change", _fmt_pct)
 
 score_col = _pick_col(dfs[4], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
 dfs[4][score_col] = dfs[4][score_col] * 100
-_render_card_custom(r2c2, titles[4], dfs[4], score_col, "Chase Score", _fmt_num)
+_render_card_custom(r2c2, titles[4], dfs[4], score_col, "Chase Score", format=",.1f")
 
 score_col = _pick_col(dfs[5], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
 dfs[5][score_col] = dfs[5][score_col] * 100
-_render_card_custom(r2c3, titles[5], dfs[5], score_col, "Chase Score", _fmt_num)
+_render_card_custom(r2c3, titles[5], dfs[5], score_col, "Chase Score", format=",.1f")
 
 row_spacer(14)
 
