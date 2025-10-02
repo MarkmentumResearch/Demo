@@ -62,7 +62,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .center { text-align: center; }
 .right  { text-align: right; white-space: nowrap; }
 /* Center ONLY the table headers for Ticker and Percent/Shares */
-.tbl thead th.col-ticker { text-align: center; }
+.tbl thead th.Ticker { text-align: center; }
 .tbl thead th.col-value  { text-align: center; }            
 
 /* --- Column widths (desktop defaults) --- */
