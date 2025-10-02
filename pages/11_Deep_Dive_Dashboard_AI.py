@@ -451,7 +451,7 @@ Return only strict JSON in this structure:
         "why": "One plain-English explanation (no math, no formulas, suggests)",
         "numbers": ["Key numbers if useful, written in user-friendly format (e.g., 'IV 18%, Rvol 12%')"]
       }
-      // Only include all drivers
+      // Include all drivers. Do NOT use: indicates, indicating, buy, sell, entry, exit, opportunity, signal, bullish, bearish, should, will, recommend, advise, upside/downside pressure. When discussing "Rvol 30Day Z-Score Rank" only discuss whether above or below historical baseline.
     ]
   }
 }
