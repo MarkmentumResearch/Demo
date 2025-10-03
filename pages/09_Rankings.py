@@ -101,14 +101,14 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontal
 }
 
 /* MacBook Air and similar: 2 × 2 */
-@media (max-width: 1499.95px){
+@media (max-width: 1499.99px){
   div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 /* Small tablets / phones: stack 1 per row */
-@media (max-width: 799.95px){
+@media (max-width: 799.99px){
   div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: 1fr !important;
   }
