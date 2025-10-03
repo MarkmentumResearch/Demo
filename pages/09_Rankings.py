@@ -525,7 +525,11 @@ cA, cB, cC, cD = st.columns(4)
 
 with cA:
     # invisible marker INSIDE the first column so the row matches :has(#grid4)
-    st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
+    st.markdown(
+    '<span id="grid4" style="position:absolute;width:0;height:0;'
+    'margin:0;padding:0;border:0;line-height:0;overflow:hidden;"></span>',
+    unsafe_allow_html=True
+)
     st.altair_chart(chart48, use_container_width=True)
 
 with cB:
