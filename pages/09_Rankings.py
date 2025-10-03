@@ -77,27 +77,25 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
-/* Bottom 4 charts: single-row, responsive */
-/* Match the first horizontal row after #grid4 whether or not there’s a wrapper */
-#grid4 + div[data-testid="stHorizontalBlock"],
-div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
+/* Target the first horizontal row of columns after the #grid4 marker,
+   even if Streamlit inserts wrappers; also handle when #grid4 sits inside the row. */
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+div[data-testid="stHorizontalBlock"]:has(#grid4) {
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 24px;
   align-items: start;
 }
 
-/* Flatten any nested horizontal blocks Streamlit inserts */
-#grid4 + div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"],
-div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]
-  div[data-testid="stHorizontalBlock"]{
+/* Flatten any nested horizontal blocks inside that row */
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) div[data-testid="stHorizontalBlock"],
+div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Neutralize inline column sizing so grid controls layout */
-#grid4 + div[data-testid="stHorizontalBlock"] [data-testid="column"],
-div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]
-  [data-testid="column"]{
+/* Neutralize inline column sizing so the grid controls layout */
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) [data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
@@ -105,20 +103,19 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontal
 
 /* MacBook Air and similar: 2 × 2 */
 @media (max-width: 1499.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"],
-  div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
+  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 /* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"],
-  div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
+  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: 1fr !important;
   }
 }
-
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
