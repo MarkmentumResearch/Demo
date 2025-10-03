@@ -526,7 +526,7 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 st.markdown('<span id="grid4"></span>', unsafe_allow_html=True)
 
 # Create the 4-column row
-cA, cB, cC, cD = st.columns(4)cA, cB, cC, cD = st.columns(4)
+cA, cB, cC, cD = st.columns(4)
 
 with cA: 
     st.altair_chart(chart48, use_container_width=True)
