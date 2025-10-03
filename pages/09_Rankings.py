@@ -23,7 +23,7 @@ st.markdown("""
 
 /* Page container sizing */
 [data-testid="stAppViewContainer"] .main .block-container,
-section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; container-type: inline-size; container-name: page;}
+section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
 
 /* Remove Streamlit decorative borders/pills */
 div[data-testid="stDecoration"] { display:none !important; }
@@ -76,90 +76,43 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   margin: 0 auto !important;
 }        
 
-/* ===== Bottom charts: force the LAST 4-column row (with charts) to 4×1 → 2×2 → 1×1 ===== */
+/* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
+/* Bottom 4 charts: single-row, responsive */
 
-/* Base: grab the last horizontal block that has at least 4 direct columns and contains charts */
-div[data-testid="stHorizontalBlock"]
-  :not(:has(+ div[data-testid="stHorizontalBlock"])) /* make it the last row among siblings */
-  :has(> div[data-testid="column"]:nth-child(4))     /* ensure there are 4 columns */
-  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg) { /* contains charts */
+/* Target the row that CONTAINS #grid4 and make it a grid */
+div[data-testid="stHorizontalBlock"]:has(#grid4){
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 across on desktop */
   gap: 24px;
   align-items: start;
 }
 
-/* Flatten any nested horizontal blocks inside that row */
-div[data-testid="stHorizontalBlock"]
-  :not(:has(+ div[data-testid="stHorizontalBlock"]))
-  :has(> div[data-testid="column"]:nth-child(4))
-  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg)
-  div[data-testid="stHorizontalBlock"]{
+/* If Streamlit inserts an inner row wrapper, flatten it */
+div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Let grid control sizing; prevent Streamlit column inline styles from fighting us */
-div[data-testid="stHorizontalBlock"]
-  :not(:has(+ div[data-testid="stHorizontalBlock"]))
-  :has(> div[data-testid="column"]:nth-child(4))
-  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg)
-  [data-testid="column"]{
+/* Neutralize Streamlit’s inline widths/flex on columns in this row */
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
-  min-width: 0 !important; /* avoids overflow clipping */
 }
 
-/* ——— Breakpoints ——— */
-
-/* If you have a container wrapper, prefer container queries */
-@supports (container-type: inline-size){
-  /* Ensure your page wrapper is a container (you likely already have this) */
-  [data-testid="stAppViewContainer"] .main .block-container,
-  section.main > div{
-    container-type: inline-size;
-    container-name: page;
-  }
-
-  /* 2 × 2 on MBA / smaller page widths */
-  @container page (max-width: 1699.98px){
-    div[data-testid="stHorizontalBlock"]
-      :not(:has(+ div[data-testid="stHorizontalBlock"]))
-      :has(> div[data-testid="column"]:nth-child(4))
-      :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-  }
-
-  /* 1 per row on narrow widths */
-  @container page (max-width: 799.98px){
-    div[data-testid="stHorizontalBlock"]
-      :not(:has(+ div[data-testid="stHorizontalBlock"]))
-      :has(> div[data-testid="column"]:nth-child(4))
-      :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
-      grid-template-columns: 1fr !important;
-    }
-  }
-}
-
-/* Fallback if container queries aren't active (Chrome/Edge/older Safari zoom quirks) */
-@media (max-width: 1699.98px){
-  div[data-testid="stHorizontalBlock"]
-    :not(:has(+ div[data-testid="stHorizontalBlock"]))
-    :has(> div[data-testid="column"]:nth-child(4))
-    :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
+/* Laptops / MacBook Air: 2 × 2 */
+@media (max-width: 1499.98px){
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+/* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
-  div[data-testid="stHorizontalBlock"]
-    :not(:has(+ div[data-testid="stHorizontalBlock"]))
-    :has(> div[data-testid="column"]:nth-child(4))
-    :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: 1fr !important;
   }
 }
-
+      
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
   display:grid !important; place-items:center !important; width:100%;
@@ -169,6 +122,7 @@ div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"]
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # ---------- Paths ----------
