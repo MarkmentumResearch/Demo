@@ -112,7 +112,19 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
     grid-template-columns: 1fr !important;
   }
 }
-      
+
+/* Kill the extra top space created by the markdown wrapper around #grid4 */
+div[data-testid="stMarkdownContainer"]:has(#grid4),
+div[data-testid="stMarkdownContainer"]:has(#grid4) p{
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+div[data-testid="stMarkdownContainer"]:has(#grid4){
+  display: contents !important; /* removes the wrapper box entirely */
+}
+
+
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
   display:grid !important; place-items:center !important; width:100%;
