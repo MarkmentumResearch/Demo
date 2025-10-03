@@ -821,7 +821,7 @@ chartQTD = (barsQTD + posQTD + negQTD).properties(title="Score QTD Change Rankin
 cA, cB, cC, cD = st.columns(4)
 
 with cA:
-    st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
+    #st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
     st.altair_chart(chart48, use_container_width=True)
 
 with cB: st.altair_chart(chartWTD, use_container_width=True)
