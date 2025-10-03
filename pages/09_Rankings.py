@@ -23,7 +23,7 @@ st.markdown("""
 
 /* Page container sizing */
 [data-testid="stAppViewContainer"] .main .block-container,
-section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
+section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; container-type: inline-size; container-name: page;}
 
 /* Remove Streamlit decorative borders/pills */
 div[data-testid="stDecoration"] { display:none !important; }
@@ -102,7 +102,7 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
 }
 
 /* MacBook Air and similar: 2 × 2 */
-@media (max-width: 1499.98px){
+@container page (max-width: 1499.98px){
   :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
   div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -110,7 +110,7 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
 }
 
 /* Small tablets / phones: 1 per row */
-@media (max-width: 799.98px){
+@container page (max-width: 799.98px){
   :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
   div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: 1fr !important;
