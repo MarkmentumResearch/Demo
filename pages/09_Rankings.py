@@ -79,21 +79,20 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
 /* Bottom 4 charts: single-row, responsive */
 
-/* Target the row that CONTAINS #grid4 and make it a grid */
-div[data-testid="stHorizontalBlock"]:has(#grid4){
+#grid4 + div[data-testid="stHorizontalBlock"]{
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 across on desktop */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
   align-items: start;
 }
 
-/* If Streamlit inserts an inner row wrapper, flatten it */
-div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
+/* If Streamlit nests an inner row, flatten it */
+#grid4 + div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Neutralize Streamlit’s inline widths/flex on columns in this row */
-div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
+/* Neutralize inline widths/flex on columns in this row */
+#grid4 + div[data-testid="stHorizontalBlock"] [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
@@ -101,39 +100,19 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
 
 /* Laptops / MacBook Air: 2 × 2 */
 @media (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
+  #grid4 + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 /* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
+  #grid4 + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: 1fr !important;
   }
 }
 
-/* Kill the extra top space created by the markdown wrapper around #grid4 */
-div[data-testid="stMarkdownContainer"]:has(#grid4),
-div[data-testid="stMarkdownContainer"]:has(#grid4) p{
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 0 !important;
-}
-div[data-testid="stMarkdownContainer"]:has(#grid4){
-  display: contents !important; /* removes the wrapper box entirely */
-}
-/* --- Fix vertical offset in column A: remove the markdown wrapper height around #grid4 --- */
-div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-child
-  div[data-testid="stMarkdownContainer"]:has(#grid4){
-  display: contents !important;               /* flatten wrapper so it has no box */
-}
 
-div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-child
-  div[data-testid="stMarkdownContainer"]:has(#grid4) p{
-  margin: 0 !important; padding: 0 !important; /* kill paragraph margins */
-  height: 0 !important; line-height: 0 !important;
-}
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
@@ -543,15 +522,13 @@ chart51 = (bars51 + pos51 + neg51).properties(title="Sharpe Ratio 30-Day Change"
 # marker to scope 4→2×2→1 layout to JUST this row
 # --- DESKTOP: 4-across ---
 # Create the 4-column row
-cA, cB, cC, cD = st.columns(4)
+# marker for CSS scoping – place ABOVE the columns row (no wrapper inside a column)
+st.markdown('<span id="grid4"></span>', unsafe_allow_html=True)
 
-with cA:
-    # invisible marker INSIDE the first column so the row matches :has(#grid4)
-    st.markdown(
-    '<span id="grid4" style="display:none"></span>',
-    unsafe_allow_html=True
-)
-    
+# Create the 4-column row
+cA, cB, cC, cD = st.columns(4)cA, cB, cC, cD = st.columns(4)
+
+with cA: 
     st.altair_chart(chart48, use_container_width=True)
 
 with cB:
