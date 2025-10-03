@@ -78,21 +78,21 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
 /* Bottom 4 charts: single-row, responsive */
-
-#grid4 + div[data-testid="stHorizontalBlock"]{
+/* Match either immediate sibling or nested sibling rows after #grid4 */
+#grid4 ~ div[data-testid="stHorizontalBlock"]{
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
   align-items: start;
 }
 
-/* If Streamlit nests an inner row, flatten it */
-#grid4 + div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"]{
+/* Flatten nested inner rows if Streamlit inserts them */
+#grid4 ~ div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Neutralize inline widths/flex on columns in this row */
-#grid4 + div[data-testid="stHorizontalBlock"] [data-testid="column"]{
+/* Neutralize inline widths/flex on columns */
+#grid4 ~ div[data-testid="stHorizontalBlock"] [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
@@ -100,18 +100,17 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 
 /* Laptops / MacBook Air: 2 × 2 */
 @media (max-width: 1499.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"]{
+  #grid4 ~ div[data-testid="stHorizontalBlock"]{
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 /* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
-  #grid4 + div[data-testid="stHorizontalBlock"]{
+  #grid4 ~ div[data-testid="stHorizontalBlock"]{
     grid-template-columns: 1fr !important;
   }
 }
-
 
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
