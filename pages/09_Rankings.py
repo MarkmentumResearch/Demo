@@ -113,15 +113,16 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
   }
 }
 
-/* Kill the extra top space created by the markdown wrapper around #grid4 */
-div[data-testid="stMarkdownContainer"]:has(#grid4),
-div[data-testid="stMarkdownContainer"]:has(#grid4) p{
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 0 !important;
+/* --- Fix vertical offset in column A: remove the markdown wrapper height around #grid4 --- */
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-child
+  div[data-testid="stMarkdownContainer"]:has(#grid4){
+  display: contents !important;               /* flatten wrapper so it has no box */
 }
-div[data-testid="stMarkdownContainer"]:has(#grid4){
-  display: contents !important; /* removes the wrapper box entirely */
+
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-child
+  div[data-testid="stMarkdownContainer"]:has(#grid4) p{
+  margin: 0 !important; padding: 0 !important; /* kill paragraph margins */
+  height: 0 !important; line-height: 0 !important;
 }
 
 
@@ -538,10 +539,10 @@ cA, cB, cC, cD = st.columns(4)
 with cA:
     # invisible marker INSIDE the first column so the row matches :has(#grid4)
     st.markdown(
-    '<span id="grid4" style="position:absolute;width:0;height:0;'
-    'margin:0;padding:0;border:0;line-height:0;overflow:hidden;"></span>',
+    '<span id="grid4" style="display:none"></span>',
     unsafe_allow_html=True
 )
+    
     st.altair_chart(chart48, use_container_width=True)
 
 with cB:
