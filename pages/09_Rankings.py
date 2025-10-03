@@ -532,7 +532,7 @@ st.markdown('<span id="grid4"></span>', unsafe_allow_html=True)
 cA, cB, cC, cD = st.columns(4)
 
 with cA: 
-    st.markdown('<span id="grid4_in"></span>', unsafe_allow_html=True)  # <— anchor inside the row
+#   st.markdown('<span id="grid4_in"></span>', unsafe_allow_html=True)  # <— anchor inside the row
     st.altair_chart(chart48, use_container_width=True)
 
 with cB:
