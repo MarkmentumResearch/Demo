@@ -373,7 +373,7 @@ c_lock,c_blank, c_blank = st.columns([1,4,1])
 with c_lock:
         lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
-st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+st.markdown('<div class="h-title">Bar Charts by Category</div>', unsafe_allow_html=True)
 
 view48 = df48[df48["Category"] == sel].copy().sort_values("model_score", ascending=False)
 view49 = df49[df49["Category"] == sel].copy().sort_values("Sharpe_Rank", ascending=False)
