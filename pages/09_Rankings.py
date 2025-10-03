@@ -78,7 +78,8 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
 /* Bottom 4 charts: single-row, responsive */
-/* Target the row IMMEDIATELY AFTER the row that contains #grid4 */
+/* Match the first horizontal row after #grid4 whether or not there’s a wrapper */
+#grid4 + div[data-testid="stHorizontalBlock"],
 div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
@@ -86,13 +87,15 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontal
   align-items: start;
 }
 
-/* If Streamlit nests an inner row, flatten it */
+/* Flatten any nested horizontal blocks Streamlit inserts */
+#grid4 + div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"],
 div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]
   div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Neutralize the inline column sizing so grid controls layout */
+/* Neutralize inline column sizing so grid controls layout */
+#grid4 + div[data-testid="stHorizontalBlock"] [data-testid="column"],
 div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]
   [data-testid="column"]{
   width: auto !important;
@@ -102,13 +105,15 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontal
 
 /* MacBook Air and similar: 2 × 2 */
 @media (max-width: 1499.98px){
+  #grid4 + div[data-testid="stHorizontalBlock"],
   div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-/* Small tablets / phones: stack 1 per row */
+/* Small tablets / phones: 1 per row */
 @media (max-width: 799.98px){
+  #grid4 + div[data-testid="stHorizontalBlock"],
   div[data-testid="stHorizontalBlock"]:has(#grid4) + div[data-testid="stHorizontalBlock"]{
     grid-template-columns: 1fr !important;
   }
