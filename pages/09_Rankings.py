@@ -77,9 +77,10 @@ div[data-baseweb="select"] { max-width:36ch !important; }
 }        
 
 /* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
-/* ===== Bottom charts: 4 across → 2x2 → 1x1 ===== */
-/* Target the exact row that contains our inline anchor */
-div[data-testid="stHorizontalBlock"]:has(#grid4_in){
+/* Target the first horizontal row of columns after the #grid4 marker,
+   even if Streamlit inserts wrappers; also handle when #grid4 sits inside the row. */
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+div[data-testid="stHorizontalBlock"]:has(#grid4) {
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 24px;
@@ -87,27 +88,31 @@ div[data-testid="stHorizontalBlock"]:has(#grid4_in){
 }
 
 /* Flatten any nested horizontal blocks inside that row */
-div[data-testid="stHorizontalBlock"]:has(#grid4_in) div[data-testid="stHorizontalBlock"]{
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) div[data-testid="stHorizontalBlock"],
+div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
 /* Neutralize inline column sizing so the grid controls layout */
-div[data-testid="stHorizontalBlock"]:has(#grid4_in) [data-testid="column"]{
+:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) [data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
 }
 
-/* 2 × 2 when the PAGE CONTAINER is ≤ ~1700px (covers MBA scaling) */
+/* MacBook Air and similar: 2 × 2 */
 @container page (max-width: 1499.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4_in){
+  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-/* 1 per row on narrow widths */
+/* Small tablets / phones: 1 per row */
 @container page (max-width: 799.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4_in){
+  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
+  div[data-testid="stHorizontalBlock"]:has(#grid4){
     grid-template-columns: 1fr !important;
   }
 }
