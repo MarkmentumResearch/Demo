@@ -76,11 +76,13 @@ div[data-baseweb="select"] { max-width:36ch !important; }
   margin: 0 auto !important;
 }        
 
-/* ===== Toggle 4-across vs 2x2 for the bottom charts ===== */
-/* Target the first horizontal row of columns after the #grid4 marker,
-   even if Streamlit inserts wrappers; also handle when #grid4 sits inside the row. */
-:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
-div[data-testid="stHorizontalBlock"]:has(#grid4) {
+/* ===== Bottom charts: force the LAST 4-column row (with charts) to 4×1 → 2×2 → 1×1 ===== */
+
+/* Base: grab the last horizontal block that has at least 4 direct columns and contains charts */
+div[data-testid="stHorizontalBlock"]
+  :not(:has(+ div[data-testid="stHorizontalBlock"])) /* make it the last row among siblings */
+  :has(> div[data-testid="column"]:nth-child(4))     /* ensure there are 4 columns */
+  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg) { /* contains charts */
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 24px;
@@ -88,31 +90,72 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) {
 }
 
 /* Flatten any nested horizontal blocks inside that row */
-:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) div[data-testid="stHorizontalBlock"],
-div[data-testid="stHorizontalBlock"]:has(#grid4) div[data-testid="stHorizontalBlock"]{
+div[data-testid="stHorizontalBlock"]
+  :not(:has(+ div[data-testid="stHorizontalBlock"]))
+  :has(> div[data-testid="column"]:nth-child(4))
+  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg)
+  div[data-testid="stHorizontalBlock"]{
   display: contents !important;
 }
 
-/* Neutralize inline column sizing so the grid controls layout */
-:where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]) [data-testid="column"],
-div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
+/* Let grid control sizing; prevent Streamlit column inline styles from fighting us */
+div[data-testid="stHorizontalBlock"]
+  :not(:has(+ div[data-testid="stHorizontalBlock"]))
+  :has(> div[data-testid="column"]:nth-child(4))
+  :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg)
+  [data-testid="column"]{
   width: auto !important;
   max-width: none !important;
   flex: initial !important;
+  min-width: 0 !important; /* avoids overflow clipping */
 }
 
-/* MacBook Air and similar: 2 × 2 */
-@container page (max-width: 1499.98px){
-  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+/* ——— Breakpoints ——— */
+
+/* If you have a container wrapper, prefer container queries */
+@supports (container-type: inline-size){
+  /* Ensure your page wrapper is a container (you likely already have this) */
+  [data-testid="stAppViewContainer"] .main .block-container,
+  section.main > div{
+    container-type: inline-size;
+    container-name: page;
+  }
+
+  /* 2 × 2 on MBA / smaller page widths */
+  @container page (max-width: 1699.98px){
+    div[data-testid="stHorizontalBlock"]
+      :not(:has(+ div[data-testid="stHorizontalBlock"]))
+      :has(> div[data-testid="column"]:nth-child(4))
+      :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+
+  /* 1 per row on narrow widths */
+  @container page (max-width: 799.98px){
+    div[data-testid="stHorizontalBlock"]
+      :not(:has(+ div[data-testid="stHorizontalBlock"]))
+      :has(> div[data-testid="column"]:nth-child(4))
+      :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
+      grid-template-columns: 1fr !important;
+    }
   }
 }
 
-/* Small tablets / phones: 1 per row */
-@container page (max-width: 799.98px){
-  :where(#grid4) ~ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]),
-  div[data-testid="stHorizontalBlock"]:has(#grid4){
+/* Fallback if container queries aren't active (Chrome/Edge/older Safari zoom quirks) */
+@media (max-width: 1699.98px){
+  div[data-testid="stHorizontalBlock"]
+    :not(:has(+ div[data-testid="stHorizontalBlock"]))
+    :has(> div[data-testid="column"]:nth-child(4))
+    :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 799.98px){
+  div[data-testid="stHorizontalBlock"]
+    :not(:has(+ div[data-testid="stHorizontalBlock"]))
+    :has(> div[data-testid="column"]:nth-child(4))
+    :has([data-testid^="stVegaLite"], [data-testid="stPlotlyChart"], canvas, svg){
     grid-template-columns: 1fr !important;
   }
 }
