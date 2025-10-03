@@ -113,6 +113,16 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]{
   }
 }
 
+/* Kill the extra top space created by the markdown wrapper around #grid4 */
+div[data-testid="stMarkdownContainer"]:has(#grid4),
+div[data-testid="stMarkdownContainer"]:has(#grid4) p{
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+div[data-testid="stMarkdownContainer"]:has(#grid4){
+  display: contents !important; /* removes the wrapper box entirely */
+}
 /* --- Fix vertical offset in column A: remove the markdown wrapper height around #grid4 --- */
 div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-child
   div[data-testid="stMarkdownContainer"]:has(#grid4){
@@ -124,7 +134,6 @@ div[data-testid="stHorizontalBlock"]:has(#grid4) [data-testid="column"]:first-ch
   margin: 0 !important; padding: 0 !important; /* kill paragraph margins */
   height: 0 !important; line-height: 0 !important;
 }
-
 
 /* --- Altair/Vega: keep intrinsic width and allow centering --- */
 div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
