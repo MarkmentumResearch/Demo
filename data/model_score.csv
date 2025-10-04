@@ -38,6 +38,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-03,APD,"AIR PRODUCTS AND CHEMICALS, INC.",Materials,Materials,53.0
 2025-10-03,APH,AMPHENOL ,Information Technology,Information Technology,14.0
 2025-10-03,APO,"APOLLO GLOBAL MANAGEMENT, INC.",Financials,Financials,40.0
+2025-10-03,APP,APPLOVIN CORP,Communication Services,Communication Services,-4.0
 2025-10-03,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,-2.0
 2025-10-03,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,17.0
 2025-10-03,ASC,ARDMORE SHIPPING ,Discretionary,MR Discretion,59.0
@@ -132,7 +133,6 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-03,CTVA,"CORTEVA, INC.",Materials,Materials,50.0
 2025-10-03,CVS,CVS HEALTH ,Health Care,Health Care,7.0
 2025-10-03,CVX,CHEVRON ,Energy,Energy,14.0
-2025-10-03,CZR,"CAESARS ENTERTAINMENT, INC.",Consumer Discretionary,Consumer Discretionary,-18.0
 2025-10-03,D,"DOMINION ENERGY, INC.",Utilities,Utilities,-27.0
 2025-10-03,DAL,"DELTA AIR LINES, INC.",Industrials,Industrials,59.0
 2025-10-03,DASH,"DOORDASH, INC.",Consumer Discretionary,Consumer Discretionary,26.0
@@ -180,9 +180,9 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-03,EIX,EDISON INTERNATIONAL,Utilities,Utilities,27.0
 2025-10-03,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,-24.0
 2025-10-03,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,-35.0
+2025-10-03,EME,"EMCOR GROUP, INC.",Industrials,Industrials,36.0
 2025-10-03,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,-11.0
 2025-10-03,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,-7.0
-2025-10-03,ENPH,"ENPHASE ENERGY, INC.",Information Technology,Information Technology,-11.0
 2025-10-03,ENZL,ISHARES:MSCI NEW ZLND,New Zlnd,Foreign,21.0
 2025-10-03,EOG,"EOG RESOURCES, INC.",Energy,Energy,5.0
 2025-10-03,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,-17.0
@@ -287,6 +287,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-03,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",CE - Cap Gain,MR Discretion,-7.0
 2025-10-03,HOLX,"HOLOGIC, INC.",Health Care,Health Care,-9.0
 2025-10-03,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,9.0
+2025-10-03,HOOD,"ROBINHOOD MARKETS, INC. ",Financials,Financials,-4.0
 2025-10-03,HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,Information Technology,30.0
 2025-10-03,HPQ,HP INC.,Information Technology,Information Technology,47.0
 2025-10-03,HRL,HORMEL FOODS ,Consumer Staples,Consumer Staples,-17.0
@@ -380,7 +381,6 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-03,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,29.0
 2025-10-03,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,43.0
 2025-10-03,MKC,"MCCORMICK & COMPANY, INC.",Consumer Staples,Consumer Staples,-18.0
-2025-10-03,MKTX,MARKETAXESS HOLDINGS INC.,Financials,Financials,7.0
 2025-10-03,MLM,"MARTIN MARIETTA MATERIALS, INC.",Materials,Materials,41.0
 2025-10-03,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,-6.0
 2025-10-03,MMM,3M COMPANY,Industrials,Industrials,6.0

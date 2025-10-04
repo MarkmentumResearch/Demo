@@ -38,6 +38,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-03,APD,"AIR PRODUCTS AND CHEMICALS, INC.",Materials,Materials,-18.0,53.0,71.0
 2025-10-03,APH,AMPHENOL ,Information Technology,Information Technology,15.0,14.0,-1.0
 2025-10-03,APO,"APOLLO GLOBAL MANAGEMENT, INC.",Financials,Financials,39.0,40.0,1.0
+2025-10-03,APP,APPLOVIN CORP,Communication Services,Communication Services,15.0,-4.0,-19.0
 2025-10-03,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,6.0,-2.0,-8.0
 2025-10-03,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,6.0,17.0,11.0
 2025-10-03,ASC,ARDMORE SHIPPING ,Discretionary,MR Discretion,10.0,59.0,49.0
@@ -132,7 +133,6 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-03,CTVA,"CORTEVA, INC.",Materials,Materials,16.0,50.0,34.0
 2025-10-03,CVS,CVS HEALTH ,Health Care,Health Care,-5.0,7.0,12.0
 2025-10-03,CVX,CHEVRON ,Energy,Energy,5.0,14.0,9.0
-2025-10-03,CZR,"CAESARS ENTERTAINMENT, INC.",Consumer Discretionary,Consumer Discretionary,-6.0,-18.0,-12.0
 2025-10-03,D,"DOMINION ENERGY, INC.",Utilities,Utilities,-19.0,-27.0,-8.0
 2025-10-03,DAL,"DELTA AIR LINES, INC.",Industrials,Industrials,-3.0,59.0,62.0
 2025-10-03,DASH,"DOORDASH, INC.",Consumer Discretionary,Consumer Discretionary,18.0,26.0,8.0
@@ -180,9 +180,9 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-03,EIX,EDISON INTERNATIONAL,Utilities,Utilities,16.0,27.0,11.0
 2025-10-03,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,-18.0,-24.0,-6.0
 2025-10-03,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,-19.0,-35.0,-16.0
+2025-10-03,EME,"EMCOR GROUP, INC.",Industrials,Industrials,-8.0,36.0,44.0
 2025-10-03,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,-1.0,-11.0,-10.0
 2025-10-03,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,-3.0,-7.0,-4.0
-2025-10-03,ENPH,"ENPHASE ENERGY, INC.",Information Technology,Information Technology,-7.0,-11.0,-4.0
 2025-10-03,ENZL,ISHARES:MSCI NEW ZLND,New Zlnd,Foreign,-23.0,21.0,44.0
 2025-10-03,EOG,"EOG RESOURCES, INC.",Energy,Energy,-19.0,5.0,24.0
 2025-10-03,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,-23.0,-17.0,6.0
@@ -287,6 +287,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-03,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",CE - Cap Gain,MR Discretion,-3.0,-7.0,-4.0
 2025-10-03,HOLX,"HOLOGIC, INC.",Health Care,Health Care,0.0,-9.0,-9.0
 2025-10-03,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,-6.0,9.0,15.0
+2025-10-03,HOOD,"ROBINHOOD MARKETS, INC. ",Financials,Financials,-7.0,-4.0,3.0
 2025-10-03,HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,Information Technology,29.0,30.0,1.0
 2025-10-03,HPQ,HP INC.,Information Technology,Information Technology,19.0,47.0,28.0
 2025-10-03,HRL,HORMEL FOODS ,Consumer Staples,Consumer Staples,22.0,-17.0,-39.0
@@ -380,7 +381,6 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-03,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,-27.0,29.0,56.0
 2025-10-03,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,22.0,43.0,21.0
 2025-10-03,MKC,"MCCORMICK & COMPANY, INC.",Consumer Staples,Consumer Staples,-20.0,-18.0,2.0
-2025-10-03,MKTX,MARKETAXESS HOLDINGS INC.,Financials,Financials,27.0,7.0,-20.0
 2025-10-03,MLM,"MARTIN MARIETTA MATERIALS, INC.",Materials,Materials,18.0,41.0,23.0
 2025-10-03,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,-3.0,-6.0,-3.0
 2025-10-03,MMM,3M COMPANY,Industrials,Industrials,-5.0,6.0,11.0
