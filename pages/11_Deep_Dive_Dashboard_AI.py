@@ -3145,7 +3145,7 @@ def plot_g12_scatter(df: pd.DataFrame, ticker: str):
 
     ax.set_title(f"{_active_tkr} – Ivol/Rvol % Spreads", fontsize=12, pad=6)
     ax.set_xlabel("Z-Score")
-    ax.set_ylabel("Ivol Prem/Disc)")
+    ax.set_ylabel("Ivol Prem/(Disc)")
 
     # ----- Dynamic, zero-centered limits -----
     import math
