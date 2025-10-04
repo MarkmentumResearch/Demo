@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_day_change,current_model_score,previous_model_score
-FICO,FAIR ISAAC ,Information Technology,2025-10-02,-40.0,-7.0,33.0
-ISRG,"INTUITIVE SURGICAL, INC.",Health Care,2025-10-02,-33.0,-41.0,-8.0
-GOOGL,ALPHABET INC.,Communication Services,2025-10-02,-32.0,8.0,40.0
-BF.B,BROWN-FORMAN ,Consumer Staples,2025-10-02,-27.0,-18.0,9.0
-GGB,GERDAU SA,MR Discretion,2025-10-02,-27.0,4.0,31.0
-NKE,"NIKE, INC.",Consumer Discretionary,2025-10-02,-27.0,-1.0,26.0
-EPOL,ISHARES:MSCI POLAND,Foreign,2025-10-02,-26.0,-28.0,-2.0
-EPU,ISHARES:MSCI PERU,Foreign,2025-10-02,-26.0,-11.0,15.0
-FANG,"DIAMONDBACK ENERGY, INC.",Energy,2025-10-02,-26.0,-22.0,4.0
-CPB,CAMPBELL SOUP COMPANY,Consumer Staples,2025-10-02,-25.0,10.0,35.0
+T,AT&T INC.,Communication Services,2025-10-03,-38.0,83.0,121.0
+SD,"SANDRIDGE ENERGY, INC.",MR Discretion,2025-10-03,-34.0,-13.0,21.0
+WSM,"WILLIAMS-SONOMA, INC.",Consumer Discretionary,2025-10-03,-30.0,22.0,52.0
+CPRT,"COPART, INC.",Industrials,2025-10-03,-27.0,24.0,51.0
+BRK.B,"BERKSHIRE HATHAWAY INC.,",Financials,2025-10-03,-26.0,-34.0,-8.0
+HIG,THE HARTFORD FINANCIAL SERVICES GROUP,Financials,2025-10-03,-26.0,7.0,33.0
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-03,-25.0,28.0,53.0
+EBAY,EBAY INC.,Consumer Discretionary,2025-10-03,-25.0,59.0,84.0
+HUM,HUMANA INC.,Health Care,2025-10-03,-25.0,30.0,55.0
+NFLX,"NETFLIX, INC.",Communication Services,2025-10-03,-25.0,36.0,61.0

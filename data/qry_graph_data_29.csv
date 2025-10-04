@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score
-T,AT&T INC.,Communication Services,2025-10-02,121.0
-LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,2025-10-02,112.0
-SYF,SYNCHRONY FINANCIAL,Financials,2025-10-02,109.0
-VRSN,"VERISIGN, INC.",Information Technology,2025-10-02,100.0
-KKR,KKR & CO. INC.,Financials,2025-10-02,99.0
-CBRE,"CBRE GROUP, INC.",Real Estate,2025-10-02,88.0
-BR,"BROADRIDGE FINANCIAL SOLUTIONS, INC.",Industrials,2025-10-02,87.0
-FTI,TECHNIPFMC PLC,MR Discretion,2025-10-02,87.0
-MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,2025-10-02,86.0
-ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-10-02,85.0
+VRSN,"VERISIGN, INC.",Information Technology,2025-10-03,107.0
+LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,2025-10-03,106.0
+SYF,SYNCHRONY FINANCIAL,Financials,2025-10-03,94.0
+MTCH,"MATCH GROUP, INC.",Communication Services,2025-10-03,93.0
+LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,2025-10-03,85.0
+META,"META PLATFORMS, INC.",Communication Services,2025-10-03,85.0
+T,AT&T INC.,Communication Services,2025-10-03,83.0
+MCD,MCDONALD'S ,Consumer Discretionary,2025-10-03,82.0
+KKR,KKR & CO. INC.,Financials,2025-10-03,81.0
+MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,2025-10-03,81.0
