@@ -2221,7 +2221,7 @@ def plot_g12_scatter(df: pd.DataFrame, ticker: str):
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
     ax.set_title(f"{_active_tkr} – Ivol/Rvol % Spreads", fontsize=12, pad=6)
-    ax.set_xlabel("Z-Score)")
+    ax.set_xlabel("Z-Score")
     ax.set_ylabel("Ivol Prem/(Disc)")
 
     # ----- Dynamic, zero-centered limits -----
