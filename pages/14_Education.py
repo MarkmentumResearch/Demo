@@ -14,6 +14,39 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="Markmentum – Education", layout="wide")
 
 
+# --- Typography + image scaling to match About page ---
+st.markdown("""
+<style>
+/* Mirror About page font stack */
+html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stButton {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* Education content container + default sizing */
+.edu-wrapper {
+  max-width: 900px;          /* same visual width as About’s main column */
+  margin: 0 auto;
+  padding: 0 6px;
+  line-height: 1.5;
+}
+.edu-wrapper p, .edu-wrapper li { font-size: 16px; }
+.edu-wrapper h1 { font-size: 28px; font-weight: 700; margin: 16px 0 8px; }
+.edu-wrapper h2 { font-size: 24px; font-weight: 700; margin: 16px 0 8px; }
+.edu-wrapper h3 { font-size: 21px; font-weight: 600; margin: 14px 0 8px; }
+
+/* Make screenshots fit nicely on Cloud */
+.edu-wrapper img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 8px auto;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
         return base64.b64encode(f.read()).decode()
@@ -65,13 +98,15 @@ st.cache_data.clear()
 # ---------- Render the Education .docx as-is ----------
 import io
 import os
+from pathlib import Path
 import streamlit as st
 
 DOCX_PATH = DATA_DIR / "Educational Page v2.docx"
 
 def render_docx_as_html(docx_path: Path):
+    """Render a .docx (with screenshots) as HTML inside a 900px column."""
     try:
-        import mammoth
+        import mammoth  # ensure mammoth is in requirements.txt (e.g., mammoth==1.11.0)
     except Exception:
         st.error('Missing dependency: **mammoth**. Add `mammoth==1.11.0` to requirements.txt and redeploy.')
         if Path(docx_path).exists():
@@ -84,12 +119,33 @@ def render_docx_as_html(docx_path: Path):
         return
 
     with open(docx_path, "rb") as f:
-        # Default behavior already inlines images as data URIs.
-        html = mammoth.convert_to_html(f).value
+        html_body = mammoth.convert_to_html(f).value  # images are inlined as data URIs by default
 
-    wrapper = f'<div style="max-width:1100px;margin:0 auto;">{html}</div>'
-    st.components.v1.html(wrapper, height=1200, scrolling=True)
+    # Scoped styles so this block matches About page typography and scales screenshots
+    scoped_css = """
+    <style>
+      .edu-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 6px;
+        line-height: 1.5;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .edu-wrapper p, .edu-wrapper li { font-size: 16px; }
+      .edu-wrapper h1 { font-size: 28px; font-weight: 700; margin: 16px 0 8px; }
+      .edu-wrapper h2 { font-size: 24px; font-weight: 700; margin: 16px 0 8px; }
+      .edu-wrapper h3 { font-size: 21px; font-weight: 600; margin: 14px 0 8px; }
+      .edu-wrapper img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block;
+        margin: 8px auto;
+      }
+    </style>
+    """
 
+    wrapped = f'{scoped_css}<div class="edu-wrapper">{html_body}</div>'
+    st.components.v1.html(wrapped, height=1200, scrolling=True)
 # Call it
 #st.markdown("### Education")
 render_docx_as_html(DOCX_PATH)
