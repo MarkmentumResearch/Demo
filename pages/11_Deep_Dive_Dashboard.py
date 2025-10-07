@@ -2191,7 +2191,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     # Combined legend below
     from matplotlib.lines import Line2D
     handles = [
-        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="Model Score"),
+        Line2D([0], [0], color=EXCEL_BLUE, linewidth=1.6, label="MM Score"),
         Line2D([0], [0], color="black",    linewidth=1.4, label="Close"),
     ]
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
