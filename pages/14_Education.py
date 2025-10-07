@@ -60,7 +60,7 @@ st.markdown(
         unsafe_allow_html=True,
     )
 
-
+st.cache_data.clear()
 
 # ---------- Render the Education .docx as-is ----------
 import io
