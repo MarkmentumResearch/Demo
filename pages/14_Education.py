@@ -1,11 +1,12 @@
-from pathlib import Path
 import base64
-import textwrap
+from pathlib import Path
 import pandas as pd
-import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
-from urllib.parse import quote_plus
+import matplotlib.dates as mdates
+from matplotlib import rcParams
+import os
+import streamlit.components.v1 as components
 
 # -------------------------
 # Page & shared style
@@ -13,22 +14,24 @@ from urllib.parse import quote_plus
 st.set_page_config(page_title="Markmentum – Education", layout="wide")
 
 
+def _image_b64(p: Path) -> str:
+    with open(p, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+EXCEL_BLUE   = "#4472C4"
+EXCEL_ORANGE = "#FFC000"
+EXCEL_GRAY   = "#A6A6A6"
+DEFAULT_TICKER = "SPY"
+
 # -------------------------
-# Paths (portable for Cloud)
+# Paths
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR   = APP_DIR / "data"
+DATA_DIR  = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
-
-# -------------------------
-# Header (logo centered)
-# -------------------------
-def _image_b64(p: Path) -> str:
-    with open(p, "rb") as f:
-        return base64.b64encode(f.read()).decode()
 
 # -------------------------
 # Header: logo centered
@@ -42,6 +45,10 @@ if LOGO_PATH.exists():
         """,
         unsafe_allow_html=True,
     )
+
+# -------------------------
+# Header: logo centered - end
+# -------------------------
 
 # ---------- Render the Education .docx as-is ----------
 import io
