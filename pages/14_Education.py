@@ -26,11 +26,18 @@ LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 # -------------------------
 # Header (logo centered)
 # -------------------------
+def _image_b64(p: Path) -> str:
+    with open(p, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+# -------------------------
+# Header: logo centered
+# -------------------------
 if LOGO_PATH.exists():
     st.markdown(
         f"""
         <div style="text-align:center; margin: 8px 0 16px;">
-            <img src="data:image/png;base64,{_image_to_base64(LOGO_PATH)}" width="440">
+            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
         </div>
         """,
         unsafe_allow_html=True,
