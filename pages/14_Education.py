@@ -57,34 +57,25 @@ import streamlit as st
 
 DOCX_PATH = DATA_DIR / "Educational Page v2.docx"
 
-def render_docx_as_html(docx_path: os.PathLike):
+def render_docx_as_html(docx_path: Path):
     try:
-        import mammoth  # add "mammoth" to requirements.txt
+        import mammoth
     except Exception:
-        st.error(
-            'Missing dependency: "mammoth". Add `mammoth` to requirements.txt and redeploy.'
-        )
+        st.error('Missing dependency: **mammoth**. Add `mammoth==1.11.0` to requirements.txt and redeploy.')
+        if Path(docx_path).exists():
+            with open(docx_path, "rb") as f:
+                st.download_button("Download the Education doc (DOCX)", f, file_name=Path(docx_path).name)
         return
 
-    if not DOCX_PATH.exists():
-        st.error(f"Couldn't find: {DOCX_PATH}")
+    if not Path(docx_path).exists():
+        st.error(f"Couldn't find: `{docx_path}`")
         return
 
     with open(docx_path, "rb") as f:
-        # Inline images are embedded as base64 <img> tags
-        html = mammoth.convert_to_html(
-            f,
-            convert_image=mammoth.images.inline(
-                mammoth.images.base64_src_format
-            ),
-        ).value
+        # Default behavior already inlines images as data URIs.
+        html = mammoth.convert_to_html(f).value
 
-    # Light wrapper so it fills the width nicely
-    wrapper = f"""
-    <div style="max-width: 1100px; margin: 0 auto;">
-        {html}
-    </div>
-    """
+    wrapper = f'<div style="max-width:1100px;margin:0 auto;">{html}</div>'
     st.components.v1.html(wrapper, height=1200, scrolling=True)
 
 # Call it
