@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score
-VRSN,"VERISIGN, INC.",Information Technology,2025-10-03,107.0
-LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,2025-10-03,106.0
-SYF,SYNCHRONY FINANCIAL,Financials,2025-10-03,94.0
-MTCH,"MATCH GROUP, INC.",Communication Services,2025-10-03,93.0
-LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,2025-10-03,85.0
-META,"META PLATFORMS, INC.",Communication Services,2025-10-03,85.0
-T,AT&T INC.,Communication Services,2025-10-03,83.0
-MCD,MCDONALD'S ,Consumer Discretionary,2025-10-03,82.0
-KKR,KKR & CO. INC.,Financials,2025-10-03,81.0
-MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,2025-10-03,81.0
+T,AT&T INC.,Communication Services,2025-10-06,130.0
+LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,2025-10-06,111.0
+ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-10-06,107.0
+MCD,MCDONALD'S ,Consumer Discretionary,2025-10-06,100.0
+VZ,VERIZON COMMUNICATIONS INC.,Communication Services,2025-10-06,100.0
+GM,GENERAL MOTORS COMPANY,Consumer Discretionary,2025-10-06,98.0
+VRSN,"VERISIGN, INC.",Information Technology,2025-10-06,98.0
+TSCO,TRACTOR SUPPLY COMPANY,Consumer Discretionary,2025-10-06,96.0
+MTCH,"MATCH GROUP, INC.",Communication Services,2025-10-06,94.0
+TMUS,"T-MOBILE US, INC.",Communication Services,2025-10-06,91.0

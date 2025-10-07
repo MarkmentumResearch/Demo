@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
-JBL,JABIL INC.,Information Technology,2025-10-03,85.0,79.0,-6.0
-DGX,QUEST DIAGNOSTICS INC.,Health Care,2025-10-03,78.0,67.0,-11.0
-EFX,EQUIFAX INC.,Industrials,2025-10-03,73.0,28.0,-45.0
-RSG,"REPUBLIC SERVICES, INC.",Industrials,2025-10-03,69.0,67.0,-2.0
-META,"META PLATFORMS, INC.",Communication Services,2025-10-03,66.0,85.0,19.0
-PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-10-03,65.0,57.0,-8.0
-NOW,"SERVICENOW, INC.",Information Technology,2025-10-03,58.0,17.0,-41.0
-VRSN,"VERISIGN, INC.",Information Technology,2025-10-03,58.0,107.0,49.0
-GM,GENERAL MOTORS COMPANY,Consumer Discretionary,2025-10-03,57.0,66.0,9.0
-VLO,VALERO ENERGY ,Energy,2025-10-03,50.0,58.0,8.0
+NWSA,NEWS ,Communication Services,2025-10-06,110.0,81.0,-29.0
+SPG,"SIMON PROPERTY GROUP, INC.",Real Estate,2025-10-06,104.0,90.0,-14.0
+APP,APPLOVIN CORP,Communication Services,2025-10-06,94.0,75.0,-19.0
+DGX,QUEST DIAGNOSTICS INC.,Health Care,2025-10-06,91.0,80.0,-11.0
+GM,GENERAL MOTORS COMPANY,Consumer Discretionary,2025-10-06,89.0,98.0,9.0
+JBL,JABIL INC.,Information Technology,2025-10-06,84.0,78.0,-6.0
+EWW,ISHARES:MSCI MEXICO,Foreign,2025-10-06,77.0,65.0,-12.0
+ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-10-06,74.0,107.0,33.0
+META,"META PLATFORMS, INC.",Communication Services,2025-10-06,68.0,87.0,19.0
+NOW,"SERVICENOW, INC.",Information Technology,2025-10-06,68.0,27.0,-41.0
