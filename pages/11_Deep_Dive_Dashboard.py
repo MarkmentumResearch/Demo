@@ -1784,7 +1784,7 @@ _ticker = _active_tkr
 def plot_g2_trend(df: pd.DataFrame, ticker: str):
     fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
-    ax.plot(df["date"], df["st"], label="ST Term",  linewidth=1.6, color=EXCEL_BLUE)
+    ax.plot(df["date"], df["st"], label="Short Term",  linewidth=1.6, color=EXCEL_BLUE)
     ax.plot(df["date"], df["mt"], label="Mid Term", linewidth=1.6, color=EXCEL_ORANGE)
     ax.plot(df["date"], df["lt"], label="Long Term",linewidth=1.6, color="black")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
@@ -1932,7 +1932,7 @@ def plot_g5_zscore(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
-    ax.set_title(f"{_active_tkr} – 30D Rvol Z-Score", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – 30-Day Rvol Z-Score", fontsize=12, pad=6)
     #ax.set_ylabel("Z-Score")
     #from matplotlib.ticker import StrMethodFormatter
     ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.2f}"))
@@ -1984,7 +1984,7 @@ def plot_g7_rvol(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["rvol_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
     ax.axhline(y=df["rvol_low"].iloc[0], color="green", linewidth=1.2, label="Low")
 
-    ax.set_title(f"{_active_tkr} – Rvol 30D", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – Rvol 30-Day", fontsize=12, pad=6)
     #ax.set_ylabel("Percent")
     from matplotlib.ticker import PercentFormatter
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
@@ -2053,7 +2053,7 @@ def plot_g8_sharpe(df: pd.DataFrame, ticker: str):
     ax.axhline(y=df["lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
-    ax.set_title(f"{_active_tkr} – 30D Sharpe Ratio", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – 30-Day Sharpe Ratio", fontsize=12, pad=6)
     #ax.set_ylabel("Sharpe Ratio")
     #from matplotlib.ticker import StrMethodFormatter
     ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.2f}"))
@@ -2170,14 +2170,14 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
     fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
     # Left axis: Signal Score
-    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="Model Score")
+    ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="MM Score")
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
     # Right axis: Close
     ax2 = ax.twinx()
     ax2.plot(df["date"], df["close"], color="black", linewidth=1.4, label="Close")
 
-    ax.set_title(f"{_active_tkr} – Model Score", fontsize=12, pad=6)
+    ax.set_title(f"{_active_tkr} – MM Score", fontsize=12, pad=6)
     ax.grid(True, linewidth=0.4, alpha=0.4)
 
     # X axis (biweekly Mondays) with 5-day gutter
@@ -2222,7 +2222,7 @@ def plot_g12_scatter(df: pd.DataFrame, ticker: str):
 
     ax.set_title(f"{_active_tkr} – Ivol/Rvol % Spreads", fontsize=12, pad=6)
     ax.set_xlabel("Z-Score)")
-    ax.set_ylabel("Ivol Prem/Disc)")
+    ax.set_ylabel("Ivol Prem/(Disc)")
 
     # ----- Dynamic, zero-centered limits -----
     import math
