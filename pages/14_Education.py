@@ -50,6 +50,18 @@ if LOGO_PATH.exists():
 # Header: logo centered - end
 # -------------------------
 
+st.markdown(
+        f"""
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:18px; font-weight:600; color:#1a1a1a;">
+            Education
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+
 # ---------- Render the Education .docx as-is ----------
 import io
 import os
@@ -79,7 +91,7 @@ def render_docx_as_html(docx_path: Path):
     st.components.v1.html(wrapper, height=1200, scrolling=True)
 
 # Call it
-st.markdown("### Education")
+#st.markdown("### Education")
 render_docx_as_html(DOCX_PATH)
 
 
