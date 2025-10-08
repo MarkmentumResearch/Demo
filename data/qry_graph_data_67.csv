@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
-NWSA,NEWS ,Communication Services,2025-10-06,110.0,81.0,-29.0
-SPG,"SIMON PROPERTY GROUP, INC.",Real Estate,2025-10-06,104.0,90.0,-14.0
-APP,APPLOVIN CORP,Communication Services,2025-10-06,94.0,75.0,-19.0
-DGX,QUEST DIAGNOSTICS INC.,Health Care,2025-10-06,91.0,80.0,-11.0
-GM,GENERAL MOTORS COMPANY,Consumer Discretionary,2025-10-06,89.0,98.0,9.0
-JBL,JABIL INC.,Information Technology,2025-10-06,84.0,78.0,-6.0
-EWW,ISHARES:MSCI MEXICO,Foreign,2025-10-06,77.0,65.0,-12.0
-ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-10-06,74.0,107.0,33.0
-META,"META PLATFORMS, INC.",Communication Services,2025-10-06,68.0,87.0,19.0
-NOW,"SERVICENOW, INC.",Information Technology,2025-10-06,68.0,27.0,-41.0
+NWSA,NEWS ,Communication Services,2025-10-07,107.0,78.0,-29.0
+GM,GENERAL MOTORS COMPANY,Consumer Discretionary,2025-10-07,101.0,110.0,9.0
+APP,APPLOVIN CORP,Communication Services,2025-10-07,96.0,77.0,-19.0
+NRG,"NRG ENERGY, INC.",Utilities,2025-10-07,83.0,50.0,-33.0
+JBL,JABIL INC.,Information Technology,2025-10-07,79.0,73.0,-6.0
+NOW,"SERVICENOW, INC.",Information Technology,2025-10-07,76.0,35.0,-41.0
+EWW,ISHARES:MSCI MEXICO,Foreign,2025-10-07,75.0,63.0,-12.0
+META,"META PLATFORMS, INC.",Communication Services,2025-10-07,74.0,93.0,19.0
+ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-10-07,74.0,107.0,33.0
+AVB,"AVALONBAY COMMUNITIES, INC.",Real Estate,2025-10-07,69.0,26.0,-43.0

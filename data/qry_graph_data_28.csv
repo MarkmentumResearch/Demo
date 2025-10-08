@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-06,248.85
-NVDA,NVIDIA ,Information Technology,2025-10-06,157.67
-INTC,INTEL ,Information Technology,2025-10-06,112.08
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-06,90.54
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-06,85.32
-VZ,VERIZON COMMUNICATIONS INC.,Communication Services,2025-10-06,75.94
-T,AT&T INC.,Communication Services,2025-10-06,63.47
-PFE,PFIZER INC.,Health Care,2025-10-06,62.94
-RIG,TRANSOCEAN LTD,MR Discretion,2025-10-06,55.09
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-06,54.62
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-07,154.39
+NVDA,NVIDIA ,Information Technology,2025-10-07,140.08
+AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-07,115.74
+INTC,INTEL ,Information Technology,2025-10-07,111.14
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-07,102.29
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-07,72.02
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-10-07,58.2
+PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-10-07,58.17
+PFE,PFIZER INC.,Health Care,2025-10-07,47.74
+RIG,TRANSOCEAN LTD,MR Discretion,2025-10-07,45.91
