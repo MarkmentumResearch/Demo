@@ -652,7 +652,7 @@ c_lock,c_blank, c_blank = st.columns([1,4,1])
 with c_lock:
         lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
 
-st.markdown('<div class="h-title">Bar Charts by Category</div>', unsafe_allow_html=True)
+st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html=True)
 
 view48 = df48[df48["Category"] == sel].copy().sort_values("model_score_daily_change", ascending=False)
 viewWTD = dfWTD[dfWTD["Category"] == sel].copy().sort_values("model_score_wtd_change", ascending=False)

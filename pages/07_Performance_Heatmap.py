@@ -417,7 +417,7 @@ chartW = _bar(viewW, "week_pct_change", "WTD % Change",   (y_order if lock_axes_
 chartM = _bar(viewM, "month_pct_change", "MTD % Change",  (y_order if lock_axes_and_order else yM))
 chartQ = _bar(viewQ, "quarter_pct_change", "QTD % Change", (y_order if lock_axes_and_order else yQ))
 
-st.markdown('<div class="h-title">Bar Charts by Category</div>', unsafe_allow_html=True)
+st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html=True)
 
 # Render 4-up (responsive via CSS)
 cA, cB, cC, cD = st.columns(4)
