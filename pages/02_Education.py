@@ -151,7 +151,7 @@ def render_docx_as_html(docx_path: Path):
 render_docx_as_html(DOCX_PATH)
 
 
-PDF_PATH = Path("data/Educational Page v2.pdf")   # adjust name if different
+PDF_PATH = Path("data/Educational Page.pdf")   # adjust name if different
 
 def render_education_download():
     if PDF_PATH.exists():
