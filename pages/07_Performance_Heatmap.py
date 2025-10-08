@@ -422,7 +422,7 @@ st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html
 # Render 4-up (responsive via CSS)
 cA, cB, cC, cD = st.columns(4)
 with cA:
-    st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
+    #st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
     st.altair_chart(chartD, use_container_width=True)
 with cB: st.altair_chart(chartW, use_container_width=True)
 with cC: st.altair_chart(chartM, use_container_width=True)
