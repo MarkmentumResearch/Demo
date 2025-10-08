@@ -149,7 +149,7 @@ if dest.replace("%20", " ") == "deep dive":
         st.session_state["ticker"] = t
         st.query_params.clear()
         st.query_params["ticker"] = t
-    st.switch_page("pages/11_Deep_Dive_Dashboard.py")
+    st.switch_page("pages/12_Deep_Dive_Dashboard.py")
 
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)

@@ -10,7 +10,7 @@ from urllib.parse import quote_plus
 # -------------------------
 # Page & shared style
 # -------------------------
-st.set_page_config(page_title="Markmentum – Weekly Overview", layout="wide")
+st.set_page_config(page_title="Markmentum – Quarterly Overview", layout="wide")
 
 # ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 
@@ -105,25 +105,24 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 """, unsafe_allow_html=True)
 
 
-
 # -------------------------
-# Paths (portable for Cloud)
+# Paths
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR   = APP_DIR / "data"
+DATA_DIR  = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
-# Weekly Overview CSVs
+# Quarterly Overview CSVs
 CSV_FILES = [
-    (52, "Top Ten Percentage Gainers"),
-    (53, "Top Ten Percentage Decliners"),
-    (54, "Most Active (Shares)"),
-    (55, "Top Ten Markmentum Score Gainers"),
-    (56, "Top Ten Markmentum Score Decliners"),
-    (57, "Markmentum Score Change Distribution"),
+    (64, "Top Ten Percentage Gainers"),
+    (65, "Top Ten Percentage Decliners"),
+    (66, "Most Active (Shares)"),
+    (67, "Top Ten Markmentum Score Gainers"),
+    (68, "Top Ten Markmentum Score Decliners"),
+    (69, "Markmentum Score Change Distribution"),
 ]
 
 # -------------------------
@@ -139,7 +138,7 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# Lightweight router for Deep Dive links
+# lightweight router for Deep Dive links
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
 if dest.replace("%20", " ") == "deep dive":
@@ -148,7 +147,7 @@ if dest.replace("%20", " ") == "deep dive":
         st.session_state["ticker"] = t
         st.query_params.clear()
         st.query_params["ticker"] = t
-    st.switch_page("pages/11_Deep_Dive_Dashboard.py")
+    st.switch_page("pages/12_Deep_Dive_Dashboard.py")
 
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
@@ -174,7 +173,7 @@ def _fmt_millions(val):
     try:
         v = float(val)
         #if v > 1000:
-        #    v = v / 1_000_000.0
+        #    v = v / 1_000.0
         return f"{v:,.2f} M"
     except Exception:
         return "—"
@@ -195,11 +194,11 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
     return default
 
 def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt, value_width_px: int = 90, extra_class: str = ""):
-    # tolerant column mapping
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
     ncol = cmap.get("ticker_name") or cmap.get("company") or "Company"
-    ccol = cmap.get("category")
+    ccol = cmap.get("category") 
+
     rows = []
     for _, r in df.iterrows():
         rows.append(f"""
@@ -218,7 +217,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
       <tr>
         <th class="col-company">Company</th>
         <th class="col-ticker">Ticker</th>
-        <th class="col-category">Category</th>
+        <th class="col-exposure">Category</th>
         <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
       </tr>
     </thead>
@@ -236,6 +235,19 @@ def render_card(slot, title: str, df: pd.DataFrame, value_col: str, value_label:
             return
         st.markdown(_table_html(title, df, value_col, value_label, value_fmt, value_width_px, extra_class), unsafe_allow_html=True)
 
+def render_card_branded(slot, title: str, df: pd.DataFrame, value_col: str, value_label: str, value_fmt):
+    with slot:
+        if df.empty or value_col is None:
+            st.info(f"No data for {title}.")
+            return
+        html = _table_html(title, df, value_col, value_label, value_fmt)
+        html = html.replace(
+            "</h3>",
+            '</h3>\n  <div style="font-size:12px; color:#666; margin:-20px 0 6px 0;">Markmentum Research</div>',
+            1,
+        )
+        st.markdown(html, unsafe_allow_html=True)
+
 # -------------------------
 # Header (logo centered)
 # -------------------------
@@ -250,7 +262,7 @@ if LOGO_PATH.exists():
     )
 
 # -------------------------
-# Load CSVs (cache-clearable)
+# Load CSVs
 # -------------------------
 st.cache_data.clear()
 
@@ -263,7 +275,7 @@ def load_all_csvs(csv_files, data_dir: Path):
 
 dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 
-# ---- Title under logo (date from #52) ----
+# ---- Title under logo (date from #64) ----
 df_date = dfs[0].copy()
 date_col = next((c for c in df_date.columns if c.lower() in ("date", "as_of_date", "trade_date")), None)
 asof = pd.to_datetime(df_date[date_col], errors="coerce").max() if (date_col and not df_date.empty) else pd.NaT
@@ -273,7 +285,7 @@ if date_str:
         f"""
         <div style="text-align:center; margin:-6px 0 14px;
                     font-size:18px; font-weight:600; color:#1a1a1a;">
-            Weekly Market Overview – {date_str}
+            Quarterly Market Overview – {date_str}
         </div>
         """,
         unsafe_allow_html=True,
@@ -287,19 +299,19 @@ T_GAIN, T_DECL, T_ACTIVE, T_HI_CHG, T_LO_CHG, T_HIST = [label for _, label in CS
 # -------------------------
 c1, c2, c3 = st.columns([1,1,1], gap="large")
 
-# Card 1: Gainers -> Percent (WTD)
+# Card 1: Gainers -> Percent (QTD)
 df1 = dfs[0].copy()
-col_pct = _pick(df1, ["wtd_return_pct", "Percent", "percent", "value"], default=None)
+col_pct = _pick(df1, ["qtd_return_pct", "Percent", "percent", "value"], default=None)
 render_card(c1, T_GAIN, df1, col_pct, "Percent", _fmt_pct)
 
-# Card 2: Decliners -> Percent (WTD)
+# Card 2: Decliners -> Percent (QTD)
 df2 = dfs[1].copy()
-col_pct2 = _pick(df2, ["wtd_return_pct", "Percent", "percent", "value"], default=None)
+col_pct2 = _pick(df2, ["qtd_return_pct", "Percent", "percent", "value"], default=None)
 render_card(c2, T_DECL, df2, col_pct2, "Percent", _fmt_pct)
 
-# Card 3: Most Active -> Shares (WTD) — wider value column + no wrap
+# Card 3: Most Active -> Shares (QTD) — wider value column + no wrap
 df3 = dfs[2].copy()
-col_shares = _pick(df3, ["Volume", "volume", "Shares", "shares", "value"], default=None)
+col_shares = _pick(df3, ["qtd_Volume", "Volume", "volume", "Shares", "shares", "value"], default=None)
 render_card(c3, T_ACTIVE, df3, col_shares, "Shares", _fmt_millions, value_width_px=100, extra_class="shares-wide")
 
 row_spacer(14)
@@ -309,14 +321,14 @@ row_spacer(14)
 # -------------------------
 d1, d2, d3 = st.columns([1,1,1], gap="large")
 
-# Card 4: Highest Model Score Change (WTD)
+# Card 4: Highest Model Score Change (QTD)
 df4 = dfs[3].copy()
-col_change_hi = _pick(df4, ["model_score_wtd_change", "Change", "change", "value"], default=None)
+col_change_hi = _pick(df4, ["model_score_qtd_change", "Change", "change", "value"], default=None)
 render_card(d1, T_HI_CHG, df4, col_change_hi, "Change", _fmt_num)
 
-# Card 5: Lowest Model Score Change (WTD)
+# Card 5: Lowest Model Score Change (QTD)
 df5 = dfs[4].copy()
-col_change_lo = _pick(df5, ["model_score_wtd_change", "Change", "change", "value"], default=None)
+col_change_lo = _pick(df5, ["model_score_qtd_change", "Change", "change", "value"], default=None)
 render_card(d2, T_LO_CHG, df5, col_change_lo, "Change", _fmt_num)
 
 # Card 6: Model Score Change Distribution (Score Bin + Ticker Count only)
@@ -351,7 +363,7 @@ def _is_list_paragraph(paragraph) -> bool:
         return False
 
 @st.cache_data(show_spinner=False)
-def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
+def load_market_read_md(doc_path: str = "data/Market_Read_quarterly.docx") -> str:
     if Document is None:
         return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
     if not os.path.exists(doc_path):
@@ -386,7 +398,7 @@ def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
 
 with st.container():
     st.markdown("## Market Read")
-    docx_path = (DATA_DIR / "Market_Read_weekly.docx").resolve()
+    docx_path = (DATA_DIR / "Market_Read_quarterly.docx").resolve()
     st.markdown(load_market_read_md(str(docx_path)))
 
 # -------------------------

@@ -1,20 +1,18 @@
-# mr_vol_spreads.py — Volatility Spreads page
-# (Row 1: 3 cards; Row 2: 3 columns where: left = Downside card, middle = interpretation text, right = blank card)
-# :contentReference[oaicite:0]{index=0}
+# mr_signals_v1.py — Signals page
+# Layout mirrors mr_vol_spreads_v4.py: Row 1 = 3 cards, Row 2 = 1 card
 
 from pathlib import Path
 import base64
 import textwrap
 import pandas as pd
 import streamlit as st
-import sys
+import os, datetime as dt
 from urllib.parse import quote_plus
 
 # -------------------------
-# Page & shared style (same as Overview)
+# Page & shared style (same as Overview / Vol Spreads)
 # -------------------------
-st.set_page_config(page_title="Markmentum – Volatility Spreads", layout="wide")
-
+st.set_page_config(page_title="Markmentum – Signals", layout="wide")
 
 st.markdown("""
 <style>
@@ -104,10 +102,8 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 </style>
 """, unsafe_allow_html=True)
 
-
-
 # -------------------------
-# Paths (same pattern as Overview)
+# Paths (same pattern as the other pages)
 # -------------------------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
@@ -118,16 +114,15 @@ LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
 # CSVs for this page
 CSV_FILES = [
-    (40, "Most Crowded Shorts"),
-    (41, "Most Crowded Longs"),
-    (42, "Most Mean Reversion Upside Bias"),
-    (43, "Most Mean Reversion Downside Bias"),
+    (44, "Lowest Sharpe Percentile Rank"),   # shows Sharpe_Rank
+    (45, "Highest Sharpe Percentile Rank"),  # shows Sharpe_Rank
+    (46, "Highest Upside"),                  # shows change_pct
+    (47, "Highest Downside"),                # shows change_pct
 ]
 
 # -------------------------
-# Helpers (same approach as Overview)
+# Helpers (same approach as Overview / Vol Spreads)
 # -------------------------
-
 #---clickable links helper------
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
@@ -152,7 +147,8 @@ if dest.replace("%20", " ") == "deep dive":
         st.query_params.clear()
         st.query_params["ticker"] = t
     # jump to the page file in /pages
-    st.switch_page("pages/11_Deep_Dive_Dashboard.py")
+    st.switch_page("pages/12_Deep_Dive_Dashboard.py")
+
 
 
 
@@ -169,7 +165,7 @@ def load_csv(path: Path) -> pd.DataFrame:
         return pd.DataFrame()
     return pd.read_csv(path)
 
-def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
+def _pick(df: pd.DataFrame, candidates, default=None):
     """Case-tolerant column picker."""
     for c in candidates:
         if c in df.columns:
@@ -181,7 +177,12 @@ def _pick(df: pd.DataFrame, candidates: list[str], default: str | None = None):
 
 def _fmt_1dec(val):
     try:
-        return f"{float(val):,.0f}"
+        return f"{float(val):,.1f}"
+    except Exception:
+        return "—"
+def _fmt_pct1(val):
+    try:
+        return f"{float(val) * 100:,.1f}%"
     except Exception:
         return "—"
 
@@ -257,69 +258,77 @@ def load_all_csvs(csv_files, data_dir: Path):
 
 dfs = load_all_csvs(CSV_FILES, DATA_DIR)
 
-# ---- Centered sub-title: "Volatility Spreads – {asof}" (date from CSV #40)
-def _pretty_mdY(ts) -> str:
-    try:
-        ts = pd.to_datetime(ts)
-    except Exception:
-        return ""
-    # no leading zeros; Windows needs %#m/%#d, unix uses %-m/%-d
-    fmt = "%#m/%#d/%Y" if sys.platform.startswith("win") else "%-m/%-d/%Y"
-    return ts.strftime(fmt)
+def _extract_report_date_from_df(df) -> str | None:
+    """Return m/d/YYYY (no leading zeros) from a Date column if present."""
+    # find a 'Date' column (any case)
+    date_col = next((c for c in df.columns if c.lower() == "date"), None)
+    if not date_col:
+        return None
+    s = df[date_col].dropna()
+    if s.empty:
+        return None
+    d = pd.to_datetime(s.iloc[0], errors="coerce")
+    if pd.isna(d):
+        return None
+    # no-leading-zero format (Windows uses %#m/%#d, others %-m/%-d)
+    fmt = "%#m/%#d/%Y" if os.name == "nt" else "%-m/%-d/%Y"
+    return d.strftime(fmt)
 
-asof_text = ""
-try:
-    df40 = load_csv(DATA_DIR / "qry_graph_data_40.csv")
-    date_col = _pick(df40, ["Date", "date", "AsOf", "asof"])
-    if date_col:
-        # use max in case multiple rows/dates are present
-        asof_text = _pretty_mdY(pd.to_datetime(df40[date_col]).max())
-except Exception:
-    pass
+# df #44 is already loaded into dfs[0] below; grab the date from it
+# If this block appears before dfs is defined in your file, move the st.markdown
+# line to just after `dfs = load_all_csvs(...)`.
+report_date = None  # will be set after dfs loads
 
+# derive the report date from csv #44 (dfs[0]); fall back to today if missing
+report_date = _extract_report_date_from_df(dfs[0]) or (
+    dt.date.today().strftime("%#m/%#d/%Y") if os.name == "nt" else dt.date.today().strftime("%-m/%-d/%Y")
+)
+
+# centered subtitle
 st.markdown(
     f"""
-    <div style="text-align:center; margin: -6px 0 12px; font-size:18px; font-weight:600;">
-        Volatility Spreads{f" – {asof_text}" if asof_text else ""}
+    <div style="text-align:center; font-weight:600; font-size:18px; margin:-6px 0 12px;">
+        Signals – {report_date}
     </div>
     """,
     unsafe_allow_html=True,
 )
+
+# Normalize "Category" -> "Exposure" to match the table headers
+for d in dfs:
+    if "Category" in d.columns and "Category" not in d.columns:
+        d.rename(columns={"Category": "Category"}, inplace=True)
+
 # -------------------------
-# ROW 1 (3 cards): Shorts / Longs / Upside
+# ROW 1 (3 cards)
 # -------------------------
 c1, c2, c3 = st.columns(3, gap="large")
 
-df_short = dfs[0].copy()
-df_long  = dfs[1].copy()
-df_up    = dfs[2].copy()
+df_low_sharpe  = dfs[0].copy()
+df_high_sharpe = dfs[1].copy()
+df_upside      = dfs[2].copy()
 
-# Normalize "Category" -> "Category"
-for d in (df_short, df_long, df_up):
-    if "Category" in d.columns and "Exposure" not in d.columns:
-        d.rename(columns={"Category": "Category"}, inplace=True)
+col_low  = _pick(df_low_sharpe,  ["Sharpe_Rank"])
+col_high = _pick(df_high_sharpe, ["Sharpe_Rank"])
+col_up   = _pick(df_upside,      ["change_pct", "Change_pct", "Change %", "Change"])
 
-col_s = _pick(df_short, ["Spread_Score"])
-col_l = _pick(df_long,  ["Spread_Score"])
-col_u = _pick(df_up,    ["Spread_Score"])
-
-render_card(c1, CSV_FILES[0][1], df_short, col_s, "Score", _fmt_1dec)
-render_card(c2, CSV_FILES[1][1], df_long,  col_l, "Score", _fmt_1dec)
-render_card(c3, CSV_FILES[2][1], df_up,    col_u, "Score", _fmt_1dec)
+render_card(c1, CSV_FILES[0][1], df_low_sharpe,  col_low,  "Sharpe Rank", _fmt_1dec)
+render_card(c2, CSV_FILES[1][1], df_high_sharpe, col_high, "Sharpe Rank", _fmt_1dec)
+render_card(c3, CSV_FILES[2][1], df_upside,      col_up,   "Change %",   _fmt_pct1)
 
 row_spacer(14)
 
 # -------------------------
-# ROW 2 (3 columns): Downside card | Interpretation text | blank card
+# ROW 2 (1 card)
 # -------------------------
 r2c1, r2c2, r2c3 = st.columns(3, gap="large")
 
-# Left: Downside card (same width as others)
-df_down = dfs[3].copy()
-if "Category" in df_down.columns and "Category" not in df_down.columns:
-    df_down.rename(columns={"Category": "Category"}, inplace=True)
-col_d = _pick(df_down, ["Spread_Score"])
-render_card(r2c1, CSV_FILES[3][1], df_down, col_d, "Score", _fmt_1dec)
+df_downside = dfs[3].copy()
+col_down = _pick(df_downside, ["change_pct", "Change_pct", "Change %", "Change"])
+
+
+render_card(r2c1, CSV_FILES[3][1], df_downside, col_down, "Change %", _fmt_pct1)
+
 
 # Middle: interpretation text only (inside a card)
 with r2c2:
@@ -327,27 +336,18 @@ with r2c2:
         """
 <div class="card">
   <h3>How to interpret the four lists</h3>
-  <ol style="margin-top:6px; line-height:1.5; font-size:13px;">
-    <li><b>Most Crowded Shorts</b> — Wide Implied-Volatility (IV) <b>premium</b> with an <i>elevated</i> 30-Day Volatility Z-Score.
-        Often indicates crowding on the short side; price may be due for a <i>bounce</i>.</li>
-    <li><b>Most Crowded Longs</b> — Wide IV <b>discount</b> with a </i>depressed</i> 30-Day Volatility Z-Score.
-        Often indicates crowding on the long side; price may be due for a <i>correction</i>.</li>
-    <li><b>Most Mean Reversion Upside Bias</b> — Wide IV <b>premium</b> with a <i>depressed</i> 30-Day Volatility Z-Score.
-        Not always actionable in the moment, but can be a sign of “climbing a wall of worry.”</li>
-    <li><b>Most Mean Reversion Downside Bias</b> — Wide IV <b>discount</b> with an <i>elevated</i> 30-Day Volatility Z-Score.
-        Also not always actionable immediately; can coincide with bottoming processes.</li>
+  <ol style="margin-top:6px; line-height:1.5; font-size:10px;">
+    <li><b>Sharpe Ratio Rank</b> - Measures performance relative to a risk-free asset. The rank is a trailing 1-year percentile. Extreme highs or lows often signal an upcoming change in trend.
+    <li><b>Upside/Downside Change Percentage</b> - The variance between the current close and the Long-Term Probable Anchor, expressed as a percentage. Highlights upside or downside potential.
   </ol>
 </div>
 """,
         unsafe_allow_html=True,
     )
 
-# Right: blank card (placeholder to keep 3-up rhythm)
-#with r2c3:
-#    st.markdown('<div class="card" style="min-height: 120px;"></div>', unsafe_allow_html=True)
 
 # -------------------------
-# Footer disclaimer (same wording as other pages)
+# Footer disclaimer (same wording as the other pages)
 # -------------------------
 st.markdown("---")
 st.markdown(
