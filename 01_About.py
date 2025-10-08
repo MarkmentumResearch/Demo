@@ -134,6 +134,8 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, market read
   <li><b>Weekly Market Overview</b> – One-screen week-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes.</li>
   <li><b>Monthly Market Overview</b> – One-screen month-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes.</li>
   <li><b>Quarterly Market Overview</b> – One-screen quarter-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes.</li>
+  <li><b>Performance Heatmap</b> – One-screen overview of realized market moves across categories. Displays average percentage changes (Daily, WTD, MTD, QTD) by category, with drill-down to per-ticker performance heatmaps and bar-chart rankings. 
+  Complements the Markmentum Heatmap by showing what has already moved, giving users both forward-looking signals and backward-looking performance context.</li>
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
