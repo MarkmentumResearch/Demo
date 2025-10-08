@@ -151,7 +151,27 @@ def render_docx_as_html(docx_path: Path):
 render_docx_as_html(DOCX_PATH)
 
 
+PDF_PATH = Path("data/Educational Page v2.pdf")   # adjust name if different
 
+def render_education_download():
+    if PDF_PATH.exists():
+        # read once so Streamlit can serve bytes
+        pdf_bytes = PDF_PATH.read_bytes()
+        # center the button (optional)
+        left, mid, right = st.columns([1, 2, 1])
+        with mid:
+            st.download_button(
+                "📄 Download Education (PDF)",
+                data=pdf_bytes,
+                file_name="Markmentum_Education.pdf",
+                mime="application/pdf",
+                type="secondary",
+            )
+    else:
+        st.info(f"Education PDF not found at: `{PDF_PATH}`")
+
+# call this after rendering the page content
+render_education_download()
 
 
 # -------------------------
