@@ -104,25 +104,24 @@ import streamlit as st
 DOCX_PATH = DATA_DIR / "Educational Page v2.docx"
 
 def render_docx_as_html(docx_path: Path):
-    """Render a .docx as HTML and offer a Download-as-PDF button."""
-    # ---- Load Mammoth (docx -> HTML) ----
+    """Render a .docx (with screenshots) as HTML inside a 900px column."""
     try:
-        import mammoth
+        import mammoth  # ensure mammoth is in requirements.txt (e.g., mammoth==1.11.0)
     except Exception:
         st.error('Missing dependency: **mammoth**. Add `mammoth==1.11.0` to requirements.txt and redeploy.')
-        if docx_path.exists():
+        if Path(docx_path).exists():
             with open(docx_path, "rb") as f:
-                st.download_button("Download the Education doc (DOCX)", f, file_name=docx_path.name)
+                st.download_button("Download the Education doc (DOCX)", f, file_name=Path(docx_path).name)
         return
 
-    if not docx_path.exists():
+    if not Path(docx_path).exists():
         st.error(f"Couldn't find: `{docx_path}`")
         return
 
     with open(docx_path, "rb") as f:
-        html_body = mammoth.convert_to_html(f).value  # images are inlined as data: URIs
+        html_body = mammoth.convert_to_html(f).value  # images are inlined as data URIs by default
 
-    # ---- Scoped page styles (match About; scale screenshots) ----
+    # Scoped styles so this block matches About page typography and scales screenshots
     scoped_css = """
     <style>
       .edu-wrapper {
@@ -134,59 +133,19 @@ def render_docx_as_html(docx_path: Path):
       }
       .edu-wrapper p, .edu-wrapper li { font-size: 16px; }
       .edu-wrapper h1 { font-size: 28px; font-weight: 700; margin: 16px 0 8px; }
-      .edu-wrapper h2 { font-size: 24px; font-weight: 700; margin: 16px 0 8px; text-align:center; }
+      .edu-wrapper h2 { font-size: 24px; font-weight: 700; margin: 16px 0 8px; }
       .edu-wrapper h3 { font-size: 21px; font-weight: 600; margin: 14px 0 8px; }
-      .edu-wrapper ul { margin-left: 1.2rem; }
-      .edu-wrapper li { margin: 6px 0; }
-      .edu-wrapper img { max-width: 100% !important; height: auto !important; display: block; margin: 8px auto; }
+      .edu-wrapper img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block;
+        margin: 8px auto;
+      }
     </style>
     """
 
-    # Render HTML inline
-    st.markdown(scoped_css + f'<div class="edu-wrapper">{html_body}</div>', unsafe_allow_html=True)
-
-    # ---- Build PDF from the same HTML (uses xhtml2pdf) ----
-    try:
-        from xhtml2pdf import pisa
-    except Exception:
-        st.warning('PDF generator not installed. Add `xhtml2pdf==0.2.12` (and `reportlab`, `Pillow`) to requirements.txt.')
-        return
-
-    # Minimal full HTML for xhtml2pdf (prefers inline CSS)
-    full_html_for_pdf = f"""
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <style>
-        body {{ font-family: Helvetica, Arial, sans-serif; font-size: 12pt; }}
-        .edu-wrapper {{ width: 7.0in; margin: 0 auto; }}
-        .edu-wrapper h1 {{ font-size: 20pt; }}
-        .edu-wrapper h2 {{ font-size: 16pt; text-align:center; }}
-        .edu-wrapper h3 {{ font-size: 14pt; }}
-        .edu-wrapper p, .edu-wrapper li {{ font-size: 12pt; line-height: 1.4; }}
-        .edu-wrapper img {{ max-width: 100%; height: auto; }}
-      </style>
-    </head>
-    <body>
-      <div class="edu-wrapper">
-        {html_body}
-      </div>
-    </body>
-    </html>
-    """
-
-    pdf_buf = io.BytesIO()
-    # xhtml2pdf expects a file-like; encode to bytes
-    pisa.CreatePDF(src=full_html_for_pdf, dest=pdf_buf, encoding="utf-8")
-    pdf_buf.seek(0)
-
-    st.download_button(
-        "📄 Download Education as PDF",
-        data=pdf_buf,
-        file_name="Markmentum_Education.pdf",
-        mime="application/pdf",
-        type="primary",
-    )
+    wrapped = f'{scoped_css}<div class="edu-wrapper">{html_body}</div>'
+    st.components.v1.html(wrapped, height=1200, scrolling=True)
 # Call it
 #st.markdown("### Education")
 render_docx_as_html(DOCX_PATH)
