@@ -145,11 +145,20 @@ if df.empty:
     st.warning("Missing or empty data/ticker_data.csv.")
     st.stop()
 
+# --- Derive "as of" date from any date-like column in the CSV
+date_col = next((c for c in ["date","Date","as_of","asOf","asof_date","AsOf","As_of"] if c in df.columns), None)
+as_of_str = ""
+if date_col:
+    as_of = pd.to_datetime(df[date_col], errors="coerce").max()
+    if pd.notna(as_of):
+        # Month/Day/Year without leading zeros
+        as_of_str = f"{as_of.month}/{as_of.day}/{as_of.year}"
+
 # -------------------------
-# Title
+# Title (now includes as-of date when available)
 # -------------------------
 st.markdown(
-    """
+    f"""
     <div style="
         text-align:center;
         font-size:20px;
@@ -157,7 +166,7 @@ st.markdown(
         color:#233;
         margin-top:8px;
         margin-bottom:12px;">
-        Performance Heatmap
+        Performance Heatmap{f" – {as_of_str}" if as_of_str else ""}
     </div>
     """,
     unsafe_allow_html=True,
