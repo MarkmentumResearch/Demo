@@ -101,7 +101,7 @@ import os
 from pathlib import Path
 import streamlit as st
 
-DOCX_PATH = DATA_DIR / "Educational Page v2.docx"
+DOCX_PATH = DATA_DIR / "Educational Page.docx"
 
 def render_docx_as_html(docx_path: Path):
     """Render a .docx (with screenshots) as HTML inside a 900px column."""
