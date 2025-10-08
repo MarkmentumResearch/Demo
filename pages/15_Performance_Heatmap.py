@@ -398,9 +398,9 @@ def _bar(view: pd.DataFrame, value_col: str, title: str, y_sort):
     )
     bars = base.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
     pos  = base.transform_filter(f"datum.{value_col} >= 0").mark_text(align="left",  baseline="middle", dx=4 ) \
-                 .encode(text=alt.Text(f"{value_col}:Q", format=",.0f"))
+                 .encode(text=alt.Text(f"{value_col}:Q", format=",.1f"))
     neg  = base.transform_filter(f"datum.{value_col} < 0" ).mark_text(align="right", baseline="middle", dx=-10) \
-                 .encode(text=alt.Text(f"{value_col}:Q", format=",.0f"))
+                 .encode(text=alt.Text(f"{value_col}:Q", format=",.1f"))
     return (bars + pos + neg).properties(height=chart_height).configure_title(anchor="middle")
 
 chartD = _bar(viewD, "day_pct_change", "Daily % Change", (y_order if lock_axes_and_order else yD))
