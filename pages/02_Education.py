@@ -150,7 +150,37 @@ def render_docx_as_html(docx_path: Path):
 #st.markdown("### Education")
 render_docx_as_html(DOCX_PATH)
 
+st.components.v1.html("""
+<button id="mm-save-pdf"
+        style="display:block;margin:18px auto 8px;padding:10px 14px;
+               border:1px solid #ccc;border-radius:8px;background:#f7f7f9;
+               cursor:pointer;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  📄 Save this Education page as PDF
+</button>
 
+<style>
+/* Print-optimized styles */
+@media print {
+  /* Use Letter with comfortable margins (change to A4 if needed) */
+  @page { size: Letter; margin: 0.5in; }
+
+  /* Hide Streamlit chrome */
+  [data-testid="stSidebar"], header, footer { display: none !important; }
+
+  /* Keep the content centered and readable width */
+  .edu-wrapper { width: 7.0in !important; margin: 0 auto !important; }
+
+  /* Avoid awkward breaks */
+  img, figure, table { page-break-inside: avoid; }
+  h1, h2, h3 { page-break-after: avoid; }
+}
+</style>
+
+<script>
+  const btn = document.getElementById("mm-save-pdf");
+  if (btn) btn.addEventListener("click", () => window.print());
+</script>
+""", height=70)
 
 
 
