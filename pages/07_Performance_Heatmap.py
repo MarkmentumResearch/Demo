@@ -424,8 +424,8 @@ chartD = (barsD + posD + negD).properties(title="Daily % Change", height=chart_h
 # Chart #2: 
 # -------------------------
 
-category_ms_min2 = float(viewD["week_pct_change"].min()-5) if not viewD.empty else 0.0
-category_ms_max2 = float(viewD["week_pct_change"].max()+5) if not viewD.empty else 0.0
+category_ms_min2 = float(viewW["week_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max2 = float(viewW["week_pct_change"].max()+5) if not viewD.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]), frac=0.06, min_pad=2.0)
@@ -461,8 +461,8 @@ chartW = (barsW + posW + negW).properties(title="WTD % Change", height=chart_hei
 # Chart #3: 
 # -------------------------
 
-category_ms_min3 = float(viewD["month_pct_change"].min()-5) if not viewD.empty else 0.0
-category_ms_max3 = float(viewD["month_pct_change"].max()+5) if not viewD.empty else 0.0
+category_ms_min3 = float(viewM["month_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max3 = float(viewM["month_pct_change"].max()+5) if not viewD.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]), frac=0.06, min_pad=2.0)
@@ -498,8 +498,8 @@ chartM = (barsM + posM + negM).properties(title="MTD % Change", height=chart_hei
 # Chart #4: 
 # -------------------------
 
-category_ms_min4 = float(viewD["quarter_pct_change"].min()-5) if not viewD.empty else 0.0
-category_ms_max4 = float(viewD["quarter_pct_change"].max()+5) if not viewD.empty else 0.0
+category_ms_min4 = float(viewQ["quarter_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max4 = float(viewQ["quarter_pct_change"].max()+5) if not viewD.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]), frac=0.06, min_pad=2.0)
