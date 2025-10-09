@@ -387,8 +387,8 @@ chart_height = max(260, 24 * max(len(viewD),len(viewW),len(viewM),len(viewQ)) + 
 # Chart #1: 
 # -------------------------
 
-category_ms_min = float(viewD["day_pct_change"].min()-5) if not viewD.empty else 0.0
-category_ms_max = float(viewD["day_pct_change"].max()+5) if not viewD.empty else 0.0
+category_ms_min = float(viewD["day_pct_change"].min()-1) if not viewD.empty else 0.0
+category_ms_max = float(viewD["day_pct_change"].max()+1) if not viewD.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]), frac=0.06, min_pad=2.0)
@@ -413,10 +413,10 @@ barsD = baseD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 posD = baseD.transform_filter("datum.day_pct_change >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("day_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("day_pct_change:Q", format=",.1f"))
 negD = baseD.transform_filter("datum.day_pct_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("day_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("day_pct_change:Q", format=",.1f"))
 
 chartD = (barsD + posD + negD).properties(title="Daily % Change", height=chart_height).configure_title(anchor="middle")
 
@@ -424,8 +424,8 @@ chartD = (barsD + posD + negD).properties(title="Daily % Change", height=chart_h
 # Chart #2: 
 # -------------------------
 
-category_ms_min2 = float(viewW["week_pct_change"].min()-5) if not viewW.empty else 0.0
-category_ms_max2 = float(viewW["week_pct_change"].max()+5) if not viewW.empty else 0.0
+category_ms_min2 = float(viewW["week_pct_change"].min()-1) if not viewW.empty else 0.0
+category_ms_max2 = float(viewW["week_pct_change"].max()+1) if not viewW.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]), frac=0.06, min_pad=2.0)
@@ -450,10 +450,10 @@ barsW = baseW.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 posW = baseW.transform_filter("datum.week_pct_change >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("week_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("week_pct_change:Q", format=",.1f"))
 negW = baseW.transform_filter("datum.week_pct_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("week_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("week_pct_change:Q", format=",.1f"))
 
 chartW = (barsW + posW + negW).properties(title="WTD % Change", height=chart_height).configure_title(anchor="middle")
 
@@ -461,8 +461,8 @@ chartW = (barsW + posW + negW).properties(title="WTD % Change", height=chart_hei
 # Chart #3: 
 # -------------------------
 
-category_ms_min3 = float(viewM["month_pct_change"].min()-5) if not viewM.empty else 0.0
-category_ms_max3 = float(viewM["month_pct_change"].max()+5) if not viewM.empty else 0.0
+category_ms_min3 = float(viewM["month_pct_change"].min()-1) if not viewM.empty else 0.0
+category_ms_max3 = float(viewM["month_pct_change"].max()+1) if not viewM.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]), frac=0.06, min_pad=2.0)
@@ -487,10 +487,10 @@ barsM = baseM.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 posM = baseM.transform_filter("datum.month_pct_change >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("month_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("month_pct_change:Q", format=",.1f"))
 negM = baseM.transform_filter("datum.month_pct_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("month_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("month_pct_change:Q", format=",.1f"))
 
 chartM = (barsM + posM + negM).properties(title="MTD % Change", height=chart_height).configure_title(anchor="middle")
 
@@ -498,8 +498,8 @@ chartM = (barsM + posM + negM).properties(title="MTD % Change", height=chart_hei
 # Chart #4: 
 # -------------------------
 
-category_ms_min4 = float(viewQ["quarter_pct_change"].min()-5) if not viewQ.empty else 0.0
-category_ms_max4 = float(viewQ["quarter_pct_change"].max()+5) if not viewQ.empty else 0.0
+category_ms_min4 = float(viewQ["quarter_pct_change"].min()-1) if not viewQ.empty else 0.0
+category_ms_max4 = float(viewQ["quarter_pct_change"].max()+1) if not viewQ.empty else 0.0
 
 if lock_axes_and_order:
     ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]), frac=0.06, min_pad=2.0)
@@ -524,10 +524,10 @@ barsQ = baseQ.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
 
 posQ = baseQ.transform_filter("datum.quarter_pct_change >= 0") \
               .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("quarter_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("quarter_pct_change:Q", format=",.1f"))
 negQ = baseQ.transform_filter("datum.quarter_pct_change < 0") \
               .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("quarter_pct_change:Q", format=",.0f"))
+              .encode(text=alt.Text("quarter_pct_change:Q", format=",.1f"))
 
 chartQ = (barsQ + posQ + negQ).properties(title="QTD % Change", height=chart_height).configure_title(anchor="middle")
 
