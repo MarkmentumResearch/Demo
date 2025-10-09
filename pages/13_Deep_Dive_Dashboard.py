@@ -266,8 +266,8 @@ def fmt_px(v):
 
 def fmt_pct(v):
     try:
-        x = float(v)*100
-        #if abs(x) <= 1.0: x *= 100.0
+        x = float(v)
+        x *= 100.0
         return f"{x:,.1f}%"
     except: return "—"
 
