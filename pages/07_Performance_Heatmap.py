@@ -477,7 +477,7 @@ baseM = (
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
     .encode(
         y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yM), title="Ticker"),
-        x=xchartW,
+        x=xchartM,
         href=alt.Href("url:N"),
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("month_pct_change:Q", format=",.1f")],
     )
@@ -514,7 +514,7 @@ baseQ = (
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
     .encode(
         y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yQ), title="Ticker"),
-        x=xchartW,
+        x=xchartQ,
         href=alt.Href("url:N"),
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("quarter_pct_change:Q", format=",.1f")],
     )
