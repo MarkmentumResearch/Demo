@@ -439,7 +439,7 @@ baseW = (
     alt.Chart(viewW)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
     .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yW), title="Ticker"),
         x=xchartW,
         href=alt.Href("url:N"),
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("week_pct_change:Q", format=",.1f")],
@@ -476,7 +476,7 @@ baseM = (
     alt.Chart(viewM)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
     .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yM), title="Ticker"),
         x=xchartW,
         href=alt.Href("url:N"),
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("month_pct_change:Q", format=",.1f")],
@@ -513,7 +513,7 @@ baseQ = (
     alt.Chart(viewQ)
     .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
     .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yQ), title="Ticker"),
         x=xchartW,
         href=alt.Href("url:N"),
         tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("quarter_pct_change:Q", format=",.1f")],
