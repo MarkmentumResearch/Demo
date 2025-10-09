@@ -382,40 +382,155 @@ else:
 
 chart_height = max(260, 24 * max(len(viewD),len(viewW),len(viewM),len(viewQ)) + 120)
 
-# Build a generic bar factory
-def _bar(view: pd.DataFrame, value_col: str, title: str, y_sort):
-    # domain (per-category unless locked)
-    if lock_axes_and_order:
-        # use all combined values for a stable domain
-        combined = pd.concat([
-            viewD["day_pct_change"], viewW["week_pct_change"],
-            viewM["month_pct_change"], viewQ["quarter_pct_change"]
-        ], ignore_index=True)
-        dom = padded_domain(combined, frac=0.06, min_pad=2.0)
-    else:
-        dom = padded_domain(view[value_col], frac=0.06, min_pad=2.0)
 
-    base = (
-        alt.Chart(view.sort_values(value_col, ascending=False))
-        .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-        .encode(
-            y=alt.Y("Ticker:N", sort=y_sort, title="Ticker"),
-            x=alt.X(f"{value_col}:Q", title=title, scale=alt.Scale(domain=dom)),
-            href=alt.Href("url:N"),
-            tooltip=["Ticker","Ticker_name","Category", alt.Tooltip(f"{value_col}:Q", format=",.2f")]
-        )
+# -------------------------
+# Chart #1: 
+# -------------------------
+
+category_ms_min = float(viewD["day_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max = float(viewD["day_pct_change"].max()+5) if not viewD.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
+
+xchartD = alt.X("day_pct_change:Q", title="Daily % Change", scale=alt.Scale(domain=ms_dom))
+
+hint = "'Click to open Deep Dive'"
+baseD = (
+    alt.Chart(viewD)
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        x=xchartD,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("day_pct_change:Q", format=",.1f")],
     )
-    bars = base.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-    pos  = base.transform_filter(f"datum.{value_col} >= 0").mark_text(align="left",  baseline="middle", dx=4 ) \
-                 .encode(text=alt.Text(f"{value_col}:Q", format=",.1f"))
-    neg  = base.transform_filter(f"datum.{value_col} < 0" ).mark_text(align="right", baseline="middle", dx=-10) \
-                 .encode(text=alt.Text(f"{value_col}:Q", format=",.1f"))
-    return (bars + pos + neg).properties(height=chart_height).configure_title(anchor="middle")
+)
 
-chartD = _bar(viewD, "day_pct_change", "Daily % Change", (y_order if lock_axes_and_order else yD))
-chartW = _bar(viewW, "week_pct_change", "WTD % Change",   (y_order if lock_axes_and_order else yW))
-chartM = _bar(viewM, "month_pct_change", "MTD % Change",  (y_order if lock_axes_and_order else yM))
-chartQ = _bar(viewQ, "quarter_pct_change", "QTD % Change", (y_order if lock_axes_and_order else yQ))
+barsD = baseD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
+
+posD = baseD.transform_filter("datum.day_pct_change >= 0") \
+              .mark_text(align="left", baseline="middle", dx=4) \
+              .encode(text=alt.Text("day_pct_change:Q", format=",.0f"))
+negD = baseD.transform_filter("datum.day_pct_change < 0") \
+              .mark_text(align="right", baseline="middle", dx=-10) \
+              .encode(text=alt.Text("day_pct_change:Q", format=",.0f"))
+
+chartD = (barsD + posD + negD).properties(title="Daily % Change", height=chart_height).configure_title(anchor="middle")
+
+# -------------------------
+# Chart #2: 
+# -------------------------
+
+category_ms_min2 = float(viewD["week_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max2 = float(viewD["week_pct_change"].max()+5) if not viewD.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
+
+xchartW = alt.X("week_pct_change:Q", title="WTD % Change", scale=alt.Scale(domain=ms_dom))
+
+hint = "'Click to open Deep Dive'"
+baseW = (
+    alt.Chart(viewW)
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        x=xchartW,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("week_pct_change:Q", format=",.1f")],
+    )
+)
+
+barsW = baseW.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
+
+posW = baseW.transform_filter("datum.week_pct_change >= 0") \
+              .mark_text(align="left", baseline="middle", dx=4) \
+              .encode(text=alt.Text("week_pct_change:Q", format=",.0f"))
+negW = baseW.transform_filter("datum.week_pct_change < 0") \
+              .mark_text(align="right", baseline="middle", dx=-10) \
+              .encode(text=alt.Text("week_pct_change:Q", format=",.0f"))
+
+chartW = (barsW + posW + negW).properties(title="WTD % Change", height=chart_height).configure_title(anchor="middle")
+
+# -------------------------
+# Chart #3: 
+# -------------------------
+
+category_ms_min3 = float(viewD["month_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max3 = float(viewD["month_pct_change"].max()+5) if not viewD.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
+
+xchartM = alt.X("month_pct_change:Q", title="MTD % Change", scale=alt.Scale(domain=ms_dom))
+
+hint = "'Click to open Deep Dive'"
+baseM = (
+    alt.Chart(viewM)
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        x=xchartW,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("month_pct_change:Q", format=",.1f")],
+    )
+)
+
+barsM = baseM.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
+
+posM = baseM.transform_filter("datum.month_pct_change >= 0") \
+              .mark_text(align="left", baseline="middle", dx=4) \
+              .encode(text=alt.Text("month_pct_change:Q", format=",.0f"))
+negM = baseM.transform_filter("datum.month_pct_change < 0") \
+              .mark_text(align="right", baseline="middle", dx=-10) \
+              .encode(text=alt.Text("month_pct_change:Q", format=",.0f"))
+
+chartM = (barsM + posM + negM).properties(title="MTD % Change", height=chart_height).configure_title(anchor="middle")
+
+# -------------------------
+# Chart #4: 
+# -------------------------
+
+category_ms_min4 = float(viewD["quarter_pct_change"].min()-5) if not viewD.empty else 0.0
+category_ms_max4 = float(viewD["quarter_pct_change"].max()+5) if not viewD.empty else 0.0
+
+if lock_axes_and_order:
+    ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]), frac=0.06, min_pad=2.0)
+else:
+    ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
+
+xchartQ = alt.X("quarter_pct_change:Q", title="QTD % Change", scale=alt.Scale(domain=ms_dom))
+
+hint = "'Click to open Deep Dive'"
+baseQ = (
+    alt.Chart(viewQ)
+    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
+    .encode(
+        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
+        x=xchartW,
+        href=alt.Href("url:N"),
+        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("quarter_pct_change:Q", format=",.1f")],
+    )
+)
+
+barsQ = baseQ.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
+
+posQ = baseQ.transform_filter("datum.quarter_pct_change >= 0") \
+              .mark_text(align="left", baseline="middle", dx=4) \
+              .encode(text=alt.Text("quarter_pct_change:Q", format=",.0f"))
+negQ = baseQ.transform_filter("datum.quarter_pct_change < 0") \
+              .mark_text(align="right", baseline="middle", dx=-10) \
+              .encode(text=alt.Text("quarter_pct_change:Q", format=",.0f"))
+
+chartQ = (barsQ + posQ + negQ).properties(title="QTD % Change", height=chart_height).configure_title(anchor="middle")
+
 
 st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html=True)
 
