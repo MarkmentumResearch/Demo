@@ -1394,11 +1394,11 @@ with mid_stat:
 
     def _pct(x):
         try:
-            v = float(x)
+            v = float(x) *100
             if not math.isfinite(v):      # NaN or +/-Inf → blank
                 return ""
-            if abs(v) <= 1.0:
-                v *= 100.0
+            #if abs(v) <= 1.0:
+                #v *= 100.0
             return f"{v:,.1f}%"
         except:
             return ""
