@@ -349,6 +349,13 @@ vmax_by_tf = {
     for tf in ["Daily", "WTD", "MTD", "QTD"]
 }
 
+_tf_key = {"Daily":"Daily","WTD":"WTD","MTD":"MTD","QTD":"QTD"}
+vmax_by_tf = {
+    tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, floor=1.0, step=1.0)
+    for tf in _tf_key.values()
+}
+
+
 # --- Normalize so each timeframe column is independent
 agg_norm = agg.assign(
     norm=lambda d: d.apply(
