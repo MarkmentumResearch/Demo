@@ -381,7 +381,7 @@ if show_ticker_hm and sel:
 #col1, col2, col3 = st.columns([1.85, 3, .3])
 #with col2:
 #    st.caption("Note: Color scale uses a robust symmetric range; values beyond the range clip to the end color.")
-col1, col2, col3 = st.columns([1, 3, 1])
+col1, col2, col3 = st.columns([1.5, 3, .5])
 with col2:
     st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
 
