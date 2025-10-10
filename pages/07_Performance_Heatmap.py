@@ -260,9 +260,9 @@ heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X("Timeframe:N",sort=present_tfs,axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13),
-                    scale=alt.Scale(rangeStep=step, paddingInner=0.05, paddingOuter=0.02)),
+        x=alt.X("Timeframe:N", sort=tf_order,
+                      axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
