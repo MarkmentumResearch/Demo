@@ -164,28 +164,40 @@ def load_csv48(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
 
 last_modified = (DATA_DIR / "model_score_wtd_change.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv_WTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv_WTD(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_wtd_change"])
+        return pd.DataFrame(columns=["Ticker","Ticker_name","Category","Date","model_score_wtd_change"])
     df = pd.read_csv(path)
+    for col in ("Ticker","Ticker_name","Category"):
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+    df["Ticker"] = df["Ticker"].str.upper()
     df["model_score_wtd_change"] = pd.to_numeric(df["model_score_wtd_change"], errors="coerce")
     return df
 
 last_modified = (DATA_DIR / "model_score_mtd_change.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv_MTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv_MTD(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_mtd_change"])
+        return pd.DataFrame(columns=["Ticker","Ticker_name","Category","Date","model_score_mtd_change"])
     df = pd.read_csv(path)
+    for col in ("Ticker","Ticker_name","Category"):
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+    df["Ticker"] = df["Ticker"].str.upper()
     df["model_score_mtd_change"] = pd.to_numeric(df["model_score_mtd_change"], errors="coerce")
     return df
 
 last_modified = (DATA_DIR / "model_score_qtd_change.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_csv_QTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
+def load_csv_QTD(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
     if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_qtd_change"])
+        return pd.DataFrame(columns=["Ticker","Ticker_name","Category","Date","model_score_qtd_change"])
     df = pd.read_csv(path)
+    for col in ("Ticker","Ticker_name","Category"):
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+    df["Ticker"] = df["Ticker"].str.upper()
     df["model_score_qtd_change"] = pd.to_numeric(df["model_score_qtd_change"], errors="coerce")
     return df
 
