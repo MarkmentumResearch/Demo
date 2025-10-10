@@ -263,7 +263,7 @@ heat = (
                  alt.Tooltip("n:Q", title="Count")]
     )
     .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
+                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 0})
     .configure_view(strokeOpacity=0)
 )
 
@@ -331,8 +331,8 @@ if show_ticker_hm and sel:
     tf_order = ["Daily","WTD","MTD","QTD"]
 
     # Use global vmax based on per-ticker dispersion (robust)
-    vmax_ticker = float(np.quantile(np.abs(tm["delta"].values), 0.99))
-    vmax_ticker = max(1.0, np.ceil(vmax_ticker / 5.0) * 5.0)
+    #vmax_ticker = float(np.quantile(np.abs(tm["delta"].values), 0.99))
+    #vmax_ticker = max(1.0, np.ceil(vmax_ticker / 5.0) * 5.0)
 
     row_h = 22
     chart_h = max(360, row_h*len(ticker_order) + 24)
