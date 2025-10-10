@@ -231,6 +231,23 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# --- Per-timeframe "universe" vmax from ALL tickers (independent scales)
+def _vmax_from(df: pd.DataFrame, col: str, q: float = 0.98) -> float:
+    if col not in df.columns or df.empty:
+        return 1.0
+    s = pd.to_numeric(df[col], errors="coerce").dropna().abs().values
+    if s.size == 0:
+        return 1.0
+    return float(max(1.0, np.quantile(s, q)))
+
+VTF = {
+    "Daily": _vmax_from(df48, "model_score_daily_change", q=0.98),
+    "WTD":   _vmax_from(dfWTD, "model_score_wtd_change",   q=0.98),
+    "MTD":   _vmax_from(dfMTD, "model_score_mtd_change",   q=0.98),
+    "QTD":   _vmax_from(dfQTD, "model_score_qtd_change",   q=0.98),
+}
+
 #=====title end
 
 # =========================
@@ -272,6 +289,11 @@ hm = pd.concat(parts, ignore_index=True).dropna(subset=["Category", "delta"])
 agg = (
     hm.groupby(["Category", "Timeframe"], as_index=False)
       .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
+)
+
+agg["norm"] = agg.apply(
+    lambda r: np.clip(r["avg_delta"] / max(VTF.get(r["Timeframe"], 1.0), 1e-9), -1, 1),
+    axis=1
 )
 
 global_delta = pd.concat([
@@ -359,15 +381,16 @@ heat = (
             ),
         ),
         color=alt.Color(
-            "avg_delta:Q",
-            scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+            "norm:Q",
+            scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
             legend=alt.Legend(
                 orient="bottom",
-                title="Avg Δ Score",
+                title="Avg Δ Score (per timeframe)",
                 titleColor="#1a1a1a",   # darker legend title
                 labelColor="#1a1a1a",   # darker legend labels
                 gradientLength=360,
-                labelLimit=80
+                labelLimit=80,
+                labelExpr="''"
             ),
         ),
         tooltip=[
@@ -441,7 +464,7 @@ all_cats = [cat for cat in custom_order if cat in (
 )]
 
 
-default_cat = "Sector Style ETFs"
+default_cat = "Sector & Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
 
@@ -523,6 +546,11 @@ if show_ticker_hm:
     parts.append(_part(dfQTD, "model_score_qtd_change", "QTD"))
 
     tm = pd.concat(parts, ignore_index=True).dropna(subset=["Ticker", "delta"])
+    tm["norm"] = tm.apply(
+        lambda r: np.clip(r["delta"] / max(VTF.get(r["Timeframe"], 1.0), 1e-9), -1, 1),
+        axis=1
+    )
+
 
     # --- Sort tickers alphabetically for the Y-axis
     ticker_order = sorted(tm["Ticker"].unique().tolist())
@@ -569,15 +597,16 @@ if show_ticker_hm:
                 ),
             ),
             color=alt.Color(
-                "delta:Q",
-                scale=alt.Scale(scheme="blueorange", domain=[-vmax_ticker, 0, vmax_ticker]),
+                "norm:Q",
+                scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                 legend=alt.Legend(
                     orient="bottom",
-                    title="Δ Score",
+                    title="Δ Score (per timeframe)",
                     titleColor="#1a1a1a",
                     labelColor="#1a1a1a",
                     gradientLength=355,
                     labelLimit=80,
+                    labelExpr="''",
                 ),
             ),
             tooltip=[
@@ -615,9 +644,9 @@ if show_ticker_hm:
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
-col1, col2, col3 = st.columns([1.85, 3, .3])
-with col2:
-    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
+#col1, col2, col3 = st.columns([1.85, 3, .3])
+#with col2:
+#    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
