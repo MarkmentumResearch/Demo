@@ -263,7 +263,7 @@ heat = (
                  alt.Tooltip("n:Q", title="Count")]
     )
     .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": -12})
+                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 0})
     .configure_view(strokeOpacity=0)
 )
 
@@ -283,9 +283,9 @@ with center_col:
         with _c:
             st.altair_chart(heat, use_container_width=False)
 
-col1, col2, col3 = st.columns([1.5, 3, .5])
-with col2:
-    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
+#col1, col2, col3 = st.columns([1.5, 3, .5])
+#with col2:
+#    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
 
 
 
