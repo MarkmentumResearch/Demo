@@ -357,8 +357,6 @@ agg_norm = agg.assign(
     )
 )
 
-
-
 # ---- Heatmap (darker, larger labels + thin dark borders; legend stays on the right)
 heat = (
     alt.Chart(agg_norm)
