@@ -306,48 +306,45 @@ if show_ticker_hm and sel:
 
 
     # --- Build per-ticker heatmap using FACET (no hconcat) ---
-    # Map each timeframe to its universe-wide vmax, then normalize so each facet can share [-1,0,1]
+    # --- Normalize per timeframe using universe domains (keeps scales independent)
     dom_map = {"Daily": vmax_day, "WTD": vmax_wtd, "MTD": vmax_mtd, "QTD": vmax_qtd}
     tm["__dom__"] = tm["Timeframe"].map(dom_map).replace(0, np.nan)
-    tm["__delta_norm__"] = tm["delta"] / tm["__dom__"]  # normalized by universe domain per TF
+    tm["__delta_norm__"] = tm["delta"] / tm["__dom__"]   # normalized for color only
 
     row_h = 22
-    chart_h = max(360, row_h*len(ticker_order) + 24)
+    chart_h = max(360, row_h * len(ticker_order) + 24)
+    chart_w = 530   # same width you used before
     legend_w = 120
+    tf_order = ["Daily","WTD","MTD","QTD"]
 
-    # Base chart (one column per facet). We hide x labels inside each facet.
-    faceted = (
+    ticker_heat = (
         alt.Chart(tm)
         .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
         .encode(
-          # x is constant within each facet; hiding labels keeps a clean look
-              x=alt.X("Timeframe:N",
-                    axis=alt.Axis(orient="top", title=None, labelOpacity=0)),
+              x=alt.X("Timeframe:N", sort=tf_order,
+                      axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
             y=alt.Y("Ticker:N", sort=ticker_order,
-                      axis=alt.Axis(title=None, labelLimit=140, labelPadding=10,
-                                    orient="left", labelFlush=False, labelColor="#1a1a1a",
-                                    labelFontSize=13, labelOverlap=False)),
-            # Independent per-timeframe scaling achieved by normalizing & fixing [-1,0,1]
+                      axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
+                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
+            # color uses normalized values so each timeframe is effectively independent
             color=alt.Color("__delta_norm__:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                               legend=alt.Legend(orient="bottom", title="% Change",
                                                 titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                                gradientLength=355, labelExpr="''")),
+                                                gradientLength=355, labelLimit=80, labelExpr="''")),
             tooltip=[
                   alt.Tooltip("Ticker:N"),
-                alt.Tooltip("Ticker_name:N", title="Name"),
-                alt.Tooltip("Timeframe:N"),
-                alt.Tooltip("delta:Q", title="% Δ", format=",.2f")
-            ]
-        )
-        .properties(width=130, height=chart_h)
+                  alt.Tooltip("Ticker_name:N", title="Name"),
+                  alt.Tooltip("Timeframe:N"),
+                  # show real (unnormalized) % change in tooltip
+                  alt.Tooltip("delta:Q", title="% Δ", format=",.2f")
+              ]
+          )
+          .properties(width=chart_w, height=chart_h,
+                      padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
+          .configure_view(strokeOpacity=0)
     )
-
-    # Facet into 4 columns (Daily, WTD, MTD, QTD). Each facet now has its own effective scale.
-    ticker_heat = faceted.facet(
-        column=alt.Column("Timeframe:N", sort=["Daily","WTD","MTD","QTD"], title=None),
-        spacing=6
-    ).configure_view(strokeOpacity=0)
     
     pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
     with center_col:
