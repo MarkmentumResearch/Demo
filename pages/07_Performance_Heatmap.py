@@ -204,7 +204,7 @@ cat_order = [c for c in preferred if c in present] + [c for c in present if c no
 tf_order  = ["Daily","WTD","MTD","QTD"]
 
 # Diverging symmetric domain (winsorized)
-vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
+#vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
 row_h = 26
 chart_h = max(360, row_h * len(cat_order) + 24)
 chart_w = 625
@@ -221,10 +221,10 @@ heat = (
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
         color=alt.Color("avg_delta:Q",
-                        scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+                        scale=alt.Scale(scheme="blueorange", domain="unaggregated"),
                         legend=alt.Legend(orient="bottom", title="Avg % Change",
                                           titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                          gradientLength=360, labelLimit=80)),
+                                          gradientLength=360, labelLimit=80,labelExpr="''")),
         tooltip=[alt.Tooltip("Category:N"),
                  alt.Tooltip("Timeframe:N"),
                  alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
