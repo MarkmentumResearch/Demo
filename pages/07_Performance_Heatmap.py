@@ -260,8 +260,8 @@ heat = (
     .encode(
         x=alt.X("Timeframe:N", sort=present_tfs,
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-                      #scale=alt.Scale(range={"step": step}, paddingInner=0.05, paddingOuter=0.02)),
+                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13),
+                      scale=alt.Scale(range={"step": int(step)}, paddingInner=0.05, paddingOuter=0.02)),
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
