@@ -285,7 +285,7 @@ with center_col:
 
 col1, col2, col3 = st.columns([1.5, 3, .5])
 with col2:
-    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
+    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
 
 
 
@@ -383,7 +383,7 @@ if show_ticker_hm and sel:
 #    st.caption("Note: Color scale uses a robust symmetric range; values beyond the range clip to the end color.")
 col1, col2, col3 = st.columns([1.5, 3, .5])
 with col2:
-    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
+    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
 
 
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
