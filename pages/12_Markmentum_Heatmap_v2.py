@@ -464,7 +464,7 @@ all_cats = [cat for cat in custom_order if cat in (
 )]
 
 
-default_cat = "Sector Style ETFs"
+default_cat = "Sector & Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
 
