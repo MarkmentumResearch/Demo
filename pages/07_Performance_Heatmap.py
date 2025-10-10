@@ -192,6 +192,23 @@ agg = (
       .agg(avg_delta=("delta","mean"), n=("delta","size"))
 )
 
+# --- Independent domains per timeframe for the CATEGORY heatmap ---
+# Use a robust (99th pct) symmetric domain per timeframe, based on category averages
+dom_cat = (
+    agg.groupby("Timeframe")["avg_delta"]
+       .apply(lambda s: np.quantile(np.abs(s.dropna()), 0.99))
+       .to_dict()
+)
+
+# round up a bit so the ends aren't too tight
+dom_cat = {k: max(1.0, float(np.ceil(v))) for k, v in dom_cat.items()}
+
+# normalize category averages by their timeframe's domain (color uses this)
+agg["__dom__"] = agg["Timeframe"].map(dom_cat).replace(0, np.nan)
+agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
+
+
+
 # Preferred ordering (filtered to present ones)
 preferred = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -220,11 +237,11 @@ heat = (
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        color=alt.Color("avg_delta:Q",
-                        scale=alt.Scale(scheme="blueorange", domain="unaggregated"),
-                        legend=alt.Legend(orient="bottom", title="Avg % Change",
-                                          titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                          gradientLength=360, labelLimit=80,labelExpr="''")),
+        color=alt.Color("__avg_norm__:Q",scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                legend=alt.Legend(
+                orient="bottom", title="Avg % Change",
+                titleColor="#1a1a1a", labelColor="#1a1a1a",
+                gradientLength=360, labelLimit=80, labelExpr="''"),),
         tooltip=[alt.Tooltip("Category:N"),
                  alt.Tooltip("Timeframe:N"),
                  alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
