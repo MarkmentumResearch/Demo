@@ -381,7 +381,7 @@ heat = (
             ),
         ),
         color=alt.Color(
-            "nort:Q",
+            "norm:Q",
             scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
             legend=alt.Legend(
                 orient="bottom",
@@ -597,7 +597,7 @@ if show_ticker_hm:
             ),
             color=alt.Color(
                 "norm:Q",
-                scale=alt.Scale(scheme="blueorange", domain=[-vmax_ticker, 0, vmax_ticker]),
+                scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                 legend=alt.Legend(
                     orient="bottom",
                     title="Δ Score",
