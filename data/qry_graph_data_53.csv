@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,wtd_return_pct
-STX,SEAGATE TECHNOLOGY HOLDINGS,Information Technology,2025-10-08,-0.1194
-ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,2025-10-08,-0.108
-DHI,"D.R. HORTON, INC.",Consumer Discretionary,2025-10-08,-0.0977
-FICO,FAIR ISAAC ,Information Technology,2025-10-08,-0.0878
-APP,APPLOVIN CORP,Communication Services,2025-10-08,-0.0809
-WDC,WESTERN DIGITAL ,Information Technology,2025-10-08,-0.0803
-LEN,LENNAR ,Consumer Discretionary,2025-10-08,-0.0796
-SBUX,STARBUCKS ,Consumer Discretionary,2025-10-08,-0.0767
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-08,-0.0762
-PHM,"PULTEGROUP, INC.",Consumer Discretionary,2025-10-08,-0.0751
+DHI,"D.R. HORTON, INC.",Consumer Discretionary,2025-10-09,-0.1446
+STX,SEAGATE TECHNOLOGY HOLDINGS,Information Technology,2025-10-09,-0.1312
+APP,APPLOVIN CORP,Communication Services,2025-10-09,-0.1287
+PHM,"PULTEGROUP, INC.",Consumer Discretionary,2025-10-09,-0.1253
+ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,2025-10-09,-0.1186
+LEN,LENNAR ,Consumer Discretionary,2025-10-09,-0.0982
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-09,-0.0969
+WDC,WESTERN DIGITAL ,Information Technology,2025-10-09,-0.0926
+CSGP,"COSTAR GROUP, INC.",Real Estate,2025-10-09,-0.0897
+PFE,PFIZER INC.,Health Care,2025-10-09,-0.081
