@@ -303,8 +303,8 @@ global_delta = pd.concat([
 
 #vmax_ticker = float(global_delta.abs().quantile(0.995))
 #vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)
-vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.999))  # 99.5th pct
-vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)              # round up nicely
+#vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.999))  # 99.5th pct
+#vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)              # round up nicely
 
 # ---- Ordering
 preferred = [
@@ -341,7 +341,7 @@ chart_w = 625              # plot area width (not including legend)
 legend_w = 120             # visual compensation for right-side legend
 
 # ---- Symmetric diverging scale centered at 0 (winsorized for outliers)
-vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
+#vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
 
 # --- Per-timeframe robust vmax across categories
 vmax_by_tf = {
