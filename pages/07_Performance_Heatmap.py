@@ -342,7 +342,7 @@ if show_ticker_hm and sel:
     mtd   = _col("MTD",   vmax_mtd)
     qtd   = _col("QTD",   vmax_qtd)
 
-    ticker_heat = alt.hconcat(daily, wtd, mtd, qtd).resolve_scale(y="shared", color="independent")
+    ticker_heat = (daily | wtd | mtd | qtd).resolve_scale(color="independent")
     
     pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
     with center_col:
