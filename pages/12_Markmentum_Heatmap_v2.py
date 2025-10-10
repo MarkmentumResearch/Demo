@@ -385,7 +385,7 @@ heat = (
             scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
             legend=alt.Legend(
                 orient="bottom",
-                title="Avg Δ Score",
+                title="Avg Δ Score (per timeframe)",
                 titleColor="#1a1a1a",   # darker legend title
                 labelColor="#1a1a1a",   # darker legend labels
                 gradientLength=360,
@@ -601,7 +601,7 @@ if show_ticker_hm:
                 scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                 legend=alt.Legend(
                     orient="bottom",
-                    title="Δ Score",
+                    title="Δ Score (per timeframe)",
                     titleColor="#1a1a1a",
                     labelColor="#1a1a1a",
                     gradientLength=355,
