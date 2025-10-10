@@ -332,7 +332,19 @@ preferred = [
 
 present = list(agg["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
-tf_order = ["Daily", "WTD", "MTD", "QTD"]
+tf_order = ["Daily","WTD","MTD","QTD"]
+vmax_by_tf = {
+    tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, step=5.0)
+    for tf in tf_order
+}
+
+# --- Safe normalization (always numeric)
+agg["avg_delta"] = pd.to_numeric(agg["avg_delta"], errors="coerce")
+tf_scale = agg["Timeframe"].map(vmax_by_tf).astype(float).replace(0.0, 1.0).fillna(1.0)
+
+agg_norm = agg.assign(
+    norm=np.clip(agg["avg_delta"].fillna(0.0) / tf_scale, -1, 1)
+)
 
 # ---- Sizing (tight, centered card)
 row_h   = 26
@@ -340,29 +352,6 @@ chart_h = max(360, row_h * len(cat_order) + 24)
 chart_w = 625              # plot area width (not including legend)
 legend_w = 120             # visual compensation for right-side legend
 
-# ---- Symmetric diverging scale centered at 0 (winsorized for outliers)
-#vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
-
-# --- Per-timeframe robust vmax across categories
-vmax_by_tf = {
-    tf: _robust_vmax(agg.loc[agg["Timeframe"] == tf, "avg_delta"], q=0.98, step=5.0)
-    for tf in ["Daily", "WTD", "MTD", "QTD"]
-}
-
-_tf_key = {"Daily":"Daily","WTD":"WTD","MTD":"MTD","QTD":"QTD"}
-vmax_by_tf = {
-    tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, floor=1.0, step=1.0)
-    for tf in _tf_key.values()
-}
-
-
-# --- Normalize so each timeframe column is independent
-agg_norm = agg.assign(
-    norm=lambda d: d.apply(
-        lambda r: np.clip(r["avg_delta"] / (vmax_by_tf.get(r["Timeframe"], 1.0) or 1.0), -1, 1),
-        axis=1
-    )
-)
 
 # ---- Heatmap (darker, larger labels + thin dark borders; legend stays on the right)
 heat = (
@@ -447,7 +436,7 @@ all_cats = [cat for cat in custom_order if cat in (
 )]
 
 
-default_cat = "Sector Style ETFs"
+default_cat = "Sector & Style ETFs"
 default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
 
 
