@@ -201,6 +201,8 @@ dom_cat = {
 
 # round up a bit so the ends aren't too tight
 def _round_up(v): return max(1.0, float(np.ceil(v)))
+dom_cat = {tf: float(np.quantile(np.abs(agg.loc[agg["Timeframe"]==tf, "avg_delta"]), 0.99))
+           for tf in agg["Timeframe"].unique()}
 dom_cat = {k: _round_up(v) for k, v in dom_cat.items()}
 
 # normalize category averages by their timeframe's universe domain (color uses this)
@@ -227,21 +229,21 @@ chart_w = 625
 legend_w = 120
 
 # Universe-wide robust domains per timeframe (independent)
-vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
-vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
-vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
-vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
+#vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
+#vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
+#vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
+#vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
 
 # Compute per-timeframe robust vmax from the *universe*
-dom_map_cat = {
-    "Daily":  vmax_day,
-    "WTD":    vmax_wtd,
-    "MTD":    vmax_mtd,
-    "QTD":    vmax_qtd,
-}
+#dom_map_cat = {
+#    "Daily":  vmax_day,
+#    "WTD":    vmax_wtd,
+#    "MTD":    vmax_mtd,
+#    "QTD":    vmax_qtd,
+#}
 
-agg["__dom__"] = agg["Timeframe"].map(dom_map_cat).replace(0, np.nan)
-agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
+#agg["__dom__"] = agg["Timeframe"].map(dom_map_cat).replace(0, np.nan)
+#agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
 
 # Keep category heatmap the same total width as the per-ticker heatmap
 tf_order  = ["Daily","WTD","MTD","QTD"]
@@ -252,15 +254,13 @@ if not present_tfs:
 chart_w_cat = 625   # match per-ticker width
 step = chart_w_cat / max(1, len(present_tfs))  # band width so total width stays constant
 
-
-
 heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
         x=alt.X("Timeframe:N", sort=present_tfs,
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13),scale=alt.Scale(rangeStep=step, paddingInner=0.05, paddingOuter=0.02)),
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
