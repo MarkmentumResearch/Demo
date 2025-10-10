@@ -228,6 +228,23 @@ chart_h = max(360, row_h * len(cat_order) + 24)
 chart_w = 625
 legend_w = 120
 
+# Universe-wide robust domains per timeframe (independent)
+vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
+vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
+vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
+vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
+
+# Compute per-timeframe robust vmax from the *universe*
+dom_map_cat = {
+    "Daily":  vmax_day,
+    "WTD":    vmax_wtd,
+    "MTD":    vmax_mtd,
+    "QTD":    vmax_qtd,
+}
+
+agg["__dom__"] = agg["Timeframe"].map(dom_map_cat).replace(0, np.nan)
+agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
+
 heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
@@ -238,19 +255,20 @@ heat = (
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        color=alt.Color("__avg_norm__:Q",scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                legend=alt.Legend(
-                orient="bottom", title="Avg % Change (per timeframe)",
-                titleColor="#1a1a1a", labelColor="#1a1a1a",
-                gradientLength=360, labelLimit=80, labelExpr="''"),),
-        tooltip=[alt.Tooltip("Category:N"),
-                 alt.Tooltip("Timeframe:N"),
-                 alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
-                 alt.Tooltip("n:Q", title="Count")]
+        # now using normalized values so each timeframe is independent
+        color=alt.Color("__avg_norm__:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                        legend=alt.Legend(
+                            orient="bottom", title="Avg % Change (per timeframe)",
+                            titleColor="#1a1a1a", labelColor="#1a1a1a",
+                            gradientLength=360, labelLimit=80, labelExpr="''")),
+        tooltip=[
+            alt.Tooltip("Category:N"),
+            alt.Tooltip("Timeframe:N"),
+            alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
+            alt.Tooltip("n:Q", title="Count")
+        ]
     )
-    .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
-    .configure_view(strokeOpacity=0)
 )
 
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
