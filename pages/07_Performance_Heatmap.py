@@ -192,21 +192,22 @@ agg = (
       .agg(avg_delta=("delta","mean"), n=("delta","size"))
 )
 
-# --- Independent domains per timeframe for the CATEGORY heatmap ---
-# Use a robust (99th pct) symmetric domain per timeframe, based on category averages
-dom_cat = (
-    agg.groupby("Timeframe")["avg_delta"]
-       .apply(lambda s: np.quantile(np.abs(s.dropna()), 0.99))
-       .to_dict()
-)
+# --- Independent domains per timeframe for the CATEGORY heatmap (UNIVERSE-BASED) ---
+# Robust (99th pct) symmetric domain per TF, computed from ALL TICKERS (universe)
+dom_cat = {
+    "Daily":  float(np.quantile(df["day_pct_change"].abs().dropna(),     0.99)),
+    "WTD":    float(np.quantile(df["week_pct_change"].abs().dropna(),    0.99)),
+    "MTD":    float(np.quantile(df["month_pct_change"].abs().dropna(),   0.99)),
+    "QTD":    float(np.quantile(df["quarter_pct_change"].abs().dropna(), 0.99)),
+}
 
 # round up a bit so the ends aren't too tight
-dom_cat = {k: max(1.0, float(np.ceil(v))) for k, v in dom_cat.items()}
+def _round_up(v): return max(1.0, float(np.ceil(v)))
+dom_cat = {k: _round_up(v) for k, v in dom_cat.items()}
 
-# normalize category averages by their timeframe's domain (color uses this)
+# normalize category averages by their timeframe's universe domain (color uses this)
 agg["__dom__"] = agg["Timeframe"].map(dom_cat).replace(0, np.nan)
 agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
-
 
 
 # Preferred ordering (filtered to present ones)
@@ -239,7 +240,7 @@ heat = (
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
         color=alt.Color("__avg_norm__:Q",scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                 legend=alt.Legend(
-                orient="bottom", title="Avg % Change",
+                orient="bottom", title="Avg % Change (per timeframe)",
                 titleColor="#1a1a1a", labelColor="#1a1a1a",
                 gradientLength=360, labelLimit=80, labelExpr="''"),),
         tooltip=[alt.Tooltip("Category:N"),
@@ -347,7 +348,7 @@ if show_ticker_hm and sel:
             # color uses normalized values so each timeframe is effectively independent
             color=alt.Color("__delta_norm__:Q",
                               scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                              legend=alt.Legend(orient="bottom", title="% Change",
+                              legend=alt.Legend(orient="bottom", title="% Change (per timeframe)",
                                                 titleColor="#1a1a1a", labelColor="#1a1a1a",
                                                 gradientLength=355, labelLimit=80, labelExpr="''")),
             tooltip=[
