@@ -251,6 +251,18 @@ with center_col:
         with _c:
             st.altair_chart(heat, use_container_width=False)
 
+
+# --- Universe-based color domain for per-ticker heatmap (all tickers, all TFs)
+_universe_vals = pd.concat(
+    [df["day_pct_change"], df["week_pct_change"], df["month_pct_change"], df["quarter_pct_change"]],
+    ignore_index=True
+).dropna().abs()
+
+vmax_uni = float(np.quantile(_universe_vals, 0.99))   # robust clip
+vmax_uni = max(1.0, np.ceil(vmax_uni / 1.0) * 1.0)    # round up to a clean step
+
+
+
 # -------------------------
 # Controls
 # -------------------------
@@ -307,7 +319,7 @@ if show_ticker_hm and sel:
                     axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
                                   labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
             color=alt.Color("delta:Q",
-                            scale=alt.Scale(scheme="blueorange", domain="unaggregated"),
+                            scale=alt.Scale(scheme="blueorange", domain=[-vmax_uni, 0, vmax_uni]),
                             legend=alt.Legend(orient="bottom", title="% Change",
                                               titleColor="#1a1a1a", labelColor="#1a1a1a",
                                               gradientLength=355, labelLimit=80,labelExpr="''")),
