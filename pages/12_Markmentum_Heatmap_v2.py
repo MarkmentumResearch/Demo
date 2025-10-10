@@ -345,18 +345,26 @@ preferred = [
 present = list(agg["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
 tf_order = ["Daily","WTD","MTD","QTD"]
+
+# >>> INSERT THIS BLOCK (densify to all Category×Timeframe combos) <<<
+grid = (
+    pd.MultiIndex.from_product([cat_order, tf_order], names=["Category", "Timeframe"])
+      .to_frame(index=False)
+)
+agg = grid.merge(agg, on=["Category","Timeframe"], how="left")
+agg["avg_delta"] = pd.to_numeric(agg["avg_delta"], errors="coerce").fillna(0.0)
+agg["n"] = agg["n"].fillna(0).astype(int)
+
+# existing vmax calc per timeframe
 vmax_by_tf = {
     tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, step=5.0)
     for tf in tf_order
 }
 
-# --- Safe normalization (always numeric)
+# normalize again using the (now complete) agg table
 agg["avg_delta"] = pd.to_numeric(agg["avg_delta"], errors="coerce")
 tf_scale = agg["Timeframe"].map(vmax_by_tf).astype(float).replace(0.0, 1.0).fillna(1.0)
-
-agg_norm = agg.assign(
-    norm=np.clip(agg["avg_delta"].fillna(0.0) / tf_scale, -1, 1)
-)
+agg_norm = agg.assign(norm=np.clip(agg["avg_delta"].fillna(0.0) / tf_scale, -1, 1))
 
 # ---- Sizing (tight, centered card)
 row_h   = 26
