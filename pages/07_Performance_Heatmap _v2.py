@@ -283,7 +283,7 @@ with center_col:
         with _c:
             st.altair_chart(heat, use_container_width=False)
 
-col1, col2, col3 = st.columns([1.85, 3, .3])
+col1, col2, col3 = st.columns([1.5, 3, .5])
 with col2:
     st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
 
