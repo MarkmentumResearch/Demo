@@ -251,7 +251,7 @@ present_tfs = [t for t in tf_order if t in agg["Timeframe"].unique()]
 if not present_tfs:
     present_tfs = ["Daily"]
 
-chart_w_cat = 530   # match per-ticker width
+chart_w_cat = 625   # match per-ticker width
 step = chart_w_cat / max(1, len(present_tfs))  # band width so total width stays constant
 
 
@@ -260,7 +260,7 @@ heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X("Timeframe:N", sort=tf_order,
+        x=alt.X("Timeframe:N", sort=present_tfs,
                       axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
                                     labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
         y=alt.Y("Category:N", sort=cat_order,
