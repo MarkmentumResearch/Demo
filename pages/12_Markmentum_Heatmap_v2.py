@@ -389,7 +389,8 @@ heat = (
                 titleColor="#1a1a1a",   # darker legend title
                 labelColor="#1a1a1a",   # darker legend labels
                 gradientLength=360,
-                labelLimit=80
+                labelLimit=80,
+                labelExpr="''"
             ),
         ),
         tooltip=[
@@ -605,6 +606,7 @@ if show_ticker_hm:
                     labelColor="#1a1a1a",
                     gradientLength=355,
                     labelLimit=80,
+                    labelExpr="''",
                 ),
             ),
             tooltip=[
@@ -642,9 +644,9 @@ if show_ticker_hm:
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
-col1, col2, col3 = st.columns([1.85, 3, .3])
-with col2:
-    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
+#col1, col2, col3 = st.columns([1.85, 3, .3])
+#with col2:
+#    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
 #st.divider()  # thin horizontal line
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
