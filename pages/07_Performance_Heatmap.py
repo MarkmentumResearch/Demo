@@ -192,24 +192,6 @@ agg = (
       .agg(avg_delta=("delta","mean"), n=("delta","size"))
 )
 
-# --- Independent domains per timeframe for the CATEGORY heatmap (UNIVERSE-BASED) ---
-# Robust (99th pct) symmetric domain per TF, computed from ALL TICKERS (universe)
-dom_cat = {
-    tf: float(np.quantile(abs(agg.loc[agg["Timeframe"]==tf, "avg_delta"]), 0.99))
-    for tf in agg["Timeframe"].unique()
-}
-
-# round up a bit so the ends aren't too tight
-def _round_up(v): return max(1.0, float(np.ceil(v)))
-dom_cat = {tf: float(np.quantile(np.abs(agg.loc[agg["Timeframe"]==tf, "avg_delta"]), 0.99))
-           for tf in agg["Timeframe"].unique()}
-dom_cat = {k: _round_up(v) for k, v in dom_cat.items()}
-
-# normalize category averages by their timeframe's universe domain (color uses this)
-agg["__dom__"] = agg["Timeframe"].map(dom_cat).replace(0, np.nan)
-agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
-
-
 # Preferred ordering (filtered to present ones)
 preferred = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -222,67 +204,35 @@ cat_order = [c for c in preferred if c in present] + [c for c in present if c no
 tf_order  = ["Daily","WTD","MTD","QTD"]
 
 # Diverging symmetric domain (winsorized)
-#vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
+vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
 row_h = 26
 chart_h = max(360, row_h * len(cat_order) + 24)
 chart_w = 625
 legend_w = 120
 
-# Universe-wide robust domains per timeframe (independent)
-#vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
-#vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
-#vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
-#vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
-
-# Compute per-timeframe robust vmax from the *universe*
-#dom_map_cat = {
-#    "Daily":  vmax_day,
-#    "WTD":    vmax_wtd,
-#    "MTD":    vmax_mtd,
-#    "QTD":    vmax_qtd,
-#}
-
-#agg["__dom__"] = agg["Timeframe"].map(dom_map_cat).replace(0, np.nan)
-#agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
-
-# Keep category heatmap the same total width as the per-ticker heatmap
-tf_order  = ["Daily","WTD","MTD","QTD"]
-present_tfs = [t for t in tf_order if t in agg["Timeframe"].unique()]
-if not present_tfs:
-    present_tfs = ["Daily"]
-
-chart_w_cat = 625   # match per-ticker width
-step = chart_w_cat / max(1, len(present_tfs))  # band width so total width stays constant
-
 heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X("Timeframe:N", sort=present_tfs,
-                      axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-                      #scale=alt.Scale(range={"step": int(step)}, paddingInner=0.05, paddingOuter=0.02)),
+        x=alt.X("Timeframe:N", sort=tf_order,
+                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        # now using normalized values so each timeframe is independent
-        color=alt.Color("__avg_norm__:Q",
-                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                        legend=alt.Legend(
-                            orient="bottom", title="Avg % Change (per timeframe)",
-                            titleColor="#1a1a1a", labelColor="#1a1a1a",
-                            gradientLength=360, labelLimit=80, labelExpr="''")),
-        tooltip=[
-            alt.Tooltip("Category:N"),
-            alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
-            alt.Tooltip("n:Q", title="Count")
-        ]
+        color=alt.Color("avg_delta:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+                        legend=alt.Legend(orient="bottom", title="Avg % Change",
+                                          titleColor="#1a1a1a", labelColor="#1a1a1a",
+                                          gradientLength=360, labelLimit=80)),
+        tooltip=[alt.Tooltip("Category:N"),
+                 alt.Tooltip("Timeframe:N"),
+                 alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
+                 alt.Tooltip("n:Q", title="Count")]
     )
-    .properties(width=chart_w_cat, height=chart_h,
-        padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
+    .properties(width=chart_w, height=chart_h,
+                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
     .configure_view(strokeOpacity=0)
-    #.configure_scale(bandPaddingInner=0.00, bandPaddingOuter=0.00)
 )
 
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
@@ -300,19 +250,6 @@ with center_col:
         _l, _c, _r = st.columns([1,7,1])
         with _c:
             st.altair_chart(heat, use_container_width=False)
-
-
-# Universe-wide robust domains per timeframe (independent)
-vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
-vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
-vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
-vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
-
-# round to cleaner steps
-def _round_up(x): 
-    return max(1.0, np.ceil(x / 1.0) * 1.0)
-vmax_day, vmax_wtd, vmax_mtd, vmax_qtd = map(_round_up, [vmax_day, vmax_wtd, vmax_mtd, vmax_qtd])
-
 
 # -------------------------
 # Controls
@@ -354,48 +291,36 @@ if show_ticker_hm and sel:
     vmax_ticker = float(np.quantile(np.abs(tm["delta"].values), 0.99))
     vmax_ticker = max(1.0, np.ceil(vmax_ticker / 5.0) * 5.0)
 
-
-    # --- Build per-ticker heatmap using FACET (no hconcat) ---
-    # --- Normalize per timeframe using universe domains (keeps scales independent)
-    dom_map = {"Daily": vmax_day, "WTD": vmax_wtd, "MTD": vmax_mtd, "QTD": vmax_qtd}
-    tm["__dom__"] = tm["Timeframe"].map(dom_map).replace(0, np.nan)
-    tm["__delta_norm__"] = tm["delta"] / tm["__dom__"]   # normalized for color only
-
     row_h = 22
-    chart_h = max(360, row_h * len(ticker_order) + 24)
-    chart_w = 530   # same width you used before
+    chart_h = max(360, row_h*len(ticker_order) + 24)
+    chart_w = 530
     legend_w = 120
-    tf_order = ["Daily","WTD","MTD","QTD"]
 
     ticker_heat = (
         alt.Chart(tm)
         .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
         .encode(
-              x=alt.X("Timeframe:N", sort=tf_order,
-                      axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+            x=alt.X("Timeframe:N", sort=tf_order,
+                    axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
             y=alt.Y("Ticker:N", sort=ticker_order,
-                      axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
-                                    labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
-            # color uses normalized values so each timeframe is effectively independent
-            color=alt.Color("__delta_norm__:Q",
-                              scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                              legend=alt.Legend(orient="bottom", title="% Change (per timeframe)",
-                                                titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                                gradientLength=355, labelLimit=80, labelExpr="''")),
-            tooltip=[
-                  alt.Tooltip("Ticker:N"),
-                  alt.Tooltip("Ticker_name:N", title="Name"),
-                  alt.Tooltip("Timeframe:N"),
-                  # show real (unnormalized) % change in tooltip
-                  alt.Tooltip("delta:Q", title="% Δ", format=",.2f")
-              ]
-          )
-          .properties(width=chart_w, height=chart_h,
-                      padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
-          .configure_view(strokeOpacity=0)
+                    axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
+                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
+            color=alt.Color("delta:Q",
+                            scale=alt.Scale(scheme="blueorange", domain=[-vmax_ticker,0,vmax_ticker]),
+                            legend=alt.Legend(orient="bottom", title="% Change",
+                                              titleColor="#1a1a1a", labelColor="#1a1a1a",
+                                              gradientLength=355, labelLimit=80)),
+            tooltip=[alt.Tooltip("Ticker:N"),
+                     alt.Tooltip("Ticker_name:N", title="Name"),
+                     alt.Tooltip("Timeframe:N"),
+                     alt.Tooltip("delta:Q", title="% Δ", format=",.2f")]
+        )
+        .properties(width=chart_w, height=chart_h,
+                    padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
+        .configure_view(strokeOpacity=0)
     )
-    
+
     pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
     with center_col:
         with st.container(border=True):
