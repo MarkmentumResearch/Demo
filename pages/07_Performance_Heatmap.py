@@ -252,15 +252,16 @@ with center_col:
             st.altair_chart(heat, use_container_width=False)
 
 
-# --- Universe-based color domain for per-ticker heatmap (all tickers, all TFs)
-_universe_vals = pd.concat(
-    [df["day_pct_change"], df["week_pct_change"], df["month_pct_change"], df["quarter_pct_change"]],
-    ignore_index=True
-).dropna().abs()
+# Universe-wide robust domains per timeframe (independent)
+vmax_day = float(np.quantile(df["day_pct_change"].abs().dropna(),   0.99))
+vmax_wtd = float(np.quantile(df["week_pct_change"].abs().dropna(),  0.99))
+vmax_mtd = float(np.quantile(df["month_pct_change"].abs().dropna(), 0.99))
+vmax_qtd = float(np.quantile(df["quarter_pct_change"].abs().dropna(),0.99))
 
-vmax_uni = float(np.quantile(_universe_vals, 0.99))   # robust clip
-vmax_uni = max(1.0, np.ceil(vmax_uni / 1.0) * 1.0)    # round up to a clean step
-
+# round to cleaner steps
+def _round_up(x): 
+    return max(1.0, np.ceil(x / 1.0) * 1.0)
+vmax_day, vmax_wtd, vmax_mtd, vmax_qtd = map(_round_up, [vmax_day, vmax_wtd, vmax_mtd, vmax_qtd])
 
 
 # -------------------------
@@ -307,32 +308,42 @@ if show_ticker_hm and sel:
     chart_h = max(360, row_h*len(ticker_order) + 24)
     chart_w = 530
     legend_w = 120
+    base_tm = alt.Chart(tm).mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
 
-    ticker_heat = (
-        alt.Chart(tm)
-        .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-        .encode(
-            x=alt.X("Timeframe:N", sort=tf_order,
-                    axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-            y=alt.Y("Ticker:N", sort=ticker_order,
-                    axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
-                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
-            color=alt.Color("delta:Q",
-                            scale=alt.Scale(scheme="blueorange", domain=[-vmax_uni, 0, vmax_uni]),
-                            legend=alt.Legend(orient="bottom", title="% Change",
-                                              titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                              gradientLength=355, labelLimit=80,labelExpr="''")),
-            tooltip=[alt.Tooltip("Ticker:N"),
+    y_enc = alt.Y("Ticker:N", sort=ticker_order,
+              axis=alt.Axis(title=None, labelLimit=140, labelPadding=10,
+                            orient="left", labelFlush=False, labelColor="#1a1a1a",
+                            labelFontSize=13, labelOverlap=False))
+
+    def _col(tf, dom, show_legend=False):
+        return (
+            base_tm.transform_filter(alt.datum.Timeframe == tf)
+            .encode(
+                x=alt.X("Timeframe:N",
+                        axis=alt.Axis(orient="top", title=None, labelOpacity=0)),  # column header acts as TF label
+                y=y_enc,
+                color=alt.Color("delta:Q",
+                            scale=alt.Scale(scheme="blueorange", domain=[-dom, 0, dom]),
+                            legend=(alt.Legend(orient="bottom", title="% Change",
+                                               titleColor="#1a1a1a", labelColor="#1a1a1a",
+                                               gradientLength=355, labelExpr="''")
+                                    if show_legend else None)),
+                tooltip=[alt.Tooltip("Ticker:N"),
                      alt.Tooltip("Ticker_name:N", title="Name"),
                      alt.Tooltip("Timeframe:N"),
                      alt.Tooltip("delta:Q", title="% Δ", format=",.2f")]
+            )
+            .properties(width=130, height=chart_h)
+            .configure_view(strokeOpacity=0)
         )
-        .properties(width=chart_w, height=chart_h,
-                    padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
-        .configure_view(strokeOpacity=0)
-    )
 
+    daily = _col("Daily", vmax_day, show_legend=True)
+    wtd   = _col("WTD",   vmax_wtd)
+    mtd   = _col("MTD",   vmax_mtd)
+    qtd   = _col("QTD",   vmax_qtd)
+
+    ticker_heat = alt.hconcat(daily, wtd, mtd, qtd).resolve_scale(y="shared", color="independent")
+    
     pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
     with center_col:
         with st.container(border=True):
