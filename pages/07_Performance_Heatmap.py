@@ -195,10 +195,8 @@ agg = (
 # --- Independent domains per timeframe for the CATEGORY heatmap (UNIVERSE-BASED) ---
 # Robust (99th pct) symmetric domain per TF, computed from ALL TICKERS (universe)
 dom_cat = {
-    "Daily":  float(np.quantile(df["day_pct_change"].abs().dropna(),     0.99)),
-    "WTD":    float(np.quantile(df["week_pct_change"].abs().dropna(),    0.99)),
-    "MTD":    float(np.quantile(df["month_pct_change"].abs().dropna(),   0.99)),
-    "QTD":    float(np.quantile(df["quarter_pct_change"].abs().dropna(), 0.99)),
+    tf: float(np.quantile(abs(agg.loc[agg["Timeframe"]==tf, "avg_delta"]), 0.99))
+    for tf in agg["Timeframe"].unique()
 }
 
 # round up a bit so the ends aren't too tight
