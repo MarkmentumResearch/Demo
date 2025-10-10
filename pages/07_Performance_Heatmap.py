@@ -245,13 +245,24 @@ dom_map_cat = {
 agg["__dom__"] = agg["Timeframe"].map(dom_map_cat).replace(0, np.nan)
 agg["__avg_norm__"] = agg["avg_delta"] / agg["__dom__"]
 
+# Keep category heatmap the same total width as the per-ticker heatmap
+tf_order  = ["Daily","WTD","MTD","QTD"]
+present_tfs = [t for t in tf_order if t in agg["Timeframe"].unique()]
+if not present_tfs:
+    present_tfs = ["Daily"]
+
+chart_w_cat = 530   # match per-ticker width
+step = chart_w_cat / max(1, len(present_tfs))  # band width so total width stays constant
+
+
+
 heat = (
     alt.Chart(agg)
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X("Timeframe:N", sort=tf_order,
-                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+        x=alt.X("Timeframe:N",sort=present_tfs,axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13),
+                    scale=alt.Scale(rangeStep=step, paddingInner=0.05, paddingOuter=0.02)),
         y=alt.Y("Category:N", sort=cat_order,
                 axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
                               labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
@@ -269,6 +280,9 @@ heat = (
             alt.Tooltip("n:Q", title="Count")
         ]
     )
+    .properties(width=chart_w_cat, height=chart_h,
+        padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
+    .configure_view(strokeOpacity=0)
 )
 
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
