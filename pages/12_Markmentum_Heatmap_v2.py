@@ -274,134 +274,95 @@ import pandas as pd
 import streamlit as st
 
 # ---- Build Category × Timeframe table from your four dataframes
-parts: list[pd.DataFrame] = []
-
+parts = []
 if "model_score_daily_change" in df48.columns:
     parts.append(
-        df48[["Category", "model_score_daily_change"]]
-        .rename(columns={"model_score_daily_change": "delta"})
-        .assign(Timeframe="Daily")
+        df48[["Category","model_score_daily_change"]]
+          .rename(columns={"model_score_daily_change":"delta"})
+          .assign(Timeframe="Daily")
     )
+parts.append(dfWTD[["Category","model_score_wtd_change"]]
+             .rename(columns={"model_score_wtd_change":"delta"})
+             .assign(Timeframe="WTD"))
+parts.append(dfMTD[["Category","model_score_mtd_change"]]
+             .rename(columns={"model_score_mtd_change":"delta"})
+             .assign(Timeframe="MTD"))
+parts.append(dfQTD[["Category","model_score_qtd_change"]]
+             .rename(columns={"model_score_qtd_change":"delta"})
+             .assign(Timeframe="QTD"))
 
-parts.append(
-    dfWTD[["Category", "model_score_wtd_change"]]
-    .rename(columns={"model_score_wtd_change": "delta"})
-    .assign(Timeframe="WTD")
-)
-parts.append(
-    dfMTD[["Category", "model_score_mtd_change"]]
-    .rename(columns={"model_score_mtd_change": "delta"})
-    .assign(Timeframe="MTD")
-)
-parts.append(
-    dfQTD[["Category", "model_score_qtd_change"]]
-    .rename(columns={"model_score_qtd_change": "delta"})
-    .assign(Timeframe="QTD")
-)
+hm = pd.concat(parts, ignore_index=True)
+hm["Category"]  = hm["Category"].astype(str).str.strip()
+hm["Timeframe"] = hm["Timeframe"].astype(str).str.strip()
+hm["delta"]     = pd.to_numeric(hm["delta"], errors="coerce")
 
-hm = pd.concat(parts, ignore_index=True).dropna(subset=["Category", "delta"])
+# 1) Aggregate
+agg = (hm.groupby(["Category","Timeframe"], as_index=False)
+         .agg(avg_delta=("delta","mean"), n=("delta","size")))
 
-agg = (
-    hm.groupby(["Category", "Timeframe"], as_index=False)
-      .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
-)
-
-global_delta = pd.concat([
-    df48["model_score_daily_change"],
-    dfWTD["model_score_wtd_change"],
-    dfMTD["model_score_mtd_change"],
-    dfQTD["model_score_qtd_change"],
-], ignore_index=True)
-
-#vmax_ticker = float(global_delta.abs().quantile(0.995))
-#vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)
-#vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.999))  # 99.5th pct
-#vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)              # round up nicely
-
-# ---- Ordering
+# 2) Densify to full Category×Timeframe grid so Altair always has rows to draw
 preferred = [
-    "Sector & Style ETFs",
-    "Indices",
-    "Futures",
-    "Currencies",
-    "Commodities",
-    "Bonds",
-    "Yields",
-    "Foreign",
-    "Communication Services",
-    "Consumer Discretionary",
-    "Consumer Staples",
-    "Energy",
-    "Financials",
-    "Health Care",
-    "Industrials",
-    "Information Technology",
-    "Materials",
-    "Real Estate",
-    "Utilities",
-    "MR Discretion"
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials","Health Care",
+    "Industrials","Information Technology","Materials","Real Estate","Utilities","MR Discretion"
 ]
-
-present = list(agg["Category"].unique())
+present   = list(agg["Category"].unique())
 cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
-tf_order = ["Daily","WTD","MTD","QTD"]
+tf_order  = ["Daily","WTD","MTD","QTD"]
 
-# >>> INSERT THIS BLOCK (densify to all Category×Timeframe combos) <<<
-grid = (
-    pd.MultiIndex.from_product([cat_order, tf_order], names=["Category", "Timeframe"])
-      .to_frame(index=False)
-)
+grid = pd.MultiIndex.from_product([cat_order, tf_order], names=["Category","Timeframe"]).to_frame(index=False)
 agg = grid.merge(agg, on=["Category","Timeframe"], how="left")
-agg["avg_delta"] = pd.to_numeric(agg["avg_delta"], errors="coerce").fillna(0.0)
-agg["n"] = agg["n"].fillna(0).astype(int)
-
-# existing vmax calc per timeframe
-vmax_by_tf = {
-    tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, step=5.0)
-    for tf in tf_order
-}
-
-# normalize again using the (now complete) agg table
+# only fill truly-missing cells
 agg["avg_delta"] = pd.to_numeric(agg["avg_delta"], errors="coerce")
-tf_scale = agg["Timeframe"].map(vmax_by_tf).astype(float).replace(0.0, 1.0).fillna(1.0)
-agg_norm = agg.assign(norm=np.clip(agg["avg_delta"].fillna(0.0) / tf_scale, -1, 1))
+agg["n"]        = agg["n"].fillna(0).astype(int)
 
-# ---- Sizing (tight, centered card)
+# 3) Per-timeframe scale (independent columns; robust winsorized vmax)
+def _robust_vmax(s: pd.Series, q=0.98, floor=1.0, step=5.0):
+    s = pd.to_numeric(s, errors="coerce").dropna()
+    if s.empty: return floor
+    vmax = float(np.quantile(np.abs(s), q))
+    return max(floor, np.ceil(vmax/step)*step)
+
+vmax_by_tf = {tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"]) for tf in tf_order}
+tf_scale = agg["Timeframe"].map(vmax_by_tf).replace(0.0, 1.0).fillna(1.0).astype(float)
+
+# 4) Normalize; impute only where nothing existed
+norm = agg["avg_delta"].where(~agg["avg_delta"].isna(), 0.0) / tf_scale
+agg_norm = agg.assign(norm=np.clip(norm, -1, 1)).fillna({"avg_delta": 0.0})
+
+# 5) Draw with visible cell borders even if color=white at 0
 row_h   = 26
 chart_h = max(360, row_h * len(cat_order) + 24)
-chart_w = 625              # plot area width (not including legend)
-legend_w = 120             # visual compensation for right-side legend
+chart_w = 625
+legend_w = 120
 
-
-# ---- Heatmap (darker, larger labels + thin dark borders; legend stays on the right)
 heat = (
     alt.Chart(agg_norm)
-    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-    .encode(
-        x=alt.X("Timeframe:N", sort=tf_order,
-                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        y=alt.Y("Category:N", sort=cat_order,
-                axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
-                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        color=alt.Color("norm:Q",
-                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                        legend=alt.Legend(orient="bottom", title="Avg Δ Score (per timeframe)",
-                                          titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                          gradientLength=360, labelLimit=80,labelExpr="''")),
-        tooltip=[
-            alt.Tooltip("Category:N"),
-            alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("avg_delta:Q", title="Avg Δ", format=",+.2f"),
-            alt.Tooltip("n:Q", title="Count")
-        ],
-    )
-    .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
-    .configure_view(strokeOpacity=0)
+      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=1.0)  # stroke forced visible
+      .encode(
+          x=alt.X("Timeframe:N", sort=tf_order,
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
+                                labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+          y=alt.Y("Category:N", sort=cat_order,
+                  axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
+                                labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
+          color=alt.Color("norm:Q",
+                          scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                          legend=alt.Legend(orient="bottom", title="Avg Δ Score (per timeframe)",
+                                            titleColor="#1a1a1a", labelColor="#1a1a1a",
+                                            gradientLength=360, labelLimit=80, labelExpr="''")),
+          tooltip=[
+              alt.Tooltip("Category:N"),
+              alt.Tooltip("Timeframe:N"),
+              alt.Tooltip("avg_delta:Q", title="Avg Δ", format=",+.2f"),
+              alt.Tooltip("n:Q", title="Count"),
+          ],
+      )
+      .properties(width=chart_w, height=chart_h,
+                  padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6})
+      .configure_view(strokeOpacity=0)
 )
 
-# ---- Centered, snug card that hugs the heatmap
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
 pad_l, center_col, pad_r = st.columns([1, 3, 1])
 with center_col:
@@ -409,10 +370,8 @@ with center_col:
         st.markdown(
             '<div style="text-align:center;">'
             '<h3 style="margin:0;">Markmentum Heatmap – Avg Score Changes</h3>'
-            '<div class="small" style="margin-top:4px;">'
-            'Average Score Δ across tickers in each category and timeframe'
-            '</div></div>',
-            unsafe_allow_html=True,
+            '<div class="small" style="margin-top:4px;">Average Score Δ across tickers in each category and timeframe</div>'
+            '</div>', unsafe_allow_html=True,
         )
         _l, _c, _r = st.columns([1, 7, 1])
         with _c:
