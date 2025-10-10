@@ -263,7 +263,7 @@ heat = (
                  alt.Tooltip("n:Q", title="Count")]
     )
     .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 0})
+                padding={"left": legend_w, "right": 0, "top": 6, "bottom": -6})
     .configure_view(strokeOpacity=0)
 )
 
