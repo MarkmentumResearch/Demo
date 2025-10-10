@@ -382,7 +382,7 @@ heat = (
         ),
         color=alt.Color(
             "norm:Q",
-            scale=alt.Scale(scheme="blueorange", domain=[-vmax, 0, vmax]),
+            scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
             legend=alt.Legend(
                 orient="bottom",
                 title="Avg Δ Score",
