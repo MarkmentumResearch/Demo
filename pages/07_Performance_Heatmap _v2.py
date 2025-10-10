@@ -283,6 +283,12 @@ with center_col:
         with _c:
             st.altair_chart(heat, use_container_width=False)
 
+col1, col2, col3 = st.columns([1.85, 3, .3])
+with col2:
+    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
+
+
+
 # -------------------------
 # Controls
 # -------------------------
@@ -372,9 +378,13 @@ if show_ticker_hm and sel:
             with _c:
                 st.altair_chart(ticker_heat, use_container_width=False)
 
+#col1, col2, col3 = st.columns([1.85, 3, .3])
+#with col2:
+#    st.caption("Note: Color scale uses a robust symmetric range; values beyond the range clip to the end color.")
 col1, col2, col3 = st.columns([1.85, 3, .3])
 with col2:
-    st.caption("Note: Color scale uses a robust symmetric range; values beyond the range clip to the end color.")
+    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe).")
+
 
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
