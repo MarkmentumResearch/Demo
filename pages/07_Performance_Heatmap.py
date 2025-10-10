@@ -282,7 +282,7 @@ heat = (
     .properties(width=chart_w_cat, height=chart_h,
         padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
     .configure_view(strokeOpacity=0)
-    .configure_scale(bandPaddingInner=0.05, bandPaddingOuter=0.02)
+    .configure_scale(bandPaddingInner=0.00, bandPaddingOuter=0.00)
 )
 
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
