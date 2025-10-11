@@ -10,6 +10,32 @@ from matplotlib import rcParams
 import os
 import streamlit.components.v1 as components
 
+
+# --- NO-REDIRECT LANDING GUARD (place at the top of 01_About.py) ---
+# 1) Absolute safe mode (via secret or ?safe=1) — never leave About.
+safe_mode = bool(st.secrets.get("SAFE_MODE", False)) or st.query_params.get("safe", ["0"])[0] == "1"
+if safe_mode:
+    # Pin the session to About and clear params that some routers use
+    st.session_state["_disable_redirects"] = True
+    st.session_state["_last_route"] = "about"
+    if st.query_params:
+        st.query_params.clear()
+    # Optional: a tiny note while testing (remove if you like)
+    st.caption("Safe mode: redirects disabled on landing.")
+    # Stop here so nothing else can trigger a reroute
+    st.stop()
+
+# 2) For normal visitors, still pin the initial route to 'about' and normalize params.
+#    This doesn't stop the page; it just makes your routers idempotent.
+if not st.session_state.get("_last_route"):
+    st.session_state["_last_route"] = "about"
+# If you use a query-param router elsewhere, neutralize it on About:
+if st.query_params:
+    st.query_params.clear()
+# -------------------------------------------------------------------
+
+
+
 # -------------------------
 # Page & shared style
 # -------------------------
