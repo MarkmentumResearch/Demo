@@ -149,7 +149,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, market read
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
   <li><b>Trends &amp; Regimes</b> – Short, mid, and long-term trend lines with regime cues (trend, chop, mean-reversion).</li>
   <li><b>Volatility Stats</b> – Implied (IVOL) vs. realized (RVOL) spreads, percentile ranks, and z-scores to spot crowding and regime shifts.</li>
-  <li><b>Markmentum Score</b> – an AI-powered, volatility-adjusted risk–reward algo score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
+  <li><b>Markmentum Score</b> – a rules based, volatility-adjusted risk–reward algo score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Ranks &amp; Screens</b> – Daily leaders/laggards, filters, signals, and category rankings to surface opportunity and risk fast.</li>
   <li><b>Updates</b> – Nightly refresh after market close (typically 9–10 pm ET).</li>
 </ul>
@@ -182,7 +182,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, market read
   <li><b>Trends</b> – Short-, mid-, and long-term composites derived by netting the volatility-adjusted factors behind probable highs and lows, providing a directional trend signal.</li>
   <li><b>Anchors</b> – Anchor levels are extrapolated by aligning short-term trend structure with long-term trend structure, creating a probabilistic reference to gauge extension and mean-reversion risk.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, IVOL/RVOL spreads, and regime flags.</li>
-  <li><b>Markmentum Score</b> – A proprietary, volatility-adjusted risk-reward score blending trend quality, mean-reversion stretch, and volatility. A high positive score favors the long side; a negative score favors the short side.</li>
+  <li><b>Markmentum Score</b> – A proprietary, rules based, volatility-adjusted risk-reward score blending multiple signals into a single intuitive scale. A high positive score favors the long side; a negative score favors the short side.</li>
   <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across full universe of instruments.</li>
 </ul>
 
