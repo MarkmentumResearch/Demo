@@ -42,7 +42,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,25.0
 2025-10-10,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,51.0
 2025-10-10,ASC,ARDMORE SHIPPING ,,MR Discretion,64.0
-2025-10-10,ATO,ATMOS ENERGY ,Utilities,Utilities,-6.0
+2025-10-10,ATO,ATMOS ENERGY ,Utilities,Utilities,-13.0
 2025-10-10,AVB,"AVALONBAY COMMUNITIES, INC.",Real Estate,Real Estate,-17.0
 2025-10-10,AVGO,BROADCOM INC.,Information Technology,Information Technology,-7.0
 2025-10-10,AVY,AVERY DENNISON ,Materials,Materials,-28.0
@@ -179,7 +179,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,EIS,ISHARES:MSCI ISRAEL,,Foreign,11.0
 2025-10-10,EIX,EDISON INTERNATIONAL,Utilities,Utilities,-15.0
 2025-10-10,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,-9.0
-2025-10-10,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,-95.0
+2025-10-10,ELV,"ELEVANCE HEALTH, INC.",Health Care,Health Care,-82.0
 2025-10-10,EME,"EMCOR GROUP, INC.",Industrials,Industrials,76.0
 2025-10-10,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,-0.0
 2025-10-10,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,41.0
@@ -270,7 +270,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,GNK,GENCO SHIPPING & TRADING LIMITED,,MR Discretion,76.0
 2025-10-10,GNRC,GENERAC HOLDINGS INC.,Industrials,Industrials,12.0
 2025-10-10,GOOGL,ALPHABET INC.,Communication Services,Communication Services,56.0
-2025-10-10,GPC,GENUINE PARTS COMPANY,Consumer Discretionary,Consumer Discretionary,25.0
+2025-10-10,GPC,GENUINE PARTS COMPANY,Consumer Discretionary,Consumer Discretionary,36.0
 2025-10-10,GPN,GLOBAL PAYMENTS INC.,Financials,Financials,-12.0
 2025-10-10,GREK,GLBL X MSCI GREECE,,Foreign,25.0
 2025-10-10,GRMN,GARMIN LTD,Consumer Discretionary,Consumer Discretionary,43.0
@@ -352,7 +352,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,LII,LENNOX INTERNATIONAL INC.,Industrials,Industrials,22.0
 2025-10-10,LIN,LINDE PUBLIC LIMITED COMPANY,Materials,Materials,28.0
 2025-10-10,LKQ,LKQ ,Consumer Discretionary,Consumer Discretionary,4.0
-2025-10-10,LLY,ELI LILLY AND COMPANY,Health Care,Health Care,-52.0
+2025-10-10,LLY,ELI LILLY AND COMPANY,Health Care,Health Care,-67.0
 2025-10-10,LMT,LOCKHEED MARTIN ,Industrials,Industrials,-39.0
 2025-10-10,LNT,ALLIANT ENERGY ,Utilities,Utilities,0.0
 2025-10-10,LOW,"LOWE'S COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,25.0
@@ -376,17 +376,17 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,MDLZ,"MONDELEZ INTERNATIONAL, INC.",Consumer Staples,Consumer Staples,19.0
 2025-10-10,MDT,MEDTRONIC PUBLIC LIMITED COMPANY,Health Care,Health Care,44.0
 2025-10-10,MDY,SPDR S&P MIDCAP 400 ETF,,Sector & Style ETFs,64.0
-2025-10-10,MET,"METLIFE, INC.",Financials,Financials,4.0
+2025-10-10,MET,"METLIFE, INC.",Financials,Financials,-4.0
 2025-10-10,META,"META PLATFORMS, INC.",Communication Services,Communication Services,4.0
 2025-10-10,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,26.0
-2025-10-10,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,23.0
+2025-10-10,MHK,"MOHAWK INDUSTRIES, INC.",Consumer Discretionary,Consumer Discretionary,34.0
 2025-10-10,MKC,"MCCORMICK & COMPANY, INC.",Consumer Staples,Consumer Staples,-9.0
 2025-10-10,MLM,"MARTIN MARIETTA MATERIALS, INC.",Materials,Materials,-24.0
 2025-10-10,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,-68.0
 2025-10-10,MMM,3M COMPANY,Industrials,Industrials,25.0
 2025-10-10,MNST,MONSTER BEVERAGE ,Consumer Staples,Consumer Staples,-37.0
 2025-10-10,MO,"ALTRIA GROUP, INC.",Consumer Staples,Consumer Staples,71.0
-2025-10-10,MOH,"MOLINA HEALTHCARE, INC.",Health Care,Health Care,-92.0
+2025-10-10,MOH,"MOLINA HEALTHCARE, INC.",Health Care,Health Care,-79.0
 2025-10-10,MOS,THE MOSAIC COMPANY,Materials,Materials,-5.0
 2025-10-10,MP,MP MATERIALS CORP,,MR Discretion,21.0
 2025-10-10,MPC,MARATHON PETROLEUM ,Energy,Energy,73.0
@@ -478,7 +478,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-10,REGN,"REGENERON PHARMACEUTICALS, INC.",Health Care,Health Care,-26.0
 2025-10-10,RF,REGIONS FINANCIAL ,Financials,Financials,41.0
 2025-10-10,RIG,TRANSOCEAN LTD,,MR Discretion,-42.0
-2025-10-10,RJF,"RAYMOND JAMES FINANCIAL, INC.",Financials,Financials,67.0
+2025-10-10,RJF,"RAYMOND JAMES FINANCIAL, INC.",Financials,Financials,58.0
 2025-10-10,RL,RALPH LAUREN ,Consumer Discretionary,Consumer Discretionary,67.0
 2025-10-10,RMD,RESMED INC.,Health Care,Health Care,50.0
 2025-10-10,ROK,"ROCKWELL AUTOMATION, INC.",Industrials,Industrials,-10.0

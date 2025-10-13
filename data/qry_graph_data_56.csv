@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
 AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-10,-147.0,-80.0,67.0
+ATO,ATMOS ENERGY ,Utilities,2025-10-10,-84.0,-13.0,71.0
 CME,CME GROUP INC.,Financials,2025-10-10,-82.0,-39.0,43.0
-ATO,ATMOS ENERGY ,Utilities,2025-10-10,-77.0,-6.0,71.0
 CBOE,"CBOE GLOBAL MARKETS, INC.",Financials,2025-10-10,-77.0,-34.0,43.0
 VNM,VANECK:VIETNAM,Foreign,2025-10-10,-77.0,-27.0,50.0
 HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,2025-10-10,-75.0,-21.0,54.0
 PEP,"PEPSICO, INC.",Consumer Staples,2025-10-10,-70.0,-65.0,5.0
 DUK,DUKE ENERGY ,Utilities,2025-10-10,-69.0,-26.0,43.0
+LLY,ELI LILLY AND COMPANY,Health Care,2025-10-10,-67.0,-67.0,-0.0
 ICE,"INTERCONTINENTAL EXCHANGE, INC.",Financials,2025-10-10,-64.0,0.0,64.0
-LYV,"LIVE NATION ENTERTAINMENT, INC.",Communication Services,2025-10-10,-64.0,0.0,64.0
