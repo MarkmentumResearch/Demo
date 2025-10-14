@@ -131,8 +131,15 @@ st.markdown("""
   line-height: 1.45;
   color: #1a1a1a;
 }
+.card .note {
+  font-size: 0.85em;
+  color: #6c757d;   /* muted gray */
+  line-height: 1.3;
+}
 </style>
 """, unsafe_allow_html=True)
+
+
 
 # -------------------------
 # Load Morning Compass CSV
@@ -312,7 +319,7 @@ else:
         <div class="card">
             {table_html}
             <div class="bl">{bl_html_safe}</div>
-            <div class="bl">{note_html_safe}</div>
+            <div class="bl note">{note_html_safe}</div>
         </div>
     </div>
     '''
