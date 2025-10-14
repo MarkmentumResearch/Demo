@@ -293,16 +293,11 @@ def load_market_read_md(doc_path: str = "data/bottom_line_daily.docx") -> str:
     return "\n\n".join(lines)
 
 with st.container():
-    st.markdown("## Market Read")
+    #st.markdown("## Market Read")
     docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
     st.markdown(load_market_read_md(str(docx_path)))
 
-st.markdown(
-    "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
-    "Note: Indices are excluded from Highest/Lowest Markmentum Score lists."
-    "</div>",
-    unsafe_allow_html=True,
-)
+
 
 
 
