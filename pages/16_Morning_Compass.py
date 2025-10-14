@@ -253,6 +253,7 @@ else:
 # -------------------------
 # Card: Bottom Line
 # -------------------------
+st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
 import os
 try:
