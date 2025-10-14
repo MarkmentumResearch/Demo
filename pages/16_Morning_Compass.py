@@ -233,6 +233,31 @@ else:
         label = f"{v:,.1f}"
         return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
 
+    # Discrete pill for MM Score using bins:
+    # ≤ -100: deep red | -100 < v < -25: red | -25 ≤ v ≤ 25: gray | 25 < v < 100: green | ≥ 100: dark green
+    def mm_badge_html(x):
+        try:
+            if pd.isna(x):
+                return ""
+            v = float(x)
+        except Exception:
+            return ""
+
+        if v <= -100:
+            bg, alpha = "rgba(185,28,28,0.35)", 0.35   # deep red
+        elif v < -25:
+            bg, alpha = "rgba(239,68,68,0.28)", 0.28   # red
+        elif v <= 25:
+            bg, alpha = "rgba(229,231,235,1.00)", 1.00 # gray pill
+        elif v < 100:
+            bg, alpha = "rgba(16,185,129,0.28)", 0.28  # green
+        else:
+            bg, alpha = "rgba(6,95,70,0.35)", 0.35     # dark green
+
+        label = f"{int(round(v)):,}"
+        # block so it fills the cell nicely; cell stays right-aligned from CSS
+        return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:999px;">{label}</span>'
+
     df_card = pd.DataFrame({
     "Name":          df_render["Ticker_name"],
     "Ticker":        df_render["Ticker"],
@@ -241,7 +266,7 @@ else:
     "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
     "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
     "Risk/Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
-    "MM Score":      df_render["model_score"].map(fmt_int),
+    "MM Score":      df_render["model_score"].map(mm_badge_html),
     "MM Score Delta":df_render["model_score_delta"].map(fmt_int),              # renamed
     })
 
