@@ -102,10 +102,10 @@ st.markdown("""
 /* Alignment rules */
 .tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }    /* Ticker centered */
 
-/* HEADERS from Close..MM Score Delta centered */
+/* HEADERS from Close..MM Score Change centered */
 .tbl th:nth-child(n+3) { text-align:center; }
 
-/* CELLS from Close..MM Score Delta right-aligned */
+/* CELLS from Close..MM Score Change right-aligned */
 .tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
 
 /* Name column = 40ch, allow wrapping so full name shows */
@@ -267,7 +267,7 @@ else:
     "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
     "Risk/Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
     "MM Score":      df_render["model_score"].map(mm_badge_html),
-    "MM Score Delta":df_render["model_score_delta"].map(fmt_int),              # renamed
+    "MM Score Change":df_render["model_score_delta"].map(fmt_int),              # renamed
     })
 
     # Clean HTML (no border attr, no 'dataframe' class)
@@ -285,7 +285,7 @@ else:
     <col>                   <!-- Probable High (right) -->
     <col>                   <!-- Risk/Reward (right) -->
     <col>                   <!-- MM Score (right) -->
-    <col>                   <!-- MM Score Delta (right) -->
+    <col>                   <!-- MM Score Change (right) -->
     </colgroup>
     """.strip()
 
@@ -389,7 +389,7 @@ else:
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
         "MM Score":      d["model_score"].map(mm_badge_html),
-        "MM Score Delta":d["model_score_delta"].map(fmt_int),
+        "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
 
     # to HTML (same classes/alignment as first card)
@@ -407,7 +407,7 @@ else:
       <col>                   <!-- Probable High -->
       <col>                   <!-- Risk/Reward -->
       <col>                   <!-- MM Score -->
-      <col>                   <!-- MM Score Delta -->
+      <col>                   <!-- MM Score Change -->
     </colgroup>
     """.strip()
     tbl_html_74 = tbl_html_74.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -464,7 +464,7 @@ else:
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
         "MM Score":      d["model_score"].map(mm_badge_html),
-        "MM Score Delta":d["model_score_delta"].map(fmt_int),
+        "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
 
     # to HTML (same classes/alignment as first card)
@@ -482,7 +482,7 @@ else:
       <col>                   <!-- Probable High -->
       <col>                   <!-- Risk/Reward -->
       <col>                   <!-- MM Score -->
-      <col>                   <!-- MM Score Delta -->
+      <col>                   <!-- MM Score Change -->
     </colgroup>
     """.strip()
     tbl_html_75 = tbl_html_75.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -557,7 +557,7 @@ if show_cat:
             "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
             "Risk/Reward":    d["day_rr_ratio"].map(rr_tinted_html),
             "MM Score":      d["model_score"].map(mm_badge_html),
-            "MM Score Delta": d["model_score_delta"].map(fmt_int),
+            "MM Score Change": d["model_score_delta"].map(fmt_int),
         })
 
         tbl_html_76 = df_cat_card.to_html(index=False, classes="tbl", escape=False, border=0)
