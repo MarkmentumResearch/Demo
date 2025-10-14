@@ -11,7 +11,7 @@ from urllib.parse import quote_plus
 # Page & shared style
 # -------------------------
 st.set_page_config(page_title="Markmentum – Morning Compass", layout="wide")
-
+st.cache_data.clear()
 # ---- LAYOUT & WIDTH TUNING (Cloud parity + your constraints) ----
 
 
