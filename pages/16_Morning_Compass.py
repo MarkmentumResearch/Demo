@@ -385,7 +385,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Leaders/Laggard by % Delta
+              Top 5 Leaders/Laggard by % Delta
             </h3>
             {tbl_html_74}
           </div>
