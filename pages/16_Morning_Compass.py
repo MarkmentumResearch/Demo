@@ -256,7 +256,7 @@ else:
 
         label = f"{int(round(v)):,}"
         # block so it fills the cell nicely; cell stays right-aligned from CSS
-        return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:999px;">{label}</span>'
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
 
     df_card = pd.DataFrame({
     "Name":          df_render["Ticker_name"],
