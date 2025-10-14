@@ -167,7 +167,7 @@ st.markdown(
 
 
 # -------------------------
-# Card: Morning Compass table
+# Card 1: Morning Compass table
 # -------------------------
 required_cols = [
     "Date","Ticker","Ticker_name","Close",
@@ -316,8 +316,93 @@ else:
     '''
     st.markdown(card_html, unsafe_allow_html=True)
 
+# -------------------------
+# Card 2: Leaders/Laggard by % Delta
+# -------------------------
+# =========================
+# Card: Leaders/Laggard by % Delta  (uses qry_graph_data_74.csv)
+# =========================
+@st.cache_data(show_spinner=False)
+def load_mc_74(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    return pd.read_csv(path)
 
+df74 = load_mc_74(DATA_DIR / "qry_graph_data_74.csv")
 
+required_cols_74 = [
+    "Date","Ticker","Ticker_name","Close",
+    "daily_Return","day_pr_low","day_pr_high",
+    "day_rr_ratio","model_score","model_score_delta"
+]
+
+if df74.empty or not all(c in df74.columns for c in required_cols_74):
+    row_spacer(8)
+    st.info("Leaders/Laggard by % Delta: `qry_graph_data_74.csv` is missing or columns are incomplete.")
+else:
+    # make ticker links
+    d = df74.copy()
+    d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
+
+    # formatters (reuse % formatting)
+    def _fmt_pct(x, nd=2):
+        try:
+            if pd.isna(x): return ""
+            return f"{float(x)*100:,.{nd}f}%"
+        except Exception:
+            return ""
+
+    # derive leaders / laggards from the file content (safe even if file already pre-filtered)
+    leaders  = d.sort_values("daily_Return", ascending=False).head(5).copy()
+    laggards = d.sort_values("daily_Return", ascending=True ).head(5).copy()
+
+    # build compact tables: Name, Ticker, % Delta
+    lead_tbl = pd.DataFrame({
+        "Name":   leaders["Ticker_name"],
+        "Ticker": leaders["Ticker"],
+        "% Delta": leaders["daily_Return"].map(lambda v: _fmt_pct(v, 2)),
+    })
+    lag_tbl = pd.DataFrame({
+        "Name":   laggards["Ticker_name"],
+        "Ticker": laggards["Ticker"],
+        "% Delta": laggards["daily_Return"].map(lambda v: _fmt_pct(v, 2)),
+    })
+
+    # to HTML (use same class + alignment rules; ticker centered, % right-aligned)
+    lead_html = lead_tbl.to_html(index=False, classes="tbl", escape=False, border=0)
+    lag_html  = lag_tbl.to_html(index=False,  classes="tbl", escape=False, border=0)
+    lead_html = lead_html.replace('class="dataframe tbl"', 'class="tbl"')
+    lag_html  = lag_html.replace('class="dataframe tbl"', 'class="tbl"')
+
+    # Name column width slightly narrower for these compact cards
+    colgroup_small = """
+    <colgroup>
+      <col class="col-name" style="width:28ch;min-width:28ch;max-width:28ch">
+      <col>
+      <col>
+    </colgroup>
+    """.strip()
+    lead_html = lead_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup_small}', 1)
+    lag_html  = lag_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup_small}', 1)
+
+    # render: centered card under the first card
+    row_spacer(10)
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+              Leaders/Laggard by % Delta
+            </h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div>{lead_html}</div>
+              <div>{lag_html}</div>
+            </div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # -------------------------
 # Footer disclaimer
