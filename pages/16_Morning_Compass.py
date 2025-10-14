@@ -120,6 +120,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* bottom line inside the card, attached to table border */
+.bl {
+  border-top: 1px solid #e5e5e5;
+  margin-top: 8px;
+  padding-top: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #1a1a1a;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # -------------------------
 # Load Morning Compass CSV
@@ -246,58 +259,62 @@ else:
 
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-    # Centered card, no inner title
-    st.markdown(f'<div class="card-wrap"><div class="card">{table_html}</div></div>', unsafe_allow_html=True)
 
-
-# -------------------------
-# Card: Bottom Line
-# -------------------------
-st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-
-import os
-try:
-    from docx import Document  # pip install python-docx
-except Exception:
-    Document = None
-
-def _is_list_paragraph(paragraph) -> bool:
+    import os
     try:
-        return paragraph._p.pPr.numPr is not None
+        from docx import Document  # pip install python-docx
     except Exception:
-        return False
+        Document = None
 
-@st.cache_data(show_spinner=False)
-def load_market_read_md(doc_path: str = "data/bottom_line_daily.docx") -> str:
-    if Document is None:
-        return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
-    if not os.path.exists(doc_path):
-        return f"⚠️ **Market Read** file not found: `{doc_path}`"
-    try:
-        doc = Document(doc_path)
-    except Exception as e:
-        return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
-    lines: list[str] = []
-    for p in doc.paragraphs:
-        text = p.text.strip()
-        if not text:
-            continue
-        lines.append(f"- {text}" if _is_list_paragraph(p) else text)
-    for i, l in enumerate(lines):
-        if l.startswith("Market Read:") and "The model is saying:" in l:
-            left, right = l.split("The model is saying:", 1)
-            lines[i] = left.strip()
-            lines.insert(i + 1, "The model is saying:")
-            if right.strip():
-                lines.insert(i + 2, right.strip())
-            break
-    return "\n\n".join(lines)
+    def _is_list_paragraph(paragraph) -> bool:
+        try:
+            return paragraph._p.pPr.numPr is not None
+        except Exception:
+            return False
 
-with st.container():
-    #st.markdown("## Market Read")
+    @st.cache_data(show_spinner=False)
+    def load_market_read_md(doc_path: str = "data/bottom_line_daily.docx") -> str:
+        if Document is None:
+            return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
+        if not os.path.exists(doc_path):
+            return f"⚠️ **Market Read** file not found: `{doc_path}`"
+        try:
+            doc = Document(doc_path)
+        except Exception as e:
+            return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
+        lines: list[str] = []
+        for p in doc.paragraphs:
+            text = p.text.strip()
+            if not text:
+                continue
+            lines.append(f"- {text}" if _is_list_paragraph(p) else text)
+        for i, l in enumerate(lines):
+            if l.startswith("Market Read:") and "The model is saying:" in l:
+                left, right = l.split("The model is saying:", 1)
+                lines[i] = left.strip()
+                lines.insert(i + 1, "The model is saying:")
+                if right.strip():
+                    lines.insert(i + 2, right.strip())
+                break
+        return "\n\n".join(lines)
+
+    from html import escape
+
     docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
-    st.markdown(load_market_read_md(str(docx_path)))
+    bl_text = load_market_read_md(str(docx_path)).strip()
+    bl_html_safe = escape(bl_text)  # keep it plain, no markdown parsing needed
 
+
+    # Centered card, no inner title
+    card_html = f'''
+    <div class="card-wrap">
+        <div class="card">
+            {table_html}
+            <div class="bl">{bl_html_safe}</div>
+        </div>
+    </div>
+    '''
+    st.markdown(card_html, unsafe_allow_html=True)
 
 
 
