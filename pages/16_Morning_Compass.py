@@ -78,17 +78,31 @@ def row_spacer(height_px: int = 14):
 # -------------------------
 # Morning Compass – styling
 # -------------------------
+# -------------------------
+# Morning Compass – styling
+# -------------------------
 st.markdown("""
 <style>
-.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; }
-.card h3 { margin:0 0 8px 0; font-size:13px; font-weight:700; color:#1a1a1a; }
-.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }  /* was fixed */
-.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
-.tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
-.center { text-align:center; }
-.right  { text-align:right; white-space:nowrap; }
+/* page card centering */
+.card-wrap { display:flex; justify-content:center; }
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; width:100%; max-width:1120px; }
+
+/* table styling to match Overview */
+.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; }
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; }
+
+/* Name column fixed-ish width; others auto */
+.tbl col:nth-child(1) { width:40ch; }
+
+/* right-align numeric columns: Close .. MM Score ▲ (cols 3..9) */
+.tbl th:nth-child(n+3), .tbl td:nth-child(n+3) { text-align:right; }
+
+/* keep ticker link bold without underline */
+.tbl a { text-decoration:none; font-weight:600; }
 </style>
 """, unsafe_allow_html=True)
+
 
 # -------------------------
 # Load Morning Compass CSV
@@ -121,6 +135,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
 # -------------------------
 # Card: Morning Compass table
 # -------------------------
@@ -134,72 +149,61 @@ if df73.empty or not all(c in df73.columns for c in required_cols):
     st.info("Morning Compass: `qry_graph_data_73.csv` is missing or columns are incomplete.")
 else:
     df_render = df73.copy()
-
-    # Keep Deep Dive link on Ticker
     df_render["Ticker"] = df_render["Ticker"].apply(_mk_ticker_link)
 
-    # --- Formatting helpers ---
+    # formatters
     def fmt_num(x, nd=2):
         try:
             if pd.isna(x): return ""
             return f"{float(x):,.{nd}f}"
-        except Exception:
-            return ""
+        except Exception: return ""
 
     def fmt_pct(x, nd=2):
         try:
             if pd.isna(x): return ""
             return f"{float(x)*100:,.{nd}f}%"
-        except Exception:
-            return ""
+        except Exception: return ""
 
     def fmt_int(x):
         try:
             if pd.isna(x): return ""
             return f"{int(round(float(x))):,}"
-        except Exception:
-            return ""
+        except Exception: return ""
 
-    # Build in the new order (drop Date from the card view)
     df_card = pd.DataFrame({
-        "Name":            df_render["Ticker_name"],
-        "Ticker":          df_render["Ticker"],
-        "Close":           df_render["Close"].map(lambda v: fmt_num(v, 2)),
-        "% ▲":            df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-        "Probable Low":    df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-        "Probable High":   df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk/Reward":     df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
-        "MM Score":        df_render["model_score"].map(fmt_int),
-        "MM Score ▲":      df_render["model_score_delta"].map(fmt_int),
+        "Name":          df_render["Ticker_name"],
+        "Ticker":        df_render["Ticker"],
+        "Close":         df_render["Close"].map(lambda v: fmt_num(v, 2)),
+        "% ▲":           df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
+        "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
+        "Risk/Reward":   df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
+        "MM Score":      df_render["model_score"].map(fmt_int),
+        "MM Score ▲":    df_render["model_score_delta"].map(fmt_int),
     })
 
-    # HTML table with a colgroup to set widths (Name = 40ch; others auto)
-    table_html = df_card.to_html(index=False, classes="tbl", escape=False)
+    # build HTML table (no border attr; drop default 'dataframe' class)
+    table_html = df_card.to_html(index=False, classes="tbl", escape=False, border=0)
+    table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
+
+    # add colgroup (Name = 40ch)
     colgroup = """
     <colgroup>
-      <col style="width:40ch">
-      <col>
-      <col>
-      <col>
-      <col>
-      <col>
-      <col>
-      <col>
-      <col>
+      <col>  <!-- Name -->
+      <col>  <!-- Ticker -->
+      <col>  <!-- Close -->
+      <col>  <!-- % ▲ -->
+      <col>  <!-- Probable Low -->
+      <col>  <!-- Probable High -->
+      <col>  <!-- Risk/Reward -->
+      <col>  <!-- MM Score -->
+      <col>  <!-- MM Score ▲ -->
     </colgroup>
     """
-    # Inject colgroup right after <table ...>
     table_html = table_html.replace("<table ", "<table " + colgroup, 1)
 
-    st.markdown(
-        f"""
-        <div class="card">
-          <h3>Morning Compass</h3>
-          {table_html}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    # centered card, no inner title
+    st.markdown(f'<div class="card-wrap"><div class="card">{table_html}</div></div>', unsafe_allow_html=True)
 
 
 
