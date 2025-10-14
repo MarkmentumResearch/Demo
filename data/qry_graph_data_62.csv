@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
-AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-10,-139.0,-80.0,59.0
-PEP,"PEPSICO, INC.",Consumer Staples,2025-10-10,-92.0,-65.0,27.0
-SHY,ISHARES:1-3 TRS BD ETF,Bonds,2025-10-10,-83.0,-35.0,48.0
-TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,2025-10-10,-81.0,-17.0,64.0
-STZ,"CONSTELLATION BRANDS, INC.",Consumer Staples,2025-10-10,-75.0,-75.0,-0.0
-CPRT,"COPART, INC.",Industrials,2025-10-10,-70.0,-39.0,31.0
-TTD,"THE TRADE DESK, INC.",Communication Services,2025-10-10,-69.0,-92.0,-23.0
-UUP,INVESCO DB USD IDX BL,Currencies,2025-10-10,-66.0,-96.0,-30.0
-WM,"WASTE MANAGEMENT, INC.",Industrials,2025-10-10,-64.0,-24.0,40.0
-HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,2025-10-10,-63.0,-21.0,42.0
+AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-13,-129.0,-70.0,59.0
+ACGL,ARCH CAPITAL GROUP LTD.,Financials,2025-10-13,-81.0,-61.0,20.0
+TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,2025-10-13,-81.0,-17.0,64.0
+STZ,"CONSTELLATION BRANDS, INC.",Consumer Staples,2025-10-13,-79.0,-79.0,-0.0
+PEP,"PEPSICO, INC.",Consumer Staples,2025-10-13,-72.0,-45.0,27.0
+DOV,DOVER ,Industrials,2025-10-13,-69.0,-52.0,17.0
+DELL,DELL TECHNOLOGIES INC.,Information Technology,2025-10-13,-68.0,-77.0,-9.0
+MO,"ALTRIA GROUP, INC.",Consumer Staples,2025-10-13,-67.0,4.0,71.0
+LOW,"LOWE'S COMPANIES, INC.",Consumer Discretionary,2025-10-13,-66.0,0.0,66.0
+KKR,KKR & CO. INC.,Financials,2025-10-13,-64.0,0.0,64.0
