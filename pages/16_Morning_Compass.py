@@ -75,7 +75,83 @@ if dest.replace("%20", " ") == "deep dive":
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
 
+# -------------------------
+# Morning Compass – styling
+# -------------------------
+st.markdown("""
+<style>
+.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; }
+.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
+.tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
+.center { text-align:center; }
+.right  { text-align:right; white-space:nowrap; }
+</style>
+""", unsafe_allow_html=True)
 
+# -------------------------
+# Load Morning Compass CSV
+# -------------------------
+@st.cache_data(show_spinner=False)
+def load_mc_73(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(path)
+    return df
+
+df73 = load_mc_73(DATA_DIR / "qry_graph_data_73.csv")
+
+# -------------------------
+# Page title under the logo
+# -------------------------
+date_str = ""
+if not df73.empty and "Date" in df73.columns:
+    asof = pd.to_datetime(df73["Date"], errors="coerce").max()
+    if pd.notna(asof):
+        date_str = f"{asof.month}/{asof.day}/{asof.year}"
+
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Morning Compass – {date_str}
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# -------------------------
+# Card: Morning Compass table
+# -------------------------
+required_cols = [
+    "Date","Ticker","Ticker_name","Close",
+    "daily_Return","day_pr_low","day_pr_high",
+    "day_rr_ratio","model_score","model_score_delta"
+]
+
+if df73.empty or not all(c in df73.columns for c in required_cols):
+    st.info("Morning Compass: `qry_graph_data_73.csv` is missing or columns are incomplete.")
+else:
+    # Make ticker clickable to Deep Dive (keeps exact column order elsewhere)
+    df_render = df73.copy()
+    df_render["Ticker"] = df_render["Ticker"].apply(_mk_ticker_link)
+
+    # Reorder strictly to the required column list (no guessing)
+    df_render = df_render[required_cols]
+
+    table_html = df_render.to_html(index=False, classes="tbl", escape=False)
+    st.markdown(
+        f"""
+        <div class="card">
+          <h3>Morning Compass</h3>
+          {table_html}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+row_spacer(10)
 
 
 
