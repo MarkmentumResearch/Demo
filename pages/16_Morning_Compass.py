@@ -303,7 +303,8 @@ else:
     docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
     bl_text = load_market_read_md(str(docx_path)).strip()
     bl_html_safe = escape(bl_text)  # keep it plain, no markdown parsing needed
-
+    note_text = "MM Score → Contrarian positioning (higher = crowded long, lower = crowded short)."
+    note_html_safe = escape(note_text)
 
     # Centered card, no inner title
     card_html = f'''
@@ -311,6 +312,7 @@ else:
         <div class="card">
             {table_html}
             <div class="bl">{bl_html_safe}</div>
+            <div class="bl">{note_html_safe}</div>
         </div>
     </div>
     '''
