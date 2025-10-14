@@ -81,7 +81,7 @@ def row_spacer(height_px: int = 14):
 st.markdown("""
 <style>
 .card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; }
-.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
+.card h3 { margin:0 0 8px 0; font-size:13px; font-weight:700; color:#1a1a1a; }
 .tbl { border-collapse: collapse; width: 100%; table-layout: auto; }  /* was fixed */
 .tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
