@@ -262,7 +262,7 @@ else:
     "Name":          df_render["Ticker_name"],
     "Ticker":        df_render["Ticker"],
     "Close":         df_render["Close"].map(lambda v: fmt_num(v, 2)),
-    "% Delta":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
+    "% Change":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
     "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
     "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
     "Risk/Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
@@ -280,7 +280,7 @@ else:
     <col class="col-name"> <!-- Name (40ch) -->
     <col>                   <!-- Ticker (center) -->
     <col>                   <!-- Close (right) -->
-    <col>                   <!-- % Delta (right) -->
+    <col>                   <!-- % Change (right) -->
     <col>                   <!-- Probable Low (right) -->
     <col>                   <!-- Probable High (right) -->
     <col>                   <!-- Risk/Reward (right) -->
@@ -351,10 +351,10 @@ else:
     st.markdown(card_html, unsafe_allow_html=True)
 
 # -------------------------
-# Card 2: Leaders/Laggard by % Delta
+# Card 2: Leaders/Laggard by % Change
 # -------------------------
 # =========================
-# Card: Leaders/Laggard by % Delta  (single table, 10 rows)
+# Card: Leaders/Laggard by % Change  (single table, 10 rows)
 # =========================
 @st.cache_data(show_spinner=False)
 def load_mc_74(path: Path) -> pd.DataFrame:
@@ -372,7 +372,7 @@ required_cols_74 = [
 
 if df74.empty or not all(c in df74.columns for c in required_cols_74):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Delta: `qry_graph_data_74.csv` is missing or columns are incomplete.")
+    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_74.csv` is missing or columns are incomplete.")
 else:
     d = df74.copy()
 
@@ -384,7 +384,7 @@ else:
         "Name":          d["Ticker_name"],
         "Ticker":        d["Ticker"],
         "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
-        "% Delta":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
@@ -402,7 +402,7 @@ else:
       <col class="col-name"> <!-- Name (40ch) -->
       <col>                   <!-- Ticker -->
       <col>                   <!-- Close -->
-      <col>                   <!-- % Delta -->
+      <col>                   <!-- % Change -->
       <col>                   <!-- Probable Low -->
       <col>                   <!-- Probable High -->
       <col>                   <!-- Risk/Reward -->
@@ -419,7 +419,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Top 5 Leaders/Laggards by % Delta
+              Top 5 Leaders/Laggards by % Change
             </h3>
             {tbl_html_74}
           </div>
@@ -447,7 +447,7 @@ required_cols_75 = [
 
 if df75.empty or not all(c in df74.columns for c in required_cols_74):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Delta: `qry_graph_data_75.csv` is missing or columns are incomplete.")
+    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_75.csv` is missing or columns are incomplete.")
 else:
     d = df75.copy()
 
@@ -459,7 +459,7 @@ else:
         "Name":          d["Ticker_name"],
         "Ticker":        d["Ticker"],
         "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
-        "% Delta":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
@@ -477,7 +477,7 @@ else:
       <col class="col-name"> <!-- Name (40ch) -->
       <col>                   <!-- Ticker -->
       <col>                   <!-- Close -->
-      <col>                   <!-- % Delta -->
+      <col>                   <!-- % Change -->
       <col>                   <!-- Probable Low -->
       <col>                   <!-- Probable High -->
       <col>                   <!-- Risk/Reward -->
@@ -552,7 +552,7 @@ if show_cat:
             "Name":           d["Ticker_name"],
             "Ticker":         d["Ticker"],
             "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
-            "% Delta":        d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+            "% Change":        d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
             "Probable Low":   d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
             "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
             "Risk/Reward":    d["day_rr_ratio"].map(rr_tinted_html),
