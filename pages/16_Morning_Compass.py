@@ -388,7 +388,7 @@ else:
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
-        "MM Score":      d["model_score"].map(fmt_int),
+        "MM Score":      d["model_score"].map(mm_badge_html),
         "MM Score Delta":d["model_score_delta"].map(fmt_int),
     })
 
@@ -463,7 +463,7 @@ else:
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
         "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
-        "MM Score":      d["model_score"].map(fmt_int),
+        "MM Score":      d["model_score"].map(mm_badge_html),
         "MM Score Delta":d["model_score_delta"].map(fmt_int),
     })
 
@@ -556,7 +556,7 @@ if show_cat:
             "Probable Low":   d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
             "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
             "Risk/Reward":    d["day_rr_ratio"].map(rr_tinted_html),
-            "MM Score":       d["model_score"].map(fmt_int),
+            "MM Score":      d["model_score"].map(mm_badge_html),
             "MM Score Delta": d["model_score_delta"].map(fmt_int),
         })
 
