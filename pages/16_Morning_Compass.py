@@ -462,7 +462,7 @@ else:
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
               Top 5 Leaders/Laggards by MM Score
             </h3>
-            {tbl_html_74}
+            {tbl_html_75}
           </div>
         </div>
         """,
