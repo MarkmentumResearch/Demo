@@ -233,7 +233,7 @@ else:
         label = f"{v:,.1f}"
         return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
 
-    # Discrete pill for MM Score using bins:
+    # Discrete tint for MM Score using bins:
     # ≤ -100: deep red | -100 < v < -25: red | -25 ≤ v ≤ 25: gray | 25 < v < 100: green | ≥ 100: dark green
     def mm_badge_html(x):
         try:
