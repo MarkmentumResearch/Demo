@@ -469,9 +469,96 @@ else:
         unsafe_allow_html=True,
     )
 
+#-------Card 4 ---------------
 
+# =========================
+# Card 4: (optional) Category Snapshot – uses qry_graph_data_76.csv
+# =========================
+@st.cache_data(show_spinner=False)
+def load_mc_76(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    return pd.read_csv(path)
 
+row_spacer(6)
+show_cat = st.checkbox("View Category Snapshot", value=False)
 
+if show_cat:
+    df76 = load_mc_76(DATA_DIR / "qry_graph_data_76.csv")
+    required_cols_76 = [
+        "Date","Ticker","Ticker_name","Category","Close",
+        "daily_Return","day_pr_low","day_pr_high",
+        "day_rr_ratio","model_score","model_score_delta"
+    ]
+
+    if df76.empty or not all(c in df76.columns for c in required_cols_76):
+        st.info("Category Snapshot: `qry_graph_data_76.csv` is missing or columns are incomplete.")
+    else:
+        # Preferred category order (exact text)
+        cat_order = [
+            "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Foreign",
+            "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials",
+            "Health Care","Industrials","Information Technology","Materials","Real Estate","Utilities","MR Discretion"
+        ]
+
+        # Center the selector
+        c1, c2, c3 = st.columns([1, 2, 1])
+        with c2:
+            # Show only categories present in the CSV but ordered by your preference
+            present = [c for c in cat_order if c in df76["Category"].dropna().unique().tolist()]
+            sel = st.selectbox("Category", present, index=0)
+
+        d = df76[df76["Category"] == sel].copy()
+
+        # Link ticker
+        d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
+
+        # Build the card (do NOT show Category column)
+        df_cat_card = pd.DataFrame({
+            "Name":           d["Ticker_name"],
+            "Ticker":         d["Ticker"],
+            "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
+            "% Delta":        d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+            "Probable Low":   d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
+            "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
+            "Risk/Reward":    d["day_rr_ratio"].map(rr_tinted_html),
+            "MM Score":       d["model_score"].map(fmt_int),
+            "MM Score Delta": d["model_score_delta"].map(fmt_int),
+        })
+
+        tbl_html_76 = df_cat_card.to_html(index=False, classes="tbl", escape=False, border=0)
+        tbl_html_76 = tbl_html_76.replace('class="dataframe tbl"', 'class="tbl"')
+
+        # Same colgroup as other cards (Name = 40ch)
+        colgroup = """
+        <colgroup>
+          <col class="col-name">
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+        </colgroup>
+        """.strip()
+        tbl_html_76 = tbl_html_76.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+        row_spacer(6)
+        st.markdown(
+            f"""
+            <div class="card-wrap">
+              <div class="card">
+                <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+                  Category Snapshot – {sel}
+                </h3>
+                {tbl_html_76}
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 
