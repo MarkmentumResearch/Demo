@@ -2171,6 +2171,7 @@ def plot_g11_signal(df: pd.DataFrame, ticker: str):
 
     # Left axis: Signal Score
     ax.plot(df["date"], df["score"], color=EXCEL_BLUE, linewidth=1.6, label="MM Score")
+    ax.set_ylim(-105, 105)  # Fix MM Score scale to [-105, 105]
     add_mpl_watermark(ax, text="Markmentum", alpha=0.12, rotation=30)
 
     # Right axis: Close
