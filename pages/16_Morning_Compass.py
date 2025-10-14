@@ -82,7 +82,7 @@ st.markdown("""
 <style>
 .card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; }
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; }
-.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }  /* was fixed */
 .tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 .tbl th { background:#f2f2f2; font-weight:700; text-align:left; }
 .center { text-align:center; }
@@ -133,14 +133,64 @@ required_cols = [
 if df73.empty or not all(c in df73.columns for c in required_cols):
     st.info("Morning Compass: `qry_graph_data_73.csv` is missing or columns are incomplete.")
 else:
-    # Make ticker clickable to Deep Dive (keeps exact column order elsewhere)
     df_render = df73.copy()
+
+    # Keep Deep Dive link on Ticker
     df_render["Ticker"] = df_render["Ticker"].apply(_mk_ticker_link)
 
-    # Reorder strictly to the required column list (no guessing)
-    df_render = df_render[required_cols]
+    # --- Formatting helpers ---
+    def fmt_num(x, nd=2):
+        try:
+            if pd.isna(x): return ""
+            return f"{float(x):,.{nd}f}"
+        except Exception:
+            return ""
 
-    table_html = df_render.to_html(index=False, classes="tbl", escape=False)
+    def fmt_pct(x, nd=2):
+        try:
+            if pd.isna(x): return ""
+            return f"{float(x)*100:,.{nd}f}%"
+        except Exception:
+            return ""
+
+    def fmt_int(x):
+        try:
+            if pd.isna(x): return ""
+            return f"{int(round(float(x))):,}"
+        except Exception:
+            return ""
+
+    # Build in the new order (drop Date from the card view)
+    df_card = pd.DataFrame({
+        "Name":            df_render["Ticker_name"],
+        "Ticker":          df_render["Ticker"],
+        "Close":           df_render["Close"].map(lambda v: fmt_num(v, 2)),
+        "% ▲":            df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":    df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
+        "Probable High":   df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
+        "Risk/Reward":     df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
+        "MM Score":        df_render["model_score"].map(fmt_int),
+        "MM Score ▲":      df_render["model_score_delta"].map(fmt_int),
+    })
+
+    # HTML table with a colgroup to set widths (Name = 40ch; others auto)
+    table_html = df_card.to_html(index=False, classes="tbl", escape=False)
+    colgroup = """
+    <colgroup>
+      <col style="width:40ch">
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+    </colgroup>
+    """
+    # Inject colgroup right after <table ...>
+    table_html = table_html.replace("<table ", "<table " + colgroup, 1)
+
     st.markdown(
         f"""
         <div class="card">
@@ -150,11 +200,6 @@ else:
         """,
         unsafe_allow_html=True,
     )
-
-row_spacer(10)
-
-
-
 
 
 
