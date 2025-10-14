@@ -502,7 +502,7 @@ if show_cat:
         ]
 
         # Center the selector
-        c1, c2, c3 = st.columns([1, 2, 1])
+        c1, c2, c3 = st.columns([1, 3, 1])
         with c2:
             # Show only categories present in the CSV but ordered by your preference
             present = [c for c in cat_order if c in df76["Category"].dropna().unique().tolist()]
