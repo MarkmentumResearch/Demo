@@ -187,6 +187,32 @@ else:
             return f"{int(round(float(x))):,}"
         except Exception: return ""
 
+    # Diverging tint for Risk/Reward (−cap … +cap), subtle + readable
+    def rr_tinted_html(x, cap=3.0):
+        try:
+            if pd.isna(x): 
+                return ""
+            v = float(x)
+        except Exception:
+            return ""
+
+        # scale 0..1 (capped), keep near-zero very light
+        s = min(abs(v) / cap, 1.0)
+        alpha = 0.12 + 0.28 * s     # 0.12 → 0.40 opacity
+
+        if v > 0:
+            # green (tailwind-ish 10B981)
+            bg = f"rgba(16,185,129,{alpha:.3f})"
+        elif v < 0:
+            # red (EF4444)
+            bg = f"rgba(239,68,68,{alpha:.3f})"
+        else:
+            bg = "transparent"
+
+        # numeric label with 1 decimal, same as before
+        label = f"{v:,.1f}"
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
+
     df_card = pd.DataFrame({
     "Name":          df_render["Ticker_name"],
     "Ticker":        df_render["Ticker"],
@@ -194,7 +220,7 @@ else:
     "% Delta":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
     "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
     "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-    "Risk/Reward":   df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
+    "Risk/Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
     "MM Score":      df_render["model_score"].map(fmt_int),
     "MM Score Delta":df_render["model_score_delta"].map(fmt_int),              # renamed
     })
