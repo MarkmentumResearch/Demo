@@ -250,6 +250,59 @@ else:
     st.markdown(f'<div class="card-wrap"><div class="card">{table_html}</div></div>', unsafe_allow_html=True)
 
 
+# -------------------------
+# Card: Bottom Line
+# -------------------------
+
+import os
+try:
+    from docx import Document  # pip install python-docx
+except Exception:
+    Document = None
+
+def _is_list_paragraph(paragraph) -> bool:
+    try:
+        return paragraph._p.pPr.numPr is not None
+    except Exception:
+        return False
+
+@st.cache_data(show_spinner=False)
+def load_market_read_md(doc_path: str = "data/bottom_line_daily.docx") -> str:
+    if Document is None:
+        return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
+    if not os.path.exists(doc_path):
+        return f"⚠️ **Market Read** file not found: `{doc_path}`"
+    try:
+        doc = Document(doc_path)
+    except Exception as e:
+        return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
+    lines: list[str] = []
+    for p in doc.paragraphs:
+        text = p.text.strip()
+        if not text:
+            continue
+        lines.append(f"- {text}" if _is_list_paragraph(p) else text)
+    for i, l in enumerate(lines):
+        if l.startswith("Market Read:") and "The model is saying:" in l:
+            left, right = l.split("The model is saying:", 1)
+            lines[i] = left.strip()
+            lines.insert(i + 1, "The model is saying:")
+            if right.strip():
+                lines.insert(i + 2, right.strip())
+            break
+    return "\n\n".join(lines)
+
+with st.container():
+    st.markdown("## Market Read")
+    docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
+    st.markdown(load_market_read_md(str(docx_path)))
+
+st.markdown(
+    "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
+    "Note: Indices are excluded from Highest/Lowest Markmentum Score lists."
+    "</div>",
+    unsafe_allow_html=True,
+)
 
 
 
