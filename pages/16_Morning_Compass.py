@@ -338,7 +338,7 @@ required_cols_74 = [
 
 if df74.empty or not all(c in df74.columns for c in required_cols_74):
     row_spacer(8)
-    st.info("Leaders/Laggard by % Delta: `qry_graph_data_74.csv` is missing or columns are incomplete.")
+    st.info("Top 5 Leaders/Laggard by % Delta: `qry_graph_data_74.csv` is missing or columns are incomplete.")
 else:
     d = df74.copy()
 
