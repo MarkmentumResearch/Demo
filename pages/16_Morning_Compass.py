@@ -412,6 +412,9 @@ else:
     """.strip()
     tbl_html_74 = tbl_html_74.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
+    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_html_safe = escape(note_text)
+
     # render centered card below the first card
     row_spacer(10)
     st.markdown(
@@ -422,6 +425,7 @@ else:
               Top 5 Leaders/Laggards by % Change
             </h3>
             {tbl_html_74}
+            <div class="bl note">{note_html_safe}</div>
           </div>
         </div>
         """,
@@ -487,6 +491,9 @@ else:
     """.strip()
     tbl_html_75 = tbl_html_75.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
+    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_html_safe = escape(note_text)
+
     # render centered card below the first card
     row_spacer(10)
     st.markdown(
@@ -497,6 +504,7 @@ else:
               Top 5 Leaders/Laggards by MM Score
             </h3>
             {tbl_html_75}
+            <div class="bl note">{note_html_safe}</div>
           </div>
         </div>
         """,
@@ -579,6 +587,9 @@ if show_cat:
         """.strip()
         tbl_html_76 = tbl_html_76.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
+        note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+        note_html_safe = escape(note_text)
+
         row_spacer(6)
         st.markdown(
             f"""
@@ -588,6 +599,7 @@ if show_cat:
                   Category Snapshot – {sel}
                 </h3>
                 {tbl_html_76}
+                <div class="bl note">{note_html_safe}</div>
               </div>
             </div>
             """,
