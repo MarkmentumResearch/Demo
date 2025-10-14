@@ -83,22 +83,39 @@ def row_spacer(height_px: int = 14):
 # -------------------------
 st.markdown("""
 <style>
-/* page card centering */
+/* Center the single card on the page */
 .card-wrap { display:flex; justify-content:center; }
-.card { border:1px solid #cfcfcf; border-radius:8px; background:#fff; padding:12px; width:100%; max-width:1120px; }
+.card { 
+  border:1px solid #cfcfcf; 
+  border-radius:8px; 
+  background:#fff; 
+  padding:12px 12px 8px 12px;         /* same feel as Daily */
+  width:100%; 
+  max-width:1120px; 
+}
 
-/* table styling to match Overview */
-.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }
-.tbl th, .tbl td { border:1px solid #d9d9d9; padding:6px 8px; font-size:13px; }
-.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; }
+/* Table styling to match Daily Overview */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td { 
+  border:1px solid #d9d9d9; 
+  padding:6px 8px; 
+  font-size:13px; 
+  overflow:hidden; 
+  text-overflow:ellipsis; 
+}
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
 
-/* Name column fixed-ish width; others auto */
-.tbl col:nth-child(1) { width:40ch; }
+/* Column alignment rules */
+.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }   /* Ticker centered */
+.tbl th:nth-child(n+3), .tbl td:nth-child(n+3) {                    /* numbers right */
+  text-align:right; 
+  white-space:nowrap; 
+}
 
-/* right-align numeric columns: Close .. MM Score ▲ (cols 3..9) */
-.tbl th:nth-child(n+3), .tbl td:nth-child(n+3) { text-align:right; }
+/* Name column width = 40 characters, fixed */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
 
-/* keep ticker link bold without underline */
+/* Keep ticker links bold without underline */
 .tbl a { text-decoration:none; font-weight:600; }
 </style>
 """, unsafe_allow_html=True)
@@ -171,40 +188,40 @@ else:
         except Exception: return ""
 
     df_card = pd.DataFrame({
-        "Name":          df_render["Ticker_name"],
-        "Ticker":        df_render["Ticker"],
-        "Close":         df_render["Close"].map(lambda v: fmt_num(v, 2)),
-        "% ▲":           df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-        "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-        "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk/Reward":   df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
-        "MM Score":      df_render["model_score"].map(fmt_int),
-        "MM Score ▲":    df_render["model_score_delta"].map(fmt_int),
+    "Name":          df_render["Ticker_name"],
+    "Ticker":        df_render["Ticker"],
+    "Close":         df_render["Close"].map(lambda v: fmt_num(v, 2)),
+    "% Delta":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
+    "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
+    "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
+    "Risk/Reward":   df_render["day_rr_ratio"].map(lambda v: fmt_num(v, 1)),
+    "MM Score":      df_render["model_score"].map(fmt_int),
+    "MM Score Delta":df_render["model_score_delta"].map(fmt_int),              # renamed
     })
 
-    # build HTML table (no border attr; drop default 'dataframe' class)
+    # Clean HTML (no border attr, no 'dataframe' class)
     table_html = df_card.to_html(index=False, classes="tbl", escape=False, border=0)
     table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
 
-    # add colgroup (Name = 40ch)
+    # Insert a proper colgroup AFTER the opening <table class="tbl">
     colgroup = """
     <colgroup>
-      <col>  <!-- Name -->
-      <col>  <!-- Ticker -->
-      <col>  <!-- Close -->
-      <col>  <!-- % ▲ -->
-      <col>  <!-- Probable Low -->
-      <col>  <!-- Probable High -->
-      <col>  <!-- Risk/Reward -->
-      <col>  <!-- MM Score -->
-      <col>  <!-- MM Score ▲ -->
+    <col class="col-name"> <!-- Name (40ch) -->
+    <col>                   <!-- Ticker (center) -->
+    <col>                   <!-- Close (right) -->
+    <col>                   <!-- % Delta (right) -->
+    <col>                   <!-- Probable Low (right) -->
+    <col>                   <!-- Probable High (right) -->
+    <col>                   <!-- Risk/Reward (right) -->
+    <col>                   <!-- MM Score (right) -->
+    <col>                   <!-- MM Score Delta (right) -->
     </colgroup>
-    """
-    table_html = table_html.replace("<table ", "<table " + colgroup, 1)
+    """.strip()
 
-    # centered card, no inner title
+    table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+    # Centered card, no inner title
     st.markdown(f'<div class="card-wrap"><div class="card">{table_html}</div></div>', unsafe_allow_html=True)
-
 
 
 
