@@ -86,34 +86,34 @@ st.markdown("""
 /* Center the single card on the page */
 .card-wrap { display:flex; justify-content:center; }
 .card { 
-  border:1px solid #cfcfcf; 
-  border-radius:8px; 
-  background:#fff; 
-  padding:12px 12px 8px 12px;         /* same feel as Daily */
-  width:100%; 
-  max-width:1120px; 
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 8px 12px; width:100%;
+  max-width:1320px;  /* was 1120px -> more room so names show */
 }
 
 /* Table styling to match Daily Overview */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
-.tbl th, .tbl td { 
-  border:1px solid #d9d9d9; 
-  padding:6px 8px; 
-  font-size:13px; 
-  overflow:hidden; 
-  text-overflow:ellipsis; 
+.tbl th, .tbl td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
 }
 .tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
 
-/* Column alignment rules */
-.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }   /* Ticker centered */
-.tbl th:nth-child(n+3), .tbl td:nth-child(n+3) {                    /* numbers right */
-  text-align:right; 
-  white-space:nowrap; 
-}
+/* Alignment rules */
+.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }    /* Ticker centered */
 
-/* Name column width = 40 characters, fixed */
+/* HEADERS from Close..MM Score Delta centered */
+.tbl th:nth-child(n+3) { text-align:center; }
+
+/* CELLS from Close..MM Score Delta right-aligned */
+.tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
+
+/* Name column = 40ch, allow wrapping so full name shows */
 .tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl th:nth-child(1), .tbl td:nth-child(1) {
+  white-space:normal;               /* allow wrap */
+  overflow:visible; text-overflow:clip;
+}
 
 /* Keep ticker links bold without underline */
 .tbl a { text-decoration:none; font-weight:600; }
