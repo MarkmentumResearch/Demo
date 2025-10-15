@@ -82,7 +82,7 @@ st.markdown("""
 }
 
 /* Table styling to match Daily Overview */
-.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }
 .tbl th, .tbl td {
   border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
   overflow:hidden; text-overflow:ellipsis;
@@ -99,23 +99,15 @@ st.markdown("""
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* Name column = 40ch, allow wrapping so full name shows */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl col.col-name { width: clamp(22ch, 40vw, 40ch); min-width: 22ch; }
 .tbl th:nth-child(1), .tbl td:nth-child(1) {
   white-space:normal;               /* allow wrap */
   overflow:visible; text-overflow:clip;
 }
 
 /* % columns: make them compact and non-growing (about “00.00%” wide) */
-.tbl col.col-small { width:10ch; min-width:10ch; max-width:10ch; }
+.tbl col.col-name { width: clamp(22ch, 40vw, 40ch); min-width: 22ch; }
 
-            
-/* Hard fallback: fix widths by nth-child (2..5) in case a browser ignores colgroup */
-.tbl th:nth-child(2), .tbl td:nth-child(2),
-.tbl th:nth-child(3), .tbl td:nth-child(3),
-.tbl th:nth-child(4), .tbl td:nth-child(4),
-.tbl th:nth-child(5), .tbl td:nth-child(5) {
-  width:10ch; max-width:10ch;
-}
 
 
 
