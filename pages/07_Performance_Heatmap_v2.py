@@ -268,7 +268,7 @@ heat = (
 )
 
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-col_card, col_heatmap = st.columns([1.5, 3])
+col_card, col_heatmap = st.columns([2.2, 3])
 
 # ----- Left Card -----
 with col_card:
@@ -305,11 +305,14 @@ with col_card:
 
         # Limit Name column to ~40 chars for display
         table_data["Name"] = table_data["Name"].str.slice(0, 40)
-
+        row_h = 32
+        base = 120
+        target_height = min(900, base + row_h * len(table_data))
         st.dataframe(
             table_data,
             hide_index=True,
             use_container_width=True,
+            height=target_height,
         )
 
 # ----- Center Heatmap -----
