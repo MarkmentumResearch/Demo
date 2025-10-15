@@ -359,10 +359,10 @@ with col_card:
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;">
+            <h3 style="margin:0 0 8px 0; font-size:20px; font-weight:700; color:#1a1a1a; text-align:center;">
               Category Averages
             </h3>
-            <div style="text-align:center; font-size:14px; color:#666; margin:-2px 0 12px;">
+            <div style="text-align:center; font-size:16px; color:#666; margin:-2px 0 12px;">
               Average % Δ by timeframe across all categories
             </div>
             {table_html}
