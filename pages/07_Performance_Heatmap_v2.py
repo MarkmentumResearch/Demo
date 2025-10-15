@@ -89,25 +89,14 @@ st.markdown("""
 }
 .tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
 
-/* alignment: only the 1st column left, all others centered/right like Compass */
-.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }  /* Ticker (if you add later) */
-.tbl th:nth-child(n+2) { text-align:center; }                     /* headers 2..end centered */
-.tbl td:nth-child(n+2) { text-align:right;  white-space:nowrap; } /* values 2..end right */
+/* Alignment rules */
+.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }    /* Ticker centered */
 
-/* enforce a roomy 'Name' column (40ch) that can wrap */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
-.tbl th:nth-child(1), .tbl td:nth-child(1) {
-  white-space:normal; overflow:visible; text-overflow:clip;
-}
-</style>
-""", unsafe_allow_html=True)
+/* HEADERS from Close..MM Score Change centered */
+.tbl th:nth-child(n+3) { text-align:center; }
 
-st.markdown("""
-<style>
-/* --- Performance table sizing --- */
-
-/* Keep the table in fixed layout so colgroup widths are respected */
-.tbl { table-layout: fixed; }
+/* CELLS from Close..MM Score Change right-aligned */
+.tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
 
 /* Name column = 40ch, allow wrapping so full name shows */
 .tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
@@ -115,19 +104,9 @@ st.markdown("""
   white-space:normal;               /* allow wrap */
   overflow:visible; text-overflow:clip;
 }
-
-/* % columns: make them compact and non-growing (about “00.00%” wide) */
-.tbl col.col-small { width:5ch; min-width:5ch; max-width:5ch; }
-
-/* HEADERS from Close..MM Score Change centered */
-.tbl th:nth-child(n+2) { text-align:center; }
-.tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }            
-.tbl td:nth-child(n+2) > span { display:block; padding:0 2px; border-radius:2px; }
-
-/* (Optional) slightly tighten cell padding overall */
-.tbl th, .tbl td { padding:5px 6px; }
-</style>
 """, unsafe_allow_html=True)
+
+
 
 
 # -------------------------
@@ -435,10 +414,10 @@ with col_card:
     colgroup = """
     <colgroup>
     <col class="col-name">   <!-- Name (40ch, wraps) -->
-    <col class="col-small">  <!-- Daily -->
-    <col class="col-small">  <!-- WTD -->
-    <col class="col-small">  <!-- MTD -->
-    <col class="col-small">  <!-- QTD -->
+    <col>  <!-- Daily -->
+    <col>  <!-- WTD -->
+    <col>  <!-- MTD -->
+    <col>  <!-- QTD -->
     </colgroup>
     """.strip()
     
