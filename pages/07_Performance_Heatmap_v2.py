@@ -93,10 +93,10 @@ st.markdown("""
 .tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }    /* Ticker centered */
 
 /* HEADERS from Close..MM Score Change centered */
-.tbl th:nth-child(n+3) { text-align:center; }
+.tbl th:nth-child(n+2) { text-align:center; }
 
 /* CELLS from Close..MM Score Change right-aligned */
-.tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
+.tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* Name column = 40ch, allow wrapping so full name shows */
 .tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
@@ -104,6 +104,20 @@ st.markdown("""
   white-space:normal;               /* allow wrap */
   overflow:visible; text-overflow:clip;
 }
+
+/* % columns: make them compact and non-growing (about “00.00%” wide) */
+.tbl col.col-small { width:5ch; min-width:5ch; max-width:5ch; }
+
+            
+/* Hard fallback: fix widths by nth-child (2..5) in case a browser ignores colgroup */
+.tbl th:nth-child(2), .tbl td:nth-child(2),
+.tbl th:nth-child(3), .tbl td:nth-child(3),
+.tbl th:nth-child(4), .tbl td:nth-child(4),
+.tbl th:nth-child(5), .tbl td:nth-child(5) {
+  width:5ch; max-width:5ch;
+}
+
+
 
 /* Keep ticker links bold without underline */
 .tbl a { text-decoration:none; font-weight:600; }
@@ -416,14 +430,13 @@ with col_card:
     # Add colgroup: 40ch Name, compact % columns (you already defined .col-name & .col-small CSS)
     colgroup = """
     <colgroup>
-    <col class="col-name">   <!-- Name (40ch, wraps) -->
-    <col>  <!-- Daily -->
-    <col>  <!-- WTD -->
-    <col>  <!-- MTD -->
-    <col>  <!-- QTD -->
+    <col class="col-name">   <!-- Name -->
+    <col class="col-small">  <!-- Daily -->
+    <col class="col-small">  <!-- WTD -->
+    <col class="col-small">  <!-- MTD -->
+    <col class="col-small">  <!-- QTD -->
     </colgroup>
     """.strip()
-    
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
     # Render the card
