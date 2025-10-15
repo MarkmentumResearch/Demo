@@ -318,6 +318,8 @@ with col_card:
                "QTD":   "Avg QTD % Change",
            })
     )
+    table_data.columns.name = None
+
 
     # Preferred category order (same list used for heatmap ordering)
     preferred = [
