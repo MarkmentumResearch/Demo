@@ -120,7 +120,7 @@ st.markdown("""
 .tbl td:nth-child(n+2) > span { display:block; padding:0 2px; border-radius:2px; }
 
 /* (Optional) slightly tighten cell padding overall */
-.tbl th, .tbl td { padding:5px 6px; }
+.tbl th, .tbl td { padding:0px 0px; }
 </style>
 """, unsafe_allow_html=True)
 
