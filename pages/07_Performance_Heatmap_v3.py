@@ -159,7 +159,8 @@ order_map = {name: i for i, name in enumerate(preferred_order)}
 g["__ord__"] = g["Category"].map(order_map)
 g = g.sort_values(["__ord__", "Category"], kind="stable")
 g = g.drop(columns="__ord__")
-    # independent scaling by timeframe
+
+# independent scaling by timeframe
 vmax = {
         "Daily":  g["Daily"].abs().max(skipna=True) or 0.0,
         "WTD":    g["WTD"].abs().max(skipna=True) or 0.0,
