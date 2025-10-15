@@ -106,7 +106,7 @@ st.markdown("""
 /* … your existing styles … */
 
 /* Name (40ch) stays roomy */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl col.col-name { min-width:60ch; width:60ch; max-width:60ch; }
 
 /* NEW: make the % columns compact */
 .tbl col.col-small { min-width:5ch; width:5ch; max-width:5ch; }
