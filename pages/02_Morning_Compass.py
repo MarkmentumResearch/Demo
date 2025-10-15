@@ -335,7 +335,7 @@ else:
     docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
     bl_text = load_market_read_md(str(docx_path)).strip()
     bl_html_safe = escape(bl_text)  # keep it plain, no markdown parsing needed
-    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
     # Centered card, no inner title
@@ -415,7 +415,7 @@ else:
     """.strip()
     tbl_html_74 = tbl_html_74.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
     # render centered card below the first card
@@ -494,7 +494,7 @@ else:
     """.strip()
     tbl_html_75 = tbl_html_75.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
     # render centered card below the first card
@@ -573,7 +573,7 @@ else:
     """.strip()
     tbl_html_77 = tbl_html_77.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
     # render centered card below the first card
@@ -668,7 +668,7 @@ if show_cat:
         """.strip()
         tbl_html_76 = tbl_html_76.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-        note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+        note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
         note_html_safe = escape(note_text)
 
         row_spacer(6)
