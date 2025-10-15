@@ -420,7 +420,7 @@ with col_card:
     # Add colgroup: 40ch Name, compact % columns (you already defined .col-name & .col-small CSS)
     colgroup = """
     <colgroup>
-    <col class="col-name">
+    <col class="col-name"> <!-- Name (40ch, wraps) -->
     <col class="col-small">
     <col class="col-small">
     <col class="col-small">
