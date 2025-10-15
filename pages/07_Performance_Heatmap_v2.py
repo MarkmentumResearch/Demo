@@ -33,7 +33,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ displ
 html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.h-title { text-align:center; font-size:12px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
+.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
 .h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
 div[data-baseweb="select"] { max-width:36ch !important; }
 
@@ -355,6 +355,11 @@ with col_card:
     )
     table_data.columns.name = None
     table_data = table_data[["Name", "Daily", "WTD", "MTD", "QTD"]]  # <- enforce order
+    present = table_data["Name"].dropna().tolist()
+    ordered = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
+    table_data = table_data.set_index("Name").loc[ordered].reset_index()
+    # Use the pivoted numeric table for mins/maxes
+    td_num = table_data.copy()
 
     # --- Gradient tinting (independent scale per timeframe) ---
     def gradient_tint_html(value, vmin, vmax):
@@ -379,8 +384,7 @@ with col_card:
 
         return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{v:,.2f}%</span>'
 
-    # Use the pivoted numeric table for mins/maxes
-    td_num = table_data.copy()
+
 
     # per-timeframe min/max (independent scale per column)
     vmin_d, vmax_d = td_num["Daily"].min(), td_num["Daily"].max()
