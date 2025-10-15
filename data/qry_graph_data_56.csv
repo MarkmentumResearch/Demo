@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-ES=F,E-MINI S&P 500 FUTURES,Futures,2025-10-13,-81.0,-37.0,44.0
-ROST,"ROSS STORES, INC.",Consumer Discretionary,2025-10-13,-81.0,-31.0,50.0
-RSP,INVESCO S&P500 EWGHT,Sector & Style ETFs,2025-10-13,-80.0,0.0,80.0
-ADI,"ANALOG DEVICES, INC.",Information Technology,2025-10-13,-79.0,0.0,79.0
-BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-13,-79.0,-56.0,23.0
-SBLK,STAR BULK CARRIERS CORP.,MR Discretion,2025-10-13,-79.0,0.0,79.0
-WELL,WELLTOWER INC.,Real Estate,2025-10-13,-76.0,0.0,76.0
-CCJ,CAMECO ,MR Discretion,2025-10-13,-72.0,-22.0,50.0
-AEE,AMEREN ,Utilities,2025-10-13,-71.0,0.0,71.0
-AOS,A. O. SMITH ,Industrials,2025-10-13,-69.0,0.0,69.0
+HPQ,HP INC.,Information Technology,2025-10-14,-99.0,-73.0,26.0
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-14,-82.0,-1.0,81.0
+ES=F,E-MINI S&P 500 FUTURES,Futures,2025-10-14,-81.0,-37.0,44.0
+ADI,"ANALOG DEVICES, INC.",Information Technology,2025-10-14,-79.0,0.0,79.0
+BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-14,-79.0,-56.0,23.0
+SBLK,STAR BULK CARRIERS CORP.,MR Discretion,2025-10-14,-79.0,0.0,79.0
+REG,REGENCY CENTERS ,Real Estate,2025-10-14,-78.0,-26.0,52.0
+WELL,WELLTOWER INC.,Real Estate,2025-10-14,-76.0,0.0,76.0
+FAST,FASTENAL COMPANY,Industrials,2025-10-14,-69.0,0.0,69.0
+MO,"ALTRIA GROUP, INC.",Consumer Staples,2025-10-14,-67.0,4.0,71.0

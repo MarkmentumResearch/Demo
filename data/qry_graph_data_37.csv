@@ -1,1 +1,2 @@
 Ticker,Ticker_name,Category,Date,ST_Trend,MT_Trend,ST_Trend_Change,MT_Trend_Change,prem_disc,ChaseScore,model_score
+DHR,DANAHER ,Health Care,2025-10-14,0.0284,0.0161,0.002,0.0063,-0.079,-0.0913,-44.0
