@@ -33,7 +33,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ displ
 html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
-.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
+.h-title { text-align:center; font-size:16px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
 .h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
 div[data-baseweb="select"] { max-width:36ch !important; }
 
