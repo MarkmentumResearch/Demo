@@ -99,7 +99,7 @@ st.markdown("""
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* Name column = 40ch, allow wrapping so full name shows */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl col.col-name { min-width:30ch; width:30ch; max-width:30ch; }
 .tbl th:nth-child(1), .tbl td:nth-child(1) {
   white-space:normal;               /* allow wrap */
   overflow:visible; text-overflow:clip;
