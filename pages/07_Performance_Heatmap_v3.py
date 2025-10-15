@@ -99,55 +99,56 @@ def load_perf_csv(p: Path) -> pd.DataFrame:
         df[c] = df[c] * 100.0
     return df
 
-perf = load_perf_csv(CSV_PATH)
-if perf.empty:
-    st.info("`ticker_data.csv` missing or columns incomplete.")
-else:
-    # ---------- Shared CSS (compass-style card + 40ch Name) ----------
-    st.markdown("""
-    <style>
-    .card-wrap { display:flex; justify-content:center; }
-    .card {
-      border:1px solid #cfcfcf; border-radius:8px; background:#fff;
-      padding:12px 12px 10px 12px; width:100%; max-width:1320px;
+
+# ---------- Shared CSS (compass-style card + 40ch Name) ----------
+st.markdown("""
+<style>
+.card-wrap { display:flex; justify-content:center; }
+.card {
+border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+padding:12px 12px 10px 12px; width:100%; max-width:1320px;
     }
-    .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
-    .tbl th, .tbl td {
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td {
       border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
       overflow:hidden; text-overflow:ellipsis;
     }
-    .tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
-    .tbl th:nth-child(n+2) { text-align:right; }   /* numeric headers right */
-    .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+.tbl th:nth-child(n+2) { text-align:right; }   /* numeric headers right */
+.tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
-    /* Name = 40 characters exactly as width budget */
-    .tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
-    .tbl th:nth-child(1), .tbl td:nth-child(1) {
+/* Name = 40 characters exactly as width budget */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl th:nth-child(1), .tbl td:nth-child(1) {
       white-space:normal; overflow:visible; text-overflow:clip;
     }
-    .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:12px; color:#6c757d; }
-    </style>
-    """, unsafe_allow_html=True)
+.subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:12px; color:#6c757d; }
+</style>
+""", unsafe_allow_html=True)
+
+perf = load_perf_csv(CSV_PATH)
+if perf.empty:
+    st.info("`ticker_data.csv` missing or columns incomplete.")
 
     # =========================================================
     # Card 1 — Category averages (Name, Daily, WTD, MTD, QTD)
     # =========================================================
-    g = perf.groupby("Category", dropna=True, as_index=False).agg(
-        Daily=("day_pct_change","mean"),
-        WTD=("week_pct_change","mean"),
-        MTD=("month_pct_change","mean"),
-        QTD=("quarter_pct_change","mean"),
-    ).sort_values("Category", kind="stable")
+g = perf.groupby("Category", dropna=True, as_index=False).agg(
+    Daily=("day_pct_change","mean"),
+    WTD=("week_pct_change","mean"),
+    MTD=("month_pct_change","mean"),
+    QTD=("quarter_pct_change","mean"),
+).sort_values("Category", kind="stable")
 
     # independent scaling by timeframe
-    vmax = {
+vmax = {
         "Daily":  g["Daily"].abs().max(skipna=True) or 0.0,
         "WTD":    g["WTD"].abs().max(skipna=True) or 0.0,
         "MTD":    g["MTD"].abs().max(skipna=True) or 0.0,
         "QTD":    g["QTD"].abs().max(skipna=True) or 0.0,
     }
 
-    g_render = pd.DataFrame({
+g_render = pd.DataFrame({
         "Name": g["Category"],
         "Daily": [ _divergent_tint_html(v, vmax["Daily"]) for v in g["Daily"] ],
         "WTD":   [ _divergent_tint_html(v, vmax["WTD"])   for v in g["WTD"]   ],
@@ -155,17 +156,17 @@ else:
         "QTD":   [ _divergent_tint_html(v, vmax["QTD"])   for v in g["QTD"]   ],
     })
 
-    html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
-    html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
-    colgroup = """
+html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup = """
     <colgroup>
       <col class="col-name"> <!-- Name (40ch) -->
       <col> <col> <col> <col>
     </colgroup>
     """.strip()
-    html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-    st.markdown(
+st.markdown(
         f"""
         <div class="card-wrap">
           <div class="card">
@@ -183,32 +184,33 @@ else:
     # =========================================================
     # Card 2 — Category selector → per-ticker rows
     # =========================================================
-    preferred = [
+preferred = [
         "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
         "Bonds","Yields","Volatility","Foreign",
         "Communication Services","Consumer Discretionary","Consumer Staples",
         "Energy","Financials","Health Care","Industrials","Information Technology",
         "Materials","Real Estate","Utilities","MR Discretion"
     ]
-    custom_order = preferred
-    cats = [c for c in custom_order if c in df["Category"].dropna().unique().tolist()]
-    default_cat = "Sector & Style ETFs" if "Sector & Style ETFs" in cats else (cats[0] if cats else None)
-    _, csel, _ = st.columns([1, 1, 1])
-    with csel:
+custom_order = preferred
+cats = [c for c in custom_order if c in perf["Category"].dropna().unique().tolist()]
+default_cat = "Sector & Style ETFs" if "Sector & Style ETFs" in cats else (cats[0] if cats else None)
+
+_, csel, _ = st.columns([1, 1, 1])
+with csel:
         sel = st.selectbox("Category", cats, index=(cats.index(default_cat) if default_cat else 0))
 
-    d = perf.loc[perf["Category"] == sel].copy()
-    d["Ticker_link"] = d["Ticker"].map(_mk_ticker_link)
+d = perf.loc[perf["Category"] == sel].copy()
+d["Ticker_link"] = d["Ticker"].map(_mk_ticker_link)
 
     # independent scaling by timeframe **within the selected category**
-    vmax2 = {
+vmax2 = {
         "Daily":  d["day_pct_change"].abs().max(skipna=True) or 0.0,
         "WTD":    d["week_pct_change"].abs().max(skipna=True) or 0.0,
         "MTD":    d["month_pct_change"].abs().max(skipna=True) or 0.0,
         "QTD":    d["quarter_pct_change"].abs().max(skipna=True) or 0.0,
     }
 
-    d_render = pd.DataFrame({
+d_render = pd.DataFrame({
         "Name":   d["Ticker_name"],
         "Ticker": d["Ticker_link"],
         "Daily":  [ _divergent_tint_html(v, vmax2["Daily"]) for v in d["day_pct_change"] ],
@@ -217,18 +219,18 @@ else:
         "QTD":    [ _divergent_tint_html(v, vmax2["QTD"])   for v in d["quarter_pct_change"] ],
     })
 
-    html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
-    html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
-    colgroup2 = """
+html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup2 = """
     <colgroup>
       <col class="col-name"> <!-- Name (40ch) -->
       <col>                   <!-- Ticker -->
       <col> <col> <col> <col>
     </colgroup>
     """.strip()
-    html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
+html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
 
-    st.markdown(
+st.markdown(
         f"""
         <div class="card-wrap">
           <div class="card">
