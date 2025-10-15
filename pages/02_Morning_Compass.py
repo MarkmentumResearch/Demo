@@ -265,7 +265,7 @@ else:
     "% Change":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
     "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
     "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-    "Risk/Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
+    "Risk / Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
     "MM Score":      df_render["model_score"].map(mm_badge_html),
     "MM Score Change":df_render["model_score_delta"].map(fmt_int),              # renamed
     })
@@ -387,7 +387,7 @@ else:
         "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
+        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
         "MM Score":      d["model_score"].map(mm_badge_html),
         "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
@@ -466,7 +466,7 @@ else:
         "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
         "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
         "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk/Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
+        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
         "MM Score":      d["model_score"].map(mm_badge_html),
         "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
@@ -563,7 +563,7 @@ if show_cat:
             "% Change":        d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
             "Probable Low":   d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
             "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-            "Risk/Reward":    d["day_rr_ratio"].map(rr_tinted_html),
+            "Risk / Reward":    d["day_rr_ratio"].map(rr_tinted_html),
             "MM Score":      d["model_score"].map(mm_badge_html),
             "MM Score Change": d["model_score_delta"].map(fmt_int),
         })
