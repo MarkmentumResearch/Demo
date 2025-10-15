@@ -101,6 +101,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* … your existing styles … */
+
+/* Name (40ch) stays roomy */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+
+/* NEW: make the % columns compact */
+.tbl col.col-small { min-width:8ch; width:9ch; max-width:10ch; }
+
+/* keep numeric columns right-aligned (already present in your CSS) */
+</style>
+""", unsafe_allow_html=True)
 
 
 # -------------------------
@@ -364,11 +377,11 @@ with col_card:
     # Add colgroup so the first col is 40ch and the rest auto (Compass behavior)
     colgroup = """
     <colgroup>
-      <col class="col-name"> <!-- Name (40ch, wraps) -->
-      <col>
-      <col>
-      <col>
-      <col>
+    <col class="col-name">   <!-- Name (40ch, wraps) -->
+    <col class="col-small">  <!-- Daily -->
+    <col class="col-small">  <!-- WTD -->
+    <col class="col-small">  <!-- MTD -->
+    <col class="col-small">  <!-- QTD -->
     </colgroup>
     """.strip()
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
