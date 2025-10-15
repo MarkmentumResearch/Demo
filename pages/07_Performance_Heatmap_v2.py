@@ -114,7 +114,7 @@ st.markdown("""
 .tbl th:nth-child(3), .tbl td:nth-child(3),
 .tbl th:nth-child(4), .tbl td:nth-child(4),
 .tbl th:nth-child(5), .tbl td:nth-child(5) {
-  width:5ch; max-width:5ch;
+  width:20ch; max-width:20ch;
 }
 
 
