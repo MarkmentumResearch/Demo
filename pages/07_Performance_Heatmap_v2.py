@@ -448,7 +448,7 @@ with col_card:
               Performance Table – Avg % Changes
             </h3>
             <div style="text-align:center; font-size:16px; color:#666; margin:-0px 0 12px;">
-              Average % Δ across tickers in each category and timeframe
+              Average % change across tickers in each category and timeframe
             </div>
             {table_html}
           </div>
