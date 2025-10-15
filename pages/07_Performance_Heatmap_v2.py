@@ -301,10 +301,27 @@ heat = (
     .configure_view(strokeOpacity=0)
 )
 
+
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-col_card, col_heatmap = st.columns([2.2, 3])
+pad_l, center_col, pad_r = st.columns([1,3,1])
+with center_col:
+    with st.container(border=True):
+        st.markdown(
+            '<div style="text-align:center;">'
+            '<h3 style="margin:0;">Performance Heatmap – Avg % Changes</h3>'
+            '<div class="small" style="margin-top:4px;">'
+            'Average % Δ across tickers in each category and timeframe'
+            '</div></div>',
+            unsafe_allow_html=True,
+        )
+        _l, _c, _r = st.columns([1,7,1])
+        with _c:
+            st.altair_chart(heat, use_container_width=False)
+
 
 # ----- Left Card (static HTML like Compass) -----
+st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
+pad1, col_card, pad_r = st.columns([1,3,1])
 with col_card:
     tf_order = ["Daily", "WTD", "MTD", "QTD"]
     agg["Timeframe"] = pd.Categorical(agg["Timeframe"], categories=tf_order, ordered=True)
@@ -374,20 +391,7 @@ with col_card:
         unsafe_allow_html=True,
     )
 
-# ----- Center Heatmap -----
-with col_heatmap:
-    with st.container(border=True):
-        st.markdown(
-            '<div style="text-align:center;">'
-            '<h3 style="margin:0;">Performance Heatmap – Avg % Changes</h3>'
-            '<div class="small" style="margin-top:4px;">'
-            'Average % Δ across tickers in each category and timeframe'
-            '</div></div>',
-            unsafe_allow_html=True,
-        )
-        _l, _c, _r = st.columns([1,7,1])
-        with _c:
-            st.altair_chart(heat, use_container_width=False)
+
 
 #col1, col2, col3 = st.columns([1.5, 3, .5])
 #with col2:
