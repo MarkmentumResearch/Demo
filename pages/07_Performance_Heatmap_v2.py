@@ -103,15 +103,23 @@ st.markdown("""
 
 st.markdown("""
 <style>
-/* … your existing styles … */
+/* --- Performance table sizing --- */
 
-/* Name (40ch) stays roomy */
-.tbl col.col-name { min-width:60ch; width:60ch; max-width:60ch; }
+/* Keep the table in fixed layout so colgroup widths are respected */
+.tbl { table-layout: fixed; }
 
-/* NEW: make the % columns compact */
-.tbl col.col-small { min-width:5ch; width:5ch; max-width:5ch; }
+/* Name column: 40ch like the Compass */
+.tbl col.col-name { width:40ch; min-width:40ch; max-width:40ch; }
 
-/* keep numeric columns right-aligned (already present in your CSS) */
+/* % columns: make them compact and non-growing (about “00.00%” wide) */
+.tbl col.col-small { width:7.2ch; min-width:7.2ch; max-width:7.2ch; }
+
+/* Right-align numbers; keep the inner span small padding so it doesn't force width */
+.tbl th:nth-child(n+2), .tbl td:nth-child(n+2) { text-align:right; }
+.tbl td:nth-child(n+2) > span { display:block; padding:0 2px; border-radius:2px; }
+
+/* (Optional) slightly tighten cell padding overall */
+.tbl th, .tbl td { padding:5px 6px; }
 </style>
 """, unsafe_allow_html=True)
 
