@@ -54,6 +54,18 @@ def _mk_ticker_link(ticker: str) -> str:
         f'target="_self" rel="noopener" '
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
+qp = st.query_params
+dest = (qp.get("page") or "").strip().lower()
+if dest.replace("%20", " ") == "deep dive":
+    t = (qp.get("ticker") or "").strip().upper()
+    if t:
+        st.session_state["ticker"] = t
+        st.query_params.clear()
+        st.query_params["ticker"] = t
+    st.switch_page("pages/13_Deep_Dive_Dashboard.py")
+
+
+
 
 def _fmt_pct(x, nd=2):
     try:
