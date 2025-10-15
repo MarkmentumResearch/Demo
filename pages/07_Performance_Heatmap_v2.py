@@ -308,7 +308,7 @@ col_card, col_heatmap = st.columns([2.2, 3])
 with col_card:
     # Build summary table (Avg % by timeframe) using the *same data* as the heatmap
     table_data = (
-        agg.pivot(index="Category", values="avg_delta")
+        agg.pivot(index="Category", columns="Timeframe", values="avg_delta")
            .reset_index()
            .rename(columns={
                "Category": "Name",
