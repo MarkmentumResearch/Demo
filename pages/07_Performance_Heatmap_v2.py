@@ -108,8 +108,12 @@ st.markdown("""
 /* Keep the table in fixed layout so colgroup widths are respected */
 .tbl { table-layout: fixed; }
 
-/* Name column: 40ch like the Compass */
-.tbl col.col-name { width:40ch; min-width:40ch; max-width:40ch; }
+/* Name column = 40ch, allow wrapping so full name shows */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl th:nth-child(1), .tbl td:nth-child(1) {
+  white-space:normal;               /* allow wrap */
+  overflow:visible; text-overflow:clip;
+}
 
 /* % columns: make them compact and non-growing (about “00.00%” wide) */
 .tbl col.col-small { width:5ch; min-width:5ch; max-width:5ch; }
@@ -436,6 +440,7 @@ with col_card:
     <col class="col-small">  <!-- QTD -->
     </colgroup>
     """.strip()
+    
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
     # Render the card
