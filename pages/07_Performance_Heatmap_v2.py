@@ -106,10 +106,10 @@ st.markdown("""
 /* … your existing styles … */
 
 /* Name (40ch) stays roomy */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl col.col-name { min-width:15ch; width:15ch; max-width:15ch; }
 
 /* NEW: make the % columns compact */
-.tbl col.col-small { min-width:8ch; width:9ch; max-width:10ch; }
+.tbl col.col-small { min-width:5ch; width:5ch; max-width:6ch; }
 
 /* keep numeric columns right-aligned (already present in your CSS) */
 </style>
