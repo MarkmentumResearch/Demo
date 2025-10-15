@@ -312,10 +312,10 @@ with col_card:
            .reset_index()
            .rename(columns={
                "Category": "Name",
-               "Daily": "Avg Daily % Change",
-               "WTD":   "Avg WTD % Change",
-               "MTD":   "Avg MTD % Change",
-               "QTD":   "Avg QTD % Change",
+               "Daily": "Daily",
+               "WTD":   "WTD",
+               "MTD":   "MTD",
+               "QTD":   "QTD",
            })
     )
     table_data.columns.name = None
