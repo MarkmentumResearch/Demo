@@ -69,6 +69,40 @@ div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"]
 </style>
 """, unsafe_allow_html=True)
 
+
+# --- Card + table CSS to match Morning Compass ---
+st.markdown("""
+<style>
+.card-wrap { display:flex; justify-content:center; }
+.card { 
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 8px 12px; width:100%;
+  max-width:1320px;
+}
+
+/* Table styling to match Daily Overview / Compass */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+
+/* alignment: only the 1st column left, all others centered/right like Compass */
+.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }  /* Ticker (if you add later) */
+.tbl th:nth-child(n+2) { text-align:center; }                     /* headers 2..end centered */
+.tbl td:nth-child(n+2) { text-align:right;  white-space:nowrap; } /* values 2..end right */
+
+/* enforce a roomy 'Name' column (40ch) that can wrap */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+.tbl th:nth-child(1), .tbl td:nth-child(1) {
+  white-space:normal; overflow:visible; text-overflow:clip;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 # -------------------------
 # Paths
 # -------------------------
@@ -270,50 +304,71 @@ heat = (
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
 col_card, col_heatmap = st.columns([2.2, 3])
 
-# ----- Left Card -----
+# ----- Left Card (static HTML like Compass) -----
 with col_card:
-    with st.container(border=True):
-        st.markdown(
-            '<div style="text-align:center; margin-bottom:6px;">'
-            '<h4 style="margin:0;">Category Averages</h4>'
-            '<div style="font-size:12px; color:#555;">'
-            'Average % Δ by timeframe across all categories'
-            '</div></div>',
-            unsafe_allow_html=True,
-        )
+    # Build summary table (Avg % by timeframe) using the *same data* as the heatmap
+    table_data = (
+        agg.pivot(index="Category", columns="Timeframe", values="avg_delta")
+           .reset_index()
+           .rename(columns={
+               "Category": "Name",
+               "Daily": "Avg Daily % Change",
+               "WTD":   "Avg WTD % Change",
+               "MTD":   "Avg MTD % Change",
+               "QTD":   "Avg QTD % Change",
+           })
+    )
 
-        # Build summary DataFrame (matches data in heatmap)
-        table_data = (
-            agg.pivot(index="Category", columns="Timeframe", values="avg_delta")
-            .reset_index()
-            .rename(columns={
-                "Category": "Name",
-                "Daily": "Avg Daily % Change",
-                "WTD": "Avg WTD % Change",
-                "MTD": "Avg MTD % Change",
-                "QTD": "Avg QTD % Change",
-            })
-        )
+    # Preferred category order (same list used for heatmap ordering)
+    preferred = [
+        "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+        "Bonds","Yields","Volatility","Foreign",
+        "Communication Services","Consumer Discretionary","Consumer Staples",
+        "Energy","Financials","Health Care","Industrials","Information Technology",
+        "Materials","Real Estate","Utilities","MR Discretion"
+    ]
+    present = table_data["Name"].dropna().tolist()
+    ordered = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
+    table_data = table_data.set_index("Name").loc[ordered].reset_index()
 
-        # Format % values to 2 decimals
-        for col in ["Avg Daily % Change", "Avg WTD % Change", "Avg MTD % Change", "Avg QTD % Change"]:
-            if col in table_data.columns:
-                table_data[col] = table_data[col].map(lambda x: f"{x:.2f}%" if pd.notna(x) else "")
+    # Format as percents (2-decimals)
+    for col in ["Avg Daily % Change","Avg WTD % Change","Avg MTD % Change","Avg QTD % Change"]:
+        if col in table_data.columns:
+            table_data[col] = table_data[col].map(lambda x: f"{x:.2f}%" if pd.notna(x) else "")
 
-        # Add placeholder ticker column for consistent layout
-        #table_data.insert(1, "Ticker", "")
+    # Make a Compass-style HTML table
+    table_html = table_data.to_html(index=False, classes="tbl", escape=False, border=0)
+    table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
 
-        # Limit Name column to ~40 chars for display
-        table_data["Name"] = table_data["Name"].str.slice(0, 40)
-        row_h = 32
-        base = 120
-        target_height = min(900, base + row_h * len(table_data))
-        st.dataframe(
-            table_data,
-            hide_index=True,
-            use_container_width=True,
-            height=target_height,
-        )
+    # Add colgroup so the first col is 40ch and the rest auto (Compass behavior)
+    colgroup = """
+    <colgroup>
+      <col class="col-name"> <!-- Name (40ch, wraps) -->
+      <col>
+      <col>
+      <col>
+      <col>
+    </colgroup>
+    """.strip()
+    table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+    # Render the card
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;">
+              Category Averages
+            </h3>
+            <div style="text-align:center; font-size:12px; color:#666; margin:-2px 0 8px;">
+              Average % Δ by timeframe across all categories
+            </div>
+            {table_html}
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # ----- Center Heatmap -----
 with col_heatmap:
