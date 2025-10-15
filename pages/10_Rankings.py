@@ -163,7 +163,7 @@ if (qp.get("page") or "").replace("%20"," ").strip().lower() == "deep dive":
         st.session_state["ticker"] = t
         st.query_params.clear()
         st.query_params["ticker"] = t
-    st.switch_page("pages/13_Deep_Dive_Dashboard.py")
+    st.switch_page("pages/12_Deep_Dive_Dashboard.py")
 
 @st.cache_data(show_spinner=False)
 def load_csv(path: Path, numeric_cols: list[str] | None = None) -> pd.DataFrame:
