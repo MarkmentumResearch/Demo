@@ -361,7 +361,7 @@ with col_card:
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3 style="margin:0 0 2px 0; font-size:20px; font-weight:700; color:#1a1a1a; text-align:center;">
+            <h3 style="margin:0 0 -6px 0; font-size:20px; font-weight:700; color:#1a1a1a; text-align:center;">
               Category Averages
             </h3>
             <div style="text-align:center; font-size:16px; color:#666; margin:-6px 0 12px;">
