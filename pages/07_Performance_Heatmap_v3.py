@@ -105,23 +105,31 @@ st.markdown("""
 <style>
 .card-wrap { display:flex; justify-content:center; }
 .card {
-border:1px solid #cfcfcf; border-radius:8px; background:#fff;
-padding:12px 12px 10px 12px; width:100%; max-width:1320px;
-    }
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 10px 12px; width:100%; max-width:1320px;
+}
+.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
+
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td {
-      border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
-      overflow:hidden; text-overflow:ellipsis;
-    }
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+/* Headings: name left; numeric headings centered */
 .tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
-.tbl th:nth-child(n+2) { text-align:right; }   /* numeric headers right */
+.tbl th:nth-child(n+2) { text-align:center; }   /* center Daily/WTD/MTD/QTD headings */
+
+/* Cells: name left-wrap; numeric values right */
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
-/* Name = 40 characters exactly as width budget */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
+/* Column widths */
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }   /* Name = 40ch */
+.tbl col.col-num  { width:9ch; }                                    /* smaller numeric cols */
+
 .tbl th:nth-child(1), .tbl td:nth-child(1) {
-      white-space:normal; overflow:visible; text-overflow:clip;
-    }
+  white-space:normal; overflow:visible; text-overflow:clip;
+}
+
 .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:12px; color:#6c757d; }
 </style>
 """, unsafe_allow_html=True)
@@ -140,6 +148,17 @@ g = perf.groupby("Category", dropna=True, as_index=False).agg(
     QTD=("quarter_pct_change","mean"),
 ).sort_values("Category", kind="stable")
 
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+order_map = {name: i for i, name in enumerate(preferred_order)}
+g["__ord__"] = g["Category"].map(order_map)
+g = g.sort_values(["__ord__", "Category"], kind="stable")
+g = g.drop(columns="__ord__")
     # independent scaling by timeframe
 vmax = {
         "Daily":  g["Daily"].abs().max(skipna=True) or 0.0,
@@ -159,11 +178,14 @@ g_render = pd.DataFrame({
 html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
 html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
 colgroup = """
-    <colgroup>
-      <col class="col-name"> <!-- Name (40ch) -->
-      <col> <col> <col> <col>
-    </colgroup>
-    """.strip()
+<colgroup>
+  <col class="col-name">           <!-- Name (40ch) -->
+  <col class="col-num">            <!-- Daily -->
+  <col class="col-num">            <!-- WTD -->
+  <col class="col-num">            <!-- MTD -->
+  <col class="col-num">            <!-- QTD -->
+</colgroup>
+""".strip()
 html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
 st.markdown(
@@ -222,12 +244,15 @@ d_render = pd.DataFrame({
 html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
 html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
 colgroup2 = """
-    <colgroup>
-      <col class="col-name"> <!-- Name (40ch) -->
-      <col>                   <!-- Ticker -->
-      <col> <col> <col> <col>
-    </colgroup>
-    """.strip()
+<colgroup>
+  <col class="col-name">  <!-- Name (40ch) -->
+  <col>                   <!-- Ticker -->
+  <col class="col-num">   <!-- Daily -->
+  <col class="col-num">   <!-- WTD -->
+  <col class="col-num">   <!-- MTD -->
+  <col class="col-num">   <!-- QTD -->
+</colgroup>
+""".strip()
 html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
 
 st.markdown(
