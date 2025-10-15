@@ -113,9 +113,11 @@ st.markdown("""
 
 /* % columns: make them compact and non-growing (about “00.00%” wide) */
 .tbl col.col-small { width:5ch; min-width:5ch; max-width:5ch; }
-
+/* HEADERS from Close..MM Score Change centered */
+.tbl th:nth-child(n+2) { text-align:center; }
+            
 /* Right-align numbers; keep the inner span small padding so it doesn't force width */
-.tbl th:nth-child(n+2), .tbl td:nth-child(n+2) { text-align:center; }
+.tbl th:nth-child(n+2), .tbl td:nth-child(n+2) { text-align:right; }
 .tbl td:nth-child(n+2) > span { display:block; padding:0 2px; border-radius:2px; }
 
 /* (Optional) slightly tighten cell padding overall */
