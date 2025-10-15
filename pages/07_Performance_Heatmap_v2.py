@@ -353,6 +353,34 @@ with col_card:
     table_data.columns.name = None
     table_data = table_data[["Name", "Daily", "WTD", "MTD", "QTD"]]  # <- enforce order
 
+    # --- Gradient tinting (independent scale per timeframe) ---
+    def gradient_tint_html(value, vmin, vmax):
+        """Return HTML span with green/red background intensity scaled within vmin→vmax."""
+        try:
+            if pd.isna(value):
+                return ""
+            v = float(value)
+        except Exception:
+            return ""
+
+    # compute scaled magnitude for opacity
+        if v >= 0:
+            norm = min(v / vmax if vmax else 0, 1)
+            alpha = 0.10 + 0.35 * norm
+            bg = f"rgba(16,185,129,{alpha:.3f})"   # green
+        else:
+            norm = min(abs(v) / abs(vmin) if vmin else 0, 1)
+            alpha = 0.10 + 0.35 * norm
+            bg = f"rgba(239,68,68,{alpha:.3f})"   # red
+
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{v:,.2f}%</span>'
+
+    # calculate separate scaling per timeframe
+    vmin_d, vmax_d = df["Daily"].min(), df["Daily"].max()
+    vmin_w, vmax_w = df["WTD"].min(), df["WTD"].max()
+    vmin_m, vmax_m = df["MTD"].min(), df["MTD"].max()
+    vmin_q, vmax_q = df["QTD"].min(), df["QTD"].max()
+
     # Preferred category order (same list used for heatmap ordering)
     preferred = [
         "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -370,8 +398,15 @@ with col_card:
         if col in table_data.columns:
             table_data[col] = table_data[col].map(lambda x: f"{x:.2f}%" if pd.notna(x) else "")
 
+    df_render = df.copy()
+    df_render["Daily"] = df["Daily"].apply(lambda v: gradient_tint_html(v, vmin_d, vmax_d))
+    df_render["WTD"]   = df["WTD"].apply(lambda v: gradient_tint_html(v, vmin_w, vmax_w))
+    df_render["MTD"]   = df["MTD"].apply(lambda v: gradient_tint_html(v, vmin_m, vmax_m))
+    df_render["QTD"]   = df["QTD"].apply(lambda v: gradient_tint_html(v, vmin_q, vmax_q))
+
+
     # Make a Compass-style HTML table
-    table_html = table_data.to_html(index=False, classes="tbl", escape=False, border=0)
+    table_html = df_render.to_html(index=False, classes="tbl", escape=False)
     table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
 
     # Add colgroup so the first col is 40ch and the rest auto (Compass behavior)
