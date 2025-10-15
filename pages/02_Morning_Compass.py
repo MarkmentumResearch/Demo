@@ -343,7 +343,7 @@ else:
     <div class="card-wrap">
         <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Daily Compass
+              Daily Macro Orientation
             </h3>
             {table_html}
             <div class="bl">{bl_html_safe}</div>
