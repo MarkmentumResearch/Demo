@@ -325,7 +325,7 @@ with center_col:
             '<div style="text-align:center;">'
             '<h3 style="margin:0;">Performance Heatmap – Avg % Changes</h3>'
             '<div class="small" style="margin-top:4px;">'
-            'Average % Δ across tickers in each category and timeframe'
+            'Average % change across tickers in each category and timeframe'
             '</div></div>',
             unsafe_allow_html=True,
         )
