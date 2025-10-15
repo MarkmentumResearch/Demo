@@ -363,23 +363,27 @@ with col_card:
         except Exception:
             return ""
 
-    # compute scaled magnitude for opacity
         if v >= 0:
-            norm = min(v / vmax if vmax else 0, 1)
+            # scale vs. positive max for this timeframe
+            norm  = min(v / (vmax if vmax else 1.0), 1.0)
             alpha = 0.10 + 0.35 * norm
-            bg = f"rgba(16,185,129,{alpha:.3f})"   # green
+            bg    = f"rgba(16,185,129,{alpha:.3f})"   # green
         else:
-            norm = min(abs(v) / abs(vmin) if vmin else 0, 1)
+            # scale vs. negative min (abs) for this timeframe
+            norm  = min(abs(v) / (abs(vmin) if vmin else 1.0), 1.0)
             alpha = 0.10 + 0.35 * norm
-            bg = f"rgba(239,68,68,{alpha:.3f})"   # red
+            bg    = f"rgba(239,68,68,{alpha:.3f})"   # red
 
         return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{v:,.2f}%</span>'
 
-    # calculate separate scaling per timeframe
-    vmin_d, vmax_d = df["Daily"].min(), df["Daily"].max()
-    vmin_w, vmax_w = df["WTD"].min(), df["WTD"].max()
-    vmin_m, vmax_m = df["MTD"].min(), df["MTD"].max()
-    vmin_q, vmax_q = df["QTD"].min(), df["QTD"].max()
+    # Use the pivoted numeric table for mins/maxes
+    td_num = table_data.copy()
+
+    # per-timeframe min/max (independent scale per column)
+    vmin_d, vmax_d = td_num["Daily"].min(), td_num["Daily"].max()
+    vmin_w, vmax_w = td_num["WTD"].min(),   td_num["WTD"].max()
+    vmin_m, vmax_m = td_num["MTD"].min(),   td_num["MTD"].max()
+    vmin_q, vmax_q = td_num["QTD"].min(),   td_num["QTD"].max()
 
     # Preferred category order (same list used for heatmap ordering)
     preferred = [
@@ -398,11 +402,14 @@ with col_card:
         if col in table_data.columns:
             table_data[col] = table_data[col].map(lambda x: f"{x:.2f}%" if pd.notna(x) else "")
 
-    df_render = df.copy()
-    df_render["Daily"] = df["Daily"].apply(lambda v: gradient_tint_html(v, vmin_d, vmax_d))
-    df_render["WTD"]   = df["WTD"].apply(lambda v: gradient_tint_html(v, vmin_w, vmax_w))
-    df_render["MTD"]   = df["MTD"].apply(lambda v: gradient_tint_html(v, vmin_m, vmax_m))
-    df_render["QTD"]   = df["QTD"].apply(lambda v: gradient_tint_html(v, vmin_q, vmax_q))
+    # Apply tinting first (keep Name as plain text)
+    df_render = pd.DataFrame({
+        "Name": table_data["Name"],
+        "Daily": td_num["Daily"].apply(lambda v: gradient_tint_html(v, vmin_d, vmax_d)),
+        "WTD":   td_num["WTD"].apply(  lambda v: gradient_tint_html(v, vmin_w, vmax_w)),
+        "MTD":   td_num["MTD"].apply(  lambda v: gradient_tint_html(v, vmin_m, vmax_m)),
+        "QTD":   td_num["QTD"].apply(  lambda v: gradient_tint_html(v, vmin_q, vmax_q)),
+    })
 
 
     # Make a Compass-style HTML table
@@ -410,13 +417,14 @@ with col_card:
     table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
 
     # Add colgroup so the first col is 40ch and the rest auto (Compass behavior)
+    # Add colgroup: 40ch Name, compact % columns (you already defined .col-name & .col-small CSS)
     colgroup = """
     <colgroup>
-    <col class="col-name">   <!-- Name (40ch, wraps) -->
-    <col class="col-small">  <!-- Daily -->
-    <col class="col-small">  <!-- WTD -->
-    <col class="col-small">  <!-- MTD -->
-    <col class="col-small">  <!-- QTD -->
+    <col class="col-name">
+    <col class="col-small">
+    <col class="col-small">
+    <col class="col-small">
+    <col class="col-small">
     </colgroup>
     """.strip()
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
