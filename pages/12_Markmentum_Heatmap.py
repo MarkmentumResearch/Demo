@@ -317,6 +317,7 @@ preferred = [
     "Commodities",
     "Bonds",
     "Yields",
+    "Volatility",
     "Foreign",
     "Communication Services",
     "Consumer Discretionary",

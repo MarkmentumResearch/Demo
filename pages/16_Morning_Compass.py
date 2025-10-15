@@ -538,7 +538,7 @@ if show_cat:
     else:
         # Preferred category order (exact text)
         cat_order = [
-            "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Foreign",
+            "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Volatility","Foreign",
             "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials",
             "Health Care","Industrials","Information Technology","Materials","Real Estate","Utilities","MR Discretion"
         ]
