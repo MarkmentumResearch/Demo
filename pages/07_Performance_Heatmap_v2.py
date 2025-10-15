@@ -332,7 +332,7 @@ with col_card:
     table_data = table_data.set_index("Name").loc[ordered].reset_index()
 
     # Format as percents (2-decimals)
-    for col in ["Avg Daily % Change","Avg WTD % Change","Avg MTD % Change","Avg QTD % Change"]:
+    for col in ["Daily","WTD","MTD","QTD"]:
         if col in table_data.columns:
             table_data[col] = table_data[col].map(lambda x: f"{x:.2f}%" if pd.notna(x) else "")
 
