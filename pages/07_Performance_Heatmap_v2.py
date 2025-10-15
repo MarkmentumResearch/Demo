@@ -120,7 +120,7 @@ st.markdown("""
 .tbl td:nth-child(n+2) > span { display:block; padding:0 2px; border-radius:2px; }
 
 /* (Optional) slightly tighten cell padding overall */
-.tbl th, .tbl td { padding:0px 0px; }
+.tbl th, .tbl td { padding:5px 6px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -343,7 +343,7 @@ with center_col:
 
 # ----- Left Card (static HTML like Compass) -----
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-c_blank, col_card, c_blank = st.columns([1,1.5,1])
+c_blank, col_card, c_blank = st.columns([1,3,1])
 with col_card:
     tf_order = ["Daily", "WTD", "MTD", "QTD"]
     agg["Timeframe"] = pd.Categorical(agg["Timeframe"], categories=tf_order, ordered=True)
