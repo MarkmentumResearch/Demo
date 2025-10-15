@@ -277,7 +277,7 @@ with col_card:
             '<div style="text-align:center; margin-bottom:6px;">'
             '<h4 style="margin:0;">Category Averages</h4>'
             '<div style="font-size:12px; color:#555;">'
-            'Average % Δ by timeframe across all tickers'
+            'Average % Δ by timeframe across all categories'
             '</div></div>',
             unsafe_allow_html=True,
         )
