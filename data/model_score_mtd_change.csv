@@ -583,7 +583,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-14,V,VISA INC.,Financials,Financials,-16.0,-24.0,-8.0
 2025-10-14,VAL,VALARIS LIMITED,,MR Discretion,53.0,23.0,-30.0
 2025-10-14,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,-20.0,0.0,20.0
-2025-10-14,VIX,CBOE MKT VOLATILITY IDX,,Indices,-65.0,-45.0,20.0
+2025-10-14,VIX,CBOE MKT VOLATILITY IDX,,Volatility,-65.0,-45.0,20.0
 2025-10-14,VLO,VALERO ENERGY ,Energy,Energy,66.0,19.0,-47.0
 2025-10-14,VLTO,VERALTO ,Industrials,Industrials,1.0,-16.0,-17.0
 2025-10-14,VMC,VULCAN MATERIALS COMPANY,Materials,Materials,-4.0,-52.0,-48.0
@@ -594,7 +594,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-14,VST,VISTRA CORP.,Utilities,Utilities,65.0,81.0,16.0
 2025-10-14,VTR,"VENTAS, INC.",Real Estate,Real Estate,34.0,57.0,23.0
 2025-10-14,VTRS,VIATRIS INC.,Health Care,Health Care,5.0,-3.0,-8.0
-2025-10-14,VXN,CBOE NASDAQ MKT VOL NDX,,Indices,-19.0,-51.0,-32.0
+2025-10-14,VXN,CBOE NASDAQ MKT VOL NDX,,Volatility,-19.0,-51.0,-32.0
 2025-10-14,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,-16.0,0.0,16.0
 2025-10-14,WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIES ,Industrials,Industrials,12.0,-26.0,-38.0
 2025-10-14,WAT,WATERS ,Health Care,Health Care,-4.0,-51.0,-47.0

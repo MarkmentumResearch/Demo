@@ -583,7 +583,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-14,V,VISA INC.,Financials,Financials,-24.0
 2025-10-14,VAL,VALARIS LIMITED,,MR Discretion,23.0
 2025-10-14,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,0.0
-2025-10-14,VIX,CBOE MKT VOLATILITY IDX,,Indices,-45.0
+2025-10-14,VIX,CBOE MKT VOLATILITY IDX,,Volatility,-45.0
 2025-10-14,VLO,VALERO ENERGY ,Energy,Energy,19.0
 2025-10-14,VLTO,VERALTO ,Industrials,Industrials,-16.0
 2025-10-14,VMC,VULCAN MATERIALS COMPANY,Materials,Materials,-52.0
@@ -594,7 +594,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-10-14,VST,VISTRA CORP.,Utilities,Utilities,81.0
 2025-10-14,VTR,"VENTAS, INC.",Real Estate,Real Estate,57.0
 2025-10-14,VTRS,VIATRIS INC.,Health Care,Health Care,-3.0
-2025-10-14,VXN,CBOE NASDAQ MKT VOL NDX,,Indices,-51.0
+2025-10-14,VXN,CBOE NASDAQ MKT VOL NDX,,Volatility,-51.0
 2025-10-14,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,0.0
 2025-10-14,WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIES ,Industrials,Industrials,-26.0
 2025-10-14,WAT,WATERS ,Health Care,Health Care,-51.0
