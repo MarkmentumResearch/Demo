@@ -73,14 +73,15 @@ div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"]
 # --- Card + table CSS to match Morning Compass ---
 st.markdown("""
 <style>
+/* Center the single card on the page */
 .card-wrap { display:flex; justify-content:center; }
 .card { 
   border:1px solid #cfcfcf; border-radius:8px; background:#fff;
   padding:12px 12px 8px 12px; width:100%;
-  max-width:1320px;
+  max-width:1320px;  /* was 1120px -> more room so names show */
 }
 
-/* Table styling to match Daily Overview / Compass */
+/* Table styling to match Daily Overview */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td {
   border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
