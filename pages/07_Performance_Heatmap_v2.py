@@ -344,7 +344,7 @@ with center_col:
 
 # ----- Left Card (static HTML like Compass) -----
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-col_card = st.columns(1)[0]
+left, col_card, right = st.columns([1, 2, 1])
 
 with col_card:
     tf_order = ["Daily", "WTD", "MTD", "QTD"]
