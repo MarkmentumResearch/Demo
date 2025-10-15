@@ -440,6 +440,7 @@ custom_order = [
     "Currencies",
     "Commodities",
     "Bonds",
+    "Volatility",
     "Yields",
     "Foreign",
     "Communication Services",
