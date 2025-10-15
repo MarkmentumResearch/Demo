@@ -106,7 +106,7 @@ st.markdown("""
 }
 
 /* % columns: make them compact and non-growing (about “00.00%” wide) */
-.tbl col.col-small { width:7.2ch; min-width:7.2ch; max-width:7.2ch; }
+.tbl col.col-small { width:15ch; min-width:15ch; max-width:15ch; }
 
             
 /* Hard fallback: fix widths by nth-child (2..5) in case a browser ignores colgroup */
@@ -114,7 +114,7 @@ st.markdown("""
 .tbl th:nth-child(3), .tbl td:nth-child(3),
 .tbl th:nth-child(4), .tbl td:nth-child(4),
 .tbl th:nth-child(5), .tbl td:nth-child(5) {
-  width:7.2ch; max-width:7.2ch;
+  width:15ch; max-width:15ch;
 }
 
 
