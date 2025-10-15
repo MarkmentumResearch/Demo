@@ -344,7 +344,7 @@ with center_col:
 
 # ----- Left Card (static HTML like Compass) -----
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-c_blank, col_card, c_blank = st.columns([1,1.15,1])
+c_blank, col_card, c_blank = st.columns([1,1.25,1])
 with col_card:
     tf_order = ["Daily", "WTD", "MTD", "QTD"]
     agg["Timeframe"] = pd.Categorical(agg["Timeframe"], categories=tf_order, ordered=True)
