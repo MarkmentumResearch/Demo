@@ -306,6 +306,8 @@ col_card, col_heatmap = st.columns([2.2, 3])
 
 # ----- Left Card (static HTML like Compass) -----
 with col_card:
+    tf_order = ["Daily", "WTD", "MTD", "QTD"]
+    agg["Timeframe"] = pd.Categorical(agg["Timeframe"], categories=tf_order, ordered=True)
     # Build summary table (Avg % by timeframe) using the *same data* as the heatmap
     table_data = (
         agg.pivot(index="Category", columns="Timeframe", values="avg_delta")
@@ -319,7 +321,7 @@ with col_card:
            })
     )
     table_data.columns.name = None
-
+    table_data = table_data[["Name", "Daily", "WTD", "MTD", "QTD"]]  # <- enforce order
 
     # Preferred category order (same list used for heatmap ordering)
     preferred = [
