@@ -391,7 +391,7 @@ with col_card:
         unsafe_allow_html=True,
     )
 
-
+st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
 
 #col1, col2, col3 = st.columns([1.5, 3, .5])
 #with col2:
