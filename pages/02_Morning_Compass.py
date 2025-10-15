@@ -514,10 +514,88 @@ else:
         unsafe_allow_html=True,
     )
 
-#-------Card 4 ---------------
+# =========================
+# Card 4: Leaders/Laggard by MM Score Change (single table, 10 rows)
+# =========================
+@st.cache_data(show_spinner=False)
+def load_mc_77(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    return pd.read_csv(path)
+
+df75 = load_mc_77(DATA_DIR / "qry_graph_data_77.csv")
+
+required_cols_77 = [
+    "Date","Ticker","Ticker_name","Close",
+    "daily_Return","day_pr_low","day_pr_high",
+    "day_rr_ratio","model_score","model_score_delta"
+]
+
+if df77.empty or not all(c in df74.columns for c in required_cols_74):
+    row_spacer(8)
+    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_75.csv` is missing or columns are incomplete.")
+else:
+    d = df77.copy()
+
+    # Keep Deep Dive link on Ticker (same as first card)
+    d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
+
+    # ---- build card with same columns/order/formatting as the first card ----
+    df_77_card = pd.DataFrame({
+        "Name":          d["Ticker_name"],
+        "Ticker":        d["Ticker"],
+        "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
+        "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
+        "MM Score":      d["model_score"].map(mm_badge_html),
+        "MM Score Change":d["model_score_delta"].map(fmt_int),
+    })
+
+    # to HTML (same classes/alignment as first card)
+    tbl_html_77 = df_77_card.to_html(index=False, classes="tbl", escape=False, border=0)
+    tbl_html_77 = tbl_html_77.replace('class="dataframe tbl"', 'class="tbl"')
+
+    # same colgroup (Name = 40ch; Ticker centered; numbers right-aligned via CSS)
+    colgroup = """
+    <colgroup>
+      <col class="col-name"> <!-- Name (40ch) -->
+      <col>                   <!-- Ticker -->
+      <col>                   <!-- Close -->
+      <col>                   <!-- % Change -->
+      <col>                   <!-- Probable Low -->
+      <col>                   <!-- Probable High -->
+      <col>                   <!-- Risk/Reward -->
+      <col>                   <!-- MM Score -->
+      <col>                   <!-- MM Score Change -->
+    </colgroup>
+    """.strip()
+    tbl_html_77 = tbl_html_77.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+    note_text = "Note: MM Score → Contrarian positioning (higher = crowded short, lower = crowded long)."
+    note_html_safe = escape(note_text)
+
+    # render centered card below the first card
+    row_spacer(10)
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+              Top 5 Leaders/Laggards by MM Score
+            </h3>
+            {tbl_html_77}
+            <div class="bl note">{note_html_safe}</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 # =========================
-# Card 4: (optional) Category Snapshot – uses qry_graph_data_76.csv
+# Card 5: (optional) Category Snapshot – uses qry_graph_data_76.csv
 # =========================
 @st.cache_data(show_spinner=False)
 def load_mc_76(path: Path) -> pd.DataFrame:
