@@ -420,11 +420,11 @@ with col_card:
     # Add colgroup: 40ch Name, compact % columns (you already defined .col-name & .col-small CSS)
     colgroup = """
     <colgroup>
-    <col class="col-name"> <!-- Name (40ch, wraps) -->
-    <col class="col-small">
-    <col class="col-small">
-    <col class="col-small">
-    <col class="col-small">
+    <col class="col-name">   <!-- Name (40ch, wraps) -->
+    <col class="col-small">  <!-- Daily -->
+    <col class="col-small">  <!-- WTD -->
+    <col class="col-small">  <!-- MTD -->
+    <col class="col-small">  <!-- QTD -->
     </colgroup>
     """.strip()
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
