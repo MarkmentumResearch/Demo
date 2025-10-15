@@ -106,7 +106,7 @@ st.markdown("""
 /* … your existing styles … */
 
 /* Name (40ch) stays roomy */
-.tbl col.col-name { min-width:30ch; width:30ch; max-width:30ch; }
+.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }
 
 /* NEW: make the % columns compact */
 .tbl col.col-small { min-width:5ch; width:5ch; max-width:5ch; }
@@ -334,7 +334,7 @@ with center_col:
 
 # ----- Left Card (static HTML like Compass) -----
 st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-c_blank, col_card, c_blank = st.columns([1,.75,1])
+c_blank, col_card, c_blank = st.columns([1,1,1])
 with col_card:
     tf_order = ["Daily", "WTD", "MTD", "QTD"]
     agg["Timeframe"] = pd.Categorical(agg["Timeframe"], categories=tf_order, ordered=True)
