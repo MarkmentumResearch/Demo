@@ -104,8 +104,11 @@ st.markdown("""
   white-space:normal;               /* allow wrap */
   overflow:visible; text-overflow:clip;
 }
-""", unsafe_allow_html=True)
 
+/* Keep ticker links bold without underline */
+.tbl a { text-decoration:none; font-weight:600; }
+</style>
+""", unsafe_allow_html=True)
 
 
 
