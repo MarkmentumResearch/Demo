@@ -523,7 +523,7 @@ def load_mc_77(path: Path) -> pd.DataFrame:
         return pd.DataFrame()
     return pd.read_csv(path)
 
-df75 = load_mc_77(DATA_DIR / "qry_graph_data_77.csv")
+df77 = load_mc_77(DATA_DIR / "qry_graph_data_77.csv")
 
 required_cols_77 = [
     "Date","Ticker","Ticker_name","Close",
@@ -531,9 +531,9 @@ required_cols_77 = [
     "day_rr_ratio","model_score","model_score_delta"
 ]
 
-if df77.empty or not all(c in df74.columns for c in required_cols_74):
+if df77.empty or not all(c in df77.columns for c in required_cols_74):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_75.csv` is missing or columns are incomplete.")
+    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_77.csv` is missing or columns are incomplete.")
 else:
     d = df77.copy()
 
