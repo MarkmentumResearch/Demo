@@ -474,8 +474,6 @@ delta_hm = (
       .configure_view(strokeWidth=0)
 )
 
-score_change_hm = alt.hconcat(score_hm, delta_hm)
-
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 st.markdown(
     """
@@ -491,9 +489,13 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-left, center, right = st.columns([1, .8, 1])
-with center:
-    st.altair_chart(score_change_hm, use_container_width=False)
+
+# Render side-by-side without Altair concat
+left_hm, right_hm = st.columns([0.24, 0.76])
+with left_hm:
+    st.altair_chart(score_hm, use_container_width=True)
+with right_hm:
+    st.altair_chart(delta_hm, use_container_width=True)
 
 
 
