@@ -588,7 +588,7 @@ hm_sel = (
               alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
           ],
       )
-      .properties(width=520, height=max(360, 22*len(tickers_order)+24))
+      .properties(width=400, height=max(360, 22*len(tickers_order)+24))
       .configure_view(strokeWidth=0)
 )
 
@@ -607,7 +607,7 @@ if view_choice in ("Heatmap","Both"):
         """,
         unsafe_allow_html=True,
     )
-    left, center, right = st.columns([1.2, .8, 1.2])
+    left, center, right = st.columns([1.4, .8, 1.4])
     with center:
         st.altair_chart(hm_sel, use_container_width=False)
 
