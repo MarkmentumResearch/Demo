@@ -570,7 +570,7 @@ hm_sel = (
           color=alt.Color("norm:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                           legend=alt.Legend(orient="bottom",
-                                            title="Score / Change",
+                                            title="Score and Change",
                                             labelExpr="''")),
           tooltip=[
               alt.Tooltip("Ticker:N"),
