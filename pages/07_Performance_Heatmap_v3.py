@@ -396,7 +396,7 @@ base_hm = (
     .properties(width=450, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
-left, center, right = st.columns([1, 3, 1])
+left, center, right = st.columns([1, 1, 1])
 with center:
     with st.container(border=True):
         st.markdown(
