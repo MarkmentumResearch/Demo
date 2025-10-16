@@ -396,9 +396,22 @@ base_hm = (
     .properties(width=450, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
-left, center, right = st.columns([1, .75, 1])
+left, center, right = st.columns([1, 3, 1])
 with center:
-    st.altair_chart(base_hm, use_container_width=False)
+    with st.container(border=True):
+        st.markdown(
+            '<div style="text-align:center;">'
+            '<h3 style="margin:0;">Performance Heatmap – Avg % Changes</h3>'
+            '<div class="small" style="margin-top:4px;">'
+            'Average % change across tickers in each category and timeframe'
+            '</div></div>',
+            unsafe_allow_html=True,
+        )
+        _l, _c, _r = st.columns([1,.75,1])
+        with _c:
+            st.altair_chart(base_hm, use_container_width=False)
+
+#    st.altair_chart(base_hm, use_container_width=False)
 
 # =========================================================
 # Card 3 — Category selector → per-ticker rows
