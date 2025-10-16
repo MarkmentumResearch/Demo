@@ -168,7 +168,7 @@ st.markdown("""
 <style>
 /* …existing styles… */
 .card h3 { margin:0 0 4px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
-.card .subtitle { margin:0 0 8px 0; font-size:12px; font-weight:500; color:#6b7280; text-align:center; }
+.card .subtitle { margin:0 0 8px 0; font-size:14px; font-weight:500; color:#6b7280; text-align:center; }
 /* …existing styles… */
 </style>
 """, unsafe_allow_html=True)
