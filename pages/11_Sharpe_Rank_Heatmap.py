@@ -292,7 +292,7 @@ st.markdown(
         <h3>Macro Orientation</h3>
         <div class="subtitle">Current Sharpe Rank and Change by timeframe</div>
         {html_macro}
-        <div class="subnote">Rank cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
+        <div class="subnote">Rank cells are High/Neutral/Low (green/gray/red); change columns use independent per-timeframe scales.</div>
       </div>
     </div>
     """,
