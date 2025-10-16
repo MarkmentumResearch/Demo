@@ -374,7 +374,7 @@ base_hm = (
         x=alt.X(
             "Timeframe:N",
             sort=["Daily", "WTD", "MTD", "QTD"],
-            axis=alt.Axis(orient="top",title=None, labelFontSize=12, labelFlush=False,labelPadding=6)
+            axis=alt.Axis(orient="top",title=None, labelFontSize=12, labelAngle=0,labelFlush=False,labelPadding=6)
         ),
         y=alt.Y(
             "Category:N",
