@@ -301,7 +301,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Macro Orientation</h3>
-        <div class="subtitle">Current Sharpe Rank and Change by timeframe</div>
+        <div class="subtitle">Current Sharpe Percentile Rank and Change by timeframe</div>
         {html_macro}
         <div class="subnote">Rank cells are High/Neutral/Low (green/gray/red); change columns use independent per-timeframe scales.</div>
       </div>
@@ -369,7 +369,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Category Averages</h3>
-        <div class="subtitle">Avg Sharpe Rank and Change by category and timeframe</div>
+        <div class="subtitle">Avg Sharpe Percentile Rank and Change by category and timeframe</div>
         {html_cat}
         <div class="subnote">Each change column uses an independent red/green scale; Rank cells use High/Neutral/Low shading.</div>
       </div>
@@ -511,7 +511,7 @@ if view_choice in ("Table","Both"):
         <div class="card-wrap">
           <div class="card">
             <h3>{sel} — Per Ticker</h3>
-            <div class="subtitle">Current Sharpe Rank and Change by ticker and timeframe</div>
+            <div class="subtitle">Current Sharpe Percentile Rank and Change by ticker and timeframe</div>
             {html_detail}
             <div class="subnote">Ticker links open the Deep Dive Dashboard. Change columns are independently scaled.</div>
           </div>
@@ -589,7 +589,7 @@ if view_choice in ("Heatmap","Both"):
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                     font-size:14px; font-weight:500; color:#6b7280;">
-            Current Sharpe Rank and Change by ticker and timeframe
+            Current Sharpe Percentile Rank and Change by ticker and timeframe
         </div>
         """,
         unsafe_allow_html=True,
