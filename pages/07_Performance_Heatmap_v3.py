@@ -385,7 +385,7 @@ base_hm = (
             "Pct:Q",
             # diverging blue↔orange with 0 as midpoint (matches your prior style)
             scale=alt.Scale(scheme="blueorange", domainMid=0),
-            legend=alt.Legend(orient="bottom", title="Avg % Change (per timeframe)")
+            legend=alt.Legend(orient="bottom", labelExpr="''",title="Avg % Change (per timeframe)")
         ),
         tooltip=[
             alt.Tooltip("Category:N"),
