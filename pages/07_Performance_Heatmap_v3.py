@@ -252,7 +252,7 @@ st.markdown(
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
-              Performance — Category Averages</h3>
+              Performance — Category Averages</div>
               <div class="subtitle">Avg % change by each category and timeframe</div>
             {html_cat}
             <div class="subnote">Each column uses its own red/green gradient scale.</div>
