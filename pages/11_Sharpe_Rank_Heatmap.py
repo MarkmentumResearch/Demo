@@ -447,8 +447,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-mid = st.columns([1, .75, 1])[1]
-with mid:
+left, center, right = st.columns([1.2, .8, 1.2])
+with center:
     st.altair_chart(cat_hm, use_container_width=True)
 
 # -------------------------
