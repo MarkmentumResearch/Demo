@@ -472,7 +472,7 @@ tlong_sel["Ticker"] = pd.Categorical(tlong_sel["Ticker"], categories=tickers_ord
 # --- Per-category matrix heatmap (Ticker_name vs Timeframe)
 hm_sel = (
     alt.Chart(tlong_sel)
-    .mark_rect(stroke="#d9d9d9", strokeWidth=1)  # borders like your earlier heatmap
+    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
         x=alt.X("Timeframe:N",
                 sort=["Daily", "WTD", "MTD", "QTD"],
