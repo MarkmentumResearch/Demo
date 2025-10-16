@@ -122,27 +122,29 @@ st.markdown("""
 }
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
 
+/* table base */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td {
   border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
   overflow:hidden; text-overflow:ellipsis;
 }
-/* Headings: name left; numeric headings centered */
+/* headings: name left; numeric headings centered */
 .tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
-.tbl th:nth-child(n+2) { text-align:center; }   /* center Daily/WTD/MTD/QTD headings */
-
-/* Cells: name left-wrap; numeric values right */
+.tbl th:nth-child(n+2) { text-align:center; }
+/* cells: name left-wrap; numeric right */
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
-/* Column widths */
-.tbl col.col-name { min-width:20ch; width:20ch; max-width:20ch; }   /* Name = 40ch */
-.tbl col.col-num  { width:7ch; }                                    /* smaller numeric cols */
+/* Column width helpers */
+.tbl col.col-name        { width:40ch; min-width:40ch; max-width:40ch; }  /* Card 1 Name */
+.tbl col.col-name-wide   { width:48ch; min-width:48ch; max-width:48ch; }  /* Card 2 Name wider */
+.tbl col.col-ticker-nar  { width:8ch; }                                    /* Card 2 Ticker narrow */
+.tbl col.col-num-sm      { width:6ch; }                                     /* small numeric (Card 1) */
+.tbl col.col-num-lg      { width:11ch; }                                    /* large numeric (Card 2) */
 
-.tbl th:nth-child(1), .tbl td:nth-child(1) {
-  white-space:normal; overflow:visible; text-overflow:clip;
-}
+.tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
 
-.subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:12px; color:#6c757d; }
+/* simple vertical spacer */
+.vspace-16 { height:16px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -192,11 +194,11 @@ html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
 html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
 colgroup = """
 <colgroup>
-  <col class="col-name">           <!-- Name (40ch) -->
-  <col class="col-num">            <!-- Daily -->
-  <col class="col-num">            <!-- WTD -->
-  <col class="col-num">            <!-- MTD -->
-  <col class="col-num">            <!-- QTD -->
+  <col class="col-name">   <!-- Name (40ch) -->
+  <col class="col-num-sm"> <!-- Daily -->
+  <col class="col-num-sm"> <!-- WTD -->
+  <col class="col-num-sm"> <!-- MTD -->
+  <col class="col-num-sm"> <!-- QTD -->
 </colgroup>
 """.strip()
 html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -215,6 +217,8 @@ st.markdown(
         """,
         unsafe_allow_html=True,
     )
+
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
     # =========================================================
     # Card 2 — Category selector → per-ticker rows
@@ -258,12 +262,12 @@ html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=
 html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
 colgroup2 = """
 <colgroup>
-  <col class="col-name">  <!-- Name (40ch) -->
-  <col>                   <!-- Ticker -->
-  <col class="col-num">   <!-- Daily -->
-  <col class="col-num">   <!-- WTD -->
-  <col class="col-num">   <!-- MTD -->
-  <col class="col-num">   <!-- QTD -->
+  <col class="col-name-wide">  <!-- Name wider (48ch) -->
+  <col class="col-ticker-nar"> <!-- Ticker narrower -->
+  <col class="col-num-lg">     <!-- Daily bigger -->
+  <col class="col-num-lg">     <!-- WTD bigger -->
+  <col class="col-num-lg">     <!-- MTD bigger -->
+  <col class="col-num-lg">     <!-- QTD bigger -->
 </colgroup>
 """.strip()
 html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
