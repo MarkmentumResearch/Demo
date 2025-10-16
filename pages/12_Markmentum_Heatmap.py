@@ -1,83 +1,17 @@
-# -------------------------
-# Markmentum — Ranking (Model Scores + Sharpe Rank + Sharpe Ratio + Sharpe Ratio 30D Change)
-# -------------------------
+# 12_Markmentum_Heatmap.py
+# Markmentum — Model Score + Δ (Daily/WTD/MTD/QTD)
 
 from pathlib import Path
 import base64
 import pandas as pd
+import numpy as np
 import altair as alt
 import streamlit as st
-import sys
-import numpy as np
 from urllib.parse import quote_plus
 
 # ---------- Page ----------
 st.cache_data.clear()
 st.set_page_config(page_title="Markmentum Heatmap", layout="wide")
-def _image_b64(p: Path) -> str:
-    with open(p, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
-# -------------------------
-# Global CSS
-# -------------------------
-st.markdown("""
-<style>
-/* ============== Page & Shared style (clean, #9 rules) ============== */
-
-/* Container */
-[data-testid="stAppViewContainer"] .main .block-container,
-section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
-
-/* Remove bordered “decoration” wrappers */
-div[data-testid="stDecoration"]{ display:none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"]{ border:none !important; background:transparent !important; box-shadow:none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ display:none !important; }
-
-/* Type + optional heatmap headings (kept as in #9) */
-html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-}
-.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
-.h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
-
-/* Compact select width */
-div[data-baseweb="select"] { max-width:36ch !important; }
-
-/* -------- SCOPED layout rules (so we don't affect unrelated rows) -------- */
-
-/* A) Global heatmap centering row: applies to the st.columns row placed right after #hm-center */
-#hm-center + div[data-testid="stHorizontalBlock"]{
-  display:flex !important; justify-content:center !important; gap:0 !important;
-}
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
-  flex:1 1 0 !important; min-width:0 !important;   /* side columns flex */
-}
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
-  flex:0 0 auto !important; min-width:0 !important; /* middle column shrinks to chart */
-}
-
-/* B) Bottom 4 charts grid: 4-up desktop, 2×2 laptops/MBA, 1-up small screens */
-div[data-testid="stHorizontalBlock"]:has(#grid4) { display:flex; flex-wrap:wrap; gap:24px; }
-div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 22%; min-width:280px; }   /* 4-up desktop */
-@media (max-width:1499.98px){  /* laptops / MacBook Air → 2-up */
-  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 48%; }
-}
-@media (max-width:799.98px){   /* small screens → 1-up */
-  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 100%; }
-}
-
-/* C) Altair/Vega: intrinsic sizing + centering inside their column (backstop) */
-div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
-  display:grid !important; place-items:center !important; width:100%;
-}
-div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"] .vega-embed{
-  width:auto !important; max-width:100% !important; margin:0 auto !important; display:inline-block !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
 
 # -------------------------
 # Paths
@@ -85,22 +19,23 @@ div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"]
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 
-DATA_DIR  = APP_DIR / "data"
+DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
-
-
-
-CSV_PATH_48  = DATA_DIR / "qry_graph_data_48.csv"   # model_score
-CSV_PATH_WTD  = DATA_DIR / "model_score_wtd_change.csv"   # Sharpe_Rank
-CSV_PATH_MTD  = DATA_DIR / "model_score_mtd_change.csv"   # Sharpe
-CSV_PATH_QTD  = DATA_DIR / "model_score_qtd_change.csv"   # Sharpe_Ratio_30D_Change
-
+# Score sources (as specified)
+CSV_BASE   = DATA_DIR / "qry_graph_data_48.csv"            # Ticker, Ticker_name, Category, Date, model_score, previous_model_score, model_score_daily_change (optional)
+CSV_WTD    = DATA_DIR / "model_score_wtd_change.csv"       # model_score_wtd_change, current_model_score, previous_model_score
+CSV_MTD    = DATA_DIR / "model_score_mtd_change.csv"       # model_score_mtd_change, current_model_score, previous_model_score
+CSV_QTD    = DATA_DIR / "model_score_qtd_change.csv"       # model_score_qtd_change, current_model_score, previous_model_score
 
 # -------------------------
 # Header: logo centered
 # -------------------------
+def _image_b64(p: Path) -> str:
+    with open(p, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 if LOGO_PATH.exists():
     st.markdown(
         f"""
@@ -111,8 +46,7 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-
-#---clickable links helper------
+# --- Clickable Deep Dive helper & router (same UX as Performance Heatmap)
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -123,750 +57,549 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# --- lightweight router: handle links like ?page=Deep%20Dive&ticker=NVDA ---
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
-
 if dest.replace("%20", " ") == "deep dive":
     t = (qp.get("ticker") or "").strip().upper()
     if t:
-        # make Deep Dive happy even if it uses session_state only
         st.session_state["ticker"] = t
-        # keep the ticker in the URL for shareability
         st.query_params.clear()
         st.query_params["ticker"] = t
-    # jump to the page file in /pages
     st.switch_page("pages/13_Deep_Dive_Dashboard.py")
 
+# -------------------------
+# Helpers
+# -------------------------
+def _robust_vmax(series, q=0.98, floor=1.0, step=1.0):
+    s = pd.to_numeric(series, errors="coerce").abs().dropna()
+    if s.empty:
+        return floor
+    vmax = float(np.quantile(s, q))
+    return max(floor, np.ceil(vmax / step) * step)
+
+def _fmt_num(x, nd=0):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x):,.{nd}f}"
+    except Exception:
+        return ""
+
+# Score cell tint: Buy green, Neutral gray, Sell red; stronger beyond ±100
+def _score_cell_html(score: float, cap: float = 105.0) -> str:
+    if score is None or pd.isna(score):
+        return ""
+    s = float(score)
+
+    # Classification
+    if s >= 25:
+        # Buy — green intensity grows with |s|; beyond 100 gets darker
+        rel = min(abs(s) / cap, 1.0)
+        alpha = 0.12 + 0.28 * rel       # 0.12 → 0.40
+        bg = f"rgba(16,185,129,{alpha:.3f})"
+        color = "#0b513a"
+    elif s <= -25:
+        # Sell — red intensity grows with |s|; beyond -100 gets darker
+        rel = min(abs(s) / cap, 1.0)
+        alpha = 0.12 + 0.28 * rel
+        bg = f"rgba(239,68,68,{alpha:.3f})"
+        color = "#641515"
+    else:
+        # Neutral — light gray (fixed)
+        bg = "rgba(156,163,175,0.18)"   # gray-400 @ ~18%
+        color = "#374151"
+
+    label = _fmt_num(s, 0)
+    return f'<span style="display:block; background:{bg}; color:{color}; padding:0 6px; border-radius:2px; text-align:right;">{label}</span>'
+
+# Change column tint (independent scale per timeframe)
+def _delta_cell_html(val: float, vmax: float) -> str:
+    if val is None or pd.isna(val) or vmax is None or vmax <= 0:
+        return ""
+    s = min(abs(float(val)) / float(vmax), 1.0)
+    alpha = 0.12 + 0.28 * s
+    if val > 0:
+        bg = f"rgba(16,185,129,{alpha:.3f})"   # green
+    elif val < 0:
+        bg = f"rgba(239,68,68,{alpha:.3f})"   # red
+    else:
+        bg = "transparent"
+    label = _fmt_num(val, 0)
+    return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:2px; text-align:right;">{label}</span>'
 
 # -------------------------
-# Loaders
+# Load sources + assemble model-score frame
 # -------------------------
-
-last_modified = (DATA_DIR / "qry_graph_data_48.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
+def load_markmentum_frames():
+    # Base / daily
+    cols_keep = [
+        "Ticker","Ticker_name","Category","Date",
+        "model_score","previous_model_score","model_score_daily_change"
+    ]
+    base = pd.read_csv(CSV_BASE) if CSV_BASE.exists() else pd.DataFrame(columns=cols_keep)
+    # hygiene + latest row per ticker
+    if not base.empty and "Date" in base.columns:
+        base["_dt"] = pd.to_datetime(base["Date"], errors="coerce")
+        base = (base.sort_values(["Ticker","_dt"], ascending=[True, False])
+                    .drop_duplicates(subset=["Ticker"], keep="first"))
+    for c in ["model_score","previous_model_score","model_score_daily_change"]:
+        if c in base.columns:
+            base[c] = pd.to_numeric(base[c], errors="coerce")
+    if "model_score_daily_change" not in base.columns or base["model_score_daily_change"].isna().all():
+        if "model_score" in base.columns and "previous_model_score" in base.columns:
+            base["model_score_daily_change"] = base["model_score"] - base["previous_model_score"]
 
-def load_csv48(path: Path, _mtime: float = last_modified) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_daily_change"])
-    df = pd.read_csv(path)
+    # WTD / MTD / QTD
+    def _load_delta(p, delta_col):
+        if not p.exists():
+            return pd.DataFrame(columns=["Ticker", delta_col])
+        df = pd.read_csv(p)
+        if "Ticker" not in df.columns:
+            return pd.DataFrame(columns=["Ticker", delta_col])
+        df[delta_col] = pd.to_numeric(df.get(delta_col), errors="coerce")
+        df = df[["Ticker", delta_col]].drop_duplicates("Ticker", keep="first")
+        return df
 
-    # NEW: normalize keys to avoid whitespace/case issues that can hide axis labels
-    for col in ("Ticker", "Ticker_name", "Category"):
-        if col in df.columns:
-            df[col] = df[col].astype(str).str.strip()
+    wtd = _load_delta(CSV_WTD, "model_score_wtd_change")
+    mtd = _load_delta(CSV_MTD, "model_score_mtd_change")
+    qtd = _load_delta(CSV_QTD, "model_score_qtd_change")
 
-    df["Ticker"] = df["Ticker"].str.upper()   # optional but helps keep things uniform
-    df["model_score_daily_change"] = pd.to_numeric(df["model_score_daily_change"], errors="coerce")
+    # Merge
+    df = base.copy()
+    for add in (wtd, mtd, qtd):
+        df = df.merge(add, on="Ticker", how="left")
+
+    # Final schema
+    df = df.rename(columns={
+        "Ticker_name": "Name",
+        "model_score": "Score",
+        "model_score_daily_change": "ΔDaily",
+        "model_score_wtd_change":   "ΔWTD",
+        "model_score_mtd_change":   "ΔMTD",
+        "model_score_qtd_change":   "ΔQTD",
+    })
+    # Type hygiene
+    for c in ["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+
     return df
 
-
-
-last_modified = (DATA_DIR / "model_score_wtd_change.csv").stat().st_mtime
-@st.cache_data(show_spinner=False)
-def load_csv_WTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_wtd_change"])
-    df = pd.read_csv(path)
-    df["model_score_wtd_change"] = pd.to_numeric(df["model_score_wtd_change"], errors="coerce")
-    return df
-
-last_modified = (DATA_DIR / "model_score_mtd_change.csv").stat().st_mtime
-@st.cache_data(show_spinner=False)
-def load_csv_MTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_mtd_change"])
-    df = pd.read_csv(path)
-    df["model_score_mtd_change"] = pd.to_numeric(df["model_score_mtd_change"], errors="coerce")
-    return df
-
-last_modified = (DATA_DIR / "model_score_qtd_change.csv").stat().st_mtime
-@st.cache_data(show_spinner=False)
-def load_csv_QTD(path: Path,_mtime: float = last_modified) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame(columns=["Ticker", "Ticker_name", "Category", "Date", "model_score_qtd_change"])
-    df = pd.read_csv(path)
-    df["model_score_qtd_change"] = pd.to_numeric(df["model_score_qtd_change"], errors="coerce")
-    return df
-
-df48 = load_csv48(CSV_PATH_48).copy()
-dfWTD = load_csv_WTD(CSV_PATH_WTD).copy()
-dfMTD = load_csv_MTD(CSV_PATH_MTD).copy()
-dfQTD = load_csv_QTD(CSV_PATH_QTD).copy()
-
-if df48.empty or dfWTD.empty or dfMTD.empty or dfQTD.empty:
-    st.warning("Missing one of the input CSVs (48, 49, 50, or 51). Please confirm files exist.")
+scores = load_markmentum_frames()
+if scores.empty:
+    st.warning("Model-score files not found or missing required columns.")
     st.stop()
 
+# As-of
+date_str = ""
+if "Date" in scores.columns:
+    dmax = pd.to_datetime(scores["Date"], errors="coerce").max()
+    if pd.notna(dmax):
+        date_str = f"{dmax.month}/{dmax.day}/{dmax.year}"
 
-#====title=================
-def _mdy_fmt() -> str:
-    """Platform-safe month/day format (no leading zeros)."""
-    return "%#m/%#d/%Y" if sys.platform.startswith("win") else "%-m/%-d/%Y"
+# -------------------------
+# Shared CSS
+# -------------------------
+st.markdown("""
+<style>
+.card-wrap { display:flex; justify-content:center; }
+.card{
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 10px 12px; width:100%;
+  max-width:900px;
+}
+@media (max-width:1100px){
+  .card { max-width:100%; }
+}
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+.tbl th:nth-child(n+3) { text-align:center; } /* numeric headings centered */
+.tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
 
-def _first_date_from_csv(path: str, date_col: str = "date") -> str:
-    df = pd.read_csv(path)
-    # Be tolerant to 'Date' vs 'date'
-    if date_col not in df.columns:
-        for alt in ("Date", "DATE"):
-            if alt in df.columns:
-                date_col = alt
-                break
-    dt = pd.to_datetime(df[date_col].iloc[0], errors="coerce")
-    return "" if pd.isna(dt) else dt.strftime(_mdy_fmt())
+.tbl col.col-name-wide   { width:22ch; min-width:22ch; max-width:22ch; }
+.tbl col.col-ticker-nar  { width:7ch; }
+.tbl col.col-num         { width:8ch; }
 
-date_text = _first_date_from_csv(CSV_PATH_48, date_col="date")
+.tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
+.subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
+.card h3 { margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
+.card .subtitle { margin:0 0 8px 0; font-size:14px; font-weight:500; color:#6b7280; text-align:center; }
+.vspace-16 { height:16px; }
+</style>
+""", unsafe_allow_html=True)
 
+# -------------------------
+# Title
+# -------------------------
 st.markdown(
     f"""
-    <div style="
-        text-align:center;
-        font-size:20px;
-        font-weight:600;
-        color:#233;
-        margin-top:8px;
-        margin-bottom:12px;">
-        Markmentum Heatmap – {date_text}
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Markmentum Heatmap – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# --- Per-timeframe "universe" vmax from ALL tickers (independent scales)
-def _vmax_from(df: pd.DataFrame, col: str, q: float = 0.98) -> float:
-    if col not in df.columns or df.empty:
-        return 1.0
-    s = pd.to_numeric(df[col], errors="coerce").dropna().abs().values
-    if s.size == 0:
-        return 1.0
-    return float(max(1.0, np.quantile(s, q)))
+# -------------------------
+# Macro Orientation (same flow as Performance page)
+# -------------------------
+macro_list = [
+    "SPX","NDX","DJI","RUT",
+    "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
+    "GLD","UUP","TLT","BTC=F"
+]
+scores["_dt"] = pd.to_datetime(scores["Date"], errors="coerce")
+latest = (
+    scores.sort_values(["Ticker","_dt"], ascending=[True, False])
+          .drop_duplicates(subset=["Ticker"], keep="first")
+)
 
-VTF = {
-    "Daily": _vmax_from(df48, "model_score_daily_change", q=0.98),
-    "WTD":   _vmax_from(dfWTD, "model_score_wtd_change",   q=0.98),
-    "MTD":   _vmax_from(dfMTD, "model_score_mtd_change",   q=0.98),
-    "QTD":   _vmax_from(dfQTD, "model_score_qtd_change",   q=0.98),
+m = latest[latest["Ticker"].isin(macro_list)].copy()
+m["__ord__"] = m["Ticker"].map({t:i for i,t in enumerate(macro_list)})
+m = m.sort_values(["__ord__"], kind="stable")
+m["Ticker_link"] = m["Ticker"].map(_mk_ticker_link)
+
+# independent scaling for deltas by timeframe (within macro card)
+vmaxM = {
+    "ΔDaily": _robust_vmax(m["ΔDaily"], q=0.98, floor=1.0, step=1.0),
+    "ΔWTD":   _robust_vmax(m["ΔWTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔMTD":   _robust_vmax(m["ΔMTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔQTD":   _robust_vmax(m["ΔQTD"],   q=0.98, floor=1.0, step=1.0),
 }
 
-#=====title end
-
-# =========================
-# Global Heatmap — Avg Model Score Changes
-# Paste this block right after the page title and before your controls.
-# =========================
-import altair as alt
-import pandas as pd
-import streamlit as st
-
-# ---- Build Category × Timeframe table from your four dataframes
-parts: list[pd.DataFrame] = []
-
-if "model_score_daily_change" in df48.columns:
-    parts.append(
-        df48[["Category", "model_score_daily_change"]]
-        .rename(columns={"model_score_daily_change": "delta"})
-        .assign(Timeframe="Daily")
-    )
-
-parts.append(
-    dfWTD[["Category", "model_score_wtd_change"]]
-    .rename(columns={"model_score_wtd_change": "delta"})
-    .assign(Timeframe="WTD")
-)
-parts.append(
-    dfMTD[["Category", "model_score_mtd_change"]]
-    .rename(columns={"model_score_mtd_change": "delta"})
-    .assign(Timeframe="MTD")
-)
-parts.append(
-    dfQTD[["Category", "model_score_qtd_change"]]
-    .rename(columns={"model_score_qtd_change": "delta"})
-    .assign(Timeframe="QTD")
-)
-
-hm = pd.concat(parts, ignore_index=True).dropna(subset=["Category", "delta"])
-
-agg = (
-    hm.groupby(["Category", "Timeframe"], as_index=False)
-      .agg(avg_delta=("delta", "mean"), n=("delta", "size"))
-)
-
-agg["norm"] = agg.apply(
-    lambda r: np.clip(r["avg_delta"] / max(VTF.get(r["Timeframe"], 1.0), 1e-9), -1, 1),
-    axis=1
-)
-
-global_delta = pd.concat([
-    df48["model_score_daily_change"],
-    dfWTD["model_score_wtd_change"],
-    dfMTD["model_score_mtd_change"],
-    dfQTD["model_score_qtd_change"],
-], ignore_index=True)
-
-#vmax_ticker = float(global_delta.abs().quantile(0.995))
-#vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)
-vmax_ticker = float(np.quantile(np.abs(global_delta.values), 0.999))  # 99.5th pct
-vmax_ticker = max(1.0, np.ceil(vmax_ticker / 10.0) * 10.0)              # round up nicely
-
-# ---- Ordering
-preferred = [
-    "Sector & Style ETFs",
-    "Indices",
-    "Futures",
-    "Currencies",
-    "Commodities",
-    "Bonds",
-    "Yields",
-    "Volatility",
-    "Foreign",
-    "Communication Services",
-    "Consumer Discretionary",
-    "Consumer Staples",
-    "Energy",
-    "Financials",
-    "Health Care",
-    "Industrials",
-    "Information Technology",
-    "Materials",
-    "Real Estate",
-    "Utilities",
-    "MR Discretion"
-]
-
-present = list(agg["Category"].unique())
-cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
-tf_order = ["Daily", "WTD", "MTD", "QTD"]
-
-# ---- Sizing (tight, centered card)
-row_h   = 26
-chart_h = max(360, row_h * len(cat_order) + 24)
-chart_w = 625              # plot area width (not including legend)
-legend_w = 120             # visual compensation for right-side legend
-
-# ---- Symmetric diverging scale centered at 0 (winsorized for outliers)
-vmax = float(max(1.0, agg["avg_delta"].abs().quantile(0.98)))
-
-# ---- Heatmap (darker, larger labels + thin dark borders; legend stays on the right)
-heat = (
-    alt.Chart(agg)
-    .mark_rect(
-        stroke="#2b2f36",        # dark cell border
-        strokeWidth=0.6,         # thin so shared edges don't look "double"
-        strokeOpacity=0.95
-    )
-    .encode(
-        x=alt.X(
-            "Timeframe:N",
-            sort=tf_order,
-            axis=alt.Axis(
-                orient="top",
-                title=None,
-                labelAngle=0,
-                labelPadding=8,
-                labelFlush=False,
-                labelColor="#1a1a1a",   # darker timeframe labels
-                labelFontSize=13        # slightly bigger
-            ),
-        ),
-        y=alt.Y(
-            "Category:N",
-            sort=cat_order,
-            axis=alt.Axis(
-                title=None,
-                labelLimit=460,
-                orient="left",
-                labelPadding=6,
-                labelFlush=False,
-                labelColor="#1a1a1a",   # darker category labels
-                labelFontSize=13        # slightly bigger
-            ),
-        ),
-        color=alt.Color(
-            "norm:Q",
-            scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-            legend=alt.Legend(
-                orient="bottom",
-                title="Avg Δ Score (per timeframe)",
-                titleColor="#1a1a1a",   # darker legend title
-                labelColor="#1a1a1a",   # darker legend labels
-                gradientLength=360,
-                labelLimit=80,
-                labelExpr="''"
-            ),
-        ),
-        tooltip=[
-            alt.Tooltip("Category:N"),
-            alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("avg_delta:Q", title="Avg Δ", format=",.2f"),
-            alt.Tooltip("n:Q", title="Count"),
-        ],
-    )
-    .properties(
-        width=chart_w,
-        height=chart_h,
-        padding={"left": legend_w, "right": 0, "top": 6, "bottom": 6},
-    )
-    .configure_view(strokeOpacity=0)
-    .configure_axis(labelFontSize=12, titleFontSize=12)
-)
-
-# ---- Centered, snug card that hugs the heatmap
-st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-pad_l, center_col, pad_r = st.columns([1, 3, 1])
-with center_col:
-    with st.container(border=True):
-        st.markdown(
-            '<div style="text-align:center;">'
-            '<h3 style="margin:0;">Markmentum Heatmap – Avg Score Changes</h3>'
-            '<div class="small" style="margin-top:4px;">'
-            'Average Score Δ across tickers in each category and timeframe'
-            '</div></div>',
-            unsafe_allow_html=True,
-        )
-        _l, _c, _r = st.columns([1, 7, 1])
-        with _c:
-            st.altair_chart(heat, use_container_width=False)
-
-
-
-# -------------------------
-# Controls (selector + lock)
-# -------------------------
-# Desired manual order
-custom_order = [
-    "Sector & Style ETFs",
-    "Indices",
-    "Futures",
-    "Currencies",
-    "Commodities",
-    "Bonds",
-    "Volatility",
-    "Yields",
-    "Foreign",
-    "Communication Services",
-    "Consumer Discretionary",
-    "Consumer Staples",
-    "Energy",
-    "Financials",
-    "Health Care",
-    "Industrials",
-    "Information Technology",
-    "Materials",
-    "Real Estate",
-    "Utilities",
-    "MR Discretion"
-]
-
-# Keep only categories that exist in your data
-all_cats = [cat for cat in custom_order if cat in (
-    set(df48["Category"].dropna().unique())
-    | set(dfWTD["Category"].dropna().unique())
-    | set(dfMTD["Category"].dropna().unique())
-    | set(dfQTD["Category"].dropna().unique())
-)]
-
-
-default_cat = "Sector & Style ETFs"
-default_index = all_cats.index(default_cat) if default_cat in all_cats else 0
-
-
-
-#left_toggle,c_blank,c_blank= st.columns([1,4,1])
-#with left_toggle:
-#        show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-show_ticker_hm = True
-
-c_blank,c_sel,c_blank = st.columns([2.5,3,.3])
-with c_sel:
-        sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
-    
-
-
-
-
-#left_toggle, c_sel, c_lock = st.columns([0.50, 0.45, 0.15])
-#with left_toggle:
-#    show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-#with c_sel:
-#    sel = st.selectbox("Category", all_cats, index=default_index, key="rankings_category")
-#with c_lock:
-#    lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-
-
-# =========================
-# Per-Ticker Heatmap (Category)
-# Place this block RIGHT UNDER your Category selectbox and ABOVE the four ranking charts.
-# Expects your selectbox variable to be named `sel`.
-# Uses df48 (Daily), dfWTD, dfMTD, dfQTD already loaded on the page.
-# =========================
-
-# Left-aligned toggle to reveal the matrix
-#left_toggle, _ = st.columns([1, 9])
-#with left_toggle:
-#    show_ticker_hm = st.checkbox("Show per-ticker heatmap (category)", value=False, key="show_ticker_hm")
-
-
-
-
-
-if show_ticker_hm:
-    # --- Build a unified per-ticker table across Daily / WTD / MTD / QTD for the selected category
-    def _daily_part(df_daily: pd.DataFrame) -> pd.DataFrame:
-        # csv #48 columns: model_score, previous_model_score, model_score_daily_change
-        cols = [
-            "Ticker", "Ticker_name", "Category", "Date",
-            "model_score_daily_change", "model_score", "previous_model_score",
-        ]
-        cols = [c for c in cols if c in df_daily.columns]
-        return (
-            df_daily.loc[df_daily["Category"] == sel, cols]
-                    .rename(columns={
-                        "model_score_daily_change": "delta",
-                        "model_score": "current_model_score",
-                    })
-                    .assign(Timeframe="Daily")
-        )
-
-    def _part(df: pd.DataFrame, delta_col: str, tf_label: str) -> pd.DataFrame:
-        # WTD/MTD/QTD files already have current_model_score / previous_model_score
-        cols = [
-            "Ticker", "Ticker_name", "Category", "Date",
-            delta_col, "current_model_score", "previous_model_score",
-        ]
-        cols = [c for c in cols if c in df.columns]
-        return (
-            df.loc[df["Category"] == sel, cols]
-              .rename(columns={delta_col: "delta"})
-              .assign(Timeframe=tf_label)
-        )
-
-    parts = []
-    if "model_score_daily_change" in df48.columns:
-        parts.append(_daily_part(df48))
-    parts.append(_part(dfWTD, "model_score_wtd_change", "WTD"))
-    parts.append(_part(dfMTD, "model_score_mtd_change", "MTD"))
-    parts.append(_part(dfQTD, "model_score_qtd_change", "QTD"))
-
-    tm = pd.concat(parts, ignore_index=True).dropna(subset=["Ticker", "delta"])
-    tm["norm"] = tm.apply(
-        lambda r: np.clip(r["delta"] / max(VTF.get(r["Timeframe"], 1.0), 1e-9), -1, 1),
-        axis=1
-    )
-
-
-    # --- Sort tickers alphabetically for the Y-axis
-    ticker_order = sorted(tm["Ticker"].unique().tolist())
-    tf_order = ["Daily", "WTD", "MTD", "QTD"]
-
-    # --- Chart sizing (narrow, card hugs chart)
-    row_h   = 22
-    chart_h = max(360, row_h * max(1, len(ticker_order)) + 24)
-    chart_w = 530
-    legend_w = 120
-
-    # --- Symmetric diverging scale centered at 0 (winsorized)
-    vmax = float(max(1.0, tm["delta"].abs().quantile(0.98)))
-
-    ticker_heat = (
-        alt.Chart(tm)
-        .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-        .encode(
-            x=alt.X(
-                "Timeframe:N",
-                sort=tf_order,
-                axis=alt.Axis(
-                    orient="top",
-                    title=None,
-                    labelAngle=0,
-                    labelPadding=8,
-                    labelFlush=False,          # keeps 'Daily' centered
-                    labelColor="#1a1a1a",
-                    labelFontSize=13,
-                ),
-            ),
-            y=alt.Y(
-                "Ticker:N",
-                sort=ticker_order,             # <- alphabetical tickers on the left
-                axis=alt.Axis(
-                    title=None,
-                    labelLimit=140,
-                    labelPadding=10,
-                    orient = "left",
-                    labelFlush=False, 
-                    labelColor="#1a1a1a",
-                    labelFontSize=13,
-                    labelOverlap=False,
-                ),
-            ),
-            color=alt.Color(
-                "norm:Q",
-                scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                legend=alt.Legend(
-                    orient="bottom",
-                    title="Δ Score (per timeframe)",
-                    titleColor="#1a1a1a",
-                    labelColor="#1a1a1a",
-                    gradientLength=355,
-                    labelLimit=80,
-                    labelExpr="''",
-                ),
-            ),
-            tooltip=[
-                alt.Tooltip("Ticker:N"),
-                alt.Tooltip("Ticker_name:N", title="Name"),
-                alt.Tooltip("Timeframe:N"),
-                alt.Tooltip("delta:Q", title="Δ Score", format=",.2f"),
-                alt.Tooltip("current_model_score:Q", title="Current", format=",.2f"),
-                alt.Tooltip("previous_model_score:Q", title="Previous", format=",.2f"),
-                alt.Tooltip("Date:N", title="Date"),
-            ],
-        )
-        .properties(
-            width=chart_w,
-            height=chart_h,
-            padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4},  # balances right legend
-        )
-        .configure_view(strokeOpacity=0)
-        .configure_axis(labelFontSize=12, titleFontSize=12)
-    )
-
-    # --- Centered, snug card
-    pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
-    with center_col:
-        with st.container(border=True):
-            st.markdown(
-                f'<div style="text-align:center;">'
-                f'<h4 style="margin:0;">{sel} — Per-Ticker Markmentum Heatmap</h4>'
-                f'<div class="small" style="margin-top:4px;">'
-                f'Score Δ by ticker and timeframe'
-                f'</div></div>',
-                unsafe_allow_html=True,
-            )
-            _l, _c, _r = st.columns([1, 4, 1])
-            with _c:
-                st.altair_chart(ticker_heat, use_container_width=False)
-
-#col1, col2, col3 = st.columns([1.85, 3, .3])
-#with col2:
-#    st.caption(f"Note: Color scale fixed globally to ±{vmax_ticker:g}. Values outside this range are shown at the end color.")
-#st.divider()  # thin horizontal line
-st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
-st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)  # small gap after
-
-# global model-score min/max for locked mode
-global_ms_min = float(df48["model_score_daily_change"].min()) if not df48.empty else 0.0
-global_ms_max = float(df48["model_score_daily_change"].max()) if not df48.empty else 0.0
-
-# -------------------------
-# Helper: padded domain for negative-capable charts
-# -------------------------
-def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
-    """
-    Extend the x-domain a bit on the left (and a hair on the right) so
-    large negative bars have room for labels and tickers.
-    """
-    if series.empty:
-        return alt.Undefined
-    s_min = float(series.min())
-    s_max = float(series.max())
-    rng = max(s_max - s_min, 1e-9)
-    pad = max(rng * frac, min_pad)
-    left = s_min - pad if s_min < 0 else s_min
-    right = s_max + 0.02 * rng  # tiny right pad
-    return [left, right]
-
-# -------------------------
-# Filter dataframes for the selected category
-# -------------------------
-
-c_lock,c_blank, c_blank = st.columns([1,4,1])
-with c_lock:
-        lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-
-st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html=True)
-
-view48 = df48[df48["Category"] == sel].copy().sort_values("model_score_daily_change", ascending=False)
-viewWTD = dfWTD[dfWTD["Category"] == sel].copy().sort_values("model_score_wtd_change", ascending=False)
-viewMTD = dfMTD[dfMTD["Category"] == sel].copy().sort_values("model_score_mtd_change", ascending=False)
-viewQTD = dfQTD[dfQTD["Category"] == sel].copy().sort_values("model_score_qtd_change", ascending=False)
-
-if view48.empty and viewWTD.empty and viewMTD.empty and viewQTD.empty:
-    st.info(f"No tickers found for **{sel}**.")
-    st.stop()
-
-# y (row) order handling
-if lock_axes_and_order:
-    y_order = sorted(set(view48["Ticker"]) | set(viewWTD["Ticker"]) | set(viewMTD["Ticker"]) | set(viewQTD["Ticker"]))
-else:
-    y_order_48 = view48["Ticker"].tolist()
-    y_order_WTD = viewWTD["Ticker"].tolist()
-    y_order_MTD = viewMTD["Ticker"].tolist()
-    y_order_QTD = viewQTD["Ticker"].tolist()
-
-chart_height = max(260, 24 * max(len(view48), len(viewWTD), len(viewMTD), len(viewQTD)) + 120)
-
-# -------------------------
-# Chart #1: Model Score  (now with padded domain)
-# -------------------------
-# global model-score min/max for locked mode
-category_ms_min = float(view48["model_score_daily_change"].min()-25) if not df48.empty else 0.0
-category_ms_max = float(view48["model_score_daily_change"].max()+25) if not df48.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
-
-x48 = alt.X("model_score_daily_change:Q", title="Score Daily Change", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
-base48 = (
-    alt.Chart(view48)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_48), title="Ticker"),
-        x=x48,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score_daily_change:Q", format=",.0f")],
-    )
-)
-
-bars48 = base48.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-pos48 = base48.transform_filter("datum.model_score_daily_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("model_score_daily_change:Q", format=",.0f"))
-neg48 = base48.transform_filter("datum.model_score_daily_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("model_score_daily_change:Q", format=",.0f"))
-
-chart48 = (bars48 + pos48 + neg48).properties(title="Score Daily Change Ranking", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #2: Sharpe Percentile Rank (unchanged)
-# -------------------------
-# global model-score min/max for locked mode
-category_ms_min2 = float(viewWTD["model_score_wtd_change"].min()-10) if not dfWTD.empty else 0.0
-category_ms_max2 = float(viewWTD["model_score_wtd_change"].max()+10) if not dfWTD.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom2 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom2 = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
-
-xWTD = alt.X("model_score_wtd_change:Q", title="Score WTD Change", scale=alt.Scale(domain=ms_dom2))
-
-
-baseWTD = (
-    alt.Chart(viewWTD)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_WTD), title="Ticker"),
-        x=xWTD,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score_wtd_change:Q", format=",.1f")],
-    )
-)
-
-barsWTD = baseWTD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posWTD = baseWTD.transform_filter("datum.model_score_wtd_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("model_score_wtd_change:Q", format=",.0f"))
-negWTD = baseWTD.transform_filter("datum.model_score_wtd_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("model_score_wtd_change:Q", format=",.0f"))
-
-chartWTD = (barsWTD + posWTD + negWTD).properties(title="Score WTD Change Ranking", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #3: Sharpe Ratio  (now with padded domain)
-# -------------------------
-category_ms_min3 = float(viewMTD["model_score_mtd_change"].min()-10) if not dfMTD.empty else 0.0
-category_ms_max3 = float(viewMTD["model_score_mtd_change"].max()+10) if not dfMTD.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom3 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom3 = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
-
-xMTD = alt.X("model_score_mtd_change:Q", title="Score MTD Change", scale=alt.Scale(domain=ms_dom3))
-
-baseMTD = (
-    alt.Chart(viewMTD)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_MTD), title="Ticker"),
-        x=xMTD,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score_mtd_change:Q", format=",.0f")],
-    )
-)
-
-barsMTD = baseMTD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posMTD = baseMTD.transform_filter("datum.model_score_mtd_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("model_score_mtd_change:Q", format=",.0f"))
-negMTD = baseMTD.transform_filter("datum.model_score_mtd_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("model_score_mtd_change:Q", format=",.0f"))
-
-chartMTD = (barsMTD + posMTD + negMTD).properties(title="Score MTD Change Ranking", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #4: Sharpe Ratio 30-Day Change  (now with padded domain)
-# -------------------------
-category_ms_min4 = float(viewQTD["model_score_qtd_change"].min()-10) if not dfQTD.empty else 0.0
-category_ms_max4 = float(viewQTD["model_score_qtd_change"].max()+10) if not dfQTD.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom4 = padded_domain(pd.Series([global_ms_min, global_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom4 = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
-
-xQTD = alt.X("model_score_qtd_change:Q", title="Score QTD Change", scale=alt.Scale(domain=ms_dom4))
-
-baseQTD = (
-    alt.Chart(viewQTD)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else y_order_QTD), title="Ticker"),
-        x=xQTD,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("model_score_qtd_change:Q", format=",.0f")],
-    )
-)
-
-barsQTD = baseQTD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posQTD = baseQTD.transform_filter("datum.model_score_qtd_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("model_score_qtd_change:Q", format=",.0f"))
-negQTD = baseQTD.transform_filter("datum.model_score_qtd_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("model_score_qtd_change:Q", format=",.0f"))
-
-chartQTD = (barsQTD + posQTD + negQTD).properties(title="Score QTD Change Ranking", height=chart_height).configure_title(anchor="middle")
-
-# Render in 4 columns (centered row; wraps on smaller screens)
-cA, cB, cC, cD = st.columns(4)
-
-with cA:
-    #st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
-    st.altair_chart(chart48, use_container_width=True)
-
-with cB: st.altair_chart(chartWTD, use_container_width=True)
-with cC: st.altair_chart(chartMTD, use_container_width=True)
-with cD: st.altair_chart(chartQTD, use_container_width=True)
+m_render = pd.DataFrame({
+    "Name":   m["Name"],
+    "Ticker": m["Ticker_link"],
+    "Score":  [ _score_cell_html(v) for v in m["Score"] ],
+    "Daily":  [ _delta_cell_html(v, vmaxM["ΔDaily"]) for v in m["ΔDaily"] ],
+    "WTD":    [ _delta_cell_html(v, vmaxM["ΔWTD"])   for v in m["ΔWTD"]   ],
+    "MTD":    [ _delta_cell_html(v, vmaxM["ΔMTD"])   for v in m["ΔMTD"]   ],
+    "QTD":    [ _delta_cell_html(v, vmaxM["ΔQTD"])   for v in m["ΔQTD"]   ],
+})
+
+html_macro = m_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_macro = html_macro.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup_macro = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name -->
+  <col class="col-ticker-nar"> <!-- Ticker -->
+  <col class="col-num">        <!-- Score -->
+  <col class="col-num">        <!-- Daily -->
+  <col class="col-num">        <!-- WTD -->
+  <col class="col-num">        <!-- MTD -->
+  <col class="col-num">        <!-- QTD -->
+</colgroup>
+""".strip()
+html_macro = html_macro.replace('<table class="tbl">', f'<table class="tbl">{colgroup_macro}', 1)
 
 st.markdown(
-    "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
-    "Tip: <b>Click any bar</b> to open the Deep Dive for that ticker."
-    "</div>",
+    f"""
+    <div class="card-wrap">
+      <div class="card">
+        <h3>Macro Orientation</h3>
+        <div class="subtitle">Current MM Score and Change by timeframe</div>
+        {html_macro}
+        <div class="subnote">Score cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
+      </div>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
 
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+
+# -------------------------
+# Category Averages card
+# -------------------------
+grouped = latest.groupby("Category", dropna=True, as_index=False).agg(
+    Score=("Score","mean"),
+    ΔDaily=("ΔDaily","mean"),
+    ΔWTD=("ΔWTD","mean"),
+    ΔMTD=("ΔMTD","mean"),
+    ΔQTD=("ΔQTD","mean"),
+)
+
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+order_map = {name: i for i, name in enumerate(preferred_order)}
+grouped["__ord__"] = grouped["Category"].map(order_map)
+grouped = grouped.sort_values(["__ord__", "Category"], kind="stable").drop(columns="__ord__")
+
+vmax_cat = {
+    "ΔDaily": _robust_vmax(grouped["ΔDaily"], q=0.98, floor=1.0, step=1.0),
+    "ΔWTD":   _robust_vmax(grouped["ΔWTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔMTD":   _robust_vmax(grouped["ΔMTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔQTD":   _robust_vmax(grouped["ΔQTD"],   q=0.98, floor=1.0, step=1.0),
+}
+
+g_render = pd.DataFrame({
+    "Name":  grouped["Category"],
+    "Score": [ _score_cell_html(v) for v in grouped["Score"] ],
+    "Daily": [ _delta_cell_html(v, vmax_cat["ΔDaily"]) for v in grouped["ΔDaily"] ],
+    "WTD":   [ _delta_cell_html(v, vmax_cat["ΔWTD"])   for v in grouped["ΔWTD"]   ],
+    "MTD":   [ _delta_cell_html(v, vmax_cat["ΔMTD"])   for v in grouped["ΔMTD"]   ],
+    "QTD":   [ _delta_cell_html(v, vmax_cat["ΔQTD"])   for v in grouped["ΔQTD"]   ],
+})
+
+html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name -->
+  <col class="col-num">        <!-- Score -->
+  <col class="col-num">        <!-- Daily -->
+  <col class="col-num">        <!-- WTD -->
+  <col class="col-num">        <!-- MTD -->
+  <col class="col-num">        <!-- QTD -->
+</colgroup>
+""".strip()
+html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+st.markdown(
+    f"""
+    <div class="card-wrap">
+      <div class="card">
+        <h3>Category Averages</h3>
+        <div class="subtitle">Avg MM score and Change by category and timeframe</div>
+        {html_cat}
+        <div class="subnote">Each change column uses an independent red/green scale; score cells use Buy/Neutral/Sell shading.</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+
+
+# ===== Category Heatmap — ONE matrix (Score + ΔDaily/ΔWTD/ΔMTD/ΔQTD), all blue↔orange =====
+glong = grouped.melt(
+    id_vars=["Category"],
+    value_vars=["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"],
+    var_name="Timeframe",
+    value_name="Value",
+)
+glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
+
+# Robust |max| per timeframe INCLUDING Score; cap Score's vmax at 105 so extremes don't dominate
+vmax_tf = {}
+for tf, sub in glong.groupby("Timeframe"):
+    vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
+    if tf == "Score":
+        vmax = min(105.0, max(vmax, 1.0))
+    vmax_tf[tf] = vmax
+
+# Normalize each cell by its timeframe-specific vmax → [-1, 1]
+glong["norm"] = glong.apply(
+    lambda r: float(np.clip((r["Value"] or 0.0) / (vmax_tf.get(r["Timeframe"], 1.0) or 1.0), -1, 1)),
+    axis=1
+)
+
+timeframe_order = ["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
+
+cat_hm = (
+    alt.Chart(glong)
+      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+      .encode(
+          x=alt.X("Timeframe:N",
+                  sort=timeframe_order,
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0,
+                                labelColor="#1a1a1a", labelFontSize=12, labelFlush=False)),
+          y=alt.Y("Category:N",
+                  sort=list(glong["Category"].cat.categories),
+                  axis=alt.Axis(title=None, labelColor="#1a1a1a",
+                                labelFlush=False, labelFontSize=12, labelLimit=240)),
+          color=alt.Color("norm:Q",
+                          scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                          legend=alt.Legend(orient="bottom",
+                                            title="Avg Score and Change",
+                                            labelExpr="''")),
+          tooltip=[
+              alt.Tooltip("Category:N"),
+              alt.Tooltip("Timeframe:N"),
+              alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+          ],
+      )
+      .properties(width=510, height=24 * len(preferred_order))
+      .configure_view(strokeWidth=0)
+)
+
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="text-align:center; margin:0 0 8px;
+                font-size:16px; font-weight:700; color:#1a1a1a;">
+        Category Heatmap — Score and Changes
+    </div>
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:14px; font-weight:500; color:#6b7280;">
+        Average MM Score and Change by category and timeframe
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+mid = st.columns([1, 1, 1])[1]
+with mid:
+    st.altair_chart(cat_hm, use_container_width=True)
+
+
+# -------------------------
+# Category selector — Table / Heatmap / Both
+# -------------------------
+cats_available = [c for c in preferred_order if c in latest["Category"].dropna().unique().tolist()]
+default_cat = "Sector & Style ETFs" if "Sector & Style ETFs" in cats_available else (cats_available[0] if cats_available else None)
+
+_, csel, _ = st.columns([1, 1, 1])
+with csel:
+    sel = st.selectbox("Category", cats_available, index=(cats_available.index(default_cat) if default_cat else 0))
+
+col_left, col_center, col_right = st.columns([1, 1, 1])
+with col_center:
+    view_choice = st.radio(
+        "View",
+        ["Table", "Heatmap", "Both"],
+        index=2,
+        horizontal=True,
+        label_visibility="visible",
+    )
+
+d = latest.loc[latest["Category"] == sel].copy()
+d["Ticker_link"] = d["Ticker"].map(_mk_ticker_link)
+
+vmax_sel = {
+    "ΔDaily": _robust_vmax(d["ΔDaily"], q=0.98, floor=1.0, step=1.0),
+    "ΔWTD":   _robust_vmax(d["ΔWTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔMTD":   _robust_vmax(d["ΔMTD"],   q=0.98, floor=1.0, step=1.0),
+    "ΔQTD":   _robust_vmax(d["ΔQTD"],   q=0.98, floor=1.0, step=1.0),
+}
+
+d_render = pd.DataFrame({
+    "Name":   d["Name"],
+    "Ticker": d["Ticker_link"],
+    "Score":  [ _score_cell_html(v) for v in d["Score"] ],
+    "Daily":  [ _delta_cell_html(v, vmax_sel["ΔDaily"]) for v in d["ΔDaily"] ],
+    "WTD":    [ _delta_cell_html(v, vmax_sel["ΔWTD"])   for v in d["ΔWTD"]   ],
+    "MTD":    [ _delta_cell_html(v, vmax_sel["ΔMTD"])   for v in d["ΔMTD"]   ],
+    "QTD":    [ _delta_cell_html(v, vmax_sel["ΔQTD"])   for v in d["ΔQTD"]   ],
+})
+
+html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup2 = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name -->
+  <col class="col-ticker-nar"> <!-- Ticker -->
+  <col class="col-num">        <!-- Score -->
+  <col class="col-num">        <!-- Daily -->
+  <col class="col-num">        <!-- WTD -->
+  <col class="col-num">        <!-- MTD -->
+  <col class="col-num">        <!-- QTD -->
+</colgroup>
+""".strip()
+html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
+
+if view_choice in ("Table","Both"):
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3>{sel} — Per Ticker</h3>
+            <div class="subtitle">Current MM Score and Change by ticker and timeframe</div>
+            {html_detail}
+            <div class="subnote">Ticker links open the Deep Dive Dashboard. Change columns are independently scaled.</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+# -------------------------
+# Per-ticker heatmap (Score + Δ columns, independent scale per timeframe, universe-wide)
+# -------------------------
+# Long frame across entire universe, now INCLUDING Score
+tlong_all = latest.melt(
+    id_vars=["Ticker","Name","Category"],          # <- remove Score from id_vars
+    value_vars=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+    var_name="Timeframe",
+    value_name="Value"
+)
+
+# Universe-wide robust vmax per timeframe; cap Score at 105 so extremes don’t dominate
+vmax_univ_tf = {}
+for tf, sub in tlong_all.groupby("Timeframe"):
+    vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
+    if tf == "Score":
+        vmax = min(105.0, max(vmax, 1.0))
+    vmax_univ_tf[tf] = vmax
+
+# Selected category long
+tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
+tickers_order = sorted(tlong_sel["Ticker"].dropna().unique().tolist())
+
+# Normalize each cell by the universe max for its timeframe → [-1, 1]
+tlong_sel["norm"] = tlong_sel.apply(
+    lambda r: np.clip(
+        (r["Value"] or 0.0) / (vmax_univ_tf.get(r["Timeframe"], 1.0) or 1.0),
+        -1, 1
+    ),
+    axis=1
+)
+
+hm_sel = (
+    alt.Chart(tlong_sel)
+      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+      .encode(
+          x=alt.X("Timeframe:N",
+                  sort=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0,
+                                labelColor="#1a1a1a", labelFlush=False, labelFontSize=12)),
+          y=alt.Y("Ticker:N",
+                  sort=tickers_order,
+                  axis=alt.Axis(title=None, labelFontSize=12, labelColor="#1a1a1a",
+                                labelFlush=False, labelLimit=260)),
+          color=alt.Color("norm:Q",
+                          scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                          legend=alt.Legend(orient="bottom",
+                                            title="Score and Change",
+                                            labelExpr="''")),
+          tooltip=[
+              alt.Tooltip("Ticker:N"),
+              alt.Tooltip("Timeframe:N", title="Timeframe"),
+              alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+          ],
+      )
+      .properties(width=520, height=max(360, 22*len(tickers_order)+24))
+      .configure_view(strokeWidth=0)
+)
+
+if view_choice in ("Heatmap","Both"):
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            {sel} — Per Ticker Heatmap (Score + Changes)
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:14px; font-weight:500; color:#6b7280;">
+            Current MM Score and Change by ticker and timeframe
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    left, center, right = st.columns([1.2, .8, 1.2])
+    with center:
+        st.altair_chart(hm_sel, use_container_width=False)
 
 # -------------------------
 # Footer disclaimer
