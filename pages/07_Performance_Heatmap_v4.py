@@ -469,6 +469,16 @@ map_tf = {
 tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
 tlong_all.drop(columns=["tf_raw"], inplace=True)
 
+# Universe-wide |Pct| max per timeframe (for scaling columns)
+tf_scale = (
+    tlong_all.groupby("Timeframe", as_index=False)
+             .agg(maxAbs=("Pct", lambda s: s.abs().max()))
+)
+# guard against divide-by-zero
+import numpy as np
+tf_scale["maxAbs"] = tf_scale["maxAbs"].replace(0, np.nan)
+
+
 # Global symmetric scale across the entire universe
 vglob = float(tlong_all["Pct"].abs().max())
 
@@ -480,37 +490,31 @@ tlong_sel["Ticker"] = pd.Categorical(tlong_sel["Ticker"], categories=tickers_ord
 # --- Per-category matrix heatmap (Ticker vs Timeframe), scaled by UNIVERSE per timeframe
 hm_sel = (
     alt.Chart(tlong_sel)
-    # compute universe-wide |Pct| max per Timeframe, then normalize this slice
-    .transform_joinaggregate(
-        maxAbs='max(abs(Pct))',
-        groupby=['Timeframe']          # <-- universe-wide max for each timeframe
+    # attach universe maxAbs for each timeframe (lookup from tf_scale)
+    .transform_lookup(
+        lookup="Timeframe",
+        from_=alt.LookupData(tf_scale, key="Timeframe", fields=["maxAbs"])
     )
     .transform_calculate(
-        norm='datum.Pct / datum.maxAbs'  # normalized to [-1, 1] per timeframe
+        norm="datum.maxAbs == null ? null : datum.Pct / datum.maxAbs"  # [-1,1] per timeframe
     )
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
-        x=alt.X(
-            "Timeframe:N",
-            sort=["Daily", "WTD", "MTD", "QTD"],
-            axis=alt.Axis(orient="top", title=None, labelFlush=False, labelFontSize=12, labelAngle=0),
-        ),
-        y=alt.Y(
-            "Ticker:N",
-            sort=tickers_order,
-            axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False, labelLimit=260),
-        ),
-        # color by normalized value so each column uses its own universe-wide scale
-        color=alt.Color(
-            "norm:Q",
-            scale=alt.Scale(scheme="blueorange", domain=[-1, 1], domainMid=0),
-            legend=alt.Legend(orient="bottom", labelExpr="''", title="% change (universe-scaled per timeframe)"),
-        ),
+        x=alt.X("Timeframe:N",
+                sort=["Daily","WTD","MTD","QTD"],
+                axis=alt.Axis(orient="top", title=None, labelFlush=False, labelFontSize=12, labelAngle=0)),
+        y=alt.Y("Ticker:N",  # keep tickers (DIA, IWD, …); if you prefer names, switch to Ticker_name:N and update tickers_order
+                sort=tickers_order,
+                axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False, labelLimit=260)),
+        color=alt.Color("norm:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-1,1], domainMid=0),
+                        legend=alt.Legend(orient="bottom", labelExpr="''",
+                                          title="% change (universe-scaled per timeframe)")),
         tooltip=[
             alt.Tooltip("Ticker:N", title="Ticker"),
             alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("Pct:Q", format=".2f", title="%"),      # raw % value
-            alt.Tooltip("maxAbs:Q", format=".2f", title="Universe max |%| (tf)"),
+            alt.Tooltip("Pct:Q", format=".2f", title="%"),
+            alt.Tooltip("maxAbs:Q", format=".2f", title="Universe max |%| (tf)")
         ],
     )
     .properties(width=450, height=max(360, 22 * len(tickers_order) + 24))
