@@ -347,6 +347,61 @@ st.markdown(
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
+# ===== Category Averages — Heatmap (standalone, no card) =====
+# Prepare long data (Category, Timeframe, Pct)
+glong = g.melt(
+    id_vars=["Category"],
+    value_vars=["Daily", "WTD", "MTD", "QTD"],
+    var_name="Timeframe",
+    value_name="Pct",
+)
+
+# Keep your preferred category sort
+glong["Category"] = pd.Categorical(
+    glong["Category"],
+    categories=[
+        "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+        "Bonds","Yields","Volatility","Foreign",
+        "Communication Services","Consumer Discretionary","Consumer Staples",
+        "Energy","Financials","Health Care","Industrials","Information Technology",
+        "Materials","Real Estate","Utilities","MR Discretion"
+    ],
+    ordered=True,
+)
+
+# Base rect chart; we facet by timeframe so each column has its own color scale + legend
+base = alt.Chart(glong).mark_rect().encode(
+    # create a dummy x so each facet is a 1-column strip
+    x=alt.X("dummy:N", axis=None),
+    y=alt.Y("Category:N", sort=list(glong["Category"].cat.categories), axis=alt.Axis(title=None)),
+    color=alt.Color(
+        "Pct:Q",
+        # diverging red/green with 0 centered; each facet gets its own independent scale
+        scale=alt.Scale(scheme="redblue", domainMid=0),
+        legend=alt.Legend(orient="bottom", title="% change")
+    ),
+).transform_calculate(dummy='" "').properties(
+    width=140,  # width for each timeframe strip
+    height=22 * len(g)  # row height per category
+)
+
+heatmap = base.facet(
+    column=alt.Column(
+        "Timeframe:N",
+        sort=["Daily", "WTD", "MTD", "QTD"],
+        header=alt.Header(title=None, labelFontSize=12, labelFontWeight="bold"),
+    )
+).resolve_scale(color="independent")  # <-- independent per timeframe
+
+st.altair_chart(heatmap, use_container_width=True)
+st.markdown(
+    '<div style="text-align:center; font-size:11px; color:#6b7280; margin-top:4px;">'
+    'Each timeframe is scaled independently; a color scale is shown under each column.'
+    "</div>",
+    unsafe_allow_html=True,
+)
+
+
 # =========================================================
 # Card 3 — Category selector → per-ticker rows
 # =========================================================
