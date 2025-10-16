@@ -251,7 +251,7 @@ st.markdown(
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3 style="margin:0 0 -4px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+            <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
               Performance — Category Averages</h3>
               <div class="subtitle">Avg % change by each category and timeframe</div>
             {html_cat}
@@ -320,7 +320,7 @@ st.markdown(
     f"""
     <div class="card-wrap">
       <div class="card detail">  <!-- add 'detail' here -->
-        <h3 style="margin:0 0 4px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+        <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
           {sel} — Per Ticker Performance</h3>
           <div class="subtitle">% change by ticker and timeframe</div>
         {html_detail}
