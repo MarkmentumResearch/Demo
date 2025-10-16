@@ -435,8 +435,27 @@ def load_market_read_md(doc_path: str = "data/Market_Read_daily.docx") -> str:
 
 with st.container():
     st.markdown("## Market Read")
+
+    # Add Education-style centering and typography
+    st.markdown("""
+    <style>
+      .market-read-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 6px;
+        line-height: 1.5;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .market-read-wrapper p, .market-read-wrapper li { font-size: 16px; }
+      .market-read-wrapper h1 { font-size: 28px; font-weight: 700; margin: 16px 0 8px; }
+      .market-read-wrapper h2 { font-size: 24px; font-weight: 700; margin: 16px 0 8px; }
+      .market-read-wrapper h3 { font-size: 21px; font-weight: 600; margin: 14px 0 8px; }
+    </style>
+    """, unsafe_allow_html=True)
+
     docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
-    st.markdown(load_market_read_md(str(docx_path)))
+    market_read_html = f'<div class="market-read-wrapper">{load_market_read_md(str(docx_path))}</div>'
+    st.markdown(market_read_html, unsafe_allow_html=True)
 
 st.markdown(
     "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
