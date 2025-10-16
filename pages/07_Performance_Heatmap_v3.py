@@ -272,7 +272,7 @@ st.markdown(
               Performance — Macro Orientation</h3>
         <div class="subtitle">Avg % change by ticker and timeframe</div>
         {html_macro}
-        <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
+        <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
       </div>
     </div>
     """,
@@ -407,7 +407,7 @@ st.markdown(
           {sel} — Per Ticker Performance</h3>
           <div class="subtitle">% change by ticker and timeframe</div>
         {html_detail}
-        <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
+        <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
       </div>
     </div>
     """,
