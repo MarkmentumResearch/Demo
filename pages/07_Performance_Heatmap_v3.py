@@ -179,9 +179,7 @@ perf = load_perf_csv(CSV_PATH)
 if perf.empty:
     st.info("`ticker_data.csv` missing or columns incomplete.")
 
-    # =========================================================
-    # Card 1 — Category averages (Name, Daily, WTD, MTD, QTD)
-    # =========================================================
+ 
 g = perf.groupby("Category", dropna=True, as_index=False).agg(
     Daily=("day_pct_change","mean"),
     WTD=("week_pct_change","mean"),
@@ -205,6 +203,89 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# ===== Card 1 — Performance – Macro Orientation (same layout as Card 2) =====
+
+# Use the same macro list you show on Compass (only those that exist in the file will render)
+macro_list = [
+    "SPX","NDX","DJI","RUT",
+    "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
+    "GLD","UUP","TLT","BTC=F"
+]
+
+# keep only the latest row per ticker (in case CSV has multiple dates)
+if not perf.empty:
+    perf["_dt"] = pd.to_datetime(perf["Date"], errors="coerce")
+    latest = (
+        perf.sort_values(["Ticker", "_dt"], ascending=[True, False])
+            .drop_duplicates(subset=["Ticker"], keep="first")
+    )
+else:
+    latest = perf.copy()
+
+m = latest[latest["Ticker"].isin(macro_list)].copy()
+# preserve the macro_list order
+m["__ord__"] = m["Ticker"].map({t:i for i, t in enumerate(macro_list)})
+m = m.sort_values(["__ord__"], kind="stable")
+
+# build ticker links
+m["Ticker_link"] = m["Ticker"].map(_mk_ticker_link)
+
+# independent scaling by timeframe **within just these macro tickers**
+vmaxM = {
+    "Daily":  m["day_pct_change"].abs().max(skipna=True) or 0.0,
+    "WTD":    m["week_pct_change"].abs().max(skipna=True) or 0.0,
+    "MTD":    m["month_pct_change"].abs().max(skipna=True) or 0.0,
+    "QTD":    m["quarter_pct_change"].abs().max(skipna=True) or 0.0,
+}
+
+m_render = pd.DataFrame({
+    "Name":   m["Ticker_name"],
+    "Ticker": m["Ticker_link"],
+    "Daily":  [ _divergent_tint_html(v, vmaxM["Daily"]) for v in m["day_pct_change"] ],
+    "WTD":    [ _divergent_tint_html(v, vmaxM["WTD"])   for v in m["week_pct_change"] ],
+    "MTD":    [ _divergent_tint_html(v, vmaxM["MTD"])   for v in m["month_pct_change"] ],
+    "QTD":    [ _divergent_tint_html(v, vmaxM["QTD"])   for v in m["quarter_pct_change"] ],
+})
+
+html_macro = m_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_macro = html_macro.replace('class="dataframe tbl"', 'class="tbl"')
+
+# Use the SAME column widths as Card 2 (Name wider, Ticker narrow, numerics roomy)
+colgroup_macro = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name -->
+  <col class="col-ticker-nar"> <!-- Ticker -->
+  <col class="col-num-lg">     <!-- Daily -->
+  <col class="col-num-lg">     <!-- WTD -->
+  <col class="col-num-lg">     <!-- MTD -->
+  <col class="col-num-lg">     <!-- QTD -->
+</colgroup>
+""".strip()
+html_macro = html_macro.replace('<table class="tbl">', f'<table class="tbl">{colgroup_macro}', 1)
+
+st.markdown(
+    f"""
+    <div class="card-wrap">
+      <div class="card detail">
+        <h3>Performance – Macro Orientation</h3>
+        <div class="subtitle">Avg change in each category and timeframe</div>
+        {html_macro}
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# little breathing room before the next card
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+
+
+
+
+# =========================================================
+# Card 2 — Category averages (Name, Daily, WTD, MTD, QTD)
+# =========================================================
 
 preferred_order = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -264,9 +345,9 @@ st.markdown(
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
-    # =========================================================
-    # Card 2 — Category selector → per-ticker rows
-    # =========================================================
+# =========================================================
+# Card 3 — Category selector → per-ticker rows
+# =========================================================
 preferred = [
         "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
         "Bonds","Yields","Volatility","Foreign",
