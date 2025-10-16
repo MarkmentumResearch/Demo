@@ -439,7 +439,7 @@ st.markdown(
     """
     <div style="text-align:center; margin:0 0 8px;
                 font-size:16px; font-weight:700; color:#1a1a1a;">
-        Category Heatmap — Score + Changes
+        Category Heatmap — Score and Changes
     </div>
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
