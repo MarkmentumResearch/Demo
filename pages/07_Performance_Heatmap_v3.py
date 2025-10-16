@@ -347,8 +347,8 @@ st.markdown(
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
-# ===== Category Averages — Heatmap (standalone, no card) =====
-# Prepare long data (Category, Timeframe, Pct)
+# ===== Category Averages — Heatmap (single matrix like prior page) =====
+# Long form from the grouped averages 'g'
 glong = g.melt(
     id_vars=["Category"],
     value_vars=["Daily", "WTD", "MTD", "QTD"],
@@ -356,51 +356,48 @@ glong = g.melt(
     value_name="Pct",
 )
 
-# Keep your preferred category sort
-glong["Category"] = pd.Categorical(
-    glong["Category"],
-    categories=[
-        "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
-        "Bonds","Yields","Volatility","Foreign",
-        "Communication Services","Consumer Discretionary","Consumer Staples",
-        "Energy","Financials","Health Care","Industrials","Information Technology",
-        "Materials","Real Estate","Utilities","MR Discretion"
-    ],
-    ordered=True,
-)
+# Keep preferred row order
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
-# Base rect chart; we facet by timeframe so each column has its own color scale + legend
-base = alt.Chart(glong).mark_rect().encode(
-    # create a dummy x so each facet is a 1-column strip
-    x=alt.X("dummy:N", axis=None),
-    y=alt.Y("Category:N", sort=list(glong["Category"].cat.categories), axis=alt.Axis(title=None)),
-    color=alt.Color(
-        "Pct:Q",
-        # diverging red/green with 0 centered; each facet gets its own independent scale
-        scale=alt.Scale(scheme="redblue", domainMid=0),
-        legend=alt.Legend(orient="bottom", title="% change")
-    ),
-).transform_calculate(dummy='" "').properties(
-    width=140,  # width for each timeframe strip
-    height=22 * len(g)  # row height per category
-)
-
-heatmap = base.facet(
-    column=alt.Column(
-        "Timeframe:N",
-        sort=["Daily", "WTD", "MTD", "QTD"],
-        header=alt.Header(title=None, labelFontSize=12, labelFontWeight="bold"),
+# Single grid heatmap (shared, centered legend at bottom)
+base_hm = (
+    alt.Chart(glong)
+    .mark_rect()
+    .encode(
+        x=alt.X(
+            "Timeframe:N",
+            sort=["Daily", "WTD", "MTD", "QTD"],
+            axis=alt.Axis(title=None, labelFontSize=12, labelPadding=6)
+        ),
+        y=alt.Y(
+            "Category:N",
+            sort=list(glong["Category"].cat.categories),
+            axis=alt.Axis(title=None, labelFontSize=12, labelLimit=240)
+        ),
+        color=alt.Color(
+            "Pct:Q",
+            # diverging blue↔orange with 0 as midpoint (matches your prior style)
+            scale=alt.Scale(scheme="blueorange", domainMid=0),
+            legend=alt.Legend(orient="bottom", title="Avg % Change (per timeframe)")
+        ),
+        tooltip=[
+            alt.Tooltip("Category:N"),
+            alt.Tooltip("Timeframe:N"),
+            alt.Tooltip("Pct:Q", format=".2f", title="%")
+        ],
     )
-).resolve_scale(color="independent")  # <-- independent per timeframe
-
-st.altair_chart(heatmap, use_container_width=True)
-st.markdown(
-    '<div style="text-align:center; font-size:11px; color:#6b7280; margin-top:4px;">'
-    'Each timeframe is scaled independently; a color scale is shown under each column.'
-    "</div>",
-    unsafe_allow_html=True,
+    .properties(width=560, height=24 * len(preferred_order))
+    .configure_view(strokeWidth=0)
 )
 
+st.altair_chart(base_hm, use_container_width=True)
 
 # =========================================================
 # Card 3 — Category selector → per-ticker rows
