@@ -429,7 +429,7 @@ cat_hm = (
               alt.Tooltip("Value:Q", title="Rank / Δ", format=",.0f"),
           ],
       )
-      .properties(width=350, height=24 * len(preferred_order))
+      .properties(width=450, height=24 * len(preferred_order))
       .configure_view(strokeWidth=0)
 )
 
@@ -449,7 +449,7 @@ st.markdown(
 )
 left, center, right = st.columns([1, .8, 1])
 with center:
-    st.altair_chart(cat_hm, use_container_width=True)
+    st.altair_chart(cat_hm, use_container_width=False)
 
 # -------------------------
 # Category selector — Table / Heatmap / Both
