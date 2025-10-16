@@ -429,7 +429,7 @@ cat_hm = (
               alt.Tooltip("Value:Q", title="Rank / Δ", format=",.0f"),
           ],
       )
-      .properties(width=510, height=24 * len(preferred_order))
+      .properties(width=450, height=24 * len(preferred_order))
       .configure_view(strokeWidth=0)
 )
 
