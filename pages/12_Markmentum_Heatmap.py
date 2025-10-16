@@ -24,7 +24,7 @@ ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
 # Score sources (as specified)
-CSV_BASE   = DATA_DIR / "qry_graph_data_48.csv"            # Ticker, Ticker_name, Category, Date, model_score, previous_model_score, model_score_daily_change (optional)
+CSV_BASE   = DATA_DIR / "model_score_day_change.csv"            # Ticker, Ticker_name, Category, Date, model_score, previous_model_score, model_score_daily_change (optional)
 CSV_WTD    = DATA_DIR / "model_score_wtd_change.csv"       # model_score_wtd_change, current_model_score, previous_model_score
 CSV_MTD    = DATA_DIR / "model_score_mtd_change.csv"       # model_score_mtd_change, current_model_score, previous_model_score
 CSV_QTD    = DATA_DIR / "model_score_qtd_change.csv"       # model_score_qtd_change, current_model_score, previous_model_score
