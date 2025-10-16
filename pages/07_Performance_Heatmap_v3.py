@@ -374,12 +374,12 @@ base_hm = (
         x=alt.X(
             "Timeframe:N",
             sort=["Daily", "WTD", "MTD", "QTD"],
-            axis=alt.Axis(title=None, labelFontSize=12, labelPadding=6)
+            axis=alt.Axis(orient="top",title=None, labelFontSize=12, labelFlush=False,labelPadding=6)
         ),
         y=alt.Y(
             "Category:N",
             sort=list(glong["Category"].cat.categories),
-            axis=alt.Axis(title=None, labelFontSize=12, labelLimit=240)
+            axis=alt.Axis(title=None, labelFlush=False,labelFontSize=12, labelLimit=240)
         ),
         color=alt.Color(
             "Pct:Q",
