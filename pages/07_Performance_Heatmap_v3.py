@@ -407,7 +407,7 @@ with center:
             '</div></div>',
             unsafe_allow_html=True,
         )
-        _l, _c, _r = st.columns([1,1,1])
+        _l, _c, _r = st.columns([.7,1,.7])
         with _c:
             st.altair_chart(base_hm, use_container_width=False)
 
