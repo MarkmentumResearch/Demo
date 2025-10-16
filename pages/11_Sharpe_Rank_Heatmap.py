@@ -576,7 +576,7 @@ hm_sel = (
               alt.Tooltip("Value:Q", title="Rank / Δ", format=",.0f"),
           ],
       )
-      .properties(width=520, height=max(360, 22*len(tickers_order)+24))
+      .properties(width=450, height=max(360, 22*len(tickers_order)+24))
       .configure_view(strokeWidth=0)
 )
 
