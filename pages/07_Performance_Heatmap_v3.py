@@ -223,7 +223,7 @@ st.markdown(
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
               Performance — Category Averages
             </h3>
             {html_cat}
