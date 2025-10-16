@@ -397,6 +397,7 @@ base_hm = (
     .configure_view(strokeWidth=0)
 )
 
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 st.markdown(
     f"""
     <div style="text-align:center; margin:-6px 0 14px;
