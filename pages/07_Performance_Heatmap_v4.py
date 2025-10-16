@@ -602,7 +602,7 @@ if view_choice in ("Heatmap", "Both"):
         unsafe_allow_html=True,
     )
     # Center the chart
-    left, center, right = st.columns([1.2, .8, 1.2])
+    left, center, right = st.columns([1.2, 1, 1.2])
     with center:
         st.altair_chart(hm_sel, use_container_width=False)
 
