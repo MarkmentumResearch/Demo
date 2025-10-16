@@ -370,7 +370,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Category Averages</h3>
-        <div class="subtitle">Avg model score and avg change by timeframe</div>
+        <div class="subtitle">Avg MM score and change by category and timeframe</div>
         {html_cat}
         <div class="subnote">Each change column uses an independent red/green scale; score cells use Buy/Neutral/Sell shading.</div>
       </div>
