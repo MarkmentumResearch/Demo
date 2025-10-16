@@ -457,18 +457,12 @@ with st.container():
     market_read_html = f'<div class="market-read-wrapper">{load_market_read_md(str(docx_path))}</div>'
     st.markdown(market_read_html, unsafe_allow_html=True)
 
-    st.markdown(
-            f"""
-        <div class="market-read-wrapper">
-          <h2>Market Read</h2>
-          {mr_md}
-          <div style="margin-top:6px; color:#6b7280; font-size:13px;">
-            Note: Indices are excluded from Highest/Lowest Markmentum Score lists.
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+st.markdown(
+    "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
+    "Note: Indices are excluded from Highest/Lowest Markmentum Score lists."
+    "</div>",
+    unsafe_allow_html=True,
+)
 
 # -------------------------
 # Footer disclaimer
