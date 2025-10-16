@@ -487,7 +487,7 @@ hm_sel = (
                  alt.Tooltip("Timeframe:N"),
                  alt.Tooltip("Pct:Q", format=".2f", title="%")]
     )
-    .properties(width=420, height=max(360, 22 * len(tickers_order)+24))  # auto-height by count
+    .properties(width=450, height=max(360, 22 * len(tickers_order)+24))  # auto-height by count
     .configure_view(strokeWidth=0)
 )
 
