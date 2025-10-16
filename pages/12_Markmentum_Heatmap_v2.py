@@ -382,7 +382,7 @@ st.markdown(
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
 
-# ===== Heatmap after Card 2 — Score (left) + Δ columns (right, blue↔orange with legend) =====
+# ===== One heatmap (Score + ΔDaily/ΔWTD/ΔMTD/ΔQTD) — layered, single matrix =====
 glong = grouped.melt(
     id_vars=["Category"],
     value_vars=["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"],
@@ -391,7 +391,7 @@ glong = grouped.melt(
 )
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
-# Robust |max| per timeframe for Δ columns (Score stays separate)
+# Robust |max| per timeframe for Δ columns (Score uses ±105)
 vmax_tf = (
     glong.loc[glong["Timeframe"] != "Score"]
          .groupby("Timeframe")["Value"]
@@ -399,80 +399,57 @@ vmax_tf = (
          .to_dict()
 )
 
-# Split data: Score vs Δs
-score_df = glong.loc[glong["Timeframe"] == "Score"].copy()
-delta_df = glong.loc[glong["Timeframe"] != "Score"].copy()
-
-# Score: precompute RGBA (Buy/Neutral/Sell)
-def _score_rgba(v):
-    if pd.isna(v): return "rgba(0,0,0,0)"
-    s = float(np.clip(v, -105, 105))
-    if s >= 25:
-        rel = min(abs(s) / 105.0, 1.0); alpha = 0.12 + 0.28 * rel
-        return f"rgba(16,185,129,{alpha:.3f})"  # green
-    if s <= -25:
-        rel = min(abs(s) / 105.0, 1.0); alpha = 0.12 + 0.28 * rel
-        return f"rgba(239,68,68,{alpha:.3f})"  # red
-    return "rgba(156,163,175,0.18)"            # neutral gray
-
-score_df["color_rgba"] = score_df["Value"].map(_score_rgba)
-score_df["Value_fmt"]  = score_df["Value"].map(lambda x: _fmt_num(x, 0))
-
-# Δ columns: normalize per timeframe → [-1, 1]
+# Precompute normalized Δ for coloring (score rows → NaN)
 def _norm_delta(row):
+    if row["Timeframe"] == "Score" or pd.isna(row["Value"]):
+        return np.nan
     vmax = vmax_tf.get(row["Timeframe"], 1.0) or 1.0
-    return float(np.clip((row["Value"] or 0.0) / vmax, -1, 1))
+    return float(np.clip(row["Value"] / vmax, -1, 1))
 
-delta_df["norm"]      = delta_df.apply(_norm_delta, axis=1)
-delta_df["Value_fmt"] = delta_df["Value"].map(lambda x: _fmt_num(x, 0))
+glong["norm"] = glong.apply(_norm_delta, axis=1)
 
-# Draw score column (left)
-score_hm = (
-    alt.Chart(score_df)
-      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-      .encode(
-          x=alt.X("Timeframe:N",
-                  sort=["Score"],
-                  axis=alt.Axis(orient="top", title=None, labelAngle=0,
-                                labelColor="#1a1a1a", labelFontSize=12, labelFlush=False)),
-          y=alt.Y("Category:N",
-                  sort=list(glong["Category"].cat.categories),
-                  axis=alt.Axis(title=None, labelColor="#1a1a1a",
-                                labelFlush=False, labelFontSize=12, labelLimit=240)),
-          color=alt.Color("color_rgba:N", scale=None, legend=None),
-          tooltip=[alt.Tooltip("Category:N"),
-                   alt.Tooltip("Timeframe:N"),
-                   alt.Tooltip("Value_fmt:N", title="Score")],
-      )
-      .properties(width=90, height=24 * len(preferred_order))
-      .configure_view(strokeWidth=0)
+timeframe_order = ["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
+
+base = alt.Chart().encode(
+    x=alt.X("Timeframe:N",
+            sort=timeframe_order,
+            axis=alt.Axis(orient="top", title=None, labelAngle=0,
+                          labelColor="#1a1a1a", labelFontSize=12, labelFlush=False)),
+    y=alt.Y("Category:N",
+            sort=list(glong["Category"].cat.categories),
+            axis=alt.Axis(title=None, labelColor="#1a1a1a",
+                          labelFlush=False, labelFontSize=12, labelLimit=240)),
+    tooltip=[
+        alt.Tooltip("Category:N"),
+        alt.Tooltip("Timeframe:N"),
+        alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+    ],
+).properties(width=510, height=24 * len(preferred_order)).configure_view(strokeWidth=0)
+
+# Layer A: Δ columns (blue↔orange), independent scale per timeframe via 'norm'
+delta_layer = base.mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95).transform_filter(
+    alt.datum.Timeframe != "Score"
+).encode(
+    color=alt.Color("norm:Q",
+                    scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                    legend=alt.Legend(orient="bottom",
+                                      title="Δ (independent per timeframe)",
+                                      labelExpr="''"))
 )
 
-# Draw Δ heatmap (right) — matches your second heatmap look
-delta_hm = (
-    alt.Chart(delta_df)
-      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-      .encode(
-          x=alt.X("Timeframe:N",
-                  sort=["ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
-                  axis=alt.Axis(orient="top", title=None, labelAngle=0,
-                                labelColor="#1a1a1a", labelFontSize=12, labelFlush=False)),
-          y=alt.Y("Category:N",
-                  sort=list(glong["Category"].cat.categories),
-                  axis=alt.Axis(title=None, labelColor="#1a1a1a",
-                                labelFlush=False, labelFontSize=12, labelLimit=240)),
-          color=alt.Color("norm:Q",
-                          scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                          legend=alt.Legend(orient="bottom",
-                                            title="Δ (independent per timeframe)",
-                                            labelExpr="''")),
-          tooltip=[alt.Tooltip("Category:N"),
-                   alt.Tooltip("Timeframe:N"),
-                   alt.Tooltip("Value_fmt:N", title="Δ Score")],
-      )
-      .properties(width=420, height=24 * len(preferred_order))
-      .configure_view(strokeWidth=0)
+# Layer B: Score column (green / gray / red, capped ±105)
+score_layer = base.mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95).transform_filter(
+    alt.datum.Timeframe == "Score"
+).transform_calculate(
+    score_cap="max(-105, min(105, datum.Value))"
+).encode(
+    color=alt.Color("score_cap:Q",
+                    scale=alt.Scale(domain=[-105, 0, 105],
+                                    range=["#ef4444", "#9ca3af", "#10b981"]),
+                    legend=None)
 )
+
+score_change_hm = alt.layer(score_layer, delta_layer, data=glong).resolve_scale(color='independent')
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 st.markdown(
@@ -483,20 +460,14 @@ st.markdown(
     </div>
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
-        Current model score (Buy/Neutral/Sell colors) and Δ by timeframe
-        (each column scaled independently, blue↔orange like the per-ticker heatmap)
+        One matrix with Score and Δ by timeframe (each Δ column scaled independently; Score uses Buy/Neutral/Sell colors)
     </div>
     """,
     unsafe_allow_html=True,
 )
-
-# Render side-by-side without Altair concat
-left_hm, right_hm = st.columns([0.24, 0.76])
-with left_hm:
-    st.altair_chart(score_hm, use_container_width=True)
-with right_hm:
-    st.altair_chart(delta_hm, use_container_width=True)
-
+mid = st.columns([1, 1, 1])[1]
+with mid:
+    st.altair_chart(score_change_hm, use_container_width=True)
 
 
 # -------------------------
