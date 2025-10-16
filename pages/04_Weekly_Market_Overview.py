@@ -385,9 +385,34 @@ def load_market_read_md(doc_path: str = "data/Market_Read_weekly.docx") -> str:
     return "\n\n".join(lines)
 
 with st.container():
-    st.markdown("## Market Read")
-    docx_path = (DATA_DIR / "Market_Read_weekly.docx").resolve()
-    st.markdown(load_market_read_md(str(docx_path)))
+    st.markdown("""
+    <style>
+      .market-read-wrapper{
+        max-width:900px; margin:0 auto; padding:0 6px; line-height:1.5;
+        font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      }
+      .market-read-wrapper p, .market-read-wrapper li { font-size:16px; }
+      /* >>> add this line to create a blank line after the date line <<< */
+      .market-read-wrapper p:first-of-type { margin-bottom: 15px; }          
+
+      .market-read-wrapper h2 { font-size:28px; font-weight:700; margin:8px 0 12px; text-align:center; }
+      .market-read-note { margin-top:6px; color:#6b7280; font-size:13px; text-align:center; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
+    mr_md = load_market_read_md(str(docx_path))  # existing function
+    mr_md = mr_md.replace("The market is saying:", "<br>The market is saying:", 1)
+
+    st.markdown(
+        f"""
+        <div class="market-read-wrapper">
+          <h2>Market Read</h2>
+          {mr_md}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # -------------------------
 # Footer disclaimer
