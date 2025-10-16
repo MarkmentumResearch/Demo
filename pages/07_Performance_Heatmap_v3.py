@@ -366,6 +366,14 @@ preferred_order = [
 ]
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
+vmax = float(glong["Pct"].abs().max())
+color_enc = alt.Color(
+    "Pct:Q",
+    scale=alt.Scale(scheme="blueorange", domain=[-vmax, vmax], domainMid=0),
+    legend=alt.Legend(orient="bottom", title="Avg % Change (per timeframe)")
+)
+
+
 # Single grid heatmap (shared, centered legend at bottom)
 base_hm = (
     alt.Chart(glong)
@@ -384,7 +392,7 @@ base_hm = (
         color=alt.Color(
             "Pct:Q",
             # diverging blue↔orange with 0 as midpoint (matches your prior style)
-            scale=alt.Scale(scheme="blueorange", domainMid=0),
+            scale=alt.Scale(scheme="blueorange",domain=[-vmax, vmax], domainMid=0),
             legend=alt.Legend(orient="bottom", labelExpr="''",title="Avg % Change (per timeframe)")
         ),
         tooltip=[
