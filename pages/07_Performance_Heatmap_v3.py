@@ -393,7 +393,7 @@ base_hm = (
             alt.Tooltip("Pct:Q", format=".2f", title="%")
         ],
     )
-    .properties(width=240, height=24 * len(preferred_order))
+    .properties(width=300, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
 
