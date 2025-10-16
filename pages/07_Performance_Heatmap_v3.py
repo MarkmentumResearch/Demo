@@ -442,7 +442,15 @@ _, csel, _ = st.columns([1, 1, 1])
 with csel:
         sel = st.selectbox("Category", cats, index=(cats.index(default_cat) if default_cat else 0))
 
-view_choice = st.radio("View", ["Table", "Heatmap", "Both"], index=2, horizontal=True)
+col_left, col_center, col_right = st.columns([1, 1, 1])
+with col_center:
+    view_choice = st.radio(
+        "View",
+        ["Table", "Heatmap", "Both"],
+        index=2,
+        horizontal=True,
+        label_visibility="visible",
+    )
 
 # --- Universe-long df for global scaling (ALL tickers, ALL timeframes)
 tlong_all = perf.melt(
