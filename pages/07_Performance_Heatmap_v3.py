@@ -272,6 +272,7 @@ st.markdown(
               Performance — Macro Orientation</h3>
         <div class="subtitle">Avg change in each category and timeframe</div>
         {html_macro}
+        <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
       </div>
     </div>
     """,
