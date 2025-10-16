@@ -371,7 +371,7 @@ st.markdown(
         <h3>Category Averages</h3>
         <div class="subtitle">Avg Sharpe Rank and Change by category and timeframe</div>
         {html_cat}
-        <div class="subnote">Each change column uses an independent red/green scale; Rank cells use Buy/Neutral/Sell shading.</div>
+        <div class="subnote">Each change column uses an independent red/green scale; Rank cells use High/Neutral/Low shading.</div>
       </div>
     </div>
     """,
