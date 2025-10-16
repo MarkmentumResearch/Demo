@@ -302,7 +302,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Macro Orientation</h3>
-        <div class="subtitle">Current model score and change by timeframe</div>
+        <div class="subtitle">Current MM Score and Change by timeframe</div>
         {html_macro}
         <div class="subnote">Score cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
       </div>
