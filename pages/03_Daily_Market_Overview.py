@@ -457,8 +457,8 @@ with st.container():
     market_read_html = f'<div class="market-read-wrapper">{load_market_read_md(str(docx_path))}</div>'
     st.markdown(market_read_html, unsafe_allow_html=True)
 
-st.markdown(
-        f"""
+    st.markdown(
+            f"""
         <div class="market-read-wrapper">
           <h2>Market Read</h2>
           {mr_md}
