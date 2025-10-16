@@ -212,6 +212,17 @@ st.markdown("""
 .tbl col.col-ticker-nar  { width:7ch; }
 .tbl col.col-num         { width:8ch; }
 
+/* Center the Ticker column (2nd column) */
+.tbl th:nth-child(2),
+.tbl td:nth-child(2) { text-align: center; }
+
+/* Make the ticker link fill the cell so the centering is perfect */
+.tbl td:nth-child(2) a {
+  display: inline-block;
+  width: 100%;
+}
+
+
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
 .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
 .card h3 { margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
