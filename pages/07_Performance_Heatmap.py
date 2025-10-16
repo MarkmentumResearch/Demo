@@ -576,7 +576,7 @@ if view_choice in ("Table", "Both"):
           <div class="card detail">
             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
               {sel} — Per Ticker Performance</h3>
-            <div class="subtitle">% change by ticker and timeframe</div>
+            <div class="subtitle">% change by each ticker and timeframe</div>
             {html_detail}
             <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
           </div>
@@ -596,7 +596,7 @@ if view_choice in ("Heatmap", "Both"):
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
-                Avg % change by ticker and timeframe
+                Avg % change by each ticker and timeframe
         </div>
         """,
         unsafe_allow_html=True,
