@@ -476,10 +476,10 @@ hm_sel = (
     .encode(
         x=alt.X("Timeframe:N",
                 sort=["Daily", "WTD", "MTD", "QTD"],
-                axis=alt.Axis(orient="top", title=None, labelFontSize=12, labelAngle=0)),
+                axis=alt.Axis(orient="top", title=None, labelFlush=False,labelFontSize=12, labelAngle=0)),
         y=alt.Y("Ticker_name:N",
                 sort=tickers_order,
-                axis=alt.Axis(title=None, labelFontSize=12, labelLimit=260)),
+                axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False,labelLimit=260)),
         color=alt.Color("Pct:Q",
                         scale=alt.Scale(scheme="blueorange", domain=[-vglob, vglob], domainMid=0),
                         legend=alt.Legend(orient="bottom", title="% change")),
