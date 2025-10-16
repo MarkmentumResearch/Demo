@@ -164,6 +164,17 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* …existing styles… */
+.card h3 { margin:0 0 4px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
+.card .subtitle { margin:0 0 8px 0; font-size:12px; font-weight:500; color:#6b7280; text-align:center; }
+/* …existing styles… */
+</style>
+""", unsafe_allow_html=True)
+
+
+
 perf = load_perf_csv(CSV_PATH)
 if perf.empty:
     st.info("`ticker_data.csv` missing or columns incomplete.")
@@ -177,6 +188,23 @@ g = perf.groupby("Category", dropna=True, as_index=False).agg(
     MTD=("month_pct_change","mean"),
     QTD=("quarter_pct_change","mean"),
 ).sort_values("Category", kind="stable")
+
+# ---- Page title (under logo) pulled from source Date ----
+date_str = ""
+if not perf.empty and "Date" in perf.columns:
+    asof = pd.to_datetime(perf["Date"], errors="coerce").max()
+    if pd.notna(asof):
+        date_str = f"{asof.month}/{asof.day}/{asof.year}"
+
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Performance – {date_str}
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 preferred_order = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -224,8 +252,8 @@ st.markdown(
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
-              Performance — Category Averages
-            </h3>
+              Performance — Category Averages</h3>
+              <div class="subtitle">Avg % change by each category and timeframe</div>
             {html_cat}
             <div class="subnote">Each column uses its own red/green gradient scale.</div>
           </div>
@@ -293,8 +321,8 @@ st.markdown(
     <div class="card-wrap">
       <div class="card detail">  <!-- add 'detail' here -->
         <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
-          {sel} — Per Ticker Performance
-        </h3>
+          {sel} — Per Ticker Performance</h3>
+          <div class="subtitle">% change by ticker and timeframe</div>
         {html_detail}
         <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
       </div>
