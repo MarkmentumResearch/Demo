@@ -421,7 +421,7 @@ st.markdown(
     f"""
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
-        Avg % Change by category and timeframe
+        Avg % Change by each category and timeframe
     </div>
     """,
     unsafe_allow_html=True,
