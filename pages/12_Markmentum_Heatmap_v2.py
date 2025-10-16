@@ -77,7 +77,7 @@ def _robust_vmax(series, q=0.98, floor=1.0, step=1.0):
     vmax = float(np.quantile(s, q))
     return max(floor, np.ceil(vmax / step) * step)
 
-def _fmt_num(x, nd=1):
+def _fmt_num(x, nd=0):
     try:
         if pd.isna(x): return ""
         return f"{float(x):,.{nd}f}"
@@ -108,7 +108,7 @@ def _score_cell_html(score: float, cap: float = 105.0) -> str:
         bg = "rgba(156,163,175,0.18)"   # gray-400 @ ~18%
         color = "#374151"
 
-    label = _fmt_num(s, 1)
+    label = _fmt_num(s, 0)
     return f'<span style="display:block; background:{bg}; color:{color}; padding:0 6px; border-radius:2px; text-align:right;">{label}</span>'
 
 # Change column tint (independent scale per timeframe)
@@ -123,7 +123,7 @@ def _delta_cell_html(val: float, vmax: float) -> str:
         bg = f"rgba(239,68,68,{alpha:.3f})"   # red
     else:
         bg = "transparent"
-    label = _fmt_num(val, 1)
+    label = _fmt_num(val, 0)
     return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:2px; text-align:right;">{label}</span>'
 
 # -------------------------
@@ -498,7 +498,7 @@ hm_sel = (
         tooltip=[
             alt.Tooltip("Ticker:N"),
             alt.Tooltip("Timeframe:N", title="Timeframe"),
-            alt.Tooltip("Delta:Q", title="Δ Score", format=",.1f"),
+            alt.Tooltip("Delta:Q", title="Δ Score", format=",.0f"),
         ],
     )
     .properties(width=420, height=max(360, 22*len(tickers_order)+24))
