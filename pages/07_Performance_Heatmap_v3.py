@@ -135,8 +135,8 @@ st.markdown("""
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* Column widths */
-.tbl col.col-name { min-width:40ch; width:40ch; max-width:40ch; }   /* Name = 40ch */
-.tbl col.col-num  { width:9ch; }                                    /* smaller numeric cols */
+.tbl col.col-name { min-width:20ch; width:20ch; max-width:20ch; }   /* Name = 40ch */
+.tbl col.col-num  { width:7ch; }                                    /* smaller numeric cols */
 
 .tbl th:nth-child(1), .tbl td:nth-child(1) {
   white-space:normal; overflow:visible; text-overflow:clip;
