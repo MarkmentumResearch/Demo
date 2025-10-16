@@ -123,7 +123,7 @@ st.markdown("""
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
 
 /* table base */
-.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td {
   border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
   overflow:hidden; text-overflow:ellipsis;
@@ -134,16 +134,21 @@ st.markdown("""
 /* cells: name left-wrap; numeric right */
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
-/* Column width helpers */
-.tbl col.col-name        { width: clamp(22ch, 40vw, 40ch); min-width: 22ch; } /* Card 1 Name */
-.tbl col.col-name-wide   { width: clamp(22ch, 40vw, 40ch); min-width: 22ch; }  /* Card 2 Name wider */
-.tbl col.col-ticker-nar  { width:6ch; }                                    /* Card 2 Ticker narrow */
-.tbl col.col-num-sm      { width:6ch; }                                     /* small numeric (Card 1) */
-.tbl col.col-num-lg      { width:6ch; }                                    /* large numeric (Card 2) */
+/* Column width helpers (shrink Name on both cards) */
+.tbl col.col-name        { width:28ch; min-width:28ch; max-width:28ch; }  /* Card 1 Name (smaller) */
+.tbl col.col-name-wide   { width:32ch; min-width:32ch; max-width:32ch; }  /* Card 2 Name (smaller) */
+.tbl col.col-ticker-nar  { width:7ch; }                                    /* Card 2 Ticker */
+.tbl col.col-num-sm      { width:6ch; }                                     /* Card 1 numerics */
+.tbl col.col-num-lg      { width:11ch; }                                    /* Card 2 numerics */
 
+/* allow wrapping for Name */
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
 
-/* simple vertical spacer */
+/* smaller note text */
+.subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
+
+/* Center the Ticker column ONLY in Card 2 */
+.detail .tbl td:nth-child(2), .detail .tbl th:nth-child(2) { text-align:center; }
 .vspace-16 { height:16px; }
 </style>
 """, unsafe_allow_html=True)
@@ -273,20 +278,19 @@ colgroup2 = """
 html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
 
 st.markdown(
-        f"""
-        <div class="card-wrap">
-          <div class="card">
-            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              {sel} — Constituents
-            </h3>
-            {html_detail}
-            <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
+    f"""
+    <div class="card-wrap">
+      <div class="card detail">  <!-- add 'detail' here -->
+        <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+          {sel} — Constituents
+        </h3>
+        {html_detail}
+        <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # -------------------------
