@@ -270,7 +270,7 @@ st.markdown(
       <div class="card detail">
              <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
               Performance — Macro Orientation</h3>
-        <div class="subtitle">Avg change in each category and timeframe</div>
+        <div class="subtitle">Avg change by ticker and timeframe</div>
         {html_macro}
         <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
       </div>
