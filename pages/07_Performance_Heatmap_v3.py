@@ -482,7 +482,7 @@ hm_sel = (
                 axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False,labelLimit=260)),
         color=alt.Color("Pct:Q",
                         scale=alt.Scale(scheme="blueorange", domain=[-vglob, vglob], domainMid=0),
-                        legend=alt.Legend(orient="bottom", title="% change")),
+                        legend=alt.Legend(orient="bottom", labelExpr="''",title="% change")),
         tooltip=[alt.Tooltip("Ticker:N", title="Name"),
                  alt.Tooltip("Timeframe:N"),
                  alt.Tooltip("Pct:Q", format=".2f", title="%")]
