@@ -396,7 +396,7 @@ base_hm = (
     .properties(width=450, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
-left, center, right = st.columns([1, 1, 1])
+left, center, right = st.columns([1, .9, 1])
 with center:
     st.altair_chart(base_hm, use_container_width=False)
 
