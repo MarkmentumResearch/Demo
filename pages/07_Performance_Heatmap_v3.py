@@ -367,12 +367,6 @@ preferred_order = [
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
 vmax = float(glong["Pct"].abs().max())
-color_enc = alt.Color(
-    "Pct:Q",
-    scale=alt.Scale(scheme="blueorange", domain=[-vmax, vmax], domainMid=0),
-    legend=alt.Legend(orient="bottom", title="Avg % Change (per timeframe)")
-)
-
 
 # Single grid heatmap (shared, centered legend at bottom)
 base_hm = (
@@ -416,7 +410,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-left, center, right = st.columns([1, .7, 1])
+left, center, right = st.columns([1, 1, 1])
 with center:
     st.altair_chart(base_hm, use_container_width=False)
 
