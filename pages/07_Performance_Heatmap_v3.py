@@ -466,8 +466,8 @@ vglob = float(tlong_all["Pct"].abs().max())
 
 # Slice for the selected category (for the heatmap rows)
 tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
-tickers_order = sorted(tlong_sel["Ticker_name"].dropna().unique().tolist())
-tlong_sel["Ticker_name"] = pd.Categorical(tlong_sel["Ticker_name"], categories=tickers_order, ordered=True)
+tickers_order = sorted(tlong_sel["Ticker"].dropna().unique().tolist())
+tlong_sel["Ticker"] = pd.Categorical(tlong_sel["Ticker"], categories=tickers_order, ordered=True)
 
 # --- Per-category matrix heatmap (Ticker_name vs Timeframe)
 hm_sel = (
@@ -477,13 +477,13 @@ hm_sel = (
         x=alt.X("Timeframe:N",
                 sort=["Daily", "WTD", "MTD", "QTD"],
                 axis=alt.Axis(orient="top", title=None, labelFlush=False,labelFontSize=12, labelAngle=0)),
-        y=alt.Y("Ticker_name:N",
+        y=alt.Y("Ticker:N",
                 sort=tickers_order,
                 axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False,labelLimit=260)),
         color=alt.Color("Pct:Q",
                         scale=alt.Scale(scheme="blueorange", domain=[-vglob, vglob], domainMid=0),
                         legend=alt.Legend(orient="bottom", title="% change")),
-        tooltip=[alt.Tooltip("Ticker_name:N", title="Name"),
+        tooltip=[alt.Tooltip("Ticker:N", title="Name"),
                  alt.Tooltip("Timeframe:N"),
                  alt.Tooltip("Pct:Q", format=".2f", title="%")]
     )
