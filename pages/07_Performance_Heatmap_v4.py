@@ -515,10 +515,10 @@ hm_sel = (
     .encode(
         x=alt.X("Timeframe:N",
                 sort=["Daily","WTD","MTD","QTD"],
-                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelFlush=False, labelFontSize=12)),
+                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelColor="#1a1a1a",labelFlush=False, labelFontSize=12)),
         y=alt.Y("Ticker:N",
                 sort=tickers_order,
-                axis=alt.Axis(title=None, labelFontSize=12, labelFlush=False, labelLimit=260)),
+                axis=alt.Axis(title=None, labelFontSize=12, labelColor="#1a1a1a",labelFlush=False, labelLimit=260)),
         color=alt.Color("norm:Q",
                         scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                         legend=alt.Legend(orient="bottom",
