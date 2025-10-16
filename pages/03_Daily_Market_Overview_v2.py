@@ -441,7 +441,7 @@ with st.container():
         font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
       }
       .market-read-wrapper p, .market-read-wrapper li { font-size:16px; }
-        /* >>> add this line to create a blank line after the date line <<< */
+      /* >>> add this line to create a blank line after the date line <<< */
       .market-read-wrapper p:first-of-type { margin-bottom: 20px; }          
 
       .market-read-wrapper h2 { font-size:28px; font-weight:700; margin:8px 0 12px; text-align:center; }
@@ -451,6 +451,7 @@ with st.container():
 
     docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
     mr_md = load_market_read_md(str(docx_path))  # existing function
+    mr_md = mr_md.replace("The market is saying:", "<br><br>The market is saying:", 1)
 
     st.markdown(
         f"""
