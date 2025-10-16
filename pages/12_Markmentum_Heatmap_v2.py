@@ -448,7 +448,7 @@ score_change_hm = (
                   sort=list(glong["Category"].cat.categories),
                   axis=alt.Axis(title=None, labelColor="#1a1a1a",
                                 labelFlush=False, labelFontSize=12, labelLimit=240)),
-          color=alt.Color(scheme="blueorange", scale=None, legend=None),
+          color=alt.Color("color_rgba:N", scale=None, legend=None),
           tooltip=[
               alt.Tooltip("Category:N"),
               alt.Tooltip("Timeframe:N"),
