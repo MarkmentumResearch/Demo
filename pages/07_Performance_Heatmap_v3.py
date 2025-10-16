@@ -116,11 +116,22 @@ def load_perf_csv(p: Path) -> pd.DataFrame:
 st.markdown("""
 <style>
 .card-wrap { display:flex; justify-content:center; }
-.card {
+
+/* Base card width (smaller than before) */
+.card{
   border:1px solid #cfcfcf; border-radius:8px; background:#fff;
-  padding:12px 12px 10px 12px; width:100%; max-width:1320px;
+  padding:12px 12px 10px 12px; width:100%;
+  max-width:980px; /* was 1320px */
 }
-.card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
+
+/* Optional even narrower variants */
+.card.narrow { max-width:900px; }
+.card.xnarrow { max-width:820px; }
+
+/* Keep cards full-bleed on small screens */
+@media (max-width:1100px){
+  .card, .card.narrow, .card.xnarrow { max-width:100%; }
+}
 
 /* table base */
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
