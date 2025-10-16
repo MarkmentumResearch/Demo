@@ -13,61 +13,7 @@ from urllib.parse import quote_plus
 st.cache_data.clear()
 st.set_page_config(page_title="Performance Heatmap", layout="wide")
 
-def _image_b64(p: Path) -> str:
-    with open(p, "rb") as f:
-        return base64.b64encode(f.read()).decode()
 
-# -------------------------
-# Global CSS (same as Heatmap page)
-# -------------------------
-st.markdown("""
-<style>
-/* ============== Page & Shared style ============== */
-[data-testid="stAppViewContainer"] .main .block-container,
-section.main > div { width:95vw; max-width:2100px; margin-left:auto; margin-right:auto; }
-
-div[data-testid="stDecoration"]{ display:none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"]{ border:none !important; background:transparent !important; box-shadow:none !important; }
-div[data-testid="stVerticalBlockBorderWrapper"] > div[aria-hidden="true"]{ display:none !important; }
-
-html, body, [class^="css"], .stMarkdown, .stText, .stDataFrame, .stTable, .stButton {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-}
-.h-title { text-align:center; font-size:20px; font-weight:700; color:#1a1a1a; margin:4px 0 8px; }
-.h-sub   { text-align:center; font-size:12px; color:#666;     margin:2px 0 10px; }
-div[data-baseweb="select"] { max-width:36ch !important; }
-
-/* A) Global heatmap centering row */
-#hm-center + div[data-testid="stHorizontalBlock"]{
-  display:flex !important; justify-content:center !important; gap:0 !important;
-}
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
-  flex:1 1 0 !important; min-width:0 !important;
-}
-#hm-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
-  flex:0 0 auto !important; min-width:0 !important;
-}
-
-/* B) Bottom 4 charts grid: 4-up desktop, 2×2 laptops/MBA, 1-up small screens */
-div[data-testid="stHorizontalBlock"]:has(#grid4) { display:flex; flex-wrap:wrap; gap:24px; }
-div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 22%; min-width:280px; }
-@media (max-width:1499.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 48%; }
-}
-@media (max-width:799.98px){
-  div[data-testid="stHorizontalBlock"]:has(#grid4) > div[data-testid="column"]{ flex:1 1 100%; }
-}
-
-/* C) Altair/Vega sizing+centering backstop */
-div[data-testid="stAltairChart"], div[data-testid="stVegaLiteChart"]{
-  display:grid !important; place-items:center !important; width:100%;
-}
-div[data-testid="stAltairChart"] .vega-embed, div[data-testid="stVegaLiteChart"] .vega-embed{
-  width:auto !important; max-width:100% !important; margin:0 auto !important; display:inline-block !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # -------------------------
 # Paths
@@ -84,6 +30,10 @@ CSV_PATH = DATA_DIR / "ticker_data.csv"   # <-- single source file
 # -------------------------
 # Header: logo centered
 # -------------------------
+def _image_b64(p: Path) -> str:
+    with open(p, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 if LOGO_PATH.exists():
     st.markdown(
         f"""
@@ -104,7 +54,6 @@ def _mk_ticker_link(ticker: str) -> str:
         f'target="_self" rel="noopener" '
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
-
 qp = st.query_params
 dest = (qp.get("page") or "").strip().lower()
 if dest.replace("%20", " ") == "deep dive":
@@ -115,487 +64,547 @@ if dest.replace("%20", " ") == "deep dive":
         st.query_params["ticker"] = t
     st.switch_page("pages/13_Deep_Dive_Dashboard.py")
 
-# -------------------------
-# Load & prep
-# -------------------------
+
+
+
+def _fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x):,.{nd}f}%"
+    except Exception:
+        return ""
+
+# gradient cell (independent scaling by timeframe; pass per-column vmax)
+def _divergent_tint_html(val: float, vmax: float) -> str:
+    if val is None or pd.isna(val) or vmax is None or vmax <= 0:
+        return ""
+    # scale 0..1 capped, keep near-zero very light
+    s = min(abs(float(val)) / float(vmax), 1.0)
+    alpha = 0.12 + 0.28 * s  # 0.12 → 0.40 opacity
+    if val > 0:
+        bg = f"rgba(16,185,129,{alpha:.3f})"   # green
+    elif val < 0:
+        bg = f"rgba(239,68,68,{alpha:.3f})"   # red
+    else:
+        bg = "transparent"
+    label = _fmt_pct(val, 2)
+    return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px; text-align:right;">{label}</span>'
+
+# ---------- Load source ----------
 @st.cache_data(show_spinner=False)
-def load_perf(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame(columns=[
-            "Ticker","Ticker_name","Category",
-            "day_pct_change","week_pct_change","month_pct_change","quarter_pct_change"
-        ])
-    df = pd.read_csv(path)
-
-    # Normalize basics
-    for c in ("Ticker","Ticker_name","Category"):
-        if c in df.columns: df[c] = df[c].astype(str).str.strip()
-    if "Ticker" in df.columns: df["Ticker"] = df["Ticker"].str.upper()
-
-    # Ensure numeric; multiply by 100 (input assumed in decimal)
-    num_cols = ["day_pct_change","week_pct_change","month_pct_change","quarter_pct_change"]
-    for c in num_cols:
-        if c in df.columns:
-            df[c] = pd.to_numeric(df[c], errors="coerce") * 100.0
-
+def load_perf_csv(p: Path) -> pd.DataFrame:
+    if not p.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(p)
+    # enforce expected schema
+    need = [
+        "Ticker","Ticker_name","Category","Date","Close",
+        "day_pct_change","week_pct_change","month_pct_change","quarter_pct_change"
+    ]
+    if not all(c in df.columns for c in need):
+        return pd.DataFrame()
+    # numeric hygiene
+    for c in ["day_pct_change","week_pct_change","month_pct_change","quarter_pct_change","Close"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    # multiply by 100 to convert to percentage space (locked requirement)
+    for c in ["day_pct_change","week_pct_change","month_pct_change","quarter_pct_change"]:
+        df[c] = df[c] * 100.0
     return df
 
-df = load_perf(CSV_PATH)
-if df.empty:
-    st.warning("Missing or empty data/ticker_data.csv.")
-    st.stop()
-
-# --- Derive "as of" date from any date-like column in the CSV
-date_col = next((c for c in ["date","Date","as_of","asOf","asof_date","AsOf","As_of"] if c in df.columns), None)
-as_of_str = ""
-if date_col:
-    as_of = pd.to_datetime(df[date_col], errors="coerce").max()
-    if pd.notna(as_of):
-        # Month/Day/Year without leading zeros
-        as_of_str = f"{as_of.month}/{as_of.day}/{as_of.year}"
-
-# --- robust per-timeframe vmax (winsorized)
-def _robust_vmax(s: pd.Series, q: float = 0.98, floor: float = 1.0, step: float = 1.0) -> float:
-    if s is None or len(s) == 0:
+# robust symmetric vmax (like original heatmap)
+def _robust_vmax(series, q=0.98, floor=1.0, step=1.0):
+    s = pd.to_numeric(series, errors="coerce").abs().dropna()
+    if s.empty:
         return floor
-    vmax = float(np.quantile(np.abs(pd.to_numeric(s, errors="coerce").dropna()), q))
-    # optional neat rounding
+    vmax = float(np.quantile(s, q))
     return max(floor, np.ceil(vmax / step) * step)
 
-# --- Universe-wide robust vmax per timeframe (all tickers)
-_univ_vmax = {}
-if "day_pct_change" in df.columns:
-    _univ_vmax["Daily"] = _robust_vmax(df["day_pct_change"])
-if "week_pct_change" in df.columns:
-    _univ_vmax["WTD"]   = _robust_vmax(df["week_pct_change"])
-if "month_pct_change" in df.columns:
-    _univ_vmax["MTD"]   = _robust_vmax(df["month_pct_change"])
-if "quarter_pct_change" in df.columns:
-    _univ_vmax["QTD"]   = _robust_vmax(df["quarter_pct_change"])
+# ---------- Shared CSS (compass-style card + 40ch Name) ----------
+st.markdown("""
+<style>
+.card-wrap { display:flex; justify-content:center; }
 
-# -------------------------
-# Title (now includes as-of date when available)
-# -------------------------
+/* Base card width (smaller than before) */
+.card{
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 10px 12px; width:100%;
+  max-width:700px; /* was 1320px */
+}
+
+/* Optional even narrower variants */
+.card.narrow { max-width:900px; }
+.card.xnarrow { max-width:820px; }
+
+/* Keep cards full-bleed on small screens */
+@media (max-width:1100px){
+  .card, .card.narrow, .card.xnarrow { max-width:100%; }
+}
+
+/* table base */
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+/* headings: name left; numeric headings centered */
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+.tbl th:nth-child(n+2) { text-align:center; }
+/* cells: name left-wrap; numeric right */
+.tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
+
+/* Column width helpers (shrink Name on both cards) */
+.tbl col.col-name        { width:20ch; min-width:20ch; max-width:20ch; }  /* Card 1 Name (smaller) */
+.tbl col.col-name-wide   { width:20ch; min-width:20ch; max-width:20ch; }  /* Card 2 Name (smaller) */
+.tbl col.col-ticker-nar  { width:7ch; }                                    /* Card 2 Ticker */
+.tbl col.col-num-sm      { width:6ch; }                                     /* Card 1 numerics */
+.tbl col.col-num-lg      { width:6ch; }                                    /* Card 2 numerics */
+
+/* allow wrapping for Name */
+.tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
+
+/* smaller note text */
+.subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
+
+/* Center the Ticker column ONLY in Card 2 */
+.detail .tbl td:nth-child(2), .detail .tbl th:nth-child(2) { text-align:center; }
+.vspace-16 { height:16px; }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* …existing styles… */
+.card h3 { margin:0 0 4px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
+.card .subtitle { margin:0 0 8px 0; font-size:14px; font-weight:500; color:#6b7280; text-align:center; }
+/* …existing styles… */
+</style>
+""", unsafe_allow_html=True)
+
+
+
+perf = load_perf_csv(CSV_PATH)
+if perf.empty:
+    st.info("`ticker_data.csv` missing or columns incomplete.")
+
+ 
+g = perf.groupby("Category", dropna=True, as_index=False).agg(
+    Daily=("day_pct_change","mean"),
+    WTD=("week_pct_change","mean"),
+    MTD=("month_pct_change","mean"),
+    QTD=("quarter_pct_change","mean"),
+).sort_values("Category", kind="stable")
+
+# ---- Page title (under logo) pulled from source Date ----
+date_str = ""
+if not perf.empty and "Date" in perf.columns:
+    asof = pd.to_datetime(perf["Date"], errors="coerce").max()
+    if pd.notna(asof):
+        date_str = f"{asof.month}/{asof.day}/{asof.year}"
+
 st.markdown(
     f"""
-    <div style="
-        text-align:center;
-        font-size:20px;
-        font-weight:600;
-        color:#233;
-        margin-top:8px;
-        margin-bottom:12px;">
-        Performance Heatmap{f" – {as_of_str}" if as_of_str else ""}
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Performance – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# =========================
-# Global Heatmap — Avg % Change (Category × Timeframe)
-# =========================
-parts = []
-if "day_pct_change" in df.columns:
-    parts.append(df[["Category","day_pct_change"]].rename(columns={"day_pct_change":"delta"}).assign(Timeframe="Daily"))
-if "week_pct_change" in df.columns:
-    parts.append(df[["Category","week_pct_change"]].rename(columns={"week_pct_change":"delta"}).assign(Timeframe="WTD"))
-if "month_pct_change" in df.columns:
-    parts.append(df[["Category","month_pct_change"]].rename(columns={"month_pct_change":"delta"}).assign(Timeframe="MTD"))
-if "quarter_pct_change" in df.columns:
-    parts.append(df[["Category","quarter_pct_change"]].rename(columns={"quarter_pct_change":"delta"}).assign(Timeframe="QTD"))
+# ===== Card 1 — Performance – Macro Orientation (same layout as Card 2) =====
 
-hm = pd.concat(parts, ignore_index=True).dropna(subset=["Category","delta"])
-
-agg = (
-    hm.groupby(["Category","Timeframe"], as_index=False)
-      .agg(avg_delta=("delta","mean"), n=("delta","size"))
-)
-
-# Preferred ordering (filtered to present ones)
-preferred = [
-    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
-    "Bonds","Yields","Volatility","Foreign","Communication Services","Consumer Discretionary",
-    "Consumer Staples","Energy","Financials","Health Care","Industrials",
-    "Information Technology","Materials","Real Estate","Utilities","MR Discretion"
+# Use the same macro list you show on Compass (only those that exist in the file will render)
+macro_list = [
+    "SPX","NDX","DJI","RUT",
+    "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
+    "GLD","UUP","TLT","BTC=F"
 ]
-present = list(agg["Category"].unique())
-cat_order = [c for c in preferred if c in present] + [c for c in present if c not in preferred]
-tf_order  = ["Daily","WTD","MTD","QTD"]
 
-# --- Per-timeframe robust vmax across categories
-_tf_key = {"Daily":"Daily","WTD":"WTD","MTD":"MTD","QTD":"QTD"}
-vmax_by_tf = {
-    tf: _robust_vmax(agg.loc[agg["Timeframe"]==tf, "avg_delta"], q=0.98, floor=1.0, step=1.0)
-    for tf in _tf_key.values()
+# keep only the latest row per ticker (in case CSV has multiple dates)
+if not perf.empty:
+    perf["_dt"] = pd.to_datetime(perf["Date"], errors="coerce")
+    latest = (
+        perf.sort_values(["Ticker", "_dt"], ascending=[True, False])
+            .drop_duplicates(subset=["Ticker"], keep="first")
+    )
+else:
+    latest = perf.copy()
+
+m = latest[latest["Ticker"].isin(macro_list)].copy()
+# preserve the macro_list order
+m["__ord__"] = m["Ticker"].map({t:i for i, t in enumerate(macro_list)})
+m = m.sort_values(["__ord__"], kind="stable")
+
+# build ticker links
+m["Ticker_link"] = m["Ticker"].map(_mk_ticker_link)
+
+# independent scaling by timeframe **within just these macro tickers**
+vmaxM = {
+    "Daily":  m["day_pct_change"].abs().max(skipna=True) or 0.0,
+    "WTD":    m["week_pct_change"].abs().max(skipna=True) or 0.0,
+    "MTD":    m["month_pct_change"].abs().max(skipna=True) or 0.0,
+    "QTD":    m["quarter_pct_change"].abs().max(skipna=True) or 0.0,
 }
 
-# --- Normalize within each timeframe (independent color for each column)
-agg_norm = agg.assign(
-    norm=lambda d: d.apply(lambda r: np.clip(
-        (r["avg_delta"] / (vmax_by_tf.get(r["Timeframe"], 1.0) or 1.0)), -1, 1
-    ), axis=1)
-)
+m_render = pd.DataFrame({
+    "Name":   m["Ticker_name"],
+    "Ticker": m["Ticker_link"],
+    "Daily":  [ _divergent_tint_html(v, vmaxM["Daily"]) for v in m["day_pct_change"] ],
+    "WTD":    [ _divergent_tint_html(v, vmaxM["WTD"])   for v in m["week_pct_change"] ],
+    "MTD":    [ _divergent_tint_html(v, vmaxM["MTD"])   for v in m["month_pct_change"] ],
+    "QTD":    [ _divergent_tint_html(v, vmaxM["QTD"])   for v in m["quarter_pct_change"] ],
+})
 
-row_h = 26
-chart_h = max(360, row_h * len(cat_order) + 24)
-chart_w = 625
-legend_w = 120
+html_macro = m_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_macro = html_macro.replace('class="dataframe tbl"', 'class="tbl"')
 
-heat = (
-    alt.Chart(agg_norm)
-    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-    .encode(
-        x=alt.X("Timeframe:N", sort=tf_order,
-                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        y=alt.Y("Category:N", sort=cat_order,
-                axis=alt.Axis(title=None, labelLimit=460, orient="left", labelPadding=6,
-                              labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-        # color by normalized value so each timeframe is independent
-        color=alt.Color("norm:Q",
-                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                        legend=alt.Legend(orient="bottom", title="Avg % Change (per timeframe)",
-                                          titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                          gradientLength=360, labelLimit=80,labelExpr="''")),
-        tooltip=[alt.Tooltip("Category:N"),
-                 alt.Tooltip("Timeframe:N"),
-                 alt.Tooltip("avg_delta:Q", title="Avg %", format=",.2f"),
-                 alt.Tooltip("n:Q", title="Count")]
-    )
-    .properties(width=chart_w, height=chart_h,
-                padding={"left": legend_w, "right": 0, "top": 6, "bottom": 0})
-    .configure_view(strokeOpacity=0)
-)
-
-st.markdown('<div id="hm-center"></div>', unsafe_allow_html=True)
-pad_l, center_col, pad_r = st.columns([1,3,1])
-with center_col:
-    with st.container(border=True):
-        st.markdown(
-            '<div style="text-align:center;">'
-            '<h3 style="margin:0;">Performance Heatmap – Avg % Changes</h3>'
-            '<div class="small" style="margin-top:4px;">'
-            'Average % Δ across tickers in each category and timeframe'
-            '</div></div>',
-            unsafe_allow_html=True,
-        )
-        _l, _c, _r = st.columns([1,7,1])
-        with _c:
-            st.altair_chart(heat, use_container_width=False)
-
-#col1, col2, col3 = st.columns([1.5, 3, .5])
-#with col2:
-#    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
-
-
-
-# -------------------------
-# Controls
-# -------------------------
-custom_order = preferred
-all_cats = [c for c in custom_order if c in df["Category"].dropna().unique().tolist()]
-default_cat = "Sector & Style ETFs" if "Sector & Style ETFs" in all_cats else (all_cats[0] if all_cats else None)
-
-c_blank, c_sel, c_blank2 = st.columns([2.5,3,.3])
-with c_sel:
-    sel = st.selectbox("Category", all_cats, index=(all_cats.index(default_cat) if default_cat else 0))
-
-# Always show per-ticker matrix (mirrors your latest UX)
-show_ticker_hm = True
-
-# =========================
-# Per-Ticker Heatmap (selected category)
-# =========================
-if show_ticker_hm and sel:
-    tm_parts = []
-    if "day_pct_change" in df.columns:
-        tm_parts.append(df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","day_pct_change"]]
-                          .rename(columns={"day_pct_change":"delta"}).assign(Timeframe="Daily"))
-    if "week_pct_change" in df.columns:
-        tm_parts.append(df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","week_pct_change"]]
-                          .rename(columns={"week_pct_change":"delta"}).assign(Timeframe="WTD"))
-    if "month_pct_change" in df.columns:
-        tm_parts.append(df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","month_pct_change"]]
-                          .rename(columns={"month_pct_change":"delta"}).assign(Timeframe="MTD"))
-    if "quarter_pct_change" in df.columns:
-        tm_parts.append(df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","quarter_pct_change"]]
-                          .rename(columns={"quarter_pct_change":"delta"}).assign(Timeframe="QTD"))
-
-    tm = pd.concat(tm_parts, ignore_index=True).dropna(subset=["Ticker","delta"])
-    # Normalize by universe vmax per timeframe so each column is independent
-    tm["norm"] = tm.apply(
-        lambda r: np.clip(r["delta"] / (_univ_vmax.get(r["Timeframe"], 1.0) or 1.0), -1, 1),
-        axis=1
-    )
-    ticker_order = sorted(tm["Ticker"].unique().tolist())
-    tf_order = ["Daily","WTD","MTD","QTD"]
-
-    # Use global vmax based on per-ticker dispersion (robust)
-    #vmax_ticker = float(np.quantile(np.abs(tm["delta"].values), 0.99))
-    #vmax_ticker = max(1.0, np.ceil(vmax_ticker / 5.0) * 5.0)
-
-    row_h = 22
-    chart_h = max(360, row_h*len(ticker_order) + 24)
-    chart_w = 530
-    legend_w = 120
-
-    ticker_heat = (
-        alt.Chart(tm)
-        .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-        .encode(
-            x=alt.X("Timeframe:N", sort=tf_order,
-                    axis=alt.Axis(orient="top", title=None, labelAngle=0, labelPadding=8,
-                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13)),
-            y=alt.Y("Ticker:N", sort=ticker_order,
-                    axis=alt.Axis(title=None, labelLimit=140, labelPadding=10, orient="left",
-                                  labelFlush=False, labelColor="#1a1a1a", labelFontSize=13, labelOverlap=False)),
-            color=alt.Color("norm:Q",
-                            scale=alt.Scale(scheme="blueorange", domain=[-1,0,1]),
-                            legend=alt.Legend(orient="bottom", title="% Change (per timeframe)",
-                                              titleColor="#1a1a1a", labelColor="#1a1a1a",
-                                              gradientLength=355, labelLimit=80,labelExpr="''")),
-            tooltip=[alt.Tooltip("Ticker:N"),
-                     alt.Tooltip("Ticker_name:N", title="Name"),
-                     alt.Tooltip("Timeframe:N"),
-                     alt.Tooltip("delta:Q", title="% Δ", format=",.2f")]
-        )
-        .properties(width=chart_w, height=chart_h,
-                    padding={"left": legend_w, "right": 0, "top": 6, "bottom": -4})
-        .configure_view(strokeOpacity=0)
-    )
-
-    pad_l, center_col, pad_r = st.columns([1.08, 3, .92])
-    with center_col:
-        with st.container(border=True):
-            st.markdown(
-                f'<div style="text-align:center;">'
-                f'<h4 style="margin:0;">{sel} — Per-Ticker Performance Heatmap</h4>'
-                f'<div class="small" style="margin-top:4px;">% Δ by ticker and timeframe</div>'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
-            _l, _c, _r = st.columns([1, 4, 1])
-            with _c:
-                st.altair_chart(ticker_heat, use_container_width=False)
-
-#col1, col2, col3 = st.columns([1.85, 3, .3])
-#with col2:
-#    st.caption("Note: Color scale uses a robust symmetric range; values beyond the range clip to the end color.")
-#col1, col2, col3 = st.columns([1.5, 3, .5])
-#with col2:
-#    st.caption("Note: Each timeframe column uses its own color scale derived from that timeframe’s dispersion (independent per timeframe)")
-
-
-st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-
-# -------------------------
-# Helper: padded x-domain for negative-capable bar charts
-# -------------------------
-def padded_domain(series: pd.Series, frac: float = 0.06, min_pad: float = 2.0):
-    if series.empty:
-        return alt.Undefined
-    s_min = float(series.min())
-    s_max = float(series.max())
-    rng = max(s_max - s_min, 1e-9)
-    pad = max(rng * frac, min_pad)
-    left = s_min - pad if s_min < 0 else s_min
-    right = s_max + 0.02 * rng
-    return [left, right]
-
-# -------------------------
-# Filter frames for selected category
-# -------------------------
-viewD  = df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","day_pct_change"]].dropna()
-viewW  = df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","week_pct_change"]].dropna()
-viewM  = df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","month_pct_change"]].dropna()
-viewQ  = df.loc[df["Category"]==sel, ["Ticker","Ticker_name","Category","quarter_pct_change"]].dropna()
-
-if all(v.empty for v in (viewD,viewW,viewM,viewQ)):
-    st.info(f"No tickers found for **{sel}**.")
-    st.stop()
-
-c_lock, _, _ = st.columns([1,4,1])
-with c_lock:
-    lock_axes_and_order = st.checkbox("Lock axes", value=False, help="Fix axes and align all charts by ticker A→Z")
-
-if lock_axes_and_order:
-    y_order = sorted(set(viewD["Ticker"]) | set(viewW["Ticker"]) | set(viewM["Ticker"]) | set(viewQ["Ticker"]))
-else:
-    yD = viewD.sort_values("day_pct_change", ascending=False)["Ticker"].tolist()
-    yW = viewW.sort_values("week_pct_change", ascending=False)["Ticker"].tolist()
-    yM = viewM.sort_values("month_pct_change", ascending=False)["Ticker"].tolist()
-    yQ = viewQ.sort_values("quarter_pct_change", ascending=False)["Ticker"].tolist()
-
-chart_height = max(260, 24 * max(len(viewD),len(viewW),len(viewM),len(viewQ)) + 120)
-
-
-# -------------------------
-# Chart #1: 
-# -------------------------
-
-category_ms_min = float(viewD["day_pct_change"].min()-3) if not viewD.empty else 0.0
-category_ms_max = float(viewD["day_pct_change"].max()+3) if not viewD.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min, category_ms_max]),frac=0.06, min_pad=2.0)
-
-xchartD = alt.X("day_pct_change:Q", title="Daily % Change", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
-baseD = (
-    alt.Chart(viewD)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yD), title="Ticker"),
-        x=xchartD,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("day_pct_change:Q", format=",.1f")],
-    )
-)
-
-barsD = baseD.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posD = baseD.transform_filter("datum.day_pct_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("day_pct_change:Q", format=",.1f"))
-negD = baseD.transform_filter("datum.day_pct_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("day_pct_change:Q", format=",.1f"))
-
-chartD = (barsD + posD + negD).properties(title="Daily % Change", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #2: 
-# -------------------------
-
-category_ms_min2 = float(viewW["week_pct_change"].min()-3) if not viewW.empty else 0.0
-category_ms_max2 = float(viewW["week_pct_change"].max()+3) if not viewW.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min2, category_ms_max2]),frac=0.06, min_pad=2.0)
-
-xchartW = alt.X("week_pct_change:Q", title="WTD % Change", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
-baseW = (
-    alt.Chart(viewW)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yW), title="Ticker"),
-        x=xchartW,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("week_pct_change:Q", format=",.1f")],
-    )
-)
-
-barsW = baseW.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posW = baseW.transform_filter("datum.week_pct_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("week_pct_change:Q", format=",.1f"))
-negW = baseW.transform_filter("datum.week_pct_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("week_pct_change:Q", format=",.1f"))
-
-chartW = (barsW + posW + negW).properties(title="WTD % Change", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #3: 
-# -------------------------
-
-category_ms_min3 = float(viewM["month_pct_change"].min()-3) if not viewM.empty else 0.0
-category_ms_max3 = float(viewM["month_pct_change"].max()+3) if not viewM.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min3, category_ms_max3]),frac=0.06, min_pad=2.0)
-
-xchartM = alt.X("month_pct_change:Q", title="MTD % Change", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
-baseM = (
-    alt.Chart(viewM)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yM), title="Ticker"),
-        x=xchartM,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("month_pct_change:Q", format=",.1f")],
-    )
-)
-
-barsM = baseM.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posM = baseM.transform_filter("datum.month_pct_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("month_pct_change:Q", format=",.1f"))
-negM = baseM.transform_filter("datum.month_pct_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("month_pct_change:Q", format=",.1f"))
-
-chartM = (barsM + posM + negM).properties(title="MTD % Change", height=chart_height).configure_title(anchor="middle")
-
-# -------------------------
-# Chart #4: 
-# -------------------------
-
-category_ms_min4 = float(viewQ["quarter_pct_change"].min()-3) if not viewQ.empty else 0.0
-category_ms_max4 = float(viewQ["quarter_pct_change"].max()+3) if not viewQ.empty else 0.0
-
-if lock_axes_and_order:
-    ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]), frac=0.06, min_pad=2.0)
-else:
-    ms_dom = padded_domain(pd.Series([category_ms_min4, category_ms_max4]),frac=0.06, min_pad=2.0)
-
-xchartQ = alt.X("quarter_pct_change:Q", title="QTD % Change", scale=alt.Scale(domain=ms_dom))
-
-hint = "'Click to open Deep Dive'"
-baseQ = (
-    alt.Chart(viewQ)
-    .transform_calculate(url="'?page=Deep%20Dive&ticker=' + datum.Ticker")
-    .encode(
-        y=alt.Y("Ticker:N", sort=(y_order if lock_axes_and_order else yQ), title="Ticker"),
-        x=xchartQ,
-        href=alt.Href("url:N"),
-        tooltip=["Ticker", "Ticker_name", "Category", alt.Tooltip("quarter_pct_change:Q", format=",.1f")],
-    )
-)
-
-barsQ = baseQ.mark_bar(size=16, cornerRadiusEnd=3, color="#4472C4")
-
-posQ = baseQ.transform_filter("datum.quarter_pct_change >= 0") \
-              .mark_text(align="left", baseline="middle", dx=4) \
-              .encode(text=alt.Text("quarter_pct_change:Q", format=",.1f"))
-negQ = baseQ.transform_filter("datum.quarter_pct_change < 0") \
-              .mark_text(align="right", baseline="middle", dx=-10) \
-              .encode(text=alt.Text("quarter_pct_change:Q", format=",.1f"))
-
-chartQ = (barsQ + posQ + negQ).properties(title="QTD % Change", height=chart_height).configure_title(anchor="middle")
-
-
-st.markdown('<div class="h-title">Bar Charts by Ticker</div>', unsafe_allow_html=True)
-
-# Render 4-up (responsive via CSS)
-cA, cB, cC, cD = st.columns(4)
-with cA:
-    #st.markdown('<span id="grid4" style="display:block;height:0;overflow:hidden"></span>', unsafe_allow_html=True)
-    st.altair_chart(chartD, use_container_width=True)
-with cB: st.altair_chart(chartW, use_container_width=True)
-with cC: st.altair_chart(chartM, use_container_width=True)
-with cD: st.altair_chart(chartQ, use_container_width=True)
+# Use the SAME column widths as Card 2 (Name wider, Ticker narrow, numerics roomy)
+colgroup_macro = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name -->
+  <col class="col-ticker-nar"> <!-- Ticker -->
+  <col class="col-num-lg">     <!-- Daily -->
+  <col class="col-num-lg">     <!-- WTD -->
+  <col class="col-num-lg">     <!-- MTD -->
+  <col class="col-num-lg">     <!-- QTD -->
+</colgroup>
+""".strip()
+html_macro = html_macro.replace('<table class="tbl">', f'<table class="tbl">{colgroup_macro}', 1)
 
 st.markdown(
-    "<div style='margin-top:6px; color:#6b7280; font-size:13px;'>"
-    "Tip: <b>Click any bar</b> to open the Deep Dive for that ticker."
-    "</div>",
+    f"""
+    <div class="card-wrap">
+      <div class="card detail">
+             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+              Performance — Macro Orientation</h3>
+        <div class="subtitle">Avg % change by ticker and timeframe</div>
+        {html_macro}
+        <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
+      </div>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
+
+# little breathing room before the next card
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+
+
+
+
+# =========================================================
+# Card 2 — Category averages (Name, Daily, WTD, MTD, QTD)
+# =========================================================
+
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+order_map = {name: i for i, name in enumerate(preferred_order)}
+g["__ord__"] = g["Category"].map(order_map)
+g = g.sort_values(["__ord__", "Category"], kind="stable")
+g = g.drop(columns="__ord__")
+
+# independent scaling by timeframe
+vmax = {
+        "Daily":  g["Daily"].abs().max(skipna=True) or 0.0,
+        "WTD":    g["WTD"].abs().max(skipna=True) or 0.0,
+        "MTD":    g["MTD"].abs().max(skipna=True) or 0.0,
+        "QTD":    g["QTD"].abs().max(skipna=True) or 0.0,
+    }
+
+g_render = pd.DataFrame({
+        "Name": g["Category"],
+        "Daily": [ _divergent_tint_html(v, vmax["Daily"]) for v in g["Daily"] ],
+        "WTD":   [ _divergent_tint_html(v, vmax["WTD"])   for v in g["WTD"]   ],
+        "MTD":   [ _divergent_tint_html(v, vmax["MTD"])   for v in g["MTD"]   ],
+        "QTD":   [ _divergent_tint_html(v, vmax["QTD"])   for v in g["QTD"]   ],
+    })
+
+html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup = """
+<colgroup>
+  <col class="col-name">   <!-- Name (40ch) -->
+  <col class="col-num-sm"> <!-- Daily -->
+  <col class="col-num-sm"> <!-- WTD -->
+  <col class="col-num-sm"> <!-- MTD -->
+  <col class="col-num-sm"> <!-- QTD -->
+</colgroup>
+""".strip()
+html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+              Performance — Category Averages</h3>
+              <div class="subtitle">Avg % change by each category and timeframe</div>
+            {html_cat}
+            <div class="subnote">Each column uses its own red/green gradient scale.</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+
+# ===== Category Averages — Heatmap (single matrix like prior page) =====
+# Long form from the grouped averages 'g'
+glong = g.melt(
+    id_vars=["Category"],
+    value_vars=["Daily", "WTD", "MTD", "QTD"],
+    var_name="Timeframe",
+    value_name="Pct",
+)
+
+# Keep preferred row order
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
+
+vmax = float(glong["Pct"].abs().max())
+
+# Single grid heatmap (shared, centered legend at bottom)
+base_hm = (
+    alt.Chart(glong)
+    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+    .encode(
+        x=alt.X(
+            "Timeframe:N",
+            sort=["Daily", "WTD", "MTD", "QTD"],
+            axis=alt.Axis(orient="top",title=None, labelColor="#1a1a1a",labelFontSize=12, labelAngle=0,labelFlush=False,labelPadding=6)
+        ),
+        y=alt.Y(
+            "Category:N",
+            sort=list(glong["Category"].cat.categories),
+            axis=alt.Axis(title=None, labelColor="#1a1a1a",labelFlush=False,labelFontSize=12, labelLimit=240)
+        ),
+        color=alt.Color(
+            "Pct:Q",
+            # diverging blue↔orange with 0 as midpoint (matches your prior style)
+            scale=alt.Scale(scheme="blueorange",domain=[-vmax, vmax], domainMid=0),
+            legend=alt.Legend(orient="bottom", labelExpr="''",title="Avg % Change (per timeframe)")
+        ),
+        tooltip=[
+            alt.Tooltip("Category:N"),
+            alt.Tooltip("Timeframe:N"),
+            alt.Tooltip("Pct:Q", format=".2f", title="%")
+        ],
+    )
+    .properties(width=450, height=24 * len(preferred_order))
+    .configure_view(strokeWidth=0)
+)
+
+st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Performance Heatmap – Avg % Change
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:14px; font-weight:500; color:#6b7280;">
+        Avg % Change by category and timeframe
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+left, center, right = st.columns([1, .8, 1])
+with center:
+    st.altair_chart(base_hm, use_container_width=False)
+
+# =========================================================
+# Card 3 — Category selector → per-ticker rows
+# =========================================================
+preferred = [
+        "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+        "Bonds","Yields","Volatility","Foreign",
+        "Communication Services","Consumer Discretionary","Consumer Staples",
+        "Energy","Financials","Health Care","Industrials","Information Technology",
+        "Materials","Real Estate","Utilities","MR Discretion"
+    ]
+custom_order = preferred
+cats = [c for c in custom_order if c in perf["Category"].dropna().unique().tolist()]
+default_cat = "Sector & Style ETFs" if "Sector & Style ETFs" in cats else (cats[0] if cats else None)
+
+_, csel, _ = st.columns([1, 1, 1])
+with csel:
+        sel = st.selectbox("Category", cats, index=(cats.index(default_cat) if default_cat else 0))
+
+col_left, col_center, col_right = st.columns([1, 1, 1])
+with col_center:
+    view_choice = st.radio(
+        "View",
+        ["Table", "Heatmap", "Both"],
+        index=2,
+        horizontal=True,
+        label_visibility="visible",
+    )
+
+# --- Universe-long df for global scaling (ALL tickers, ALL timeframes)
+tlong_all = perf.melt(
+    id_vars=["Ticker", "Ticker_name", "Category"],
+    value_vars=["day_pct_change", "week_pct_change", "month_pct_change", "quarter_pct_change"],
+    var_name="tf_raw",
+    value_name="Pct"
+)
+# Map raw column names to display timeframes to match pages
+map_tf = {
+    "day_pct_change": "Daily",
+    "week_pct_change": "WTD",
+    "month_pct_change": "MTD",
+    "quarter_pct_change": "QTD",
+}
+tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
+tlong_all.drop(columns=["tf_raw"], inplace=True)
+
+# Universe-wide |Pct| max per timeframe (for scaling columns)
+tf_scale = (
+    tlong_all.groupby("Timeframe", as_index=False)
+             .agg(maxAbs=("Pct", lambda s: s.abs().max()))
+)
+# guard against divide-by-zero
+import numpy as np
+# Universe-wide robust vmax per timeframe (independent columns)
+vmax_univ_tf = (
+    tlong_all.groupby("Timeframe")["Pct"]
+             .apply(lambda s: _robust_vmax(s, q=0.98, floor=1.0, step=1.0))
+             .to_dict()
+)
+
+
+# Global symmetric scale across the entire universe
+vglob = float(tlong_all["Pct"].abs().max())
+
+# Slice for the selected category (for the heatmap rows)
+tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
+tickers_order = sorted(tlong_sel["Ticker"].dropna().unique().tolist())
+tlong_sel["Ticker"] = pd.Categorical(tlong_sel["Ticker"], categories=tickers_order, ordered=True)
+# Normalize with robust universe-wide vmax per timeframe (to [-1, 1])
+tlong_sel["norm"] = tlong_sel.apply(
+    lambda r: np.clip(
+        r["Pct"] / (vmax_univ_tf.get(r["Timeframe"], 1.0) or 1.0),
+        -1, 1
+    ),
+    axis=1
+)
+
+
+# --- Per-category matrix heatmap (Ticker vs Timeframe), scaled by UNIVERSE per timeframe
+hm_sel = (
+    alt.Chart(tlong_sel)
+    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+    .encode(
+        x=alt.X("Timeframe:N",
+                sort=["Daily","WTD","MTD","QTD"],
+                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelColor="#1a1a1a",labelFlush=False, labelFontSize=12)),
+        y=alt.Y("Ticker:N",
+                sort=tickers_order,
+                axis=alt.Axis(title=None, labelFontSize=12, labelColor="#1a1a1a",labelFlush=False, labelLimit=260)),
+        color=alt.Color("norm:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                        legend=alt.Legend(orient="bottom",
+                                          title="% Change (per timeframe)",
+                                          labelExpr="''")),
+        tooltip=[
+            alt.Tooltip("Ticker:N"),
+            alt.Tooltip("Timeframe:N"),
+            alt.Tooltip("Pct:Q", title="% Δ", format=",.2f")
+        ],
+    )
+    .properties(width=420, height=max(360, 22*len(tickers_order)+24))
+    .configure_view(strokeWidth=0)
+)
+
+
+d = perf.loc[perf["Category"] == sel].copy()
+d["Ticker_link"] = d["Ticker"].map(_mk_ticker_link)
+
+    # independent scaling by timeframe **within the selected category**
+vmax2 = {
+        "Daily":  d["day_pct_change"].abs().max(skipna=True) or 0.0,
+        "WTD":    d["week_pct_change"].abs().max(skipna=True) or 0.0,
+        "MTD":    d["month_pct_change"].abs().max(skipna=True) or 0.0,
+        "QTD":    d["quarter_pct_change"].abs().max(skipna=True) or 0.0,
+    }
+
+d_render = pd.DataFrame({
+        "Name":   d["Ticker_name"],
+        "Ticker": d["Ticker_link"],
+        "Daily":  [ _divergent_tint_html(v, vmax2["Daily"]) for v in d["day_pct_change"] ],
+        "WTD":    [ _divergent_tint_html(v, vmax2["WTD"])   for v in d["week_pct_change"] ],
+        "MTD":    [ _divergent_tint_html(v, vmax2["MTD"])   for v in d["month_pct_change"] ],
+        "QTD":    [ _divergent_tint_html(v, vmax2["QTD"])   for v in d["quarter_pct_change"] ],
+    })
+
+html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_detail = html_detail.replace('class="dataframe tbl"', 'class="tbl"')
+colgroup2 = """
+<colgroup>
+  <col class="col-name-wide">  <!-- Name wider (48ch) -->
+  <col class="col-ticker-nar"> <!-- Ticker narrower -->
+  <col class="col-num-lg">     <!-- Daily bigger -->
+  <col class="col-num-lg">     <!-- WTD bigger -->
+  <col class="col-num-lg">     <!-- MTD bigger -->
+  <col class="col-num-lg">     <!-- QTD bigger -->
+</colgroup>
+""".strip()
+html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
+
+if view_choice in ("Table", "Both"):
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card detail">
+            <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+              {sel} — Per Ticker Performance</h3>
+            <div class="subtitle">% change by ticker and timeframe</div>
+            {html_detail}
+            <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+if view_choice in ("Heatmap", "Both"):
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    # Optional centered title under the selector
+    st.markdown(
+        f"""
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            {sel} — Per Ticker Heatmap
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                font-size:14px; font-weight:500; color:#6b7280;">
+                Avg % change by ticker and timeframe
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    # Center the chart
+    left, center, right = st.columns([1.4, .8, 1.4])
+    with center:
+        st.altair_chart(hm_sel, use_container_width=False)
 
 # -------------------------
 # Footer disclaimer
