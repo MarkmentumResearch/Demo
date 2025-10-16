@@ -292,8 +292,8 @@ st.markdown(
     f"""
     <div class="card-wrap">
       <div class="card detail">  <!-- add 'detail' here -->
-        <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-          {sel} — Constituents
+        <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+          {sel} — Per Ticker
         </h3>
         {html_detail}
         <div class="subnote">Ticker links open the Deep Dive dashboard. Each timeframe’s shading is scaled independently.</div>
