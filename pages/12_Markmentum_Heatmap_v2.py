@@ -370,7 +370,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Category Averages</h3>
-        <div class="subtitle">Avg MM score and change by category and timeframe</div>
+        <div class="subtitle">Avg MM score and Change by category and timeframe</div>
         {html_cat}
         <div class="subnote">Each change column uses an independent red/green scale; score cells use Buy/Neutral/Sell shading.</div>
       </div>
@@ -443,7 +443,7 @@ st.markdown(
     </div>
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
-        Average MM Score and change by category and timeframe
+        Average MM Score and Change by category and timeframe
     </div>
     """,
     unsafe_allow_html=True,
@@ -524,31 +524,32 @@ if view_choice in ("Table","Both"):
     )
 
 # -------------------------
-# Per-category heatmap (independent scale by timeframe, universe-wide)
+# Per-ticker heatmap (Score + Δ columns, independent scale per timeframe, universe-wide)
 # -------------------------
-# Long frame across universe for tf-specific robust maxima
+# Long frame across entire universe, now INCLUDING Score
 tlong_all = latest.melt(
     id_vars=["Ticker","Name","Category","Score"],
-    value_vars=["ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+    value_vars=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
     var_name="Timeframe",
-    value_name="Delta"
+    value_name="Value"
 )
 
-# universe-wide robust vmax per timeframe
-vmax_univ_tf = (
-    tlong_all.groupby("Timeframe")["Delta"]
-             .apply(lambda s: _robust_vmax(s, q=0.98, floor=1.0, step=1.0))
-             .to_dict()
-)
+# Universe-wide robust vmax per timeframe; cap Score at 105 so extremes don’t dominate
+vmax_univ_tf = {}
+for tf, sub in tlong_all.groupby("Timeframe"):
+    vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
+    if tf == "Score":
+        vmax = min(105.0, max(vmax, 1.0))
+    vmax_univ_tf[tf] = vmax
 
-# selected category long
+# Selected category long
 tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
 tickers_order = sorted(tlong_sel["Ticker"].dropna().unique().tolist())
 
-# normalize each cell by the universe max for that timeframe → [-1,1]
+# Normalize each cell by the universe max for its timeframe → [-1, 1]
 tlong_sel["norm"] = tlong_sel.apply(
     lambda r: np.clip(
-        (r["Delta"] or 0.0) / (vmax_univ_tf.get(r["Timeframe"], 1.0) or 1.0),
+        (r["Value"] or 0.0) / (vmax_univ_tf.get(r["Timeframe"], 1.0) or 1.0),
         -1, 1
     ),
     axis=1
@@ -556,25 +557,29 @@ tlong_sel["norm"] = tlong_sel.apply(
 
 hm_sel = (
     alt.Chart(tlong_sel)
-    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-    .encode(
-        x=alt.X("Timeframe:N",
-                sort=["ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
-                axis=alt.Axis(orient="top", title=None, labelAngle=0, labelColor="#1a1a1a", labelFlush=False, labelFontSize=12)),
-        y=alt.Y("Ticker:N",
-                sort=tickers_order,
-                axis=alt.Axis(title=None, labelFontSize=12, labelColor="#1a1a1a", labelFlush=False, labelLimit=260)),
-        color=alt.Color("norm:Q",
-                        scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                        legend=alt.Legend(orient="bottom", title="Δ (independent per timeframe)", labelExpr="''")),
-        tooltip=[
-            alt.Tooltip("Ticker:N"),
-            alt.Tooltip("Timeframe:N", title="Timeframe"),
-            alt.Tooltip("Delta:Q", title="Δ Score", format=",.0f"),
-        ],
-    )
-    .properties(width=420, height=max(360, 22*len(tickers_order)+24))
-    .configure_view(strokeWidth=0)
+      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+      .encode(
+          x=alt.X("Timeframe:N",
+                  sort=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+                  axis=alt.Axis(orient="top", title=None, labelAngle=0,
+                                labelColor="#1a1a1a", labelFlush=False, labelFontSize=12)),
+          y=alt.Y("Ticker:N",
+                  sort=tickers_order,
+                  axis=alt.Axis(title=None, labelFontSize=12, labelColor="#1a1a1a",
+                                labelFlush=False, labelLimit=260)),
+          color=alt.Color("norm:Q",
+                          scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
+                          legend=alt.Legend(orient="bottom",
+                                            title="(independent per timeframe)",
+                                            labelExpr="''")),
+          tooltip=[
+              alt.Tooltip("Ticker:N"),
+              alt.Tooltip("Timeframe:N", title="Timeframe"),
+              alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+          ],
+      )
+      .properties(width=520, height=max(360, 22*len(tickers_order)+24))
+      .configure_view(strokeWidth=0)
 )
 
 if view_choice in ("Heatmap","Both"):
@@ -583,16 +588,16 @@ if view_choice in ("Heatmap","Both"):
         f"""
         <div style="text-align:center; margin:0 0 8px;
                     font-size:16px; font-weight:700; color:#1a1a1a;">
-            {sel} — Per Ticker Change Heatmap
+            {sel} — Per Ticker Heatmap (Score + Changes)
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                     font-size:14px; font-weight:500; color:#6b7280;">
-            Δ score by timeframe, independently scaled per column across the entire universe
+            Score and Δ by timeframe, each column scaled independently across the entire universe
         </div>
         """,
         unsafe_allow_html=True,
     )
-    left, center, right = st.columns([1.4, .8, 1.4])
+    left, center, right = st.columns([1.2, .8, 1.2])
     with center:
         st.altair_chart(hm_sel, use_container_width=False)
 
