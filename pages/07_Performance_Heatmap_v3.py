@@ -393,11 +393,11 @@ base_hm = (
             alt.Tooltip("Pct:Q", format=".2f", title="%")
         ],
     )
-    .properties(width=560, height=24 * len(preferred_order))
+    .properties(width=240, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
 
-st.altair_chart(base_hm, use_container_width=True)
+st.altair_chart(base_hm, use_container_width=False)
 
 # =========================================================
 # Card 3 — Category selector → per-ticker rows
