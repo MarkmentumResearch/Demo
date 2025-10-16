@@ -1,5 +1,5 @@
 # 11_Sharpe_Heatmap.py
-# Sharpe Rank — Score + Δ (Daily/WTD/MTD/QTD)
+# Sharpe Rank — Rank + Δ (Daily/WTD/MTD/QTD)
 from pathlib import Path
 import base64
 import pandas as pd
@@ -83,11 +83,11 @@ def _fmt_num(x, nd=0):
     except Exception:
         return ""
 
-# Score cell tint: Buy green, Neutral gray, Sell red; stronger beyond ±100
-def _score_cell_html(score: float, cap: float = 105.0) -> str:
-    if score is None or pd.isna(score):
+# Rank cell tint: Buy green, Neutral gray, Sell red; stronger beyond ±100
+def _Rank_cell_html(Rank: float, cap: float = 105.0) -> str:
+    if Rank is None or pd.isna(Rank):
         return ""
-    s = float(score)
+    s = float(Rank)
 
     if s >= 25:
         rel = min(abs(s) / cap, 1.0)
@@ -162,26 +162,26 @@ def load_sharpe_frames():
     # Final schema (rename to common labels)
     df = df.rename(columns={
         "Ticker_name": "Name",
-        "Sharpe_Rank": "Score",
+        "Sharpe_Rank": "Rank",
         "Sharpe_Rank_daily_change": "ΔDaily",
         "Sharpe_Rank_wtd_change":   "ΔWTD",
         "Sharpe_Rank_mtd_change":   "ΔMTD",
         "Sharpe_Rank_qtd_change":   "ΔQTD",
     })
-    for c in ["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"]:
+    for c in ["Rank","ΔDaily","ΔWTD","ΔMTD","ΔQTD"]:
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
     return df
 
-scores = load_sharpe_frames()
-if scores.empty:
+Ranks = load_sharpe_frames()
+if Ranks.empty:
     st.warning("Sharpe files not found or missing required columns.")
     st.stop()
 
 # As-of
 date_str = ""
-if "Date" in scores.columns:
-    dmax = pd.to_datetime(scores["Date"], errors="coerce").max()
+if "Date" in Ranks.columns:
+    dmax = pd.to_datetime(Ranks["Date"], errors="coerce").max()
     if pd.notna(dmax):
         date_str = f"{dmax.month}/{dmax.day}/{dmax.year}"
 
@@ -241,9 +241,9 @@ macro_list = [
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
     "GLD","UUP","TLT","BTC=F"
 ]
-scores["_dt"] = pd.to_datetime(scores["Date"], errors="coerce")
+Ranks["_dt"] = pd.to_datetime(Ranks["Date"], errors="coerce")
 latest = (
-    scores.sort_values(["Ticker","_dt"], ascending=[True, False])
+    Ranks.sort_values(["Ticker","_dt"], ascending=[True, False])
           .drop_duplicates(subset=["Ticker"], keep="first")
 )
 
@@ -263,7 +263,7 @@ vmaxM = {
 m_render = pd.DataFrame({
     "Name":   m["Name"],
     "Ticker": m["Ticker_link"],
-    "Score":  [ _score_cell_html(v) for v in m["Score"] ],
+    "Rank":  [ _Rank_cell_html(v) for v in m["Rank"] ],
     "Daily":  [ _delta_cell_html(v, vmaxM["ΔDaily"]) for v in m["ΔDaily"] ],
     "WTD":    [ _delta_cell_html(v, vmaxM["ΔWTD"])   for v in m["ΔWTD"]   ],
     "MTD":    [ _delta_cell_html(v, vmaxM["ΔMTD"])   for v in m["ΔMTD"]   ],
@@ -292,7 +292,7 @@ st.markdown(
         <h3>Macro Orientation</h3>
         <div class="subtitle">Current Sharpe Rank and Change by timeframe</div>
         {html_macro}
-        <div class="subnote">Score cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
+        <div class="subnote">Rank cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
       </div>
     </div>
     """,
@@ -305,7 +305,7 @@ st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 # Category Averages card
 # -------------------------
 grouped = latest.groupby("Category", dropna=True, as_index=False).agg(
-    Score=("Score","mean"),
+    Rank=("Rank","mean"),
     ΔDaily=("ΔDaily","mean"),
     ΔWTD=("ΔWTD","mean"),
     ΔMTD=("ΔMTD","mean"),
@@ -332,7 +332,7 @@ vmax_cat = {
 
 g_render = pd.DataFrame({
     "Name":  grouped["Category"],
-    "Score": [ _score_cell_html(v) for v in grouped["Score"] ],
+    "Rank": [ _Rank_cell_html(v) for v in grouped["Rank"] ],
     "Daily": [ _delta_cell_html(v, vmax_cat["ΔDaily"]) for v in grouped["ΔDaily"] ],
     "WTD":   [ _delta_cell_html(v, vmax_cat["ΔWTD"])   for v in grouped["ΔWTD"]   ],
     "MTD":   [ _delta_cell_html(v, vmax_cat["ΔMTD"])   for v in grouped["ΔMTD"]   ],
@@ -360,7 +360,7 @@ st.markdown(
         <h3>Category Averages</h3>
         <div class="subtitle">Avg Sharpe Rank and Change by category and timeframe</div>
         {html_cat}
-        <div class="subnote">Each change column uses an independent red/green scale; score cells use Buy/Neutral/Sell shading.</div>
+        <div class="subnote">Each change column uses an independent red/green scale; Rank cells use Buy/Neutral/Sell shading.</div>
       </div>
     </div>
     """,
@@ -369,20 +369,20 @@ st.markdown(
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
-# ===== Category Heatmap — ONE matrix (Score + ΔDaily/ΔWTD/ΔMTD/ΔQTD), all blue↔orange =====
+# ===== Category Heatmap — ONE matrix (Rank + ΔDaily/ΔWTD/ΔMTD/ΔQTD), all blue↔orange =====
 glong = grouped.melt(
     id_vars=["Category"],
-    value_vars=["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"],
+    value_vars=["Rank", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"],
     var_name="Timeframe",
     value_name="Value",
 )
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
-# Robust |max| per timeframe INCLUDING Score; cap Score's vmax at 105
+# Robust |max| per timeframe INCLUDING Rank; cap Rank's vmax at 105
 vmax_tf = {}
 for tf, sub in glong.groupby("Timeframe"):
     vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
-    if tf == "Score":
+    if tf == "Rank":
         vmax = min(105.0, max(vmax, 1.0))
     vmax_tf[tf] = vmax
 
@@ -392,7 +392,7 @@ glong["norm"] = glong.apply(
     axis=1
 )
 
-timeframe_order = ["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
+timeframe_order = ["Rank", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
 
 cat_hm = (
     alt.Chart(glong)
@@ -409,12 +409,12 @@ cat_hm = (
           color=alt.Color("norm:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                           legend=alt.Legend(orient="bottom",
-                                            title="Avg Score and Change",
+                                            title="Avg Rank and Change",
                                             labelExpr="''")),
           tooltip=[
               alt.Tooltip("Category:N"),
               alt.Tooltip("Timeframe:N"),
-              alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+              alt.Tooltip("Value:Q", title="Rank / Δ", format=",.0f"),
           ],
       )
       .properties(width=510, height=24 * len(preferred_order))
@@ -472,7 +472,7 @@ vmax_sel = {
 d_render = pd.DataFrame({
     "Name":   d["Name"],
     "Ticker": d["Ticker_link"],
-    "Score":  [ _score_cell_html(v) for v in d["Score"] ],
+    "Rank":  [ _Rank_cell_html(v) for v in d["Rank"] ],
     "Daily":  [ _delta_cell_html(v, vmax_sel["ΔDaily"]) for v in d["ΔDaily"] ],
     "WTD":    [ _delta_cell_html(v, vmax_sel["ΔWTD"])   for v in d["ΔWTD"]   ],
     "MTD":    [ _delta_cell_html(v, vmax_sel["ΔMTD"])   for v in d["ΔMTD"]   ],
@@ -510,21 +510,21 @@ if view_choice in ("Table","Both"):
     )
 
 # -------------------------
-# Per-ticker heatmap (Score + Δ columns, independent scale per timeframe, universe-wide)
+# Per-ticker heatmap (Rank + Δ columns, independent scale per timeframe, universe-wide)
 # -------------------------
-# Long frame across entire universe, INCLUDING Score
+# Long frame across entire universe, INCLUDING Rank
 tlong_all = latest.melt(
     id_vars=["Ticker","Name","Category"],
-    value_vars=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+    value_vars=["Rank","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
     var_name="Timeframe",
     value_name="Value"
 )
 
-# Universe-wide robust vmax per timeframe; cap Score at 105
+# Universe-wide robust vmax per timeframe; cap Rank at 105
 vmax_univ_tf = {}
 for tf, sub in tlong_all.groupby("Timeframe"):
     vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
-    if tf == "Score":
+    if tf == "Rank":
         vmax = min(105.0, max(vmax, 1.0))
     vmax_univ_tf[tf] = vmax
 
@@ -546,7 +546,7 @@ hm_sel = (
       .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
       .encode(
           x=alt.X("Timeframe:N",
-                  sort=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
+                  sort=["Rank","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
                   axis=alt.Axis(orient="top", title=None, labelAngle=0,
                                 labelColor="#1a1a1a", labelFlush=False, labelFontSize=12)),
           y=alt.Y("Ticker:N",
@@ -556,12 +556,12 @@ hm_sel = (
           color=alt.Color("norm:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                           legend=alt.Legend(orient="bottom",
-                                            title="Score and Change",
+                                            title="Rank and Change",
                                             labelExpr="''")),
           tooltip=[
               alt.Tooltip("Ticker:N"),
               alt.Tooltip("Timeframe:N", title="Timeframe"),
-              alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
+              alt.Tooltip("Value:Q", title="Rank / Δ", format=",.0f"),
           ],
       )
       .properties(width=520, height=max(360, 22*len(tickers_order)+24))
