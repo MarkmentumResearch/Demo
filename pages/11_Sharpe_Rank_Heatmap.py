@@ -84,28 +84,29 @@ def _fmt_num(x, nd=0):
         return ""
 
 # Rank cell tint: Buy green, Neutral gray, Sell red; stronger beyond ±100
-def _Rank_cell_html(Rank: float, cap: float = 105.0) -> str:
-    if Rank is None or pd.isna(Rank):
+def _Rank_cell_html(score: float, cap: float = 100.0) -> str:
+    if score is None or pd.isna(score):
         return ""
-    s = float(Rank)
+    s = float(np.clip(score, 0, cap))
 
-    if s >= 25:
-        rel = min(abs(s) / cap, 1.0)
-        alpha = 0.12 + 0.28 * rel
-        bg = f"rgba(16,185,129,{alpha:.3f})"
+    if s >= 70:  # High
+        # intensity grows from 70 -> 100
+        rel = (s - 70.0) / 30.0  # 0..1
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        bg = f"rgba(16,185,129,{alpha:.3f})"   # green
         color = "#0b513a"
-    elif s <= -25:
-        rel = min(abs(s) / cap, 1.0)
-        alpha = 0.12 + 0.28 * rel
-        bg = f"rgba(239,68,68,{alpha:.3f})"
+    elif s <= 30:  # Low
+        # intensity grows from 30 -> 0
+        rel = (30.0 - s) / 30.0  # 0..1
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        bg = f"rgba(239,68,68,{alpha:.3f})"   # red
         color = "#641515"
     else:
-        bg = "rgba(156,163,175,0.18)"
+        bg = "rgba(156,163,175,0.18)"         # neutral gray
         color = "#374151"
 
     label = _fmt_num(s, 0)
     return f'<span style="display:block; background:{bg}; color:{color}; padding:0 6px; border-radius:2px; text-align:right;">{label}</span>'
-
 # Change column tint (independent scale per timeframe)
 def _delta_cell_html(val: float, vmax: float) -> str:
     if val is None or pd.isna(val) or vmax is None or vmax <= 0:
