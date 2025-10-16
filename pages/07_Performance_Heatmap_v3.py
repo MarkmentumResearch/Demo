@@ -396,6 +396,17 @@ base_hm = (
     .properties(width=450, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
+
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Performance Heatmap – Avg % Change {date_str}
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 left, center, right = st.columns([1, .7, 1])
 with center:
     st.altair_chart(base_hm, use_container_width=False)
