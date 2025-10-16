@@ -228,7 +228,7 @@ st.markdown(
             </div>
             </div style="margin:0 0 8px 0; font-size:12px; font-weight:700; color:#1a1a1a;text-align:center;">
               Average % change across tickers in each category and timeframe
-            </div>
+            </h3>
             {html_cat}
             <div class="subnote">Each column uses its own red/green gradient scale.</div>
           </div>
