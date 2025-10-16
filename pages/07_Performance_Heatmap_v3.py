@@ -268,7 +268,8 @@ st.markdown(
     f"""
     <div class="card-wrap">
       <div class="card detail">
-        <h3>Performance – Macro Orientation</h3>
+             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+              Performance — Category Averages</h3>
         <div class="subtitle">Avg change in each category and timeframe</div>
         {html_macro}
       </div>
