@@ -135,11 +135,11 @@ st.markdown("""
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* Column width helpers (shrink Name on both cards) */
-.tbl col.col-name        { width:28ch; min-width:28ch; max-width:28ch; }  /* Card 1 Name (smaller) */
-.tbl col.col-name-wide   { width:32ch; min-width:32ch; max-width:32ch; }  /* Card 2 Name (smaller) */
+.tbl col.col-name        { width:20ch; min-width:20ch; max-width:20ch; }  /* Card 1 Name (smaller) */
+.tbl col.col-name-wide   { width:20ch; min-width:20ch; max-width:20ch; }  /* Card 2 Name (smaller) */
 .tbl col.col-ticker-nar  { width:7ch; }                                    /* Card 2 Ticker */
 .tbl col.col-num-sm      { width:6ch; }                                     /* Card 1 numerics */
-.tbl col.col-num-lg      { width:11ch; }                                    /* Card 2 numerics */
+.tbl col.col-num-lg      { width:6ch; }                                    /* Card 2 numerics */
 
 /* allow wrapping for Name */
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
