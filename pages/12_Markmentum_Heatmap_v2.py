@@ -528,7 +528,7 @@ if view_choice in ("Table","Both"):
 # -------------------------
 # Long frame across entire universe, now INCLUDING Score
 tlong_all = latest.melt(
-    id_vars=["Ticker","Name","Category","Score"],
+    id_vars=["Ticker","Name","Category"],          # <- remove Score from id_vars
     value_vars=["Score","ΔDaily","ΔWTD","ΔMTD","ΔQTD"],
     var_name="Timeframe",
     value_name="Value"
