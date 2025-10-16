@@ -442,7 +442,7 @@ with st.container():
       }
       .market-read-wrapper p, .market-read-wrapper li { font-size:16px; }
         /* >>> add this line to create a blank line after the date line <<< */
-      .market-read-wrapper p:first-of-type { margin-bottom: 12px; }          
+      .market-read-wrapper p:first-of-type { margin-bottom: 20px; }          
 
       .market-read-wrapper h2 { font-size:28px; font-weight:700; margin:8px 0 12px; text-align:center; }
       .market-read-note { margin-top:6px; color:#6b7280; font-size:13px; text-align:center; }
