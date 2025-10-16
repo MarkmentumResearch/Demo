@@ -422,7 +422,7 @@ cat_hm = (
           color=alt.Color("norm:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                           legend=alt.Legend(orient="bottom",
-                                            title="Avg Score and Change (per timeframe)",
+                                            title="Avg Score and Change",
                                             labelExpr="''")),
           tooltip=[
               alt.Tooltip("Category:N"),
@@ -570,7 +570,7 @@ hm_sel = (
           color=alt.Color("norm:Q",
                           scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
                           legend=alt.Legend(orient="bottom",
-                                            title="Score / Change (per timeframe)",
+                                            title="Score / Change",
                                             labelExpr="''")),
           tooltip=[
               alt.Tooltip("Ticker:N"),
