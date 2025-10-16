@@ -410,6 +410,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 14px;
+                font-size:12px; font-weight:600; color:#6b7280;">
+        Avg % Change by category and timeframe
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 left, center, right = st.columns([1, .8, 1])
 with center:
     st.altair_chart(base_hm, use_container_width=False)
