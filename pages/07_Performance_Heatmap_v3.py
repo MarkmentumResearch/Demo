@@ -121,7 +121,7 @@ st.markdown("""
 .card{
   border:1px solid #cfcfcf; border-radius:8px; background:#fff;
   padding:12px 12px 10px 12px; width:100%;
-  max-width:980px; /* was 1320px */
+  max-width:700px; /* was 1320px */
 }
 
 /* Optional even narrower variants */
