@@ -220,6 +220,16 @@ st.markdown("""
 .tbl th:nth-child(n+3) { text-align:center; } /* numeric headings centered */
 .tbl td:nth-child(n+3) { text-align:right; white-space:nowrap; }
 
+/* Center the Ticker column (2nd column) */
+.tbl th:nth-child(2),
+.tbl td:nth-child(2) { text-align: center; }
+
+/* Make the ticker link fill the cell so the centering is perfect */
+.tbl td:nth-child(2) a {
+  display: inline-block;
+  width: 100%;
+}
+
 .tbl col.col-name-wide   { width:22ch; min-width:22ch; max-width:22ch; }
 .tbl col.col-ticker-nar  { width:7ch; }
 .tbl col.col-num         { width:8ch; }
