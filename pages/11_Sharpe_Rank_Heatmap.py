@@ -447,7 +447,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-mid = st.columns([1, 1, 1])[1]
+mid = st.columns([1, .75, 1])[1]
 with mid:
     st.altair_chart(cat_hm, use_container_width=True)
 
