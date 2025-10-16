@@ -442,6 +442,55 @@ _, csel, _ = st.columns([1, 1, 1])
 with csel:
         sel = st.selectbox("Category", cats, index=(cats.index(default_cat) if default_cat else 0))
 
+view_choice = st.radio("View", ["Table", "Heatmap", "Both"], index=2, horizontal=True)
+
+# --- Universe-long df for global scaling (ALL tickers, ALL timeframes)
+tlong_all = perf.melt(
+    id_vars=["Ticker", "Ticker_name", "Category"],
+    value_vars=["day_pct_change", "week_pct_change", "month_pct_change", "quarter_pct_change"],
+    var_name="tf_raw",
+    value_name="Pct"
+)
+# Map raw column names to display timeframes to match pages
+map_tf = {
+    "day_pct_change": "Daily",
+    "week_pct_change": "WTD",
+    "month_pct_change": "MTD",
+    "quarter_pct_change": "QTD",
+}
+tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
+tlong_all.drop(columns=["tf_raw"], inplace=True)
+
+# Global symmetric scale across the entire universe
+vglob = float(tlong_all["Pct"].abs().max())
+
+# Slice for the selected category (for the heatmap rows)
+tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
+tickers_order = sorted(tlong_sel["Ticker_name"].dropna().unique().tolist())
+tlong_sel["Ticker_name"] = pd.Categorical(tlong_sel["Ticker_name"], categories=tickers_order, ordered=True)
+
+# --- Per-category matrix heatmap (Ticker_name vs Timeframe)
+hm_sel = (
+    alt.Chart(tlong_sel)
+    .mark_rect(stroke="#d9d9d9", strokeWidth=1)  # borders like your earlier heatmap
+    .encode(
+        x=alt.X("Timeframe:N",
+                sort=["Daily", "WTD", "MTD", "QTD"],
+                axis=alt.Axis(orient="top", title=None, labelFontSize=12, labelAngle=0)),
+        y=alt.Y("Ticker_name:N",
+                sort=tickers_order,
+                axis=alt.Axis(title=None, labelFontSize=12, labelLimit=260)),
+        color=alt.Color("Pct:Q",
+                        scale=alt.Scale(scheme="blueorange", domain=[-vglob, vglob], domainMid=0),
+                        legend=alt.Legend(orient="bottom", title="% change")),
+        tooltip=[alt.Tooltip("Ticker_name:N", title="Name"),
+                 alt.Tooltip("Timeframe:N"),
+                 alt.Tooltip("Pct:Q", format=".2f", title="%")]
+    )
+    .properties(width=420, height=max(18 * len(tickers_order), 180))  # auto-height by count
+    .configure_view(strokeWidth=0)
+)
+
 d = perf.loc[perf["Category"] == sel].copy()
 d["Ticker_link"] = d["Ticker"].map(_mk_ticker_link)
 
@@ -476,21 +525,38 @@ colgroup2 = """
 """.strip()
 html_detail = html_detail.replace('<table class="tbl">', f'<table class="tbl">{colgroup2}', 1)
 
-st.markdown(
-    f"""
-    <div class="card-wrap">
-      <div class="card detail">  <!-- add 'detail' here -->
-        <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
-          {sel} — Per Ticker Performance</h3>
-          <div class="subtitle">% change by ticker and timeframe</div>
-        {html_detail}
-        <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
-      </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+if view_choice in ("Table", "Both"):
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card detail">
+            <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a;text-align:center;">
+              {sel} — Per Ticker Performance</h3>
+            <div class="subtitle">% change by ticker and timeframe</div>
+            {html_detail}
+            <div class="subnote">Ticker links open the Deep Dive Dashboard. Each timeframe’s shading is scaled independently.</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
+if view_choice in ("Heatmap", "Both"):
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    # Optional centered title under the selector
+    st.markdown(
+        f"""
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            {sel} — Per Ticker Heatmap
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    # Center the chart
+    left, center, right = st.columns([1, .8, 1])
+    with center:
+        st.altair_chart(hm_sel, use_container_width=False)
 
 # -------------------------
 # Footer disclaimer
