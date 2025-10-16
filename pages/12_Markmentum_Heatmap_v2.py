@@ -302,7 +302,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Macro Orientation</h3>
-        <div class="subtitle">Current model score + change by timeframe</div>
+        <div class="subtitle">Current model score and change by timeframe</div>
         {html_macro}
         <div class="subnote">Score cells are Buy/Neutral/Sell (green/gray/red); change columns use independent per-timeframe scales.</div>
       </div>
@@ -370,7 +370,7 @@ st.markdown(
     <div class="card-wrap">
       <div class="card">
         <h3>Category Averages</h3>
-        <div class="subtitle">Avg model score + avg change by timeframe</div>
+        <div class="subtitle">Avg model score and avg change by timeframe</div>
         {html_cat}
         <div class="subnote">Each change column uses an independent red/green scale; score cells use Buy/Neutral/Sell shading.</div>
       </div>
@@ -442,7 +442,7 @@ if view_choice in ("Table","Both"):
         <div class="card-wrap">
           <div class="card">
             <h3>{sel} — Per Ticker</h3>
-            <div class="subtitle">Current model score + change by timeframe</div>
+            <div class="subtitle">Current model score and change by timeframe</div>
             {html_detail}
             <div class="subnote">Ticker links open the Deep Dive Dashboard. Change columns are independently scaled.</div>
           </div>
