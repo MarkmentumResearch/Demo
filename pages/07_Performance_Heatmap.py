@@ -205,7 +205,7 @@ st.markdown(
     f"""
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:18px; font-weight:600; color:#1a1a1a;">
-        Performance – {date_str}
+        Performance Heatmap – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
