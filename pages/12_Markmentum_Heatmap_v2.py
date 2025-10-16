@@ -381,7 +381,7 @@ st.markdown(
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
-# ===== Heatmap after Card 2 — Score + Changes (independent per timeframe) =====
+# ===== Heatmap after Card 2 — Score + Changes (no-alt.layer version) =====
 glong = grouped.melt(
     id_vars=["Category"],
     value_vars=["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"],
@@ -392,7 +392,7 @@ glong = grouped.melt(
 # Keep your preferred category row order
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
-# Robust |max| per timeframe for the change columns (Score uses ±105 cap)
+# Robust |max| per timeframe for Δ columns (Score uses ±105 cap)
 vmax_tf = (
     glong.loc[glong["Timeframe"] != "Score"]
          .groupby("Timeframe")["Value"]
@@ -400,64 +400,64 @@ vmax_tf = (
          .to_dict()
 )
 
-# Normalize: Score → clamp to [-105,105]; Changes → [-1,1] by each timeframe’s vmax
-def _norm_row(r):
-    if r["Timeframe"] == "Score":
-        return float(np.clip(r["Value"], -105, 105))
-    vmax = vmax_tf.get(r["Timeframe"], 1.0) or 1.0
-    return float(np.clip(r["Value"] / vmax, -1, 1))
+# Pre-compute RGBA colors per cell, so we don't need alt.layer
+def _cell_rgba(row):
+    tf = row["Timeframe"]
+    val = row["Value"]
+    if pd.isna(val):
+        return "rgba(0,0,0,0)"
 
-glong["Norm"] = glong.apply(_norm_row, axis=1)
+    if tf == "Score":
+        # Buy / Neutral / Sell with stronger tint beyond ±100 (cap 105)
+        s = float(np.clip(val, -105, 105))
+        if s >= 25:
+            rel = min(abs(s) / 105.0, 1.0)
+            alpha = 0.12 + 0.28 * rel
+            return f"rgba(16,185,129,{alpha:.3f})"  # green
+        elif s <= -25:
+            rel = min(abs(s) / 105.0, 1.0)
+            alpha = 0.12 + 0.28 * rel
+            return f"rgba(239,68,68,{alpha:.3f})"  # red
+        else:
+            return "rgba(156,163,175,0.18)"        # neutral gray
+    else:
+        vmax = vmax_tf.get(tf, 1.0) or 1.0
+        rel = min(abs(float(val)) / float(vmax), 1.0)
+        alpha = 0.12 + 0.28 * rel
+        if val > 0:
+            return f"rgba(16,185,129,{alpha:.3f})"   # green
+        elif val < 0:
+            return f"rgba(239,68,68,{alpha:.3f})"   # red
+        else:
+            return "rgba(0,0,0,0)"
 
-# Order columns left→right
+glong["color_rgba"] = glong.apply(_cell_rgba, axis=1)
+glong["Value_fmt"]   = glong["Value"].map(lambda x: _fmt_num(x, 0))
+
 timeframe_order = ["Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
 
-base_hm = (
+score_change_hm = (
     alt.Chart(glong)
-    .encode(
-        x=alt.X("Timeframe:N",
-                sort=timeframe_order,
-                axis=alt.Axis(orient="top", title=None, labelColor="#1a1a1a",
-                              labelFontSize=12, labelAngle=0, labelFlush=False)),
-        y=alt.Y("Category:N",
-                sort=list(glong["Category"].cat.categories),
-                axis=alt.Axis(title=None, labelColor="#1a1a1a",
-                              labelFlush=False, labelFontSize=12, labelLimit=240)),
-        tooltip=[
-            alt.Tooltip("Category:N"),
-            alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("Value:Q", title="Score / Δ", format=",.0f"),
-        ],
-    )
-    .properties(width=480, height=24 * len(preferred_order))
-    .configure_view(strokeWidth=0)
+      .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
+      .encode(
+          x=alt.X("Timeframe:N",
+                  sort=timeframe_order,
+                  axis=alt.Axis(orient="top", title=None, labelColor="#1a1a1a",
+                                labelFontSize=12, labelAngle=0, labelFlush=False)),
+          y=alt.Y("Category:N",
+                  sort=list(glong["Category"].cat.categories),
+                  axis=alt.Axis(title=None, labelColor="#1a1a1a",
+                                labelFlush=False, labelFontSize=12, labelLimit=240)),
+          color=alt.Color("color_rgba:N", scale=None, legend=None),
+          tooltip=[
+              alt.Tooltip("Category:N"),
+              alt.Tooltip("Timeframe:N"),
+              alt.Tooltip("Value_fmt:N", title="Score / Δ"),
+          ],
+      )
+      .properties(width=480, height=24 * len(preferred_order))
+      .configure_view(strokeWidth=0)
 )
-
-# Layer 1: changes (Δ*) use normalized [-1..1] → blue↔orange
-delta_layer = (
-    base_hm
-    .transform_filter(alt.datum.Timeframe != "Score")
-    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-    .encode(color=alt.Color("Norm:Q",
-                            scale=alt.Scale(scheme="blueorange", domain=[-1, 0, 1]),
-                            legend=alt.Legend(orient="bottom",
-                                              title="Δ (independent per timeframe)",
-                                              labelExpr="''")))
-)
-
-# Layer 2: current Score uses ±105 cap → red / gray / green
-score_layer = (
-    base_hm
-    .transform_filter(alt.datum.Timeframe == "Score")
-    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
-    .encode(color=alt.Color("Norm:Q",
-                            # Sell red → Neutral gray → Buy green
-                            scale=alt.Scale(domain=[-105, 0, 105],
-                                            range=["#ef4444", "#9ca3af", "#10b981"]),
-                            legend=None))
-)
-
-score_change_hm = alt.layer(delta_layer, score_layer)
 
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 st.markdown(
@@ -477,7 +477,6 @@ st.markdown(
 left, center, right = st.columns([1, .8, 1])
 with center:
     st.altair_chart(score_change_hm, use_container_width=False)
-
 
 # -------------------------
 # Category selector — Table / Heatmap / Both
