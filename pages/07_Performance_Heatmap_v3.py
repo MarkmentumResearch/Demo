@@ -123,7 +123,7 @@ st.markdown("""
 .card h3 { margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }
 
 /* table base */
-.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl { border-collapse: collapse; width: 100%; table-layout: auto; }
 .tbl th, .tbl td {
   border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
   overflow:hidden; text-overflow:ellipsis;
