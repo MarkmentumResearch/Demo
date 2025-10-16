@@ -596,7 +596,7 @@ if view_choice in ("Heatmap", "Both"):
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                 font-size:14px; font-weight:500; color:#6b7280;">
-                Avg % change by each ticker and timeframe
+                % change by each ticker and timeframe
         </div>
         """,
         unsafe_allow_html=True,
