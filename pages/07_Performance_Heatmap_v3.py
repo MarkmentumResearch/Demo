@@ -369,7 +369,7 @@ glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order
 # Single grid heatmap (shared, centered legend at bottom)
 base_hm = (
     alt.Chart(glong)
-    .mark_rect()
+    .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
         x=alt.X(
             "Timeframe:N",
@@ -396,8 +396,9 @@ base_hm = (
     .properties(width=450, height=24 * len(preferred_order))
     .configure_view(strokeWidth=0)
 )
-
-st.altair_chart(base_hm, use_container_width=False)
+left, center, right = st.columns([1, 2, 1])
+with center:
+    st.altair_chart(base_hm, use_container_width=False)
 
 # =========================================================
 # Card 3 — Category selector → per-ticker rows
