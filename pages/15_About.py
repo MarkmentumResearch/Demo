@@ -166,15 +166,15 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Includes an AI-assisted Market Read contextualizing monthly growth and inflation trends.</li>
   <li><b>Quarterly Market Overview</b> – One-screen quarter-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
   Includes an AI-assisted Market Read distilling longer-term macro themes and regime tone.</li>
-  <li><b>Performance Heatmap</b> – One-screen overview of realized market moves across categories. Displays average percentage changes (Daily, WTD, MTD, QTD) by category, with drill-down to per-ticker performance heatmaps and bar-chart rankings. 
-  Complements the Markmentum Heatmap by showing what has already moved, giving users both forward-looking signals and backward-looking performance context.</li>
+  <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
+  Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
-  <li><b>Rankings</b> – Category dashboards (e.g., Sectors & Styles, Indices, Currencies, Bonds) with a current snapshot of Markmentum Scores. The page opens with a category heatmap (average current score by category). 
-  Select any category to reveal a per-ticker heatmap for that category, and below it, bar-chart rankings for each ticker: Markmentum Score (current), Sharpe Percentile, Sharpe Ratio, and Sharpe Ratio 30-Day Change.</li>
-  <li><b>Markmentum Heatmap</b> – Multi-layered view of score changes over time. Starts with category-level heatmaps showing average score changes across Daily, WTD, MTD, and QTD. 
-  Drill down into any category to see per-ticker heatmaps and bar-chart rankings by timeframe, providing both a top-down and bottom-up view of momentum shifts.</li>
+  <li><b>Sharpe Rank Heatmap</b> – Multi-layered view of risk-adjusted performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker Sharpe Percentile Ranks. 
+  Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market.</li>
+  <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. Begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
+  Displays the current score alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. Together, the table and heatmap reveal where opportunity and risk are shifting over time.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
@@ -189,7 +189,6 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Anchors</b> – Anchor levels are extrapolated by aligning short-term trend structure with long-term trend structure, creating a probabilistic reference to gauge extension and mean-reversion risk.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, IVOL/RVOL spreads, and regime flags.</li>
   <li><b>Markmentum Score</b> – A proprietary, rules-based, volatility-adjusted risk-reward score blending multiple signals into a single intuitive scale. A high positive score favors the long side; a negative score favors the short side.</li>
-  <li><b>Ranks &amp; Screens</b> – Percentile and z-score ranks across full universe of instruments.</li>
 </ul>
 
 <h3>Our Why</h3>
