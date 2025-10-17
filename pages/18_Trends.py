@@ -222,7 +222,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;">
-              Macro Orientation — Trends & Changes
+              Macro Orientation — Trends by Timeframe & Changes
             </h3>
             {html_macro}
             <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
@@ -290,7 +290,7 @@ if not df.empty:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;">
-              Category Averages — Trends & Changes
+              Category Averages — Trends by Timeframe & Changes
             </h3>
             {html_cat}
             <div class="subnote">Averages by category.</div>
@@ -355,7 +355,7 @@ if not df.empty:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 -6px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;">
-              {sel} — Per Ticker Trends & Changes
+              {sel} — Per Ticker Trends by Timeframe & Changes
             </h3>
             {html_per}
             <div class="subnote">Green = positive; Red = negative.</div>
