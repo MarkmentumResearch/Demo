@@ -166,8 +166,8 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Includes an AI-assisted Market Read contextualizing monthly growth and inflation trends.</li>
   <li><b>Quarterly Market Overview</b> – One-screen quarter-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
   Includes an AI-assisted Market Read distilling longer-term macro themes and regime tone.</li>
-  <li><b>Performance Heatmap</b> – One-screen overview of realized market moves across categories. Displays average percentage changes (Daily, WTD, MTD, QTD) by category, with drill-down to per-ticker performance heatmaps and bar-chart rankings. 
-  Complements the Markmentum Heatmap by showing what has already moved, giving users both forward-looking signals and backward-looking performance context.</li>
+  <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
+  Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
   <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
