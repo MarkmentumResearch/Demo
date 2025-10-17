@@ -176,6 +176,9 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market.</li>
   <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. Begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
   Displays the current score alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. Together, the table and heatmap reveal where opportunity and risk are shifting over time.</li>
+  <li><b>Trends</b> – Multi-timeframe dashboard visualizing short-, mid-, and long-term directional trends alongside their daily changes. Displays key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures) 
+  and category averages to highlight trend alignment or divergence across time horizons. 
+  Includes per-ticker drill-downs by category to show how leadership and rotation are evolving beneath the surface. Color-coded for quick recognition of positive (green) and negative (red) shifts.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
