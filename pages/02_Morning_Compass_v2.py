@@ -99,56 +99,54 @@ def fmt_int(x):
 
 # ---------- UI renderers ----------
 def mm_badge_html(x):
-    # Banded shading to match original look:
-    # |score| <= 25  -> gray pill
-    # score > 25     -> green pill
-    # score < -25    -> red pill
-    try:
-        if pd.isna(x):
+        try:
+            if pd.isna(x):
+                return ""
+            v = float(x)
+        except Exception:
             return ""
-        v = float(x)
-    except Exception:
-        return ""
 
-    if -25 <= v <= 25:
-        bg, fg = "#f1f3f5", "#495057"   # gray
-    elif v > 25:
-        bg, fg = "#e8f5e9", "#2e7d32"   # green
-    else:  # v < -25
-        bg, fg = "#ffebee", "#c62828"   # red
+        if v <= -100:
+            bg, alpha = "rgba(185,28,28,0.35)", 0.35   # deep red
+        elif v < -25:
+            bg, alpha = "rgba(239,68,68,0.28)", 0.28   # red
+        elif v <= 25:
+            bg, alpha = "rgba(229,231,235,1.00)", 1.00 # gray pill
+        elif v < 100:
+            bg, alpha = "rgba(16,185,129,0.28)", 0.28  # green
+        else:
+            bg, alpha = "rgba(6,95,70,0.35)", 0.35     # dark green
 
-    label = f"{int(round(v)):,}"
-    return (
-        f'<span style="display:inline-block; padding:2px 8px; '
-        f'border-radius:999px; background:{bg}; color:{fg}; '
-        f'font-weight:700; min-width:28px; text-align:center;">{label}</span>'
-    )
-def rr_tinted_html(val):
-    # Progress-bar style fill; full at |val| >= 4.5 (original behavior)
-    if val is None or (isinstance(val, float) and np.isnan(val)):
-        return ""
-    try:
-        v = float(val)
-    except Exception:
-        return ""
+        label = f"{int(round(v)):,}"
+        # block so it fills the cell nicely; cell stays right-aligned from CSS
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
 
-    cap = 4.5  # FULL BAR at ±4.5
-    pct = min(abs(v), cap) / cap * 100.0
-    pos = v >= 0
 
-    base = "#f8f9fa"
-    bar  = "#2ecc71" if pos else "#e74c3c"
-    txt  = "#1a1a1a"
+def rr_tinted_html(x, cap=3.0):
+        try:
+            if pd.isna(x): 
+                return ""
+            v = float(x)
+        except Exception:
+            return ""
 
-    return (
-        f'<div style="position:relative; height:20px; background:{base}; '
-        f'border:1px solid #dee2e6; border-radius:4px; overflow:hidden;">'
-        f'  <div style="position:absolute; top:0; left:0; height:100%; '
-        f'       width:{pct:.0f}%; background:{bar}; opacity:0.25;"></div>'
-        f'  <div style="position:relative; padding:0 6px; font-weight:600; '
-        f'       color:{txt}; line-height:18px; text-align:right;">{v:.1f}</div>'
-        f'</div>'
-    )
+        # scale 0..1 (capped), keep near-zero very light
+        s = min(abs(v) / cap, 1.0)
+        alpha = 0.12 + 0.28 * s     # 0.12 → 0.40 opacity
+
+        if v > 0:
+            # green (tailwind-ish 10B981)
+            bg = f"rgba(16,185,129,{alpha:.3f})"
+        elif v < 0:
+            # red (EF4444)
+            bg = f"rgba(239,68,68,{alpha:.3f})"
+        else:
+            bg = "transparent"
+
+        # numeric label with 1 decimal, same as before
+        label = f"{v:,.1f}"
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
+
 # =========================
 # Timeframe config
 # =========================
