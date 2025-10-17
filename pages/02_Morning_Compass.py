@@ -75,6 +75,117 @@ if dest.replace("%20", " ") == "deep dive":
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
 
+# ---------- Shared formatters ----------
+def fmt_num(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x):,.{nd}f}"
+    except Exception:
+        return ""
+
+def fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x)*100:,.{nd}f}%"
+    except Exception:
+        return ""
+
+def fmt_int(x):
+    try:
+        if pd.isna(x): return ""
+        return f"{int(round(float(x))):,}"
+    except Exception:
+        return ""
+
+# ---------- UI renderers ----------
+def mm_badge_html(x):
+        try:
+            if pd.isna(x):
+                return ""
+            v = float(x)
+        except Exception:
+            return ""
+
+        if v <= -100:
+            bg, alpha = "rgba(185,28,28,0.35)", 0.35   # deep red
+        elif v < -25:
+            bg, alpha = "rgba(239,68,68,0.28)", 0.28   # red
+        elif v <= 25:
+            bg, alpha = "rgba(229,231,235,1.00)", 1.00 # gray pill
+        elif v < 100:
+            bg, alpha = "rgba(16,185,129,0.28)", 0.28  # green
+        else:
+            bg, alpha = "rgba(6,95,70,0.35)", 0.35     # dark green
+
+        label = f"{int(round(v)):,}"
+        # block so it fills the cell nicely; cell stays right-aligned from CSS
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
+
+
+def rr_tinted_html(x, cap=3.0):
+        try:
+            if pd.isna(x): 
+                return ""
+            v = float(x)
+        except Exception:
+            return ""
+
+        # scale 0..1 (capped), keep near-zero very light
+        s = min(abs(v) / cap, 1.0)
+        alpha = 0.12 + 0.28 * s     # 0.12 → 0.40 opacity
+
+        if v > 0:
+            # green (tailwind-ish 10B981)
+            bg = f"rgba(16,185,129,{alpha:.3f})"
+        elif v < 0:
+            # red (EF4444)
+            bg = f"rgba(239,68,68,{alpha:.3f})"
+        else:
+            bg = "transparent"
+
+        # numeric label with 1 decimal, same as before
+        label = f"{v:,.1f}"
+        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
+
+# =========================
+# Timeframe config
+# =========================
+TIMEFRAMES = {
+    "Daily": {
+        "ids": {"main": 73, "leaders": 74, "mm": 75, "category": 76, "delta": 77},
+        "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
+        "docx": "bottom_line_daily.docx",
+        "card_title": "Daily Macro Orientation",
+    },
+    "Weekly": {
+        "ids": {"main": 78, "leaders": 79, "mm": 80, "category": 81, "delta": 82},
+        "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
+        "docx": "bottom_line_weekly.docx",
+        "card_title": "Weekly Macro Orientation",
+    },
+    "Monthly": {
+        "ids": {"main": 83, "leaders": 84, "mm": 85, "category": 86, "delta": 87},
+        "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
+        "docx": "bottom_line_monthly.docx",
+        "card_title": "Monthly Macro Orientation",
+    },
+}
+
+# Centered timeframe selector under the page title (we’ll render title after we know the date)
+def timeframe_selector(default="Daily"):
+    c1, c2, c3 = st.columns([1, 0.8, 1])
+    with c2:
+        return st.selectbox("Timeframe", list(TIMEFRAMES.keys()), index=list(TIMEFRAMES.keys()).index(default), label_visibility="collapsed")
+
+@st.cache_data(show_spinner=False)
+def load_csv_by_id(n: int, base_dir: Path) -> pd.DataFrame:
+    p = base_dir / f"qry_graph_data_{n}.csv"
+    if not p.exists():
+        return pd.DataFrame()
+    return pd.read_csv(p)
+
+
+
 # -------------------------
 # Morning Compass – styling
 # -------------------------
@@ -144,157 +255,97 @@ st.markdown("""
 # -------------------------
 # Load Morning Compass CSV
 # -------------------------
-@st.cache_data(show_spinner=False)
-def load_mc_73(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path)
-    return df
-
-df73 = load_mc_73(DATA_DIR / "qry_graph_data_73.csv")
-
 # -------------------------
-# Page title under the logo
+# Select timeframe and load MAIN csv for date/title
 # -------------------------
+sel_tf = timeframe_selector(default="Daily")
+cfg_tf  = TIMEFRAMES[sel_tf]
+
+df_main = load_csv_by_id(cfg_tf["ids"]["main"], DATA_DIR)
+
+# Page title under the logo (date pulled from selected timeframe's main csv)
 date_str = ""
-if not df73.empty and "Date" in df73.columns:
-    asof = pd.to_datetime(df73["Date"], errors="coerce").max()
+if not df_main.empty and "Date" in df_main.columns:
+    asof = pd.to_datetime(df_main["Date"], errors="coerce").max()
     if pd.notna(asof):
         date_str = f"{asof.month}/{asof.day}/{asof.year}"
 
 st.markdown(
     f"""
-    <div style="text-align:center; margin:-6px 0 14px;
+    <div style="text-align:center; margin:-6px 0 8px;
                 font-size:18px; font-weight:600; color:#1a1a1a;">
         Morning Compass – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
 )
+row_spacer(6)
 
 
 # -------------------------
-# Card 1: Morning Compass table
+# Card 1: Morning Compass table (uses selected timeframe)
 # -------------------------
-required_cols = [
-    "Date","Ticker","Ticker_name","Close",
-    "daily_Return","day_pr_low","day_pr_high",
-    "day_rr_ratio","model_score","model_score_delta"
-]
+cols = cfg_tf["cols"]
+req = ["Date","Ticker","Ticker_name","Close",
+       cols["ret"], cols["pr_low"], cols["pr_high"],
+       cols["rr"], "model_score","model_score_delta"]
 
-if df73.empty or not all(c in df73.columns for c in required_cols):
-    st.info("Morning Compass: `qry_graph_data_73.csv` is missing or columns are incomplete.")
+if df_main.empty or not all(c in df_main.columns for c in req):
+    st.info(f"Morning Compass: `qry_graph_data_{cfg_tf['ids']['main']}.csv` is missing or columns are incomplete.")
 else:
-    df_render = df73.copy()
+    df_render = df_main.copy()
     df_render["Ticker"] = df_render["Ticker"].apply(_mk_ticker_link)
 
-    # formatters
+    # formatters (reuse existing helpers defined above)
     def fmt_num(x, nd=2):
         try:
             if pd.isna(x): return ""
             return f"{float(x):,.{nd}f}"
         except Exception: return ""
-
     def fmt_pct(x, nd=2):
         try:
             if pd.isna(x): return ""
             return f"{float(x)*100:,.{nd}f}%"
         except Exception: return ""
-
     def fmt_int(x):
         try:
             if pd.isna(x): return ""
             return f"{int(round(float(x))):,}"
         except Exception: return ""
 
-    # Diverging tint for Risk/Reward (−cap … +cap), subtle + readable
-    def rr_tinted_html(x, cap=3.0):
-        try:
-            if pd.isna(x): 
-                return ""
-            v = float(x)
-        except Exception:
-            return ""
-
-        # scale 0..1 (capped), keep near-zero very light
-        s = min(abs(v) / cap, 1.0)
-        alpha = 0.12 + 0.28 * s     # 0.12 → 0.40 opacity
-
-        if v > 0:
-            # green (tailwind-ish 10B981)
-            bg = f"rgba(16,185,129,{alpha:.3f})"
-        elif v < 0:
-            # red (EF4444)
-            bg = f"rgba(239,68,68,{alpha:.3f})"
-        else:
-            bg = "transparent"
-
-        # numeric label with 1 decimal, same as before
-        label = f"{v:,.1f}"
-        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
-
-    # Discrete tint for MM Score using bins:
-    # ≤ -100: deep red | -100 < v < -25: red | -25 ≤ v ≤ 25: gray | 25 < v < 100: green | ≥ 100: dark green
-    def mm_badge_html(x):
-        try:
-            if pd.isna(x):
-                return ""
-            v = float(x)
-        except Exception:
-            return ""
-
-        if v <= -100:
-            bg, alpha = "rgba(185,28,28,0.35)", 0.35   # deep red
-        elif v < -25:
-            bg, alpha = "rgba(239,68,68,0.28)", 0.28   # red
-        elif v <= 25:
-            bg, alpha = "rgba(229,231,235,1.00)", 1.00 # gray pill
-        elif v < 100:
-            bg, alpha = "rgba(16,185,129,0.28)", 0.28  # green
-        else:
-            bg, alpha = "rgba(6,95,70,0.35)", 0.35     # dark green
-
-        label = f"{int(round(v)):,}"
-        # block so it fills the cell nicely; cell stays right-aligned from CSS
-        return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px;">{label}</span>'
-
     df_card = pd.DataFrame({
-    "Name":          df_render["Ticker_name"],
-    "Ticker":        df_render["Ticker"],
-    "Close":         df_render["Close"].map(lambda v: fmt_num(v, 2)),
-    "% Change":       df_render["daily_Return"].map(lambda v: fmt_pct(v, 2)),   # renamed
-    "Probable Low":  df_render["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-    "Probable High": df_render["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-    "Risk / Reward":   df_render["day_rr_ratio"].map(rr_tinted_html),
-    "MM Score":      df_render["model_score"].map(mm_badge_html),
-    "MM Score Change":df_render["model_score_delta"].map(fmt_int),              # renamed
+        "Name":           df_render["Ticker_name"],
+        "Ticker":         df_render["Ticker"],
+        "Close":          df_render["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change":       df_render[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":   df_render[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High":  df_render[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward":  df_render[cols["rr"]].map(rr_tinted_html),
+        "MM Score":       df_render["model_score"].map(mm_badge_html),
+        "MM Score Change":df_render["model_score_delta"].map(fmt_int),
     })
 
-    # Clean HTML (no border attr, no 'dataframe' class)
     table_html = df_card.to_html(index=False, classes="tbl", escape=False, border=0)
     table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
-
-    # Insert a proper colgroup AFTER the opening <table class="tbl">
     colgroup = """
     <colgroup>
-    <col class="col-name"> <!-- Name (40ch) -->
-    <col>                   <!-- Ticker (center) -->
-    <col>                   <!-- Close (right) -->
-    <col>                   <!-- % Change (right) -->
-    <col>                   <!-- Probable Low (right) -->
-    <col>                   <!-- Probable High (right) -->
-    <col>                   <!-- Risk/Reward (right) -->
-    <col>                   <!-- MM Score (right) -->
-    <col>                   <!-- MM Score Change (right) -->
+      <col class="col-name">
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
     </colgroup>
     """.strip()
-
     table_html = table_html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
 
-
+    # Bottom line docx switches with timeframe
     import os
     try:
-        from docx import Document  # pip install python-docx
+        from docx import Document
     except Exception:
         Document = None
 
@@ -305,7 +356,7 @@ else:
             return False
 
     @st.cache_data(show_spinner=False)
-    def load_market_read_md(doc_path: str = "data/bottom_line_daily.docx") -> str:
+    def load_market_read_md(doc_path: str) -> str:
         if Document is None:
             return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
         if not os.path.exists(doc_path):
@@ -314,7 +365,7 @@ else:
             doc = Document(doc_path)
         except Exception as e:
             return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
-        lines: list[str] = []
+        lines = []
         for p in doc.paragraphs:
             text = p.text.strip()
             if not text:
@@ -331,24 +382,22 @@ else:
         return "\n\n".join(lines)
 
     from html import escape
-
-    docx_path = (DATA_DIR / "bottom_line_daily.docx").resolve()
+    docx_path = (DATA_DIR / cfg_tf["docx"]).resolve()
     bl_text = load_market_read_md(str(docx_path)).strip()
-    bl_html_safe = escape(bl_text)  # keep it plain, no markdown parsing needed
+    bl_html_safe = escape(bl_text)
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
-    # Centered card, no inner title
     card_html = f'''
     <div class="card-wrap">
-        <div class="card">
-            <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Daily Macro Orientation
-            </h3>
-            {table_html}
-            <div class="bl">{bl_html_safe}</div>
-            <div class="bl note">{note_html_safe}</div>
-        </div>
+      <div class="card">
+        <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+          {cfg_tf["card_title"]}
+        </h3>
+        {table_html}
+        <div class="bl">{bl_html_safe}</div>
+        <div class="bl note">{note_html_safe}</div>
+      </div>
     </div>
     '''
     st.markdown(card_html, unsafe_allow_html=True)
@@ -357,60 +406,36 @@ else:
 # Card 2: Leaders/Laggard by % Change
 # -------------------------
 # =========================
-# Card: Leaders/Laggard by % Change  (single table, 10 rows)
+# Card 2: Leaders/Laggards by % Change  (Top/Bottom 5 from selected timeframe)
 # =========================
-@st.cache_data(show_spinner=False)
-def load_mc_74(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path)
+df74 = load_csv_by_id(cfg_tf["ids"]["leaders"], DATA_DIR)
+req74 = ["Date","Ticker","Ticker_name","Close",
+         cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score","model_score_delta"]
 
-df74 = load_mc_74(DATA_DIR / "qry_graph_data_74.csv")
-
-required_cols_74 = [
-    "Date","Ticker","Ticker_name","Close",
-    "daily_Return","day_pr_low","day_pr_high",
-    "day_rr_ratio","model_score","model_score_delta"
-]
-
-if df74.empty or not all(c in df74.columns for c in required_cols_74):
+if df74.empty or not all(c in df74.columns for c in req74):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_74.csv` is missing or columns are incomplete.")
+    st.info(f"Top 5 Leaders/Laggards by % Change: `qry_graph_data_{cfg_tf['ids']['leaders']}.csv` is missing or columns are incomplete.")
 else:
     d = df74.copy()
-
-    # Keep Deep Dive link on Ticker (same as first card)
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
 
-    # ---- build card with same columns/order/formatting as the first card ----
     df_74_card = pd.DataFrame({
-        "Name":          d["Ticker_name"],
-        "Ticker":        d["Ticker"],
-        "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
-        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-        "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-        "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
-        "MM Score":      d["model_score"].map(mm_badge_html),
+        "Name":           d["Ticker_name"],
+        "Ticker":         d["Ticker"],
+        "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change":       d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":   d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
+        "MM Score":       d["model_score"].map(mm_badge_html),
         "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
 
-    # to HTML (same classes/alignment as first card)
     tbl_html_74 = df_74_card.to_html(index=False, classes="tbl", escape=False, border=0)
     tbl_html_74 = tbl_html_74.replace('class="dataframe tbl"', 'class="tbl"')
-
-    # same colgroup (Name = 40ch; Ticker centered; numbers right-aligned via CSS)
     colgroup = """
     <colgroup>
-      <col class="col-name"> <!-- Name (40ch) -->
-      <col>                   <!-- Ticker -->
-      <col>                   <!-- Close -->
-      <col>                   <!-- % Change -->
-      <col>                   <!-- Probable Low -->
-      <col>                   <!-- Probable High -->
-      <col>                   <!-- Risk/Reward -->
-      <col>                   <!-- MM Score -->
-      <col>                   <!-- MM Score Change -->
+      <col class="col-name"><col><col><col><col><col><col><col><col>
     </colgroup>
     """.strip()
     tbl_html_74 = tbl_html_74.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -418,7 +443,6 @@ else:
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
-    # render centered card below the first card
     row_spacer(10)
     st.markdown(
         f"""
@@ -436,60 +460,36 @@ else:
     )
 
 # =========================
-# Card 3: Leaders/Laggard by % MM Score  (single table, 10 rows)
+# Card 3: Leaders/Laggards by MM Score (Top/Bottom 5)
 # =========================
-@st.cache_data(show_spinner=False)
-def load_mc_75(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path)
+df75 = load_csv_by_id(cfg_tf["ids"]["mm"], DATA_DIR)
+req75 = ["Date","Ticker","Ticker_name","Close",
+         cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score","model_score_delta"]
 
-df75 = load_mc_75(DATA_DIR / "qry_graph_data_75.csv")
-
-required_cols_75 = [
-    "Date","Ticker","Ticker_name","Close",
-    "daily_Return","day_pr_low","day_pr_high",
-    "day_rr_ratio","model_score","model_score_delta"
-]
-
-if df75.empty or not all(c in df74.columns for c in required_cols_74):
+if df75.empty or not all(c in df75.columns for c in req75):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_75.csv` is missing or columns are incomplete.")
+    st.info(f"Top 5 Leaders/Laggards by MM Score: `qry_graph_data_{cfg_tf['ids']['mm']}.csv` is missing or columns are incomplete.")
 else:
     d = df75.copy()
-
-    # Keep Deep Dive link on Ticker (same as first card)
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
 
-    # ---- build card with same columns/order/formatting as the first card ----
     df_75_card = pd.DataFrame({
-        "Name":          d["Ticker_name"],
-        "Ticker":        d["Ticker"],
-        "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
-        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-        "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-        "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
-        "MM Score":      d["model_score"].map(mm_badge_html),
+        "Name":           d["Ticker_name"],
+        "Ticker":         d["Ticker"],
+        "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change":       d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":   d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
+        "MM Score":       d["model_score"].map(mm_badge_html),
         "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
 
-    # to HTML (same classes/alignment as first card)
     tbl_html_75 = df_75_card.to_html(index=False, classes="tbl", escape=False, border=0)
     tbl_html_75 = tbl_html_75.replace('class="dataframe tbl"', 'class="tbl"')
-
-    # same colgroup (Name = 40ch; Ticker centered; numbers right-aligned via CSS)
     colgroup = """
     <colgroup>
-      <col class="col-name"> <!-- Name (40ch) -->
-      <col>                   <!-- Ticker -->
-      <col>                   <!-- Close -->
-      <col>                   <!-- % Change -->
-      <col>                   <!-- Probable Low -->
-      <col>                   <!-- Probable High -->
-      <col>                   <!-- Risk/Reward -->
-      <col>                   <!-- MM Score -->
-      <col>                   <!-- MM Score Change -->
+      <col class="col-name"><col><col><col><col><col><col><col><col>
     </colgroup>
     """.strip()
     tbl_html_75 = tbl_html_75.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -497,7 +497,6 @@ else:
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
-    # render centered card below the first card
     row_spacer(10)
     st.markdown(
         f"""
@@ -515,60 +514,36 @@ else:
     )
 
 # =========================
-# Card 4: Leaders/Laggard by MM Score Change (single table, 10 rows)
+# Card 4: Leaders/Laggards by MM Score Change (Top/Bottom 5)
 # =========================
-@st.cache_data(show_spinner=False)
-def load_mc_77(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path)
+df77 = load_csv_by_id(cfg_tf["ids"]["delta"], DATA_DIR)
+req77 = ["Date","Ticker","Ticker_name","Close",
+         cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score","model_score_delta"]
 
-df77 = load_mc_77(DATA_DIR / "qry_graph_data_77.csv")
-
-required_cols_77 = [
-    "Date","Ticker","Ticker_name","Close",
-    "daily_Return","day_pr_low","day_pr_high",
-    "day_rr_ratio","model_score","model_score_delta"
-]
-
-if df77.empty or not all(c in df77.columns for c in required_cols_74):
+if df77.empty or not all(c in df77.columns for c in req77):
     row_spacer(8)
-    st.info("Top 5 Leaders/Laggard by % Change: `qry_graph_data_77.csv` is missing or columns are incomplete.")
+    st.info(f"Top 5 Leaders/Laggards by MM Score Change: `qry_graph_data_{cfg_tf['ids']['delta']}.csv` is missing or columns are incomplete.")
 else:
     d = df77.copy()
-
-    # Keep Deep Dive link on Ticker (same as first card)
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
 
-    # ---- build card with same columns/order/formatting as the first card ----
     df_77_card = pd.DataFrame({
-        "Name":          d["Ticker_name"],
-        "Ticker":        d["Ticker"],
-        "Close":         d["Close"].map(lambda v: fmt_num(v, 2)),
-        "% Change":       d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-        "Probable Low":  d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-        "Probable High": d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-        "Risk / Reward":   d["day_rr_ratio"].map(rr_tinted_html),   # same gradient tint
-        "MM Score":      d["model_score"].map(mm_badge_html),
+        "Name":           d["Ticker_name"],
+        "Ticker":         d["Ticker"],
+        "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change":       d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low":   d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
+        "MM Score":       d["model_score"].map(mm_badge_html),
         "MM Score Change":d["model_score_delta"].map(fmt_int),
     })
 
-    # to HTML (same classes/alignment as first card)
     tbl_html_77 = df_77_card.to_html(index=False, classes="tbl", escape=False, border=0)
     tbl_html_77 = tbl_html_77.replace('class="dataframe tbl"', 'class="tbl"')
-
-    # same colgroup (Name = 40ch; Ticker centered; numbers right-aligned via CSS)
     colgroup = """
     <colgroup>
-      <col class="col-name"> <!-- Name (40ch) -->
-      <col>                   <!-- Ticker -->
-      <col>                   <!-- Close -->
-      <col>                   <!-- % Change -->
-      <col>                   <!-- Probable Low -->
-      <col>                   <!-- Probable High -->
-      <col>                   <!-- Risk/Reward -->
-      <col>                   <!-- MM Score -->
-      <col>                   <!-- MM Score Change -->
+      <col class="col-name"><col><col><col><col><col><col><col><col>
     </colgroup>
     """.strip()
     tbl_html_77 = tbl_html_77.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
@@ -576,7 +551,6 @@ else:
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
-    # render centered card below the first card
     row_spacer(10)
     st.markdown(
         f"""
@@ -597,73 +571,50 @@ else:
 # =========================
 # Card 5: (optional) Category Snapshot – uses qry_graph_data_76.csv
 # =========================
-@st.cache_data(show_spinner=False)
-def load_mc_76(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path)
-
+# =========================
+# Card 5: (optional) Category Snapshot – uses timeframe's category csv
+# =========================
 row_spacer(6)
 show_cat = st.checkbox("View Category Snapshot", value=False)
 
 if show_cat:
-    df76 = load_mc_76(DATA_DIR / "qry_graph_data_76.csv")
-    required_cols_76 = [
-        "Date","Ticker","Ticker_name","Category","Close",
-        "daily_Return","day_pr_low","day_pr_high",
-        "day_rr_ratio","model_score","model_score_delta"
-    ]
+    df76 = load_csv_by_id(cfg_tf["ids"]["category"], DATA_DIR)
+    req76 = ["Date","Ticker","Ticker_name","Category","Close",
+             cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score","model_score_delta"]
 
-    if df76.empty or not all(c in df76.columns for c in required_cols_76):
-        st.info("Category Snapshot: `qry_graph_data_76.csv` is missing or columns are incomplete.")
+    if df76.empty or not all(c in df76.columns for c in req76):
+        st.info(f"Category Snapshot: `qry_graph_data_{cfg_tf['ids']['category']}.csv` is missing or columns are incomplete.")
     else:
-        # Preferred category order (exact text)
         cat_order = [
             "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Volatility","Foreign",
             "Communication Services","Consumer Discretionary","Consumer Staples","Energy","Financials",
             "Health Care","Industrials","Information Technology","Materials","Real Estate","Utilities","MR Discretion"
         ]
-
-        # Center the selector
         c1, c2, c3 = st.columns([1, .9, 1])
         with c2:
-            # Show only categories present in the CSV but ordered by your preference
             present = [c for c in cat_order if c in df76["Category"].dropna().unique().tolist()]
             sel = st.selectbox("Category", present, index=0)
 
         d = df76[df76["Category"] == sel].copy()
-
-        # Link ticker
         d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
 
-        # Build the card (do NOT show Category column)
         df_cat_card = pd.DataFrame({
             "Name":           d["Ticker_name"],
             "Ticker":         d["Ticker"],
             "Close":          d["Close"].map(lambda v: fmt_num(v, 2)),
-            "% Change":        d["daily_Return"].map(lambda v: fmt_pct(v, 2)),
-            "Probable Low":   d["day_pr_low"].map(lambda v: fmt_num(v, 2)),
-            "Probable High":  d["day_pr_high"].map(lambda v: fmt_num(v, 2)),
-            "Risk / Reward":    d["day_rr_ratio"].map(rr_tinted_html),
-            "MM Score":      d["model_score"].map(mm_badge_html),
-            "MM Score Change": d["model_score_delta"].map(fmt_int),
+            "% Change":       d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+            "Probable Low":   d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+            "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+            "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
+            "MM Score":       d["model_score"].map(mm_badge_html),
+            "MM Score Change":d["model_score_delta"].map(fmt_int),
         })
 
         tbl_html_76 = df_cat_card.to_html(index=False, classes="tbl", escape=False, border=0)
         tbl_html_76 = tbl_html_76.replace('class="dataframe tbl"', 'class="tbl"')
-
-        # Same colgroup as other cards (Name = 40ch)
         colgroup = """
         <colgroup>
-          <col class="col-name">
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
+          <col class="col-name"><col><col><col><col><col><col><col><col>
         </colgroup>
         """.strip()
         tbl_html_76 = tbl_html_76.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
