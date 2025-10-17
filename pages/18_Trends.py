@@ -128,7 +128,7 @@ st.markdown(
     f"""
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:18px; font-weight:600; color:#1a1a1a;">
-        Trends & Changes – {date_str}
+        Trends – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
@@ -225,7 +225,7 @@ else:
               Macro Orientation — Trends & Changes
             </h3>
             {html_macro}
-            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative. Values shown as % (1 decimal).</div>
+            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
           </div>
         </div>
         """,
@@ -293,7 +293,7 @@ if not df.empty:
               Category Averages — Trends & Changes
             </h3>
             {html_cat}
-            <div class="subnote">Averages are simple means by category. Values shown as % (1 decimal).</div>
+            <div class="subnote">Averages by category.</div>
           </div>
         </div>
         """,
@@ -358,7 +358,7 @@ if not df.empty:
               {sel} — Per Ticker Trends & Changes
             </h3>
             {html_per}
-            <div class="subnote">Green = positive; Red = negative. Values shown as % (1 decimal).</div>
+            <div class="subnote">Green = positive; Red = negative.</div>
           </div>
         </div>
         """,
