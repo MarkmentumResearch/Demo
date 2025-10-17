@@ -400,7 +400,7 @@ with st.container():
     </style>
     """, unsafe_allow_html=True)
 
-    docx_path = (DATA_DIR / "Market_Read_daily.docx").resolve()
+    docx_path = (DATA_DIR / "Market_Read_monthly.docx").resolve()
     mr_md = load_market_read_md(str(docx_path))  # existing function
     mr_md = mr_md.replace("The market is saying:", "<br>The market is saying:", 1)
 
