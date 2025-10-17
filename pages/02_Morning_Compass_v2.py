@@ -105,7 +105,7 @@ def mm_badge_html(score):
         s = int(round(float(score)))
     except Exception:
         return ""
-    # green for +, red for -, muted for ~0
+    # green for +, red for -, muted for ~0  (ORIGINAL PILL)
     bg = "#e8f5e9" if s > 0 else ("#ffebee" if s < 0 else "#f1f3f5")
     fg = "#2e7d32" if s > 0 else ("#c62828" if s < 0 else "#495057")
     return (f'<span style="display:inline-block; padding:2px 8px; '
@@ -119,7 +119,7 @@ def rr_tinted_html(val):
         v = float(val)
     except Exception:
         return ""
-    # clamp to +/- 5 for bar fill
+    # ORIGINAL BAR with pale fill
     cap = 5.0
     pct = min(abs(v), cap) / cap * 100.0
     pos = v >= 0
