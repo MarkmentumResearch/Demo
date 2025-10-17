@@ -166,6 +166,10 @@ st.markdown("""
 .tbl col.col-name   { width:28ch; min-width:28ch; max-width:28ch; }
 .tbl col.col-ticker { width:8ch; }
 .tbl col.col-num    { width:8ch; }
+            
+/* Center the Ticker column (2nd column) */
+.tbl th:nth-child(2),
+.tbl td:nth-child(2) { text-align: center; }
 
 /* allow wrapping for Name */
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
