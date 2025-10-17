@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-J,JACOBS SOLUTIONS INC.,Industrials,2025-10-15,-105.0,-55.0,50.0
-BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-15,-103.0,-77.0,26.0
-HPQ,HP INC.,Information Technology,2025-10-15,-99.0,-73.0,26.0
-IWM,ISHARES:RUSS 2000 ETF,Sector & Style ETFs,2025-10-15,-98.0,-31.0,67.0
-PLD,"PROLOGIS, INC.",Real Estate,2025-10-15,-92.0,-77.0,15.0
-BG,BUNGE LIMITED,Consumer Staples,2025-10-15,-86.0,-80.0,6.0
-VTR,"VENTAS, INC.",Real Estate,2025-10-15,-84.0,-2.0,82.0
-URI,"UNITED RENTALS, INC.",Industrials,2025-10-15,-83.0,-25.0,58.0
-EWY,ISHARES:MSCI S KOREA,Foreign,2025-10-15,-82.0,-27.0,55.0
-REG,REGENCY CENTERS ,Real Estate,2025-10-15,-82.0,-30.0,52.0
+PLD,"PROLOGIS, INC.",Real Estate,2025-10-16,-107.0,-77.0,30.0
+BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-16,-103.0,-77.0,26.0
+TLT,ISHARES:20+ TRS BD ETF,Bonds,2025-10-16,-96.0,-50.0,46.0
+URI,"UNITED RENTALS, INC.",Industrials,2025-10-16,-92.0,-34.0,58.0
+VTR,"VENTAS, INC.",Real Estate,2025-10-16,-87.0,-5.0,82.0
+BG,BUNGE LIMITED,Consumer Staples,2025-10-16,-86.0,-80.0,6.0
+EXR,EXTRA SPACE STORAGE INC.,Real Estate,2025-10-16,-83.0,-70.0,13.0
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-16,-82.0,-1.0,81.0
+J,JACOBS SOLUTIONS INC.,Industrials,2025-10-16,-81.0,-31.0,50.0
+CCJ,CAMECO ,MR Discretion,2025-10-16,-80.0,-16.0,64.0
