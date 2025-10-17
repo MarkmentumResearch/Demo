@@ -156,8 +156,9 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 
 <h3>How to use the app</h3>
 <ul>
-  <li><b>Morning Compass</b> – Your daily orientation across major indices, sectors, and macro levers. Displays probable ranges, risk/reward bias, and Markmentum Scores for key exposures including SPY, QQQ, IWM, Gold, USD, and Bonds. 
-  Includes top 5 gainers/laggards by % change and by Markmentum Score, plus an optional category snapshot for deeper drill-downs. Automatically refreshed to deliver a quick, data-first read on market direction and crowd positioning — no charts, no clicks, just signal.</li>
+  <li><b>Morning Compass</b> – Your orientation dashboard across major indices, sectors, and macro levers — with a one-click Daily / Weekly / Monthly selector. 
+  Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposure tickers (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers/laggards by % change and by Markmentum Score, and an optional category snapshot for deeper drill-downs. 
+  Auto-refreshed for a concise, data-first read on market direction and crowd positioning.</li>
   <li><b>Daily Market Overview</b> – One-screen summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes, Markmentum Score distribution, and top-10 highest/lowest Markmentum Scores. 
   Includes an AI-assisted Market Read framing daily growth and inflation dynamics.</li>
   <li><b>Weekly Market Overview</b> – One-screen week-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
