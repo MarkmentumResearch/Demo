@@ -173,7 +173,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
   <li><b>Sharpe Rank Heatmap</b> – Multi-layered view of risk-adjusted performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker Sharpe Percentile Ranks. 
   Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market.</li>
-  <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. It begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
+  <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. Begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
   Displays the current score alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. Together, the table and heatmap reveal where opportunity and risk are shifting over time.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
