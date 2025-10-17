@@ -98,34 +98,48 @@ def fmt_int(x):
         return ""
 
 # ---------- UI renderers ----------
-def mm_badge_html(score):
-    if score is None or (isinstance(score, float) and np.isnan(score)):
-        return ""
+def mm_badge_html(x):
+    # Banded shading to match original look:
+    # |score| <= 25  -> gray pill
+    # score > 25     -> green pill
+    # score < -25    -> red pill
     try:
-        s = int(round(float(score)))
+        if pd.isna(x):
+            return ""
+        v = float(x)
     except Exception:
         return ""
-    # green for +, red for -, muted for ~0  (ORIGINAL PILL)
-    bg = "#e8f5e9" if s > 0 else ("#ffebee" if s < 0 else "#f1f3f5")
-    fg = "#2e7d32" if s > 0 else ("#c62828" if s < 0 else "#495057")
-    return (f'<span style="display:inline-block; padding:2px 8px; '
-            f'border-radius:999px; background:{bg}; color:{fg}; '
-            f'font-weight:700; min-width:28px; text-align:center;">{s}</span>')
 
+    if -25 <= v <= 25:
+        bg, fg = "#f1f3f5", "#495057"   # gray
+    elif v > 25:
+        bg, fg = "#e8f5e9", "#2e7d32"   # green
+    else:  # v < -25
+        bg, fg = "#ffebee", "#c62828"   # red
+
+    label = f"{int(round(v)):,}"
+    return (
+        f'<span style="display:inline-block; padding:2px 8px; '
+        f'border-radius:999px; background:{bg}; color:{fg}; '
+        f'font-weight:700; min-width:28px; text-align:center;">{label}</span>'
+    )
 def rr_tinted_html(val):
+    # Progress-bar style fill; full at |val| >= 4.5 (original behavior)
     if val is None or (isinstance(val, float) and np.isnan(val)):
         return ""
     try:
         v = float(val)
     except Exception:
         return ""
-    # ORIGINAL BAR with pale fill
-    cap = 5.0
+
+    cap = 4.5  # FULL BAR at ±4.5
     pct = min(abs(v), cap) / cap * 100.0
     pos = v >= 0
+
     base = "#f8f9fa"
     bar  = "#2ecc71" if pos else "#e74c3c"
     txt  = "#1a1a1a"
+
     return (
         f'<div style="position:relative; height:20px; background:{base}; '
         f'border:1px solid #dee2e6; border-radius:4px; overflow:hidden;">'
