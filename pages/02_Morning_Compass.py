@@ -75,7 +75,66 @@ if dest.replace("%20", " ") == "deep dive":
 def row_spacer(height_px: int = 14):
     st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
 
+# ---------- Shared formatters ----------
+def fmt_num(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x):,.{nd}f}"
+    except Exception:
+        return ""
 
+def fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x)*100:,.{nd}f}%"
+    except Exception:
+        return ""
+
+def fmt_int(x):
+    try:
+        if pd.isna(x): return ""
+        return f"{int(round(float(x))):,}"
+    except Exception:
+        return ""
+
+# ---------- UI renderers ----------
+def mm_badge_html(score):
+    if score is None or (isinstance(score, float) and np.isnan(score)):
+        return ""
+    try:
+        s = int(round(float(score)))
+    except Exception:
+        return ""
+    # green for +, red for -, muted for ~0
+    bg = "#e8f5e9" if s > 0 else ("#ffebee" if s < 0 else "#f1f3f5")
+    fg = "#2e7d32" if s > 0 else ("#c62828" if s < 0 else "#495057")
+    return (f'<span style="display:inline-block; padding:2px 8px; '
+            f'border-radius:999px; background:{bg}; color:{fg}; '
+            f'font-weight:700; min-width:28px; text-align:center;">{s}</span>')
+
+def rr_tinted_html(val):
+    if val is None or (isinstance(val, float) and np.isnan(val)):
+        return ""
+    try:
+        v = float(val)
+    except Exception:
+        return ""
+    # clamp to +/- 5 for bar fill
+    cap = 5.0
+    pct = min(abs(v), cap) / cap * 100.0
+    pos = v >= 0
+    base = "#f8f9fa"
+    bar  = "#2ecc71" if pos else "#e74c3c"
+    txt  = "#1a1a1a"
+    return (
+        f'<div style="position:relative; height:20px; background:{base}; '
+        f'border:1px solid #dee2e6; border-radius:4px; overflow:hidden;">'
+        f'  <div style="position:absolute; top:0; left:0; height:100%; '
+        f'       width:{pct:.0f}%; background:{bar}; opacity:0.25;"></div>'
+        f'  <div style="position:relative; padding:0 6px; font-weight:600; '
+        f'       color:{txt}; line-height:18px; text-align:right;">{v:.1f}</div>'
+        f'</div>'
+    )
 # =========================
 # Timeframe config
 # =========================
