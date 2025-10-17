@@ -74,23 +74,34 @@ def fmt_pct_1(x):
     except Exception:
         return ""
 
-def tint_cell(val):
-    """Green if > 0, Red if < 0, neutral otherwise (light tint)."""
+def tint_cell(val, cap=0.03, neutral=0.0005):
+    """
+    val: decimal (e.g., 0.012 = 1.2%)
+    cap: magnitude where tint reaches full strength (default 3%)
+    neutral: +/- band rendered as no tint (default 0.05%)
+    """
     if val is None or pd.isna(val):
         return ""
     try:
         v = float(val)
     except Exception:
         return ""
-    if v > 0:
-        bg = "rgba(16,185,129,0.25)"   # green-200ish
-    elif v < 0:
-        bg = "rgba(239,68,68,0.25)"    # red-200ish
-    else:
+
+    # Neutral band (very small values look untinted)
+    if -neutral <= v <= neutral:
         bg = "transparent"
+    else:
+        # Scale opacity by magnitude, capped
+        strength = min(abs(v) / cap, 1.0)     # 0..1
+        alpha = 0.15 + 0.35 * strength        # 0.15..0.50
+        if v > 0:
+            bg = f"rgba(16,185,129,{alpha:.2f})"   # green
+        else:
+            bg = f"rgba(239,68,68,{alpha:.2f})"    # red
+
     return (
         f'<span style="display:block; background:{bg}; '
-        f'padding:0 6px; border-radius:3px; text-align:right;">{fmt_pct_1(v)}</span>'
+        f'padding:0 6px; border-radius:3px; text-align:right;">{v*100:,.1f}%</span>'
     )
 
 # -------------------------
