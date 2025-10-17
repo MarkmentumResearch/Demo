@@ -373,7 +373,7 @@ if not df.empty:
               {sel} — Per Ticker Trends by Timeframe & Changes
             </h3>
             {html_per}
-            <div class="subnote"Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
+            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
           </div>
         </div>
         """,
