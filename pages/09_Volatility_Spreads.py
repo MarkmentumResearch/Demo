@@ -152,7 +152,7 @@ if dest.replace("%20", " ") == "deep dive":
         st.query_params.clear()
         st.query_params["ticker"] = t
     # jump to the page file in /pages
-    st.switch_page("pages/13_Deep_Dive_Dashboard.py")
+    st.switch_page("pages/14_Deep_Dive_Dashboard.py")
 
 
 
