@@ -354,7 +354,7 @@ with c2:
         """
         <style>
         /* On smaller screens, don't let Streamlit stretch this widget to 100% */
-        @media (max-width: 1400px){
+        @media (max-width: 1699.98px){
           #tf-scope { 
             max-width: 600px;       /* <- set to your card width */
             width: 100%;
