@@ -101,7 +101,7 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 st.markdown("""
 <style>
 /* Responsive, centered width cap for the timeframe select */
-.tf-wrap { margin-left:auto; margin-right:auto; }
+.tf-wrap { margin-left:fixed; margin-right:fixed; }
 
 /* desktop (>=1700px): a bit wider */
 @media (min-width:1700px){
@@ -347,16 +347,19 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, .8, 1])   # middle column slightly narrower
+# Centered, capped-width timeframe dropdown (independent of the column grid)
+st.markdown('<div class="tf-wrap">', unsafe_allow_html=True)
+selected_tf = st.selectbox(
+    "Select timeframe",
+    TF_LABELS,
+    index=TF_LABELS.index(tf),
+    key="tf_select",
+    label_visibility="collapsed",
+)
+st.markdown('</div>', unsafe_allow_html=True)
 
-with c2:
-    selected_tf = st.selectbox(
-        "Select timeframe",
-        TF_LABELS,
-        index=TF_LABELS.index(tf),
-        key="tf_select",
-        label_visibility="collapsed",   # hides the "Select timeframe" label
-    )
+if selected_tf != tf:
+    st.rerun()
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
