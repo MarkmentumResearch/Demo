@@ -355,7 +355,7 @@ with c2:
         """
         <style>
         @media (max-width: 1699.98px){
-          .tf-narrow { width: min(100%, 200px); margin: 0 auto; } /* ~card width */
+          .tf-narrow { max-width: 720px; margin-left: auto; margin-right: auto; } /* ~card width */
         }
         </style>
         """,
