@@ -180,33 +180,39 @@ def m2_label(st, mt, lt, stc, mtc):
     return "Neutral"
 
 def trend_tag(label: str) -> str:
-    """Return styled HTML pill for Directional Trend category."""
+    """
+    Return a *subtle* tinted pill for the Directional Trend category.
+    Tints mirror the cell style (light RGBA), no heavy fills, default dark text.
+    """
     if not isinstance(label, str):
         return ""
     l = label.strip()
 
-    # Base defaults
+    # Base style (subtle pill)
     bg = "transparent"
-    color = "#1a1a1a"
+    color = "#1a1a1a"     # default dark text
     pad = "2px 8px"
     radius = "12px"
-    weight = 600
+    weight = 500          # lighter than bold to keep it understated
 
+    # Light tints (align with cell vibe; alpha ~0.12–0.20)
     if l == "Buy Bias":
-        bg, color = "#047857", "#fff"           # dark green
+        bg = "rgba(16,185,129,0.20)"      # deeper green tint
     elif l == "Leaning Bullish":
-        bg, color = "rgba(16,185,129,0.20)", "#064e3b"  # light green, dark text
+        bg = "rgba(16,185,129,0.12)"      # lighter green tint
     elif l in ("Topping", "Bottoming"):
-        bg, color = "#E5E7EB", "#1f2937"        # light gray
+        bg = "rgba(107,114,128,0.12)"     # light gray tint
     elif l == "Leaning Bearish":
-        bg, color = "rgba(239,68,68,0.20)", "#7f1d1d"   # light red
+        bg = "rgba(239,68,68,0.12)"       # lighter red tint
     elif l == "Sell Bias":
-        bg, color = "#B91C1C", "#fff"           # dark red
+        bg = "rgba(239,68,68,0.20)"       # deeper red tint
     elif l == "Neutral":
         bg = "transparent"
-        color = "#1a1a1a"
 
-    return f'<span style="background:{bg}; color:{color}; padding:{pad}; border-radius:{radius}; font-weight:{weight};">{l}</span>'
+    return (
+        f'<span style="background:{bg}; color:{color}; '
+        f'padding:{pad}; border-radius:{radius}; font-weight:{weight};">{l}</span>'
+    )
 
 
 
