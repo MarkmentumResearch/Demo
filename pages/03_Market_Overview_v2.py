@@ -353,22 +353,21 @@ with c2:
     st.markdown(
         """
         <style>
-        /* MacBook Air / smaller widths */
+        /* Constrain selectbox on smaller screens (e.g., MacBook Air) */
         @media (max-width: 1699.98px){
-          /* Make the wrapper a flex container so child width can be capped & centered */
-          #tf-scope{ display:flex; justify-content:center; }
-
-          /* Streamlit's wrapper around the selectbox */
-          #tf-scope [data-testid="stSelectbox"]{
-            width: 600px !important;           /* <-- set to your card width */
+          #tf-scope{
+            display:flex;              /* center the inner block */
+            justify-content:center;
+          }
+          /* The immediate Streamlit child inside our scope gets flex-stopped and capped */
+          #tf-scope > div{
+            flex: 0 0 600px !important;  /* <- set to your card width */
             max-width: 100% !important;
           }
-
-          /* BaseWeb select inside (covers cases where the above div is overridden) */
+          /* Ensure BaseWeb select fills the capped block, not the full screen */
           #tf-scope [data-baseweb="select"]{
-            width: 600px !important;           /* <-- same cap */
+            width: 100% !important;
             max-width: 100% !important;
-            margin: 0 auto !important;
           }
         }
         </style>
