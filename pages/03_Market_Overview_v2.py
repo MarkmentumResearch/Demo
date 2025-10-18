@@ -355,11 +355,11 @@ with c2:
         """
         <style>
         @media (max-width: 1699.98px){
-          .tf-narrow { max-width: 720px; margin-left: auto; margin-right: auto; } /* ~card width */
+          .tf-narrow { max-width: 400px; margin-left: auto; margin-right: auto; } /* ~card width */
         }
         </style>
         """,
-        unsafe_allow_html=True,use_container_width=False
+        unsafe_allow_html=True
     )
     st.markdown('<div class="tf-narrow">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
@@ -369,7 +369,7 @@ with c2:
         key="tf_select",
         label_visibility="collapsed",  # hides the "Select timeframe" label
     )
-    st.markdown("</div>", unsafe_allow_html=True, use_container_width=False)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
