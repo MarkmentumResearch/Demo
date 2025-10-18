@@ -100,31 +100,25 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 
 st.markdown("""
 <style>
-/* Stop flex growth + shrink-to-fit for the timeframe selector */
-.tf-noflex {
-  display: block;
-  width: auto;
+/* Match card width rules exactly */
+.tf-like-card {
+  width: 100%;
+  max-width: 720px;          /* same cap as .card on non-desktop */
   margin-left: auto;
-  margin-right: auto;   /* center the wrapper */
+  margin-right: auto;
 }
 
-/* Prevent flexbox from stretching the control */
-.tf-noflex [data-testid="stSelectbox"],
-.tf-noflex [data-testid="stSelectbox"] > div,
-.tf-noflex [data-testid="stSelectbox"] div[role="combobox"] {
-  flex: 0 0 auto !important;   /* <-- key: no flex grow/shrink */
-  width: auto !important;      /* shrink to intrinsic width */
-  max-width: 520px !important; /* cap on desktop */
-  min-width: 360px;            /* reasonable floor on laptops */
-}
-
-/* Optional: slightly wider cap on huge desktops */
+/* On big desktops, cards drop the cap — do the same for the selector */
 @media (min-width:1700px){
-  .tf-noflex [data-testid="stSelectbox"],
-  .tf-noflex [data-testid="stSelectbox"] > div,
-  .tf-noflex [data-testid="stSelectbox"] div[role="combobox"]{
-    max-width: 640px !important;
-  }
+  .tf-like-card { max-width: none; }
+}
+
+/* Make the Streamlit select fill that wrapper width (but never exceed it) */
+.tf-like-card [data-testid="stSelectbox"],
+.tf-like-card [data-testid="stSelectbox"] > div,
+.tf-like-card [data-testid="stSelectbox"] div[role="combobox"] {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -343,8 +337,8 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-# Compact, centered timeframe dropdown that ignores parent flex stretching
-st.markdown('<div class="tf-noflex">', unsafe_allow_html=True)
+# Centered selector that uses the same width as cards
+st.markdown('<div class="tf-like-card">', unsafe_allow_html=True)
 selected_tf = st.selectbox(
     "Select timeframe",
     TF_LABELS,
@@ -353,9 +347,6 @@ selected_tf = st.selectbox(
     label_visibility="collapsed",
 )
 st.markdown('</div>', unsafe_allow_html=True)
-
-if selected_tf != tf:
-    st.rerun()
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
