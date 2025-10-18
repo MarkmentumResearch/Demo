@@ -156,18 +156,32 @@ TIMEFRAMES = {
         "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
         "docx": "bottom_line_daily.docx",
         "card_title": "Daily Macro Orientation",
+        "card_title2":"Daily Top 5 Leaders/Laggards by % Change",
+        "card_title3":"Daily Top 5 Leaders/Laggards by MM Score",
+        "card_title4":"Daily Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title5":"Daily Category Snapshot",
     },
     "Weekly": {
         "ids": {"main": 78, "leaders": 79, "mm": 80, "category": 81, "delta": 82},
         "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
         "docx": "bottom_line_weekly.docx",
         "card_title": "Weekly Macro Orientation",
+        "card_title2":"Weekly Top 5 Leaders/Laggards by % Change",
+        "card_title3":"Weekly Top 5 Leaders/Laggards by MM Score",
+        "card_title4":"Weekly Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title5":"Weekly Category Snapshot",
+         
     },
     "Monthly": {
         "ids": {"main": 83, "leaders": 84, "mm": 85, "category": 86, "delta": 87},
         "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
         "docx": "bottom_line_monthly.docx",
         "card_title": "Monthly Macro Orientation",
+        "card_title2":"Monthly Top 5 Leaders/Laggards by % Change",
+        "card_title3":"Monthly Top 5 Leaders/Laggards by MM Score",
+        "card_title4":"Monthly Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title5":"Monthly Category Snapshot",
+         
     },
 }
 
@@ -449,7 +463,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Top 5 Leaders/Laggards by % Change
+              {cfg_tf["card_title2"]}
             </h3>
             {tbl_html_74}
             <div class="bl note">{note_html_safe}</div>
@@ -503,7 +517,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Top 5 Leaders/Laggards by MM Score
+              {cfg_tf["card_title3"]}
             </h3>
             {tbl_html_75}
             <div class="bl note">{note_html_safe}</div>
@@ -557,7 +571,7 @@ else:
         <div class="card-wrap">
           <div class="card">
             <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-              Top 5 Leaders/Laggards by MM Score Change
+              {cfg_tf["card_title4"]}
             </h3>
             {tbl_html_77}
             <div class="bl note">{note_html_safe}</div>
@@ -628,7 +642,7 @@ if show_cat:
             <div class="card-wrap">
               <div class="card">
                 <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
-                  Category Snapshot – {sel}
+                  {cfg_tf["card_title5"]} – {sel}
                 </h3>
                 {tbl_html_76}
                 <div class="bl note">{note_html_safe}</div>
