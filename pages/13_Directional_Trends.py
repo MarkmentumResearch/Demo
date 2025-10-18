@@ -139,7 +139,7 @@ st.markdown(
     f"""
     <div style="text-align:center; margin:-6px 0 14px;
                 font-size:18px; font-weight:600; color:#1a1a1a;">
-        Trends – {date_str}
+        Directional Trends – {date_str}
     </div>
     """,
     unsafe_allow_html=True,
@@ -147,6 +147,7 @@ st.markdown(
 
 # --- Module 2 comment label (ST/MT/LT alignment + changes)
 def m2_label(st, mt, lt, stc, mtc):
+    """Return directional trend category (7-bucket taxonomy)."""
     vals = [st, mt, lt, stc, mtc]
     if any(pd.isna(v) for v in vals):
         return "Insufficient data"
@@ -155,13 +156,63 @@ def m2_label(st, mt, lt, stc, mtc):
     except Exception:
         return "Insufficient data"
 
-    if st < mt < lt and stc > 0 and mtc > 0:
-        return "Bullish Alignment · Improving"
+    # --- Bullish stack ---
+    if st < mt < lt:
+        if stc > 0 and mtc > 0:
+            return "Buy Bias"
+        if stc > 0 > mtc or stc < 0 < mtc:
+            return "Leaning Bullish"
+        if stc < 0 and mtc < 0:
+            return "Topping"
+        return "Neutral"
+
+    # --- Bearish stack ---
     if st > mt > lt:
-        return "Bearish Alignment"
-    if st < mt < lt and (stc <= 0 or mtc <= 0):
-        return "Bullish Alignment · Waiting"
-    return "Converging / Mixed"
+        if stc < 0 and mtc < 0:
+            return "Sell Bias"
+        if stc > 0 and mtc > 0:
+            return "Bottoming"
+        if stc > 0 > mtc or stc < 0 < mtc:
+            return "Leaning Bearish"
+        return "Neutral"
+
+    # --- Neutral / mixed structures (LT in middle or cross currents) ---
+    return "Neutral"
+
+def trend_tag(label: str) -> str:
+    """
+    Return a *subtle* tinted pill for the Directional Trend category.
+    Tints mirror the cell style (light RGBA), no heavy fills, default dark text.
+    """
+    if not isinstance(label, str):
+        return ""
+    l = label.strip()
+
+    # Base style (subtle pill)
+    bg = "transparent"
+    color = "#1a1a1a"     # default dark text
+    pad = "2px 8px"
+    radius = "3px"
+    weight = 500          # lighter than bold to keep it understated
+
+    # Light tints (align with cell vibe; alpha ~0.12–0.20)
+    if l == "Buy Bias":
+        bg = "rgba(16,185,129,0.42)"      # deeper green tint
+    elif l == "Leaning Bullish":
+        bg = "rgba(16,185,129,0.12)"      # lighter green tint
+    elif l in ("Topping", "Bottoming"):
+        bg = "rgba(107,114,128,0.12)"     # light gray tint
+    elif l == "Leaning Bearish":
+        bg = "rgba(239,68,68,0.12)"       # lighter red tint
+    elif l == "Sell Bias":
+        bg = "rgba(239,68,68,0.42)"       # deeper red tint
+    elif l == "Neutral":
+        bg = "transparent"
+
+    return (
+        f'<span style="background:{bg}; color:{color}; '
+        f'padding:{pad}; border-radius:{radius}; font-weight:{weight};">{l}</span>'
+    )
 
 
 
@@ -239,7 +290,7 @@ else:
         "ST Change":   [tint_cell(v) for v in m["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in m["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in m["lt_trend_change"]],
-        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                     zip(m["st_trend"], m["mt_trend"], m["lt_trend"],
                         m["st_trend_change"], m["mt_trend_change"])],
     })
@@ -269,7 +320,15 @@ else:
               Macro Orientation — Trends by Timeframe & Changes
             </h3>
             {html_macro}
-            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
+            <div class="subnote">
+               Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
+                <b>Legend:</b> 
+                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
+                <b>Neutral</b> – Crosscurrents / mixed trends · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br>
+                <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
+                <b>Sell Bias</b> – Downtrend confirmed.                
           </div>
         </div>
         """,
@@ -313,7 +372,7 @@ if not df.empty:
         "ST Change":  [tint_cell(v) for v in g["ST_Change"]],
         "MT Change":  [tint_cell(v) for v in g["MT_Change"]],
         "LT Change":  [tint_cell(v) for v in g["LT_Change"]],
-        "Comment":    [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":    [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                    zip(g["ST"], g["MT"], g["LT"], g["ST_Change"], g["MT_Change"])],
     })
 
@@ -341,7 +400,15 @@ if not df.empty:
               Category Averages — Trends by Timeframe & Changes
             </h3>
             {html_cat}
-            <div class="subnote">Averages by category.</div>
+            <div class="subnote">
+                Averages by category.<br>                   
+                <b>Legend:</b> 
+                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
+                <b>Neutral</b> – Crosscurrents / mixed trends · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br>
+                <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
+                <b>Sell Bias</b> – Downtrend confirmed.               
           </div>
         </div>
         """,
@@ -380,7 +447,7 @@ if not df.empty:
         "ST Change":   [tint_cell(v) for v in d["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in d["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in d["lt_trend_change"]],
-        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                     zip(d["st_trend"], d["mt_trend"], d["lt_trend"],
                         d["st_trend_change"], d["mt_trend_change"])],
     })
@@ -410,7 +477,15 @@ if not df.empty:
               {sel} — Per Ticker Trends by Timeframe & Changes
             </h3>
             {html_per}
-            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
+            <div class="subnote">
+               Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
+                <b>Legend:</b> 
+                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
+                <b>Neutral</b> – Crosscurrents / mixed trends · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br> 
+                <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
+                <b>Sell Bias</b> – Downtrend confirmed.                
           </div>
         </div>
         """,
