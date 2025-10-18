@@ -312,7 +312,7 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, 0.8, 1])   # middle column slightly narrower
+c1, c2, c3 = st.columns([1, 3, 1])   # middle column slightly narrower
 
 with c2:
     selected_tf = st.selectbox(
