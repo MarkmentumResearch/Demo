@@ -192,7 +192,7 @@ def trend_tag(label: str) -> str:
     bg = "transparent"
     color = "#1a1a1a"     # default dark text
     pad = "2px 8px"
-    radius = "12px"
+    radius = "3px"
     weight = 500          # lighter than bold to keep it understated
 
     # Light tints (align with cell vibe; alpha ~0.12–0.20)
