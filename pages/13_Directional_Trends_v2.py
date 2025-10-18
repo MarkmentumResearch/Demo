@@ -330,7 +330,7 @@ if not df.empty:
         "ST Change":  [tint_cell(v) for v in g["ST_Change"]],
         "MT Change":  [tint_cell(v) for v in g["MT_Change"]],
         "LT Change":  [tint_cell(v) for v in g["LT_Change"]],
-        "Comment":    [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":    [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
                    zip(g["ST"], g["MT"], g["LT"], g["ST_Change"], g["MT_Change"])],
     })
 
@@ -397,7 +397,7 @@ if not df.empty:
         "ST Change":   [tint_cell(v) for v in d["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in d["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in d["lt_trend_change"]],
-        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
                     zip(d["st_trend"], d["mt_trend"], d["lt_trend"],
                         d["st_trend_change"], d["mt_trend_change"])],
     })
