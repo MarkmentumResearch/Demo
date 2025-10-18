@@ -486,7 +486,6 @@ if not df.empty:
                 <b>Topping / Bottoming</b> – Transition zones where trends may reverse · 
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
                 <b>Sell Bias</b> – Downtrend confirmed.                
-
           </div>
         </div>
         """,
