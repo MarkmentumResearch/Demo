@@ -310,13 +310,14 @@ if date_str:
     )
 
 row_spacer(6)
-
-new_tf = st.selectbox(
-    "Select timeframe",
-    TF_LABELS,
-    index=TF_LABELS.index(tf),
-    key="tf_select",
-)
+c1, new_tf, c3 = st.columns([1, 0.8, 1])
+with new_tf:
+    return st.selectbox(
+        "Select timeframe",
+        TF_LABELS,
+        index=TF_LABELS.index(tf),
+        key="tf_select",
+    )
 
 # If the user changed it during this run, rerun so the title/date/cards refresh
 if new_tf != tf:
