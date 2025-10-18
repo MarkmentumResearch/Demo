@@ -100,25 +100,20 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 
 st.markdown("""
 <style>
-/* Match card width rules exactly */
-.tf-like-card {
-  width: 100%;
-  max-width: 720px;          /* same cap as .card on non-desktop */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* On big desktops, cards drop the cap — do the same for the selector */
-@media (min-width:1700px){
-  .tf-like-card { max-width: none; }
-}
-
-/* Make the Streamlit select fill that wrapper width (but never exceed it) */
-.tf-like-card [data-testid="stSelectbox"],
-.tf-like-card [data-testid="stSelectbox"] > div,
-.tf-like-card [data-testid="stSelectbox"] div[role="combobox"] {
+/* Make the timeframe selectbox match card width behavior */
+div[data-testid="stSelectbox"] > div[data-baseweb="select"]{
   width: 100% !important;
-  max-width: 100% !important;
+  max-width: 720px !important;      /* same as .card on non-desktop */
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;                    /* prevent flex growth */
+}
+
+/* On big desktops (>=1700px) cards drop the cap; do the same */
+@media (min-width:1700px){
+  div[data-testid="stSelectbox"] > div[data-baseweb="select"]{
+    max-width: none !important;
+  }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -338,7 +333,6 @@ row_spacer(6)
 
 # Center the dropdown under the title
 # Centered selector that uses the same width as cards
-st.markdown('<div class="tf-like-card">', unsafe_allow_html=True)
 selected_tf = st.selectbox(
     "Select timeframe",
     TF_LABELS,
@@ -346,7 +340,6 @@ selected_tf = st.selectbox(
     key="tf_select",
     label_visibility="collapsed",
 )
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
