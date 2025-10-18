@@ -145,6 +145,26 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# --- Module 2 comment label (ST/MT/LT alignment + changes)
+def m2_label(st, mt, lt, stc, mtc):
+    vals = [st, mt, lt, stc, mtc]
+    if any(pd.isna(v) for v in vals):
+        return "Insufficient data"
+    try:
+        st, mt, lt, stc, mtc = map(float, vals)
+    except Exception:
+        return "Insufficient data"
+
+    if st < mt < lt and stc > 0 and mtc > 0:
+        return "Bullish alignment · improving"
+    if st > mt > lt:
+        return "Bearish alignment"
+    if st < mt < lt and (stc <= 0 or mtc <= 0):
+        return "Bullish alignment · waiting"
+    return "Converging / mixed"
+
+
+
 # ---------- Shared CSS (compass-style card) ----------
 st.markdown("""
 <style>
@@ -173,6 +193,11 @@ st.markdown("""
 
 /* allow wrapping for Name */
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
+
+/* Make the last column (Comment) left-aligned and wider */
+.tbl th:last-child, .tbl td:last-child { text-align:left; }
+.tbl col.col-comment { width:26ch; min-width:22ch; }            
+
 
 .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
 .vspace-16 { height:16px; }
@@ -214,6 +239,9 @@ else:
         "ST Change":   [tint_cell(v) for v in m["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in m["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in m["lt_trend_change"]],
+        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+                    zip(m["st_trend"], m["mt_trend"], m["lt_trend"],
+                        m["st_trend_change"], m["mt_trend_change"])],
     })
 
     html_macro = macro_tbl.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -228,6 +256,7 @@ else:
       <col class="col-num">    <!-- ST Chg -->
       <col class="col-num">    <!-- MT Chg -->
       <col class="col-num">    <!-- LT Chg -->
+      <col class="col-comment"> <!-- Comment -->
     </colgroup>
     """.strip()
     html_macro = html_macro.replace('<table class="tbl">', f'<table class="tbl">{colgroup_macro}', 1)
@@ -246,6 +275,11 @@ else:
         """,
         unsafe_allow_html=True,
     )
+
+
+
+
+
 
 # little breathing room
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
