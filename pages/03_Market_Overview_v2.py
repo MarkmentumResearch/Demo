@@ -361,7 +361,7 @@ with c2:
         """,
         unsafe_allow_html=True
     )
-    st.markdown('<div class="tf-narrow">', unsafe_allow_html=True)
+    #st.markdown('<div class="tf-narrow">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
