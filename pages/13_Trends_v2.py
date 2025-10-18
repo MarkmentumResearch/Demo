@@ -195,8 +195,8 @@ st.markdown("""
 .tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
 
 /* Make the last column (Comment) left-aligned and wider */
-.tbl th:last-child, .tbl td:last-child { text-align:center; }
-.tbl col.col-comment { width:18ch; min-width:18ch; }            
+.tbl th:last-child, .tbl td:last-child { text-align:left; }
+.tbl col.col-comment { width:18ch; min-width:18ch; text-align:center;}            
 
 
 .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
