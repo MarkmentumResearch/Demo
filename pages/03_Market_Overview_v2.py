@@ -98,40 +98,6 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Responsive, centered width cap for the timeframe select */
-.tf-wrap { margin-left:fixed; margin-right:fixed; }
-
-/* desktop (>=1700px): a bit wider */
-@media (min-width:1700px){
-  .tf-wrap { max-width: 640px; }
-}
-
-/* laptop / typical screens (1200px–1699.98px) */
-@media (min-width:1200px) and (max-width:1699.98px){
-  .tf-wrap { max-width: 520px; }
-}
-
-/* small screens (<1200px) */
-@media (max-width:1199.98px){
-  .tf-wrap { max-width: 440px; }
-}
-
-/* very small phones */
-@media (max-width:420px){
-  .tf-wrap { max-width: 320px; }
-}
-
-/* Ensure the Streamlit select internals don’t override the cap */
-.tf-wrap [data-testid="stSelectbox"],
-.tf-wrap [data-testid="stSelectbox"] > div,
-.tf-wrap [data-testid="stSelectbox"] div[role="combobox"]{
-  width: 100% !important;
-  max-width: 100% !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # -------------------------
 # Paths (portable for Cloud)
