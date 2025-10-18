@@ -310,7 +310,7 @@ if date_str:
         unsafe_allow_html=True,
     )
 
-row_spacer(6)
+row_spacer(2)
 
 # Center the dropdown under the title
 c1, c2, c3 = st.columns([1, .8, 1])  # middle column slightly narrower
@@ -348,7 +348,7 @@ with c2:
 if selected_tf != tf:
     st.rerun()
 
-row_spacer(6)
+row_spacer(3)
 
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
