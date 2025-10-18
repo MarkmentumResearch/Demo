@@ -359,7 +359,7 @@ with c2:
         }
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,use_container_width=False
     )
     st.markdown('<div class="tf-narrow">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
@@ -369,7 +369,7 @@ with c2:
         key="tf_select",
         label_visibility="collapsed",  # hides the "Select timeframe" label
     )
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True, use_container_width=False)
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
