@@ -400,9 +400,8 @@ if not df.empty:
               Category Averages — Trends by Timeframe & Changes
             </h3>
             {html_cat}
-            <div class="subnote">Averages by category.
-                        
-               
+            <div class="subnote">
+                Averages by category.<br>                   
                 <b>Legend:</b> 
                 <b>Buy Bias</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
