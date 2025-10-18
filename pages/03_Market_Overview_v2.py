@@ -347,30 +347,36 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, .8, 1])   # middle column slightly narrower
+c1, c2, c3 = st.columns([1, .8, 1])  # middle column slightly narrower
 
 with c2:
-    # Scoped CSS so only THIS selectbox is affected on smaller screens
     st.markdown(
         """
         <style>
-          /* When screens get smaller (e.g., MacBook Air), cap width to card size */
-          @media (max-width: 1400px){
-            .tf-scope { max-width: 600px; margin: 0 auto; }
-            /* Ensure inner select container respects the cap */
-            .tf-scope [data-testid="stSelectbox"]{ max-width: 600px; width: 100%; margin: 0 auto; }
+        /* On smaller screens, don't let Streamlit stretch this widget to 100% */
+        @media (max-width: 1400px){
+          #tf-scope { 
+            max-width: 600px;       /* <- set to your card width */
+            width: 100%;
+            margin: 0 auto;
+            align-self: center !important;  /* override column's align-items: stretch */
           }
+          #tf-scope [data-testid="stSelectbox"]{
+            width: 100% !important;    /* fill the capped wrapper, not the whole screen */
+            max-width: 600px !important;
+          }
+        }
         </style>
         """,
         unsafe_allow_html=True
     )
-    st.markdown('<div class="tf-scope">', unsafe_allow_html=True)
+    st.markdown('<div id="tf-scope">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
         index=TF_LABELS.index(tf),
         key="tf_select",
-        label_visibility="collapsed",   # hides the "Select timeframe" label
+        label_visibility="collapsed",  # hides the "Select timeframe" label
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
