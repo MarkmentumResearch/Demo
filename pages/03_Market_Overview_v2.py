@@ -347,17 +347,27 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, .8, 1])   # middle column slightly narrower
+c1, c2, c3 = st.columns([1, .8, 1])  # middle column slightly narrower
 
 with c2:
-    # Wrap the select in a responsive width cap (uses the .tf-wrap CSS already defined above)
-    st.markdown('<div class="tf-wrap">', unsafe_allow_html=True)
+    # On smaller screens, cap the width so it matches a card rather than full width
+    st.markdown(
+        """
+        <style>
+        @media (max-width: 1699.98px){
+          .tf-narrow { width: min(100%, 200px); margin: 0 auto; } /* ~card width */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown('<div class="tf-narrow">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
         index=TF_LABELS.index(tf),
         key="tf_select",
-        label_visibility="collapsed",   # hides the "Select timeframe" label
+        label_visibility="collapsed",  # hides the "Select timeframe" label
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
