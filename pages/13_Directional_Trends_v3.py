@@ -197,7 +197,7 @@ def trend_tag(label: str) -> str:
 
     # Light tints (align with cell vibe; alpha ~0.12–0.20)
     if l == "Buy Bias":
-        bg = "rgba(16,185,129,0.35)"      # deeper green tint
+        bg = "rgba(16,185,129,0.50)"      # deeper green tint
     elif l == "Leaning Bullish":
         bg = "rgba(16,185,129,0.12)"      # lighter green tint
     elif l in ("Topping", "Bottoming"):
@@ -205,7 +205,7 @@ def trend_tag(label: str) -> str:
     elif l == "Leaning Bearish":
         bg = "rgba(239,68,68,0.12)"       # lighter red tint
     elif l == "Sell Bias":
-        bg = "rgba(239,68,68,0.35)"       # deeper red tint
+        bg = "rgba(239,68,68,0.50)"       # deeper red tint
     elif l == "Neutral":
         bg = "transparent"
 
