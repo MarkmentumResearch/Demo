@@ -100,35 +100,31 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 
 st.markdown("""
 <style>
-/* Responsive, centered width cap for the timeframe select */
-.tf-wrap { margin-left:auto; margin-right:auto; }
+/* Stop flex growth + shrink-to-fit for the timeframe selector */
+.tf-noflex {
+  display: block;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;   /* center the wrapper */
+}
 
-/* desktop (>=1700px): a bit wider */
+/* Prevent flexbox from stretching the control */
+.tf-noflex [data-testid="stSelectbox"],
+.tf-noflex [data-testid="stSelectbox"] > div,
+.tf-noflex [data-testid="stSelectbox"] div[role="combobox"] {
+  flex: 0 0 auto !important;   /* <-- key: no flex grow/shrink */
+  width: auto !important;      /* shrink to intrinsic width */
+  max-width: 520px !important; /* cap on desktop */
+  min-width: 360px;            /* reasonable floor on laptops */
+}
+
+/* Optional: slightly wider cap on huge desktops */
 @media (min-width:1700px){
-  .tf-wrap { max-width: 200px; }
-}
-
-/* laptop / typical screens (1200px–1699.98px) */
-@media (min-width:1200px) and (max-width:1699.98px){
-  .tf-wrap { max-width: 200px; }
-}
-
-/* small screens (<1200px) */
-@media (max-width:1199.98px){
-  .tf-wrap { max-width: 200px; }
-}
-
-/* very small phones */
-@media (max-width:420px){
-  .tf-wrap { max-width: 200px; }
-}
-
-/* Ensure the Streamlit select internals don’t override the cap */
-.tf-wrap [data-testid="stSelectbox"],
-.tf-wrap [data-testid="stSelectbox"] > div,
-.tf-wrap [data-testid="stSelectbox"] div[role="combobox"]{
-  width: 100% !important;
-  max-width: 100% !important;
+  .tf-noflex [data-testid="stSelectbox"],
+  .tf-noflex [data-testid="stSelectbox"] > div,
+  .tf-noflex [data-testid="stSelectbox"] div[role="combobox"]{
+    max-width: 640px !important;
+  }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -347,8 +343,8 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-# Centered, capped-width timeframe dropdown (independent of the column grid)
-st.markdown('<div class="tf-wrap">', unsafe_allow_html=True)
+# Compact, centered timeframe dropdown that ignores parent flex stretching
+st.markdown('<div class="tf-noflex">', unsafe_allow_html=True)
 selected_tf = st.selectbox(
     "Select timeframe",
     TF_LABELS,
@@ -358,6 +354,8 @@ selected_tf = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
+if selected_tf != tf:
+    st.rerun()
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
