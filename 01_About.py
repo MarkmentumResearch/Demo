@@ -160,7 +160,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers and laggards by % change and by Markmentum Score, 
   along with an optional category snapshot for deeper drill-downs. Auto-refreshed for a concise, data-first read on market direction and crowd positioning.</li>
   <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
-    The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram (indices excluded from the highest/lowest lists).
+    The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram.
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
   <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
   Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
