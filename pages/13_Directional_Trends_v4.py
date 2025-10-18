@@ -406,7 +406,7 @@ if not df.empty:
                 <b>Buy Bias</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
                 <b>Neutral</b> – Crosscurrents / mixed trends · 
-                <b>Topping / Bottoming</b> – Transition zones where trends may reverse · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br>
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
                 <b>Sell Bias</b> – Downtrend confirmed.               
           </div>
@@ -483,7 +483,7 @@ if not df.empty:
                 <b>Buy Bias</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
                 <b>Neutral</b> – Crosscurrents / mixed trends · 
-                <b>Topping / Bottoming</b> – Transition zones where trends may reverse · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br> 
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
                 <b>Sell Bias</b> – Downtrend confirmed.                
           </div>
