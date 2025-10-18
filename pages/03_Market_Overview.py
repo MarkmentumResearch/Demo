@@ -98,40 +98,6 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Responsive, centered width cap for the timeframe select */
-.tf-wrap { margin-left:fixed; margin-right:fixed; }
-
-/* desktop (>=1700px): a bit wider */
-@media (min-width:1700px){
-  .tf-wrap { max-width: 640px; }
-}
-
-/* laptop / typical screens (1200px–1699.98px) */
-@media (min-width:1200px) and (max-width:1699.98px){
-  .tf-wrap { max-width: 520px; }
-}
-
-/* small screens (<1200px) */
-@media (max-width:1199.98px){
-  .tf-wrap { max-width: 440px; }
-}
-
-/* very small phones */
-@media (max-width:420px){
-  .tf-wrap { max-width: 320px; }
-}
-
-/* Ensure the Streamlit select internals don’t override the cap */
-.tf-wrap [data-testid="stSelectbox"],
-.tf-wrap [data-testid="stSelectbox"] > div,
-.tf-wrap [data-testid="stSelectbox"] div[role="combobox"]{
-  width: 100% !important;
-  max-width: 100% !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # -------------------------
 # Paths (portable for Cloud)
@@ -347,15 +313,35 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, .8, 1])   # middle column slightly narrower
+c1, c2, c3 = st.columns([1, .8, 1])  # middle column slightly narrower
 
 with c2:
+    st.markdown(
+        """
+        <style>
+        /* Cap the FIRST selectbox (the timeframe picker) on smaller screens */
+        @media (max-width: 1699.98px){
+          div[data-testid="stSelectbox"]:first-of-type{
+            max-width: 600px !important;   /* set to your card width */
+            margin: 0 auto !important;     /* center it */
+          }
+          /* Ensure the BaseWeb control inside respects the cap */
+          div[data-testid="stSelectbox"]:first-of-type [data-baseweb="select"],
+          div[data-testid="stSelectbox"]:first-of-type div[role="combobox"]{
+            width: 100% !important;
+            max-width: 600px !important;
+          }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
     selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
         index=TF_LABELS.index(tf),
         key="tf_select",
-        label_visibility="collapsed",   # hides the "Select timeframe" label
+        label_visibility="collapsed",  # hides the "Select timeframe" label
     )
 
 # Rerun if changed so titles/tables refresh
