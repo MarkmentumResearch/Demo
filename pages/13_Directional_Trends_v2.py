@@ -256,7 +256,7 @@ else:
         "ST Change":   [tint_cell(v) for v in m["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in m["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in m["lt_trend_change"]],
-        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+        "Directional Trend":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
                     zip(m["st_trend"], m["mt_trend"], m["lt_trend"],
                         m["st_trend_change"], m["mt_trend_change"])],
     })
