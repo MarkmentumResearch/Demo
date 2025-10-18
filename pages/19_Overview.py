@@ -235,12 +235,7 @@ def render_table_card(container, title: str, df):
 # Timeframe selector & wiring
 # -------------------------
 TF_LABELS = ["Daily", "Weekly", "Monthly", "Quarterly"]
-tf = st.selectbox(
-    "Select timeframe",
-    TF_LABELS,
-    index=0,            # default "Daily"
-    key="tf_select",
-)
+tf = st.session_state.get("tf_select", TF_LABELS[0])
 
 # CSV map per card (by timeframe)
 CSV_MAP = {
@@ -316,6 +311,19 @@ if date_str:
 
 row_spacer(6)
 
+new_tf = st.selectbox(
+    "Select timeframe",
+    TF_LABELS,
+    index=TF_LABELS.index(tf),
+    key="tf_select",
+)
+
+# If the user changed it during this run, rerun so the title/date/cards refresh
+if new_tf != tf:
+    st.rerun()
+
+row_spacer(6)
+
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
 # -------------------------
@@ -375,9 +383,10 @@ row_spacer(14)
 # Daily only for Cards 7-9
 # -------------------------
 show_daily_extra = (tf == "Daily")
-e1, e2, e3 = st.columns([1,1,1], gap="large")
 
 if show_daily_extra:
+    e1, e2, e3 = st.columns([1,1,1], gap="large")
+
     df6 = dfs[6].copy()
     col_score_hi = _pick(df6, SCORE_CANDIDATES, default=None)
     render_card(e1, tf_prefix(TITLES[6]), df6, col_score_hi, "Score", _fmt_num)
@@ -391,7 +400,6 @@ if show_daily_extra:
         if df_hist.empty:
             st.info(f"No data for {tf_prefix(TITLES[8])}.")
         else:
-            # Map your five bins to friendly labels
             mapping = {
                 "Below -100": "Strong Sell",
                 "-100 to -25": "Sell",
@@ -416,16 +424,6 @@ if show_daily_extra:
                 """,
                 unsafe_allow_html=True,
             )
-else:
-    # Fill the row with "No data" cards for consistent spacing on non-Daily timeframes
-    for title in TITLES[6:9]:
-        with (e1 if title == TITLES[6] else e2 if title == TITLES[7] else e3):
-            st.markdown(f"""
-                <div class="card">
-                  <h3>{tf_prefix(title)}</h3>
-                  <div style="padding:6px 8px;">Not applicable for {tf.lower()} timeframe.</div>
-                </div>
-            """, unsafe_allow_html=True)
 
 # ========= Market Read (per timeframe) =========
 import os
