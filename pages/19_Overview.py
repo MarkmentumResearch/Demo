@@ -498,16 +498,21 @@ with st.container():
     mr_md = mr_md.replace("The market is saying (all numbers are MTD % returns):", "<br>The market is saying (all numbers are MTD % returns):", 1)
     mr_md = mr_md.replace("The market is saying (all numbers are QTD % returns):", "<br>The market is saying (all numbers are QTD % returns):", 1)
 
-    st.markdown(
-        f"""
-        <div class="market-read-wrapper">
-          <h2>{tf} Market Read</h2>
-          {mr_md}
-          {"<div class='market-read-note'>Note: Indices are excluded from Highest/Lowest Markmentum Score lists.</div>" if show_daily_extra else ""}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    note_html = (
+    "<div class='market-read-note'>Note: Indices are excluded from Highest/Lowest Markmentum Score lists.</div>"
+    if show_daily_extra else ""
+)
+
+# Compose HTML, then dedent to remove leading spaces that can trigger Markdown code blocks
+mr_html = f"""
+<div class="market-read-wrapper">
+  <h2>{tf} Market Read</h2>
+  {mr_md}
+  {note_html}
+</div>
+"""
+
+st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
 
 # -------------------------
 # Footer disclaimer
