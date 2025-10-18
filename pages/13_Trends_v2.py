@@ -381,6 +381,9 @@ if not df.empty:
         "ST Change":   [tint_cell(v) for v in d["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in d["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in d["lt_trend_change"]],
+        "Comment":     [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+                    zip(d["st_trend"], d["mt_trend"], d["lt_trend"],
+                        d["st_trend_change"], d["mt_trend_change"])],
     })
 
     html_per = per_tbl.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -395,6 +398,7 @@ if not df.empty:
       <col class="col-num">    <!-- ST Chg -->
       <col class="col-num">    <!-- MT Chg -->
       <col class="col-num">    <!-- LT Chg -->
+      <col class="col-comment"> <!-- Comment -->
     </colgroup>
     """.strip()
     html_per = html_per.replace('<table class="tbl">', f'<table class="tbl">{colgroup_per}', 1)
