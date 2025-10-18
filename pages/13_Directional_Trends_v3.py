@@ -323,12 +323,12 @@ else:
             <div class="subnote">
                Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
                 <b>Legend:</b> 
-                <b>Buy Bias</b> – uptrend confirmed · 
-                <b>Leaning Bullish</b> – bullish setup, confirmation pending · 
-                <b>Neutral</b> – crosscurrents / mixed trends · 
-                <b>Topping / Bottoming</b> – transition zones where trends may reverse · 
-                <b>Leaning Bearish</b> – bearish bias but not fully aligned · 
-                <b>Sell Bias</b> – downtrend confirmed.                
+                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
+                <b>Neutral</b> – Crosscurrents / mixed trends · 
+                <b>Topping / Bottoming</b> – Transition zones where trends may reverse · 
+                <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
+                <b>Sell Bias</b> – Downtrend confirmed.                
           </div>
         </div>
         """,
