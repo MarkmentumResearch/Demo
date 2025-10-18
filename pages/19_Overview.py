@@ -494,9 +494,9 @@ with st.container():
     docx_path = (DATA_DIR / MR_DOCX[tf]).resolve()
     mr_md = load_market_read_md(str(docx_path))
     mr_md = mr_md.replace("The market is saying:", "<br>The market is saying:", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are WTD % returns):", "<br>The market is saying:", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are MTD % returns):", "<br>The market is saying:", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are QTD % returns):", "<br>The market is saying:", 1)
+    mr_md = mr_md.replace("The market is saying (all numbers are WTD % returns):", "<br>The market is saying (all numbers are WTD % returns):", 1)
+    mr_md = mr_md.replace("The market is saying (all numbers are MTD % returns):", "<br>The market is saying (all numbers are MTD % returns):", 1)
+    mr_md = mr_md.replace("The market is saying (all numbers are QTD % returns):", "<br>The market is saying (all numbers are QTD % returns):", 1)
 
     st.markdown(
         f"""
