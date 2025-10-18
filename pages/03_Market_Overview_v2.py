@@ -319,28 +319,23 @@ with c2:
     st.markdown(
         """
         <style>
-        /* Constrain selectbox on smaller screens (e.g., MacBook Air) */
+        /* Cap the FIRST selectbox (the timeframe picker) on smaller screens */
         @media (max-width: 1699.98px){
-          #tf-scope{
-            display:flex;              /* center the inner block */
-            justify-content:center;
+          div[data-testid="stSelectbox"]:first-of-type{
+            max-width: 600px !important;   /* set to your card width */
+            margin: 0 auto !important;     /* center it */
           }
-          /* The immediate Streamlit child inside our scope gets flex-stopped and capped */
-          #tf-scope > div{
-            flex: 0 0 600px !important;  /* <- set to your card width */
-            max-width: 100% !important;
-          }
-          /* Ensure BaseWeb select fills the capped block, not the full screen */
-          #tf-scope [data-baseweb="select"]{
+          /* Ensure the BaseWeb control inside respects the cap */
+          div[data-testid="stSelectbox"]:first-of-type [data-baseweb="select"],
+          div[data-testid="stSelectbox"]:first-of-type div[role="combobox"]{
             width: 100% !important;
-            max-width: 100% !important;
+            max-width: 600px !important;
           }
         }
         </style>
         """,
         unsafe_allow_html=True
     )
-    st.markdown('<div id="tf-scope">', unsafe_allow_html=True)
     selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
@@ -348,7 +343,6 @@ with c2:
         key="tf_select",
         label_visibility="collapsed",  # hides the "Select timeframe" label
     )
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
