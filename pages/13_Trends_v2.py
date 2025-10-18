@@ -156,12 +156,12 @@ def m2_label(st, mt, lt, stc, mtc):
         return "Insufficient data"
 
     if st < mt < lt and stc > 0 and mtc > 0:
-        return "Bullish alignment · improving"
+        return "Bullish alignment · Improving"
     if st > mt > lt:
         return "Bearish alignment"
     if st < mt < lt and (stc <= 0 or mtc <= 0):
-        return "Bullish alignment · waiting"
-    return "Converging / mixed"
+        return "Bullish alignment · Waiting"
+    return "Converging / Mixed"
 
 
 
