@@ -158,7 +158,7 @@ TIMEFRAMES = {
         "card_title": "Daily Macro Orientation",
         "card_title2":"Daily Top 5 Leaders/Laggards by % Change",
         "card_title3":"Daily Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Daily Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title4":"Daily Top 5 Leaders/Laggards by MM Score Change",
         "card_title5":"Daily Category Snapshot",
     },
     "Weekly": {
@@ -168,7 +168,7 @@ TIMEFRAMES = {
         "card_title": "Weekly Macro Orientation",
         "card_title2":"Weekly Top 5 Leaders/Laggards by % Change",
         "card_title3":"Weekly Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Weekly Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title4":"Weekly Top 5 Leaders/Laggards by MM Score Change",
         "card_title5":"Weekly Category Snapshot",
          
     },
@@ -179,7 +179,7 @@ TIMEFRAMES = {
         "card_title": "Monthly Macro Orientation",
         "card_title2":"Monthly Top 5 Leaders/Laggards by % Change",
         "card_title3":"Monthly Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Monthly Top 5 Top 5 Leaders/Laggards by MM Score Change",
+        "card_title4":"Monthly Top 5 Leaders/Laggards by MM Score Change",
         "card_title5":"Monthly Category Snapshot",
          
     },
