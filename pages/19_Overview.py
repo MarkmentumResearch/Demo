@@ -235,7 +235,12 @@ def render_table_card(container, title: str, df):
 # Timeframe selector & wiring
 # -------------------------
 TF_LABELS = ["Daily", "Weekly", "Monthly", "Quarterly"]
-
+tf = st.selectbox(
+    "Select timeframe",
+    TF_LABELS,
+    index=0,            # default "Daily"
+    key="tf_select",
+)
 
 # CSV map per card (by timeframe)
 CSV_MAP = {
@@ -311,12 +316,6 @@ if date_str:
 
 row_spacer(6)
 
-tf = st.selectbox(
-    "Select timeframe",
-    TF_LABELS,
-    index=0,            # default "Daily"
-    key="tf_select",
-)
 # -------------------------
 # ROW 1 (3 cards): gainers / decliners / most active
 # -------------------------
