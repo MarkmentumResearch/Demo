@@ -205,7 +205,7 @@ def trend_tag(label: str) -> str:
     elif l == "Leaning Bearish":
         bg = "rgba(239,68,68,0.12)"       # lighter red tint
     elif l == "Sell Bias":
-        bg = "rgba(239,68,68,0.32)"       # deeper red tint
+        bg = "rgba(239,68,68,0.35)"       # deeper red tint
     elif l == "Neutral":
         bg = "transparent"
 
