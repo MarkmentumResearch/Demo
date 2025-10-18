@@ -196,7 +196,7 @@ st.markdown("""
 
 /* Make the last column (Comment) left-aligned and wider */
 .tbl th:last-child, .tbl td:last-child { text-align:left; }
-.tbl col.col-comment { width:26ch; min-width:22ch; }            
+.tbl col.col-comment { width:18ch; min-width:18ch; }            
 
 
 .subnote { border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d; }
@@ -275,10 +275,6 @@ else:
         """,
         unsafe_allow_html=True,
     )
-
-
-
-
 
 
 # little breathing room
