@@ -320,7 +320,15 @@ else:
               Macro Orientation — Trends by Timeframe & Changes
             </h3>
             {html_macro}
-            <div class="subnote">Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.</div>
+            <div class="subnote">
+               Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
+                <b>Legend:</b> 
+                <b>Buy Bias</b> – uptrend confirmed · 
+                <b>Leaning Bullish</b> – bullish setup, confirmation pending · 
+                <b>Neutral</b> – crosscurrents / mixed trends · 
+                <b>Topping / Bottoming</b> – transition zones where trends may reverse · 
+                <b>Leaning Bearish</b> – bearish bias but not fully aligned · 
+                <b>Sell Bias</b> – downtrend confirmed.                
           </div>
         </div>
         """,
