@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-PLD,"PROLOGIS, INC.",Real Estate,2025-10-16,-107.0,-77.0,30.0
-BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-16,-103.0,-77.0,26.0
-TLT,ISHARES:20+ TRS BD ETF,Bonds,2025-10-16,-96.0,-50.0,46.0
-URI,"UNITED RENTALS, INC.",Industrials,2025-10-16,-92.0,-34.0,58.0
-VTR,"VENTAS, INC.",Real Estate,2025-10-16,-87.0,-5.0,82.0
-BG,BUNGE LIMITED,Consumer Staples,2025-10-16,-86.0,-80.0,6.0
-EXR,EXTRA SPACE STORAGE INC.,Real Estate,2025-10-16,-83.0,-70.0,13.0
-AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-16,-82.0,-1.0,81.0
-J,JACOBS SOLUTIONS INC.,Industrials,2025-10-16,-81.0,-31.0,50.0
-CCJ,CAMECO ,MR Discretion,2025-10-16,-80.0,-16.0,64.0
+PLD,"PROLOGIS, INC.",Real Estate,2025-10-17,-116.0,-86.0,30.0
+BBY,"BEST BUY CO., INC.",Consumer Discretionary,2025-10-17,-103.0,-77.0,26.0
+BG,BUNGE LIMITED,Consumer Staples,2025-10-17,-101.0,-80.0,21.0
+SNA,SNAP-ON INC.,Industrials,2025-10-17,-96.0,-42.0,54.0
+VTR,"VENTAS, INC.",Real Estate,2025-10-17,-88.0,-6.0,82.0
+EWT,ISHARES:MSCI TAIWAN,Foreign,2025-10-17,-84.0,-56.0,28.0
+JBHT,"J. B. HUNT TRANSPORT SERVICES, INC.",Industrials,2025-10-17,-84.0,-89.0,-5.0
+EXR,EXTRA SPACE STORAGE INC.,Real Estate,2025-10-17,-83.0,-70.0,13.0
+PPL,PPL ,Utilities,2025-10-17,-83.0,-21.0,62.0
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-17,-82.0,-1.0,81.0
