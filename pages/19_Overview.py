@@ -235,7 +235,12 @@ def render_table_card(container, title: str, df):
 # Timeframe selector & wiring
 # -------------------------
 TF_LABELS = ["Daily", "Weekly", "Monthly", "Quarterly"]
-tf = st.segmented_control("Select timeframe", TF_LABELS, selection_mode="single", default="Daily")
+tf = st.selectbox(
+    "Select timeframe",
+    TF_LABELS,
+    index=0,            # default "Daily"
+    key="tf_select",
+)
 
 # CSV map per card (by timeframe)
 CSV_MAP = {
