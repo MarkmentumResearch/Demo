@@ -527,7 +527,7 @@ with st.container():
 # Compose HTML, then dedent to remove leading spaces that can trigger Markdown code blocks
 mr_html = f"""
 <div class="market-read-wrapper">
-  <h2>{tf} Market Read</h2>
+  <h2>Market Read</h2>
   {mr_md}
   {note_html}
 </div>
