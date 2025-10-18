@@ -310,17 +310,21 @@ if date_str:
     )
 
 row_spacer(6)
-c1, new_tf, c3 = st.columns([1, 0.8, 1])
-with new_tf:
-    return st.selectbox(
+
+# Center the dropdown under the title
+c1, c2, c3 = st.columns([1, 0.8, 1])   # middle column slightly narrower
+
+with c2:
+    selected_tf = st.selectbox(
         "Select timeframe",
         TF_LABELS,
         index=TF_LABELS.index(tf),
         key="tf_select",
+        label_visibility="collapsed",   # hides the "Select timeframe" label
     )
 
-# If the user changed it during this run, rerun so the title/date/cards refresh
-if new_tf != tf:
+# Rerun if changed so titles/tables refresh
+if selected_tf != tf:
     st.rerun()
 
 row_spacer(6)
