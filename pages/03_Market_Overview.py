@@ -98,6 +98,19 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Narrow + centered timeframe selector */
+.tf-wrap { max-width: 520px; margin-left: auto; margin-right: auto; }
+
+/* Streamlit selectbox container */
+.tf-wrap [data-testid="stSelectbox"] { max-width: 520px; margin-left: auto; margin-right: auto; }
+
+/* The inner control sometimes stretches; cap it too */
+.tf-wrap [data-testid="stSelectbox"] > div { max-width: 520px; margin-left: auto; margin-right: auto; }
+</style>
+""", unsafe_allow_html=True)
+
 # -------------------------
 # Paths (portable for Cloud)
 # -------------------------
@@ -312,16 +325,16 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-c1, c2, c3 = st.columns([1, .8, 1])   # middle column slightly narrower
-
-with c2:
-    selected_tf = st.selectbox(
-        "Select timeframe",
-        TF_LABELS,
-        index=TF_LABELS.index(tf),
-        key="tf_select",
-        label_visibility="collapsed",   # hides the "Select timeframe" label
-    )
+# Centered, fixed-width dropdown under the title (independent of column widths)
+st.markdown('<div class="tf-wrap">', unsafe_allow_html=True)
+selected_tf = st.selectbox(
+    "Select timeframe",
+    TF_LABELS,
+    index=TF_LABELS.index(tf),
+    key="tf_select",
+    label_visibility="collapsed",
+)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
