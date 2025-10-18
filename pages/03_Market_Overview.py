@@ -100,14 +100,36 @@ th.col-ticker,   td.col-ticker   { width:74px; }
 
 st.markdown("""
 <style>
-/* Narrow + centered timeframe selector */
-.tf-wrap { max-width: 520px; margin-left: auto; margin-right: auto; }
+/* Responsive, centered width cap for the timeframe select */
+.tf-wrap { margin-left:auto; margin-right:auto; }
 
-/* Streamlit selectbox container */
-.tf-wrap [data-testid="stSelectbox"] { max-width: 520px; margin-left: auto; margin-right: auto; }
+/* desktop (>=1700px): a bit wider */
+@media (min-width:1700px){
+  .tf-wrap { max-width: 640px; }
+}
 
-/* The inner control sometimes stretches; cap it too */
-.tf-wrap [data-testid="stSelectbox"] > div { max-width: 520px; margin-left: auto; margin-right: auto; }
+/* laptop / typical screens (1200px–1699.98px) */
+@media (min-width:1200px) and (max-width:1699.98px){
+  .tf-wrap { max-width: 520px; }
+}
+
+/* small screens (<1200px) */
+@media (max-width:1199.98px){
+  .tf-wrap { max-width: 440px; }
+}
+
+/* very small phones */
+@media (max-width:420px){
+  .tf-wrap { max-width: 320px; }
+}
+
+/* Ensure the Streamlit select internals don’t override the cap */
+.tf-wrap [data-testid="stSelectbox"],
+.tf-wrap [data-testid="stSelectbox"] > div,
+.tf-wrap [data-testid="stSelectbox"] div[role="combobox"]{
+  width: 100% !important;
+  max-width: 100% !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -325,7 +347,7 @@ if date_str:
 row_spacer(6)
 
 # Center the dropdown under the title
-# Centered, fixed-width dropdown under the title (independent of column widths)
+# Centered, capped-width timeframe dropdown (independent of the column grid)
 st.markdown('<div class="tf-wrap">', unsafe_allow_html=True)
 selected_tf = st.selectbox(
     "Select timeframe",
@@ -335,6 +357,9 @@ selected_tf = st.selectbox(
     label_visibility="collapsed",
 )
 st.markdown('</div>', unsafe_allow_html=True)
+
+if selected_tf != tf:
+    st.rerun()
 
 # Rerun if changed so titles/tables refresh
 if selected_tf != tf:
