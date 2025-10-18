@@ -159,14 +159,9 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Morning Compass</b> – Your orientation dashboard across major indices, sectors, and macro levers — with a one-click Daily / Weekly / Monthly selector. 
   Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers and laggards by % change and by Markmentum Score, 
   along with an optional category snapshot for deeper drill-downs. Auto-refreshed for a concise, data-first read on market direction and crowd positioning.</li>
-  <li><b>Daily Market Overview</b> – One-screen summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes, Markmentum Score distribution, and top-10 highest/lowest Markmentum Scores. 
-  Includes an AI-assisted Market Read framing daily growth and inflation dynamics.</li>
-  <li><b>Weekly Market Overview</b> – One-screen week-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
-  Includes an AI-assisted Market Read summarizing weekly macro and regime shifts.</li>
-  <li><b>Monthly Market Overview</b> – One-screen month-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
-  Includes an AI-assisted Market Read contextualizing monthly growth and inflation trends.</li>
-  <li><b>Quarterly Market Overview</b> – One-screen quarter-to-date summary of top percentage gainers/decliners, Most Active (Shares), Markmentum Score change distribution, and top-10 highest/lowest Markmentum Score changes. 
-  Includes an AI-assisted Market Read distilling longer-term macro themes and regime tone.</li>
+  <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
+    The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram (indices excluded from the highest/lowest lists).
+      At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
   <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
   Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
   <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
