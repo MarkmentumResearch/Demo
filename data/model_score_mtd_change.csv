@@ -392,7 +392,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-17,MPC,MARATHON PETROLEUM ,Energy,Energy,110.0,55.0,-55.0
 2025-10-17,MPWR,"MONOLITHIC POWER SYSTEMS, INC.",Information Technology,Information Technology,19.0,-27.0,-46.0
 2025-10-17,MRK,"MERCK & CO., INC.",Health Care,Health Care,14.0,-49.0,-63.0
-2025-10-17,MRNA,"MODERNA, INC.",Health Care,Health Care,4.0,-51.0,-55.0
+2025-10-17,MRNA,"MODERNA, INC.",Health Care,Health Care,-3.0,-58.0,-55.0
 2025-10-17,MS,MORGAN STANLEY,Financials,Financials,85.0,55.0,-30.0
 2025-10-17,MSCI,MSCI INC.,Financials,Financials,10.0,-21.0,-31.0
 2025-10-17,MSFT,MICROSOFT ,Information Technology,Information Technology,32.0,15.0,-17.0
