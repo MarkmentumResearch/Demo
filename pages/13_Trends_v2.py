@@ -317,6 +317,8 @@ if not df.empty:
         "ST Change":  [tint_cell(v) for v in g["ST_Change"]],
         "MT Change":  [tint_cell(v) for v in g["MT_Change"]],
         "LT Change":  [tint_cell(v) for v in g["LT_Change"]],
+        "Comment":    [m2_label(st, mt, lt, stc, mtc) for st, mt, lt, stc, mtc in
+                   zip(g["ST"], g["MT"], g["LT"], g["ST_Change"], g["MT_Change"])],
     })
 
     html_cat = cat_tbl.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -330,6 +332,7 @@ if not df.empty:
       <col class="col-num">    <!-- ST Chg -->
       <col class="col-num">    <!-- MT Chg -->
       <col class="col-num">    <!-- LT Chg -->
+      <col class="col-comment"> <!-- Comment -->
     </colgroup>
     """.strip()
     html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup_cat}', 1)
