@@ -10,7 +10,7 @@ from urllib.parse import quote_plus
 # -------------------------
 # Page setup
 # -------------------------
-st.set_page_config(page_title="Markmentum – Filters", layout="wide")
+st.set_page_config(page_title="Markmentum – Signals", layout="wide")
 
 # -------------------------
 # Responsive, no-wrap render styles (desktop + laptop)
@@ -353,7 +353,7 @@ def _filters_title_date() -> str:
 st.markdown(
     f"""
     <div style="text-align:center; font-size:18px; font-weight:600; margin:-6px 0 10px;">
-        Filters – {_filters_title_date()}
+        Signals – {_filters_title_date()}
     </div>
     """,
     unsafe_allow_html=True,
