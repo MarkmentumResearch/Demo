@@ -395,7 +395,7 @@ _render_card_custom(r2c2, titles[4], dfs[4], score_col, "Score", _fmt_num)
 
 score_col = _pick_col(dfs[5], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
 dfs[5][score_col] = dfs[5][score_col] 
-_render_card_custom(r2c3, titles[4], dfs[4], score_col, "Score", _fmt_num)
+_render_card_custom(r2c3, titles[5], dfs[5], score_col, "Score", _fmt_num)
 
 
 row_spacer(14)
