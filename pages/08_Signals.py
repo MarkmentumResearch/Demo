@@ -411,7 +411,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-row_spacer(14)
+row_spacer(8)
 
 # Row 3: 6,7 (use 3 columns so card sizes match row 2; leave last empty)
 r3c1, r3c2, r3c3 = st.columns(3, gap="large")
