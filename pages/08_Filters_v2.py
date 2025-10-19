@@ -419,6 +419,7 @@ with r3c3:
     <li><b>No Chase List</b> — Momentum looks stretched/exhausted; higher odds of a pullback or sideways consolidation. Better to wait for a reset.</li>
     <li><b>Watch List</b> — Early improvement after weakness; potential bottoming behavior. Look for higher lows, relative strength, and confirmation.</li>
     <li><b>Up Cycle</b> — Downtrend appears spent and turning up; early stage of a new uptrend. Favor breakouts through resistance and pullback buys into support.</li>
+    <li><b>Upside/Downside Change Percentage - The variance between the current close and the Long-Term Probable Anchor, expressed as a percentage. Highlights upside or downside potential.</li>
   </ol>
   <div style="font-size: 12px; color: gray;">
   Tip: These are probabilistic signals, not advice. Always pair with your risk management and timeframe.
