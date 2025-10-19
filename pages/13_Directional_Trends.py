@@ -216,7 +216,7 @@ def m2_label(st, mt, lt, stc, mtc):
         if st_down_mt_up:         # #15
             return "Neutral"
         if both_down:             # #16
-            return "Neutral"
+            return "Leaning Bearish"
         return "Neutral"
 
     # --------------------------
@@ -230,7 +230,7 @@ def m2_label(st, mt, lt, stc, mtc):
         if st_down_mt_up:         # #19
             return "Neutral"
         if both_down:             # #20
-            return "Topping"
+            return "Leaning Bearish"
         return "Neutral"
 
     # --------------------------
