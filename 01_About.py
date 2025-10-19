@@ -164,9 +164,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
   <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
   Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
-  <li><b>Filters</b> – Curated screens for short-term trend gainers/decliners, mid-term trend gainers/decliners, chase/no chase, watch, and up-cycle to find what matters now.</li>
-  <li><b>Volatility Spreads</b> – Where IVOL vs. RVOL is stretched—and where crowding is likely.</li>
-  <li><b>Signals</b> – Highest/lowest Sharpe percentile rank and mean-reversion setups with context.</li>
+  <li><b>Signals</b> – Tactical screens for chase/no chase, watch, up-cycle, crowding, and upside/downside lists to surface where conviction and risk are shifting.</li>
   <li><b>Sharpe Rank Heatmap</b> – Multi-layered view of risk-adjusted performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker Sharpe Percentile Ranks. 
   Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market.</li>
   <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. Begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
