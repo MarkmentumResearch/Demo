@@ -147,7 +147,7 @@ st.markdown(
 
 # --- Module 2 comment label (ST/MT/LT alignment + changes) ---
 def m2_label(st, mt, lt, stc, mtc):
-    """Return directional trend category (7-bucket taxonomy) per the final 24-case grid."""
+    """Return directional trend category (7-bucket taxonomy) aligned with the final 24-case grid."""
     vals = [st, mt, lt, stc, mtc]
     if any(pd.isna(v) for v in vals):
         return "Insufficient data"
@@ -157,96 +157,97 @@ def m2_label(st, mt, lt, stc, mtc):
         return "Insufficient data"
 
     # delta helpers
-    both_up        = (stc > 0 and mtc > 0)
-    both_down      = (stc < 0 and mtc < 0)
-    st_up_mt_down  = (stc > 0 and mtc < 0)
-    st_down_mt_up  = (stc < 0 and mtc > 0)
+    both_up   = (stc > 0 and mtc > 0)
+    both_down = (stc < 0 and mtc < 0)
+    st_up_mt_down = (stc > 0 and mtc < 0)
+    st_down_mt_up = (stc < 0 and mtc > 0)
 
-    # -----------------------------------------------------------
-    # A) Confirmed bullish stack: ST < MT < LT   (#1–#4)
-    # -----------------------------------------------------------
+    # --------------------------
+    # A) Confirmed bullish stack
+    #    ST < MT < LT
+    # --------------------------
     if st < mt < lt:
-        if both_up:       # #1
+        if both_up:               # #1
             return "Buy Bias"
-        if st_up_mt_down: # #2
+        if st_up_mt_down:         # #2
             return "Bottoming"
-        if st_down_mt_up: # #3
+        if st_down_mt_up:         # #3
             return "Bottoming"
-        if both_down:     # #4
+        if both_down:             # #4
             return "Sell Bias"
         return "Neutral"
 
-    # -----------------------------------------------------------
-    # B) LT in the middle: ST < LT < MT          (#5–#8)
-    # -----------------------------------------------------------
+    # --------------------------
+    # B) LT in the middle (ST < LT < MT)
+    # --------------------------
     if st < lt < mt:
-        if both_up:           # #5
+        if both_up:               # #5
             return "Leaning Bullish"
-        if st_up_mt_down:     # #6
+        if st_up_mt_down:         # #6
             return "Neutral"
-        if st_down_mt_up:     # #7
+        if st_down_mt_up:         # #7  (MT leadership carries more weight)
             return "Leaning Bullish"
-        if both_down:         # #8
+        if both_down:             # #8
             return "Leaning Bearish"
         return "Neutral"
 
-    # -----------------------------------------------------------
-    # C) Bullish half (not the stack): MT < ST < LT  (#9–#12)
-    # -----------------------------------------------------------
+    # --------------------------
+    # C) Bullish half, not the stack (MT < ST < LT)
+    # --------------------------
     if mt < st < lt:
-        if both_up:           # #9
+        if both_up:               # #9
             return "Leaning Bullish"
-        if st_up_mt_down:     # #10
+        if st_up_mt_down:         # #10
             return "Neutral"
-        if st_down_mt_up:     # #11
-            return "Leaning Bearish"
-        if both_down:         # #12
+        if st_down_mt_up:         # #11
+            return "Neutral"
+        if both_down:             # #12
             return "Leaning Bearish"
         return "Neutral"
 
-    # -----------------------------------------------------------
-    # D) LT in the middle: MT < LT < ST          (#13–#16)
-    # -----------------------------------------------------------
+    # --------------------------
+    # D) LT in the middle (MT < LT < ST)
+    # --------------------------
     if mt < lt < st:
-        if both_up:           # #13
+        if both_up:               # #13
+            return "Leaning Bullish"
+        if st_up_mt_down:         # #14
             return "Neutral"
-        if st_up_mt_down:     # #14
+        if st_down_mt_up:         # #15
             return "Neutral"
-        if st_down_mt_up:     # #15
-            return "Leaning Bearish"
-        if both_down:         # #16
+        if both_down:             # #16
             return "Neutral"
         return "Neutral"
 
-    # -----------------------------------------------------------
-    # E) Bearish half (not the stack): LT < ST < MT  (#17–#20)
-    # -----------------------------------------------------------
+    # --------------------------
+    # E) Bearish half, not the stack (LT < ST < MT)
+    # --------------------------
     if lt < st < mt:
-        if both_up:           # #17
+        if both_up:               # #17
+            return "Leaning Bullish"
+        if st_up_mt_down:         # #18
             return "Leaning Bearish"
-        if st_up_mt_down:     # #18
+        if st_down_mt_up:         # #19
             return "Neutral"
-        if st_down_mt_up:     # #19
-            return "Leaning Bearish"
-        if both_down:         # #20
+        if both_down:             # #20
             return "Topping"
         return "Neutral"
 
-    # -----------------------------------------------------------
-    # F) Confirmed bearish stack: LT < MT < ST   (#21–#24)
-    # -----------------------------------------------------------
+    # --------------------------
+    # F) Confirmed bearish stack (LT < MT < ST)
+    # --------------------------
     if lt < mt < st:
-        if both_up:           # #21
+        if both_up:               # #21
             return "Buy Bias"
-        if st_up_mt_down:     # #22
+        if st_up_mt_down:         # #22
             return "Topping"
-        if st_down_mt_up:     # #23
+        if st_down_mt_up:         # #23
             return "Topping"
-        if both_down:         # #24
+        if both_down:             # #24
             return "Sell Bias"
         return "Neutral"
 
-    # Fallback (ties/equalities)
+    # Fallback (ties/equalities or anything unexpected)
     return "Neutral"
 
 def trend_tag(label: str) -> str:
