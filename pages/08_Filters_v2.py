@@ -405,7 +405,7 @@ st.markdown("""
 /* Smaller list style for the helper card */
 .card ol.smalllist li { 
   font-size: 14.5px !important; 
-  line-height: 1.45;
+  line-height: 1.5;
 }
 </style>
 """, unsafe_allow_html=True)
