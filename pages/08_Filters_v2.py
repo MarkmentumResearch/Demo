@@ -390,11 +390,11 @@ df3 = df3[[col for col in keep_cols if col in df3.columns]]
 _render_card_no_value(r2c1, titles[3], dfs[3])
 
 score_col = _pick_col(dfs[4], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
-dfs[4][score_col] = dfs[4][score_col] * 100
+dfs[4][score_col] = dfs[4][score_col] 
 _render_card_custom(r2c2, titles[4], dfs[4], score_col, "Score", _fmt_num)
 
 score_col = _pick_col(dfs[5], ["ChaseScore", "chasescore", "chase_score", "Chase_Score","Score", "score", "model_score"])
-dfs[5][score_col] = dfs[5][score_col] * 100
+dfs[5][score_col] = dfs[5][score_col] 
 _render_card_custom(r2c3, titles[4], dfs[4], score_col, "Score", _fmt_num)
 
 
