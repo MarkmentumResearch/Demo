@@ -398,6 +398,19 @@ dfs[5][score_col] = dfs[5][score_col]
 _render_card_custom(r2c3, titles[5], dfs[5], score_col, "Score", _fmt_num)
 
 
+st.markdown("""
+<style>
+/* …your existing CSS… */
+
+/* Smaller list style for the helper card */
+.card ol.smalllist li { 
+  font-size: 12px !important; 
+  line-height: 1.45;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 row_spacer(14)
 
 # Row 3: 6,7 (use 3 columns so card sizes match row 2; leave last empty)
@@ -414,21 +427,23 @@ with r3c3:
         """
 <div class="card">
   <h3>How to interpret the lists</h3>
-  <ol style="margin-top:6px; line-height:1.5; font-size:12px;">
+  <ol class="smalllist" style="margin-top:6px;">
     <li><b>Chase List</b> — Strong positive momentum; price is more likely to push higher in the near term. Best for continuation setups—just watch position size/overextension risk.</li>
     <li><b>No Chase List</b> — Momentum looks stretched/exhausted; higher odds of a pullback or sideways consolidation. Better to wait for a reset.</li>
     <li><b>Watch List</b> — Early improvement after weakness; potential bottoming behavior. Look for higher lows, relative strength, and confirmation.</li>
     <li><b>Up Cycle</b> — Downtrend appears spent and turning up; early stage of a new uptrend. Favor breakouts through resistance and pullback buys into support.</li>
     <li><b>Most Crowded Shorts</b> — Wide Implied-Volatility (IV) premium with an elevated 30-Day Volatility Z-Score. Often indicates crowding on the short side; price may be due for a bounce.</li>
     <li><b>Most Crowded Longs</b> — Wide IV discount with a depressed 30-Day Volatility Z-Score. Often indicates crowding on the long side; price may be due for a correction.</li>
-    <li><b>Upside/Downside Change Percentage</b> - The variance between the current close and the Long-Term Probable Anchor, expressed as a percentage. Highlights upside or downside potential.</li>
+    <li><b>Upside/Downside Change Percentage</b> — The variance between the current close and the Long-Term Probable Anchor, expressed as a percentage. Highlights upside or downside potential.</li>
   </ol>
-  <div style="font-size: 12px; color: gray;">
-  Tip: These are probabilistic signals, not advice. Always pair with your risk management and timeframe.
+  <div style="font-size:12px; color:gray; margin-top:6px;">
+    Tip: These are probabilistic signals, not advice. Always pair with your risk management and timeframe.
+  </div>
 </div>
 """,
         unsafe_allow_html=True,
     )
+
 
 # -------------------------
 # Footer disclaimer
