@@ -414,7 +414,7 @@ with r3c3:
         """
 <div class="card">
   <h3>How to interpret the lists</h3>
-  <ol style="margin-top:4px; line-height:1.2; font-size:12px;">
+  <ol style="margin-top:6px; line-height:1.5; font-size:12px;">
     <li><b>Chase List</b> — Strong positive momentum; price is more likely to push higher in the near term. Best for continuation setups—just watch position size/overextension risk.</li>
     <li><b>No Chase List</b> — Momentum looks stretched/exhausted; higher odds of a pullback or sideways consolidation. Better to wait for a reset.</li>
     <li><b>Watch List</b> — Early improvement after weakness; potential bottoming behavior. Look for higher lows, relative strength, and confirmation.</li>
