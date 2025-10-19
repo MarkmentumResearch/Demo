@@ -321,6 +321,20 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
+st.markdown("""
+<style>
+/* …your existing CSS… */
+
+/* Smaller list style for the helper card */
+.card ol.smalllist li { 
+  font-size: 14.5px !important; 
+  line-height: 1.5;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 # -------------------------
 # Load data (cache-clearable)
 # -------------------------
@@ -398,17 +412,7 @@ dfs[5][score_col] = dfs[5][score_col]
 _render_card_custom(r2c3, titles[5], dfs[5], score_col, "Score", _fmt_num)
 
 
-st.markdown("""
-<style>
-/* …your existing CSS… */
 
-/* Smaller list style for the helper card */
-.card ol.smalllist li { 
-  font-size: 14.5px !important; 
-  line-height: 1.5;
-}
-</style>
-""", unsafe_allow_html=True)
 
 
 row_spacer(8)
@@ -421,6 +425,10 @@ _render_card_custom(r3c1, titles[6], dfs[6], vcol, "% Change", _fmt_pct)
 
 vcol = _pick_col(dfs[7], ["Value", "daily_return_pct", "percent"])
 _render_card_custom(r3c2, titles[7], dfs[7], vcol, "% Change", _fmt_pct)
+
+
+
+
 
 with r3c3:
     st.markdown(
