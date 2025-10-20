@@ -85,6 +85,7 @@ st.markdown("""
 /* GRAPH 1 row (immediately after the #g1-center marker) */
 /* GRAPH 1 row (2/3 page wide, centered) */
 #g1-wide + div[data-testid="stHorizontalBlock"]{
+  margin-top: 0px !important;   /* ensure no extra gap above Graph 1 */  
   display:flex !important; justify-content:center !important; gap:24px !important;
 }
 #g1-wide + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
@@ -98,6 +99,7 @@ st.markdown("""
 /* Make the st.pyplot WRAPPER fill the 2/3 middle column */
 #g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"]{
   width: 100% !important;
+  margin-top: 0 !important;
   max-width: 100% !important;
   display: block !important;
 }
@@ -121,7 +123,7 @@ st.markdown("""
   margin-bottom: 2px !important;      /* reduce bottom margin of the Stat Box row */
 }
 #g1-wide + div[data-testid="stHorizontalBlock"]{
-  margin-top: 2px !important;         /* reduce top margin of the Graph 1 row */
+  margin-top: 0px !important;         /* reduce top margin of the Graph 1 row */
 }
 
 /* Ensure pyplot wrapper itself has no extra top margin */
@@ -153,7 +155,33 @@ html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* ===== Signal Pack row — centered and tight under the Stat Box ===== */
+/* Target the FIRST HorizontalBlock that appears anywhere after #sp-center */
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type{
+  display:flex !important;
+  justify-content:center !important;
+  gap:0 !important;
+  margin-top:0px !important;     /* sits right under the stat box */
+}
 
+/* Symmetric side gutters + shrink-to-fit middle column */
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(1),
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important;
+  min-width:0 !important;
+}
+
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important;      /* middle column = content width (like Stat Box) */
+  min-width:0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 def _image_b64(p: Path) -> str:
@@ -202,6 +230,24 @@ FILE_G21 = DATA_DIR / "qry_graph_data_21.csv"  # Monthly Volume + bands
 FILE_G22 = DATA_DIR / "qry_graph_data_22.csv"  # Short-Term Trend + bands
 FILE_G23 = DATA_DIR / "qry_graph_data_23.csv"  # Mid-Term Trend + bands
 FILE_G24 = DATA_DIR / "qry_graph_data_24.csv"  # Long-Term Trend + bands
+
+# --- Signal Pack sources ---
+FILE_PERF   = DATA_DIR / "ticker_data.csv"          # day_pct_change, week_pct_change, month_pct_change, quarter_pct_change
+FILE_SR_D   = DATA_DIR / "qry_graph_data_48.csv"    # Sharpe_Rank, Sharpe_Rank_daily_change
+FILE_SR_W   = DATA_DIR / "qry_graph_data_49.csv"    # Sharpe_Rank_wtd_change
+FILE_SR_M   = DATA_DIR / "qry_graph_data_50.csv"    # Sharpe_Rank_mtd_change
+FILE_SR_Q   = DATA_DIR / "qry_graph_data_51.csv"    # Sharpe_Rank_qtd_change
+
+FILE_MS_D   = DATA_DIR / "model_score_day_change.csv"    # model_score_daily_change
+FILE_MS_W   = DATA_DIR / "model_score_wtd_change.csv"    # model_score_wtd_change
+FILE_MS_M   = DATA_DIR / "model_score_mtd_change.csv"    # model_score_mtd_change
+FILE_MS_Q   = DATA_DIR / "model_score_qtd_change.csv"    # model_score_qtd_change
+
+FILE_TRENDS = DATA_DIR / "qry_graph_data_88.csv"    # st_trend, mt_trend, lt_trend, st_trend_change, mt_trend_change, lt_trend_change, Spread_Quad
+
+
+
+
 
 # -------------------------
 # Header: logo centered
@@ -338,38 +384,126 @@ def _window_by_label_with_gutter(df: pd.DataFrame, label: str, date_col: str) ->
 rcParams["font.family"] = ["sans-serif"]
 rcParams["font.sans-serif"] = ["Segoe UI", "Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "sans-serif"]
 
+
+# ---------- Signal Pack helpers ----------
+def _last_row_for_ticker(path: Path, ticker: str) -> pd.Series | None:
+    """Return the latest row for ticker from a CSV (by Date if present)."""
+    p = Path(path)
+    if not p.exists():
+        return None
+    try:
+        df = pd.read_csv(p)
+        cols = {c.lower(): c for c in df.columns}
+        tcol = cols.get("ticker") or cols.get("symbol") or list(df.columns)[0]
+        sub = df[df[tcol].astype(str).str.upper() == (ticker or "").upper()].copy()
+        if sub.empty:
+            return None
+        # prefer a date sort when available
+        dcol = next((c for c in sub.columns if str(c).lower() in ("date","as_of_date","trade_date")), None)
+        if dcol:
+            sub[dcol] = pd.to_datetime(sub[dcol], errors="coerce")
+            sub = sub.sort_values(dcol)
+        return sub.iloc[-1]
+    except Exception:
+        return None
+
+def _tint_pct(v, cap=0.03, neutral=0.0005):
+    """
+    v is a DECIMAL change (0.012 -> 1.2%).
+    Neutral band ±0.05% (0.0005) matches Trends page threshold.
+    """
+    try:
+        if v is None or pd.isna(v):
+            return ""
+        x = float(v)
+    except Exception:
+        return ""
+
+    if -neutral <= x <= neutral:
+        style = "background:transparent;"
+    else:
+        strength = min(abs(x)/cap, 1.0)       # 0..1
+        alpha = 0.15 + 0.35*strength          # 0.15..0.50
+        style = f"background:rgba({ '16,185,129' if x>0 else '239,68,68' },{alpha:.2f});"
+
+    return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.1f}%</span>'
+
+def _badge(text, tone="gray"):
+    colors = {
+        "gray":   "background:rgba(107,114,128,0.12); color:#1a1a1a;",
+        "green":  "background:rgba(16,185,129,0.12);  color:#1a1a1a;",
+        "red":    "background:rgba(239,68,68,0.12);   color:#1a1a1a;",
+        "solidg": "background:rgba(16,185,129,0.42);  color:#1a1a1a;",
+        "solidr": "background:rgba(239,68,68,0.42);   color:#1a1a1a;",
+    }
+    return f'<span style="padding:2px 8px; border-radius:3px; {colors.get(tone,"")}">{text}</span>'
+
+# Minimal m2 tape-bias label (weights MT if ST/MT conflict) – aligns with the 24-case grid you approved.
+def _m2_label(st, mt, lt, stc, mtc):
+    import math
+    vals = [st, mt, lt, stc, mtc]
+    if any((v is None or (isinstance(v,(int,float)) and not math.isfinite(v))) for v in vals):
+        return "Neutral"
+    st, mt, lt, stc, mtc = map(float, vals)
+    th = 0.0005
+    both_up   = (stc >  th and mtc >  th)
+    both_down = (stc < -th and mtc < -th)
+    st_up_mt_down  = (stc >  th and mtc < -th)
+    st_down_mt_up  = (stc < -th and mtc >  th)
+
+    if st < mt < lt:
+        return "Buy" if both_up else "Sell" if both_down else "Bottoming" if (st_up_mt_down or st_down_mt_up) else "Neutral"
+    if st < lt < mt:
+        if both_up: return "Leaning Bullish"
+        if both_down: return "Leaning Bearish"
+        return "Leaning Bullish" if st_down_mt_up else "Neutral"
+    if mt < st < lt:
+        if both_up: return "Leaning Bullish"
+        if both_down: return "Leaning Bearish"
+        return "Neutral"
+    if mt < lt < st:
+        if both_up: return "Leaning Bullish"
+        if both_down: return "Leaning Bearish"
+        return "Neutral"
+    if lt < st < mt:
+        if both_up: return "Leaning Bullish"
+        if both_down: return "Leaning Bearish"
+        return "Leaning Bearish" if st_up_mt_down else "Neutral"
+    if lt < mt < st:
+        return "Buy" if both_up else "Sell" if both_down else "Topping" if (st_up_mt_down or st_down_mt_up) else "Neutral"
+    return "Neutral"
+
+
+
+
 # ==============================
 # LAZY LOADERS (ticker-only, CSV sorted by ticker/date)
 # ==============================
 
 last_modified = (DATA_DIR / "qry_graph_data_25.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_stats_for_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd.DataFrame:
-    path = Path(path)
-    if not path.exists():
+def load_stats_for_ticker(csv_path: Path, ticker: str) -> pd.DataFrame:
+    df = pd.read_csv(csv_path)
+    df.columns = [c.strip().lower() for c in df.columns]
+    tcol = next((c for c in df.columns if c in ("ticker","tkr","symbol")), None)
+    if not tcol:
         return pd.DataFrame()
-    out = []
-    for chunk in pd.read_csv(path, chunksize=200000):
-        cols = {c.lower(): c for c in chunk.columns}
-        tcol = cols.get("ticker")
-        if tcol is None:
-            df = chunk.copy()
-            df.columns = [c.strip().lower() for c in df.columns]
-            return df
-        m = chunk[tcol] == ticker
-        if m.any():
-            part = chunk.loc[m].copy()
-            part.columns = [c.strip().lower() for c in part.columns]
-            out.append(part)
-        elif out:
-            break
-    if not out:
-        return pd.DataFrame()
-    df = pd.concat(out, ignore_index=True)
-    if "date" in df.columns:
-        df["date"] = pd.to_datetime(df["date"], errors="coerce")
-        df = df.sort_values("date")
-    return df
+    sub = df[df[tcol].astype(str).str.upper() == (ticker or "").upper()].copy()
+    if sub.empty:
+        return sub
+    # >>> add this block <<<
+    if "spread_quad" in sub.columns:
+        sub["spread_quad"] = pd.to_numeric(sub["spread_quad"], errors="coerce")
+    # ----------------------
+    if "date" in sub.columns:
+        num_cols = sub.select_dtypes(include=[np.number]).columns
+        sub[num_cols] = sub[num_cols].where(np.isfinite(sub[num_cols]), np.nan)
+        try:
+            sub = sub.sort_values("date")
+        except:
+            pass
+    return sub
+
 
 last_modified = (DATA_DIR / "qry_graph_data_01.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
@@ -1666,7 +1800,7 @@ with mid_stat:
     st.markdown(
         """
         <style>
-          div[data-testid="stVerticalBlock"]{ gap:4px !important; row-gap:4px !important; }
+          div[data-testid="stVerticalBlock"]{ gap:2px !important; row-gap:2px !important; }
           div[data-testid="stSegmentedControl"]{ max-width:520px; width:520px; margin:4 !important; padding:4 !important; }
           div[data-testid="stTextInput"]{
             width:520px !important; max-width:520px !important; display:inline-block !important;
@@ -1700,6 +1834,224 @@ with mid_stat:
             except Exception:
                 _row.loc["ticker_name"] = _active
         render_stat_box_component(_row)
+
+    # ===== Signal Pack (below Stat Box) =====
+    row_perf = _last_row_for_ticker(FILE_PERF, TICKER)
+    row_sr_d = _last_row_for_ticker(FILE_SR_D, TICKER)
+    row_sr_w = _last_row_for_ticker(FILE_SR_W, TICKER)
+    row_sr_m = _last_row_for_ticker(FILE_SR_M, TICKER)
+    row_sr_q = _last_row_for_ticker(FILE_SR_Q, TICKER)
+
+    row_ms_d = _last_row_for_ticker(FILE_MS_D, TICKER)
+    row_ms_w = _last_row_for_ticker(FILE_MS_W, TICKER)
+    row_ms_m = _last_row_for_ticker(FILE_MS_M, TICKER)
+    row_ms_q = _last_row_for_ticker(FILE_MS_Q, TICKER)
+
+    row_tr   = _last_row_for_ticker(FILE_TRENDS, TICKER)
+
+    # Safe getters
+    def _g(r, *names, default=None):
+        if r is None: return default
+        for n in names:
+            if n in r: return r[n]
+            # case-insensitive fallback
+            for c in r.index:
+                if str(c).lower() == str(n).lower(): return r[c]
+        return default
+
+    # Performance (decimals)
+    perf_d = _g(row_perf, "day_pct_change", default=None)
+    perf_w = _g(row_perf, "week_pct_change", default=None)
+    perf_m = _g(row_perf, "month_pct_change", default=None)
+    perf_q = _g(row_perf, "quarter_pct_change", default=None)
+
+    # Sharpe (rank & changes)
+    sr_rank = _g(row_sr_d, "Sharpe_Rank", "sharpe_rank", "rank", default=None)
+    sr_d    = _g(row_sr_d, "Sharpe_Rank_daily_change", default=None)
+    sr_w    = _g(row_sr_w, "Sharpe_Rank_wtd_change", default=None)
+    sr_m    = _g(row_sr_m, "Sharpe_Rank_mtd_change", default=None)
+    sr_q    = _g(row_sr_q, "Sharpe_Rank_qtd_change", default=None)
+
+    # MM Score changes
+    ms_d = _g(row_ms_d, "model_score_daily_change", default=None)
+    ms_w = _g(row_ms_w, "model_score_wtd_change",   default=None)
+    ms_m = _g(row_ms_m, "model_score_mtd_change",   default=None)
+    ms_q = _g(row_ms_q, "model_score_qtd_change",   default=None)
+
+    # Trends & changes
+    st_tr  = _g(row_tr, "st_trend", default=None)
+    mt_tr  = _g(row_tr, "mt_trend", default=None)
+    lt_tr  = _g(row_tr, "lt_trend", default=None)
+    stc = _g(row_tr, "st_trend_change", default=None)
+    mtc = _g(row_tr, "mt_trend_change", default=None)
+    tape = _m2_label(st_tr, mt_tr, lt_tr, stc, mtc)
+
+    # Quadrant (1..4) -> label
+    quad_src = None
+    try:
+    # _row is the last row from CSV #25 used by the stat box
+        if isinstance(_row, pd.Series):
+            quad_src = _row.get("spread_quad", None) or _row.get("Spread_Quad", None)
+    except NameError:
+        pass  # _row wasn't set (no data)
+
+    if quad_src is None:
+        quad_src = _g(row_tr, "Spread_Quad", "spread_quad", default=None)
+
+    quad_val = int(pd.to_numeric(quad_src, errors="coerce") or 0)
+    quad_map = {
+        1: "Mean Reversion Upside Bias",
+        2: "Crowded Short",
+        3: "Crowded Long",
+        4: "Mean Reversion Downside Bias",
+    }
+    quad_lbl = quad_map.get(quad_val, "—")
+
+
+
+
+    # ---- HTML card ----
+    st.markdown('<div style="height:2px"></div>', unsafe_allow_html=True)  # small gap
+    from streamlit.components.v1 import html as st_html
+    html_sig = f"""<!doctype html>
+<meta charset="utf-8">
+<style>
+  /* ===== Signal Pack — Stat Box matched =====
+     Mirrors the stat box structure (card + fixed-table grid)  */
+  :root {{
+    --cw: 78px;                        /* fixed, smaller column width */
+    --border-outer: 1px solid #D7D9E0;
+    --border-inner: 0.5px solid #D7D9E0;
+    --pad: 6px 8px;
+  }}
+
+  .sp-card {{
+    border: var(--border-outer);
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px 12px;
+    width: fit-content;                /* shrink-wrap like Stat Box */
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }}
+  .sp-title {{ margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; text-align: left; }}
+
+  table.sp {{ border-collapse: collapse; table-layout: fixed; border: var(--border-outer); margin: 0; }}
+  table.sp + table.sp {{ margin-top: 8px; }}     /* spacing between sections */
+
+  th, td {{
+    border: var(--border-inner);
+    padding: var(--pad);
+    font-size: 12px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    background: #fff;
+  }}
+  th {{ background: #F6F7FB; text-align: center; font-weight: 600; color: #3c435a; }}
+  td.right  {{ text-align: right;  }}
+  td.center {{ text-align: center; }}
+  td.left   {{ text-align: left;   }}
+
+  /* fixed widths just like the stat box (“col {{ width: var(--cw) }}”) */
+  col {{ width: var(--cw); }}
+
+  /* Make the first column slightly wider to fit “Directional Trends” label cleanly */
+  table.sp tr > th:first-child {{ width: 132px; max-width: 132px; }}
+
+  /* Keep Tape Bias column compact without badges */
+  .sp-bias-lastcol tr > *:last-child {{ width: 96px; max-width: 96px; }}
+
+  /* badges used elsewhere in the app; small to match Stat Box */
+  .sp-badge {{ display:inline-block; padding:2px 6px; border-radius:6px; font-size:11px; line-height:1.15; }}
+  .sp-badge.pos {{ background:#E8F6EC; color:#167C2E; }}
+  .sp-badge.neg {{ background:#FBEAEA; color:#A62323; }}
+  .sp-badge.neu {{ background:#EEF1F6; color:#3c435a; }}
+
+  /* Volatility Spread Quadrant: one line, no shading */
+  .sp-quad {{ margin-top:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px; font-weight:700; color:#3c435a; }}
+  .sp-quad .value {{ font-weight:600; color:#1a1a1a; }}
+</style>
+
+<div class="sp-card">
+  <div class="sp-title">Signal Pack - {TICKER}</div>
+
+  <!-- Performance -->
+  <table class="sp">
+    <colgroup><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="left">Performance</th>
+        <td class="right">{_tint_pct(perf_d)}</td>
+        <td class="right">{_tint_pct(perf_w)}</td>
+        <td class="right">{_tint_pct(perf_m)}</td>
+        <td class="right">{_tint_pct(perf_q)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Sharpe Rank -->
+  <table class="sp">
+    <colgroup><col><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="left">Sharpe Rank</th>
+        <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
+        <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- MM Score -->
+  <table class="sp">
+    <colgroup><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="left">MM Score</th>
+        <td class="right">{_badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Directional Trends (mark table with sp-bias-lastcol to keep Tape Bias tight) -->
+  <table class="sp sp-bias-lastcol">
+    <colgroup><col><col><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="left">Directional Trends</th>
+        <td class="right">{_tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}</td>
+        <td class="right">{_tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}</td>
+        <td class="right">{_tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}</td>
+        <td class="right">{_tint_pct(stc)}</td>
+        <td class="right">{_tint_pct(mtc)}</td>
+        <td class="center">{tape or "—"}</td>  <!-- plain text; no badge -->
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Volatility Spread Quadrant — one line, no shading -->
+  <div class="sp-quad">Volatility Spread Quadrant: <span class="value">{quad_lbl}</span></div>
+</div>
+"""
+
+    st_html(html_sig, height=360, scrolling=False)
+ 
 
 # optional small spacer
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
