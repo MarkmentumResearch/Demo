@@ -426,7 +426,7 @@ def _tint_pct(v, cap=0.03, neutral=0.0005):
         alpha = 0.15 + 0.35*strength          # 0.15..0.50
         style = f"background:rgba({ '16,185,129' if x>0 else '239,68,68' },{alpha:.2f});"
 
-    return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.1f}%</span>'
+    return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.2f}%</span>'
 
 def _badge(text, tone="gray"):
     colors = {
