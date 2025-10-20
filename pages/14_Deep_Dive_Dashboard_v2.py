@@ -1893,7 +1893,7 @@ with mid_stat:
   th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
   td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
   /* fixed column widths */
-  col.w-label {{ width: 220px; }}     /* wide enough for "Directional Trends" */
+  col.w-label {{ width: 30px; }}     /* wide enough for "Directional Trends" */
   col.w-num   {{ width: 7ch; }}       /* numbers like "-12.3%" fit cleanly */
   col.w-bias  {{ width: 17ch; }}      /* e.g., "Leaning Bullish" */
 
