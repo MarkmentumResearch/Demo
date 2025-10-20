@@ -11,7 +11,7 @@ from urllib.parse import quote_plus
 # Page & shared style
 # -------------------------
 st.cache_data.clear()
-st.set_page_config(page_title="Market – Overview", layout="wide")
+st.set_page_config(page_title="Markmentum – Market Overview", layout="wide")
 
 st.markdown("""
 <style>

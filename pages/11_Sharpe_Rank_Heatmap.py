@@ -10,7 +10,7 @@ from urllib.parse import quote_plus
 
 # ---------- Page ----------
 st.cache_data.clear()
-st.set_page_config(page_title="Sharpe Rank Heatmap", layout="wide")
+st.set_page_config(page_title="Markmentume - Sharpe Rank Heatmap", layout="wide")
 
 # -------------------------
 # Paths
