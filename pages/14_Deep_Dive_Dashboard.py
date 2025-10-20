@@ -1902,18 +1902,21 @@ with mid_stat:
     except NameError:
         pass  # _row wasn't set (no data)
 
-    if quad_src is None:
-        quad_src = _g(row_tr, "Spread_Quad", "spread_quad", default=None)
-
-    quad_val = int(pd.to_numeric(quad_src, errors="coerce") or 0)
-    quad_map = {
-        1: "Mean Reversion Upside Bias",
-        2: "Crowded Short",
-        3: "Crowded Long",
-        4: "Mean Reversion Downside Bias",
-    }
-    quad_lbl = quad_map.get(quad_val, "—")
-
+    quad_lbl = ""
+    if quad_src not in (None, "", np.nan):
+        try:
+            quad_val = pd.to_numeric(quad_src, errors="coerce")
+            if pd.notna(quad_val):
+                quad_val = int(quad_val)
+                quad_map = {
+                    1: "Mean Reversion Upside Bias",
+                    2: "Crowded Short",
+                    3: "Crowded Long",
+                    4: "Mean Reversion Downside Bias",
+                }
+                quad_lbl = quad_map.get(quad_val, "")
+        except Exception:
+            quad_lbl = ""
 
 
 
