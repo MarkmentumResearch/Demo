@@ -436,7 +436,7 @@ def _badge(text, tone="gray"):
         "solidg": "background:rgba(16,185,129,0.42);  color:#1a1a1a;",
         "solidr": "background:rgba(239,68,68,0.42);   color:#1a1a1a;",
     }
-    return f'<span style="padding:8px 8px; border-radius:3px; {colors.get(tone,"")}">{text}</span>'
+    return f'<span style="padding:2px 14px; border-radius:3px; {colors.get(tone,"")}">{text}</span>'
 
 # Minimal m2 tape-bias label (weights MT if ST/MT conflict) – aligns with the 24-case grid you approved.
 def _m2_label(st, mt, lt, stc, mtc):
