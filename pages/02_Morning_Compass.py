@@ -156,9 +156,9 @@ TIMEFRAMES = {
         "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
         "docx": "bottom_line_daily.docx",
         "card_title": "Daily Macro Orientation",
-        "card_title2":"Daily Top 5 Leaders/Laggards by % Change",
-        "card_title3":"Daily Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Daily Top 5 Leaders/Laggards by MM Score Change",
+        "card_title2":"Daily Top Five Leaders/Laggards by % Change",
+        "card_title3":"Daily Top Five Leaders/Laggards by MM Score",
+        "card_title4":"Daily Top Five Leaders/Laggards by MM Score Change",
         "card_title5":"Daily Category Snapshot",
     },
     "Weekly": {
@@ -166,9 +166,9 @@ TIMEFRAMES = {
         "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
         "docx": "bottom_line_weekly.docx",
         "card_title": "Weekly Macro Orientation",
-        "card_title2":"Weekly Top 5 Leaders/Laggards by % Change",
-        "card_title3":"Weekly Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Weekly Top 5 Leaders/Laggards by MM Score Change",
+        "card_title2":"Weekly Top Five Leaders/Laggards by % Change",
+        "card_title3":"Weekly Top Five Leaders/Laggards by MM Score",
+        "card_title4":"Weekly Top Five Leaders/Laggards by MM Score Change",
         "card_title5":"Weekly Category Snapshot",
          
     },
@@ -177,9 +177,9 @@ TIMEFRAMES = {
         "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
         "docx": "bottom_line_monthly.docx",
         "card_title": "Monthly Macro Orientation",
-        "card_title2":"Monthly Top 5 Leaders/Laggards by % Change",
-        "card_title3":"Monthly Top 5 Leaders/Laggards by MM Score",
-        "card_title4":"Monthly Top 5 Leaders/Laggards by MM Score Change",
+        "card_title2":"Monthly Top Five Leaders/Laggards by % Change",
+        "card_title3":"Monthly Top Five Leaders/Laggards by MM Score",
+        "card_title4":"Monthly Top Five Leaders/Laggards by MM Score Change",
         "card_title5":"Monthly Category Snapshot",
          
     },
@@ -447,7 +447,7 @@ req74 = ["Date","Ticker","Ticker_name","Close",
 
 if df74.empty or not all(c in df74.columns for c in req74):
     row_spacer(8)
-    st.info(f"Top 5 Leaders/Laggards by % Change: `qry_graph_data_{cfg_tf['ids']['leaders']}.csv` is missing or columns are incomplete.")
+    st.info(f"Top Five Leaders/Laggards by % Change: `qry_graph_data_{cfg_tf['ids']['leaders']}.csv` is missing or columns are incomplete.")
 else:
     d = df74.copy()
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
@@ -501,7 +501,7 @@ req75 = ["Date","Ticker","Ticker_name","Close",
 
 if df75.empty or not all(c in df75.columns for c in req75):
     row_spacer(8)
-    st.info(f"Top 5 Leaders/Laggards by MM Score: `qry_graph_data_{cfg_tf['ids']['mm']}.csv` is missing or columns are incomplete.")
+    st.info(f"Top Five Leaders/Laggards by MM Score: `qry_graph_data_{cfg_tf['ids']['mm']}.csv` is missing or columns are incomplete.")
 else:
     d = df75.copy()
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
@@ -555,7 +555,7 @@ req77 = ["Date","Ticker","Ticker_name","Close",
 
 if df77.empty or not all(c in df77.columns for c in req77):
     row_spacer(8)
-    st.info(f"Top 5 Leaders/Laggards by MM Score Change: `qry_graph_data_{cfg_tf['ids']['delta']}.csv` is missing or columns are incomplete.")
+    st.info(f"Top Five Leaders/Laggards by MM Score Change: `qry_graph_data_{cfg_tf['ids']['delta']}.csv` is missing or columns are incomplete.")
 else:
     d = df77.copy()
     d["Ticker"] = d["Ticker"].apply(_mk_ticker_link)
