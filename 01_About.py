@@ -39,6 +39,7 @@ if st.query_params:
 # -------------------------
 # Page & shared style
 # -------------------------
+st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – About", layout="wide", initial_sidebar_state="expanded")
 
 # Always expand sidebar on page load (safe: only clicks if collapsed control is present)
@@ -147,7 +148,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <h3>What we publish</h3>
 <ul>
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
-  <li><b>Directional Trends</b> – Short, mid, and long-term trend lines alongside their changes with directional bias cues (Buy/Sell Bias, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
+  <li><b>Directional Trends</b> – Short, mid, and long-term trend lines alongside their changes with directional bias cues (Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
   <li><b>Volatility Stats</b> – Implied (IVOL) vs. realized (RVOL) spreads, percentile ranks, and z-scores to spot crowding and regime shifts.</li>
   <li><b>Markmentum Score</b> – a rules-based, volatility-adjusted risk–reward score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Heatmaps</b> – Data tables and heatmaps for broad performance distribution, risk-adjusted performance layer, and core signal distribution to surface opportunity and risk fast.</li>
