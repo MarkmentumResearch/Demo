@@ -1951,7 +1951,7 @@ with mid_stat:
   <!-- Quadrant -->
   <div style="margin-top:8px;">
     <div style="font-weight:700; font-size:12px; color:#3c435a;">Volatility Spread Quadrant</div>
-    <div style="margin-top:4px;">{_badge(quad_lbl, "gray")}</div>
+    <div style="margin-top:4px;">{_badge(quad_lbl)}</div>
   </div>
 </div>
 """
