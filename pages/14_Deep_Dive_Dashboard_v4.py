@@ -1960,7 +1960,7 @@ with mid_stat:
 </style>
 
 <div class="sp-card">
-  <h3>Signal Pack</h3>
+  <div class="sp-title">Signal Pack<div>
 
   <table class="sp">
     <colgroup>
