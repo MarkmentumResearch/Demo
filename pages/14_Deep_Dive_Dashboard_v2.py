@@ -2056,7 +2056,7 @@ with mid_stat:
 </div>
 """
 
-    st_html(html_sig, height=360, scrolling=False)
+    st_html(html_sig, height=375, scrolling=False)
  
 
 # optional small spacer
