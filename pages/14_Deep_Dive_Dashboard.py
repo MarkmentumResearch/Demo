@@ -1957,7 +1957,7 @@ with mid_stat:
   col {{ width: var(--cw); }}
 
   /* Make the first column slightly wider to fit “Directional Trends” label cleanly */
-  table.sp tr > th:first-child {{ width: 132px; max-width: 132px; }}
+  table.sp tr > th:first-child {{ width: 150px; max-width: 132px; }}
 
   /* Keep Tape Bias column compact without badges */
   .sp-bias-lastcol tr > *:last-child {{ width: 96px; max-width: 96px; }}
