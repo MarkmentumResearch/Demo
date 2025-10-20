@@ -1900,7 +1900,7 @@ with mid_stat:
 
   .sp-title {{
     margin: 0 0 6px 0;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     color: #1a1a1a;
     text-align: left;                /* match Stat Box */
