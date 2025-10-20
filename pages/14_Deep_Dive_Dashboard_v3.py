@@ -121,7 +121,7 @@ st.markdown("""
   margin-bottom: 2px !important;      /* reduce bottom margin of the Stat Box row */
 }
 #g1-wide + div[data-testid="stHorizontalBlock"]{
-  margin-top: 2px !important;         /* reduce top margin of the Graph 1 row */
+  margin-top: 0px !important;         /* reduce top margin of the Graph 1 row */
 }
 
 /* Ensure pyplot wrapper itself has no extra top margin */
@@ -1909,7 +1909,7 @@ with mid_stat:
 
 
     # ---- HTML card ----
-    st.markdown('<div style="height:2px"></div>', unsafe_allow_html=True)  # small gap
+    st.markdown('<div style="height:-8px"></div>', unsafe_allow_html=True)  # small gap
     from streamlit.components.v1 import html as st_html
     html_sig = f"""<!doctype html>
 <meta charset="utf-8">
