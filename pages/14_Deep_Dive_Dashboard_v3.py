@@ -1886,7 +1886,7 @@ with mid_stat:
 <style>
   /* keep double braces in CSS so f-strings don’t try to format them */
   .sp-card {{ border:1px solid #D7D9E0; border-radius:8px; background:#fff; padding:10px 12px; margin-top:8px; }}
-  table.sp {{ border-collapse:collapse; table-layout:fixed; width:100%; }}
+  table.sp {{ border-collapse:collapse; table-layout:fixed; width:50%; }}
   th, td {{ border:0.5px solid #D7D9E0; padding:6px 8px; font-size:12px; background:#fff; }}
   th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
   td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
