@@ -1922,7 +1922,7 @@ with mid_stat:
       </tr>
 
       <tr class="subhead">
-        <th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th><th></th>
+        <th></th><th>Rank</th><th>Daily △</th><th>WTD △</th><th>MTD △</th><th>QTD △</th><th></th>
       </tr>
       <tr>
         <td class="rowlabel left">Sharpe Rank</td>
@@ -1935,7 +1935,7 @@ with mid_stat:
       </tr>
 
       <tr class="subhead">
-        <th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th><th></th><th></th>
+        <th></th><th>Daily △</th><th>WTD △</th><th>MTD △</th><th>QTD △</th><th></th><th></th>
       </tr>
       <tr>
         <td class="rowlabel left">MM Score</td>
@@ -1948,7 +1948,7 @@ with mid_stat:
       </tr>
 
       <tr class="subhead">
-        <th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th>
+        <th></th><th>ST</th><th>MT</th><th>LT</th><th>ST △</th><th>MT △</th><th>Tape Bias</th>
       </tr>
       <tr>
         <td class="rowlabel left">Directional Trends</td>
