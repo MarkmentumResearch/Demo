@@ -1931,7 +1931,7 @@ with mid_stat:
     width: fit-content;                /* shrink-wrap like Stat Box */
     font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }}
-  .sp-title {{ margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; text-align: center; }}
+  .sp-title {{ margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; text-align: left; }}
 
   table.sp {{ border-collapse: collapse; table-layout: fixed; border: var(--border-outer); margin: 0; }}
   table.sp + table.sp {{ margin-top: 8px; }}     /* spacing between sections */
