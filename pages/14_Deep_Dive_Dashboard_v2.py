@@ -1855,12 +1855,12 @@ with mid_stat:
     ms_q = _g(row_ms_q, "model_score_qtd_change",   default=None)
 
     # Trends & changes
-    st  = _g(row_tr, "st_trend", default=None)
-    mt  = _g(row_tr, "mt_trend", default=None)
-    lt  = _g(row_tr, "lt_trend", default=None)
+    st_tr  = _g(row_tr, "st_trend", default=None)
+    mt_tr  = _g(row_tr, "mt_trend", default=None)
+    lt_tr  = _g(row_tr, "lt_trend", default=None)
     stc = _g(row_tr, "st_trend_change", default=None)
     mtc = _g(row_tr, "mt_trend_change", default=None)
-    tape = _m2_label(st, mt, lt, stc, mtc)
+    tape = _m2_label(st_tr, mt_tr, lt_tr, stc, mtc)
 
     # Quadrant (1..4) -> label
     quad_val = int(_g(row_tr, "Spread_Quad", "spread_quad", default=0) or 0)
@@ -1932,9 +1932,9 @@ with mid_stat:
     <thead><tr><th class="left">Directional Trends</th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th></tr></thead>
     <tbody><tr>
       <td class="left"></td>
-      <td class="right">{_tint_pct(st/100.0 if st and abs(st)>1 else (st or 0))}</td>
-      <td class="right">{_tint_pct(mt/100.0 if mt and abs(mt)>1 else (mt or 0))}</td>
-      <td class="right">{_tint_pct(lt/100.0 if lt and abs(lt)>1 else (lt or 0))}</td>
+      <td class="right">{_tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}</td>
+      <td class="right">{_tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}</td>
+      <td class="right">{_tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}</td>
       <td class="right">{_tint_pct(stc)}</td>
       <td class="right">{_tint_pct(mtc)}</td>
       <td class="center">{_badge(tape, "solidg" if tape in ("Buy","Leaning Bullish","Bottoming") else "solidr" if tape in ("Sell","Leaning Bearish","Topping") else "gray")}</td>
