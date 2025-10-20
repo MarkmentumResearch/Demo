@@ -395,12 +395,12 @@ else:
             <div class="subnote">
                Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
                 <b>Legend:</b> 
-                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Buy</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
                 <b>Neutral</b> – Crosscurrents / mixed trends · 
                 <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br>
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
-                <b>Sell Bias</b> – Downtrend confirmed.                
+                <b>Sell</b> – Downtrend confirmed.                
           </div>
         </div>
         """,
@@ -475,12 +475,12 @@ if not df.empty:
             <div class="subnote">
                 Averages by category.<br>                   
                 <b>Legend:</b> 
-                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Buy</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
                 <b>Neutral</b> – Crosscurrents / mixed trends · 
                 <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br>
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
-                <b>Sell Bias</b> – Downtrend confirmed.               
+                <b>Sell</b> – Downtrend confirmed.               
           </div>
         </div>
         """,
@@ -552,12 +552,12 @@ if not df.empty:
             <div class="subnote">
                Ticker links open the Deep Dive Dashboard. Green = positive; Red = negative.<br>
                 <b>Legend:</b> 
-                <b>Buy Bias</b> – Uptrend confirmed · 
+                <b>Buy</b> – Uptrend confirmed · 
                 <b>Leaning Bullish</b> – Bullish setup, confirmation pending · 
                 <b>Neutral</b> – Crosscurrents / mixed trends · 
                 <b>Topping / Bottoming</b> – Transition zones where trends may reverse<br> 
                 <b>Leaning Bearish</b> – Bearish bias but not fully aligned · 
-                <b>Sell Bias</b> – Downtrend confirmed.                
+                <b>Sell</b> – Downtrend confirmed.                
           </div>
         </div>
         """,
