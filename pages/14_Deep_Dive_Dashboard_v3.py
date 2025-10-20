@@ -2014,7 +2014,7 @@ with mid_stat:
   </table>
 
   <!-- Volatility Spread Quadrant — one line, no shading -->
-  <div class="sp-quad">Volatility Spread Quadrant <span class="value">{quad_lbl}</span></div>
+  <div class="sp-quad">Volatility Spread Quadrant: <span class="value">{quad_lbl}</span></div>
 </div>
 """
 
