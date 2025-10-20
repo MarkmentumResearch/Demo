@@ -1981,6 +1981,8 @@ with mid_stat:
         <td class="right">{_tint_pct(perf_q)}</td>
         <td class="right"></td>
         <td class="center"></td>
+       </table>
+
 
       <tr class="subhead">
         <th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th></th>
@@ -1993,6 +1995,7 @@ with mid_stat:
         <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}</td>
         <td class="center"></td>
+        </table>
       </tr>
 
       <tr class="subhead">
