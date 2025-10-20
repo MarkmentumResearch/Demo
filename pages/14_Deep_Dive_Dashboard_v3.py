@@ -1890,7 +1890,7 @@ with mid_stat:
   th, td {{ border:0.5px solid #D7D9E0; padding:6px 8px; font-size:12px; background:#fff; }}
   th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
   td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
-  col.w-label {{ width: 25px; }}
+  col.w-label {{ width: 40px; }}
   col.w-num   {{ width: 7ch;   }}
   col.w-bias  {{ width: 17ch;  }}
   td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a; }}
