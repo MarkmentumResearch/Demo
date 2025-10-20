@@ -2001,7 +2001,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+      <tr><th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2019,7 +2019,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+      <tr><th></th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2036,7 +2036,7 @@ with mid_stat:
   <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th></tr>
+      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th></tr>
     </thead>
     <tbody>
       <tr>
