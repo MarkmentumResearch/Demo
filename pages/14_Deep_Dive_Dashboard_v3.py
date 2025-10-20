@@ -153,6 +153,28 @@ html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* ===== Signal Pack row — centered and tight under the Stat Box ===== */
+#sp-center + div[data-testid="stHorizontalBlock"]{
+  display:flex !important; 
+  justify-content:center !important; 
+  gap:0 !important;
+  margin-top: 6px !important;     /* sits right under the stat box */
+}
+
+/* symmetric side gutters (col 1 & 3) + shrink-to-fit middle column */
+#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
+#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important; 
+  min-width:0 !important;
+}
+#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important; 
+  min-width:0 !important;          /* let the card size itself like the Stat Box */
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -1879,8 +1901,16 @@ with mid_stat:
     }
     quad_lbl = quad_map.get(quad_val, "—")
 
+
+
+
     # ---- HTML card ----
     from streamlit.components.v1 import html as st_html
+st.markdown('<div id="sp-center"></div>', unsafe_allow_html=True)
+
+_, mid_sp, _ = st.columns([.9, 3, 1], gap="small")
+with mid_sp:
+
     html_sig = f"""<!doctype html>
 <meta charset="utf-8">
 <style>
