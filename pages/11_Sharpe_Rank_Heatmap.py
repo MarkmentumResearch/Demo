@@ -232,6 +232,28 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* ========== Bigger, easier-to-grab scrollbars (light theme) ========== */
+
+/* Global page scrollbar — Chromium/WebKit */
+:root::-webkit-scrollbar        { width: 16px; height: 16px; }
+:root::-webkit-scrollbar-track  { background: #f2f2f2; }
+:root::-webkit-scrollbar-thumb  { background: #bdbdbd; border-radius: 8px; border: 3px solid #f2f2f2; }
+:root::-webkit-scrollbar-thumb:hover { background: #9a9a9a; }
+
+/* Inner scrollables (tables/dataframes/expander bodies) — Chromium/WebKit */
+div[tabindex="0"]::-webkit-scrollbar        { width: 14px; height: 14px; }
+div[tabindex="0"]::-webkit-scrollbar-track  { background: #f2f2f2; }
+div[tabindex="0"]::-webkit-scrollbar-thumb  { background: #bdbdbd; border-radius: 8px; border: 3px solid #f2f2f2; }
+div[tabindex="0"]::-webkit-scrollbar-thumb:hover { background: #9a9a9a; }
+
+/* Firefox */
+html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
+</style>
+""", unsafe_allow_html=True)
+
+
 # -------------------------
 # Title
 # -------------------------
