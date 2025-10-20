@@ -454,32 +454,28 @@ def _m2_label(st, mt, lt, stc, mtc):
 
 last_modified = (DATA_DIR / "qry_graph_data_25.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
-def load_stats_for_ticker(path: Path, ticker: str,_mtime: float = last_modified) -> pd.DataFrame:
-    path = Path(path)
-    if not path.exists():
+def load_stats_for_ticker(csv_path: Path, ticker: str) -> pd.DataFrame:
+    df = pd.read_csv(csv_path)
+    df.columns = [c.strip().lower() for c in df.columns]
+    tcol = next((c for c in df.columns if c in ("ticker","tkr","symbol")), None)
+    if not tcol:
         return pd.DataFrame()
-    out = []
-    for chunk in pd.read_csv(path, chunksize=200000):
-        cols = {c.lower(): c for c in chunk.columns}
-        tcol = cols.get("ticker")
-        if tcol is None:
-            df = chunk.copy()
-            df.columns = [c.strip().lower() for c in df.columns]
-            return df
-        m = chunk[tcol] == ticker
-        if m.any():
-            part = chunk.loc[m].copy()
-            part.columns = [c.strip().lower() for c in part.columns]
-            out.append(part)
-        elif out:
-            break
-    if not out:
-        return pd.DataFrame()
-    df = pd.concat(out, ignore_index=True)
-    if "date" in df.columns:
-        df["date"] = pd.to_datetime(df["date"], errors="coerce")
-        df = df.sort_values("date")
-    return df
+    sub = df[df[tcol].astype(str).str.upper() == (ticker or "").upper()].copy()
+    if sub.empty:
+        return sub
+    # >>> add this block <<<
+    if "spread_quad" in sub.columns:
+        sub["spread_quad"] = pd.to_numeric(sub["spread_quad"], errors="coerce")
+    # ----------------------
+    if "date" in sub.columns:
+        num_cols = sub.select_dtypes(include=[np.number]).columns
+        sub[num_cols] = sub[num_cols].where(np.isfinite(sub[num_cols]), np.nan)
+        try:
+            sub = sub.sort_values("date")
+        except:
+            pass
+    return sub
+
 
 last_modified = (DATA_DIR / "qry_graph_data_01.csv").stat().st_mtime
 @st.cache_data(show_spinner=False)
@@ -1863,7 +1859,18 @@ with mid_stat:
     tape = _m2_label(st_tr, mt_tr, lt_tr, stc, mtc)
 
     # Quadrant (1..4) -> label
-    quad_val = int(_g(row_tr, "Spread_Quad", "spread_quad", default=0) or 0)
+    quad_src = None
+    try:
+    # _row is the last row from CSV #25 used by the stat box
+        if isinstance(_row, pd.Series):
+            quad_src = _row.get("spread_quad", None) or _row.get("Spread_Quad", None)
+    except NameError:
+        pass  # _row wasn't set (no data)
+
+    if quad_src is None:
+        quad_src = _g(row_tr, "Spread_Quad", "spread_quad", default=None)
+
+    quad_val = int(pd.to_numeric(quad_src, errors="coerce") or 0)
     quad_map = {
         1: "Mean Reversion Upside Bias",
         2: "Crowded Short",
