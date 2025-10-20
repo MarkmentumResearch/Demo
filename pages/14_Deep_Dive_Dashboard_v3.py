@@ -85,6 +85,7 @@ st.markdown("""
 /* GRAPH 1 row (immediately after the #g1-center marker) */
 /* GRAPH 1 row (2/3 page wide, centered) */
 #g1-wide + div[data-testid="stHorizontalBlock"]{
+  margin-top: 0px !important;   /* ensure no extra gap above Graph 1 */  
   display:flex !important; justify-content:center !important; gap:24px !important;
 }
 #g1-wide + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
@@ -98,6 +99,7 @@ st.markdown("""
 /* Make the st.pyplot WRAPPER fill the 2/3 middle column */
 #g1-wide + div[data-testid="stHorizontalBlock"] [data-testid="stImage"]{
   width: 100% !important;
+  margin-top: 0 !important;
   max-width: 100% !important;
   display: block !important;
 }
@@ -1798,7 +1800,7 @@ with mid_stat:
     st.markdown(
         """
         <style>
-          div[data-testid="stVerticalBlock"]{ gap:4px !important; row-gap:4px !important; }
+          div[data-testid="stVerticalBlock"]{ gap:2px !important; row-gap:4px !important; }
           div[data-testid="stSegmentedControl"]{ max-width:520px; width:520px; margin:4 !important; padding:4 !important; }
           div[data-testid="stTextInput"]{
             width:520px !important; max-width:520px !important; display:inline-block !important;
