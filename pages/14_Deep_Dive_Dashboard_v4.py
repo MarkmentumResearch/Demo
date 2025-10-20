@@ -1935,7 +1935,7 @@ with mid_stat:
   td.left   {{ text-align: left;   }}
 
   /* fixed column widths shared by all section tables */
-  col.w-label {{ width: 220px; }}   /* long labels like “Directional Trends” */
+  col.w-label {{ width: 45px; }}   /* long labels like “Directional Trends” */
   col.w-num   {{ width: 7ch;   }}   /* numbers / deltas */
   col.w-bias  {{ width: 17ch;  }}   /* “Leaning Bullish”, etc. */
 
