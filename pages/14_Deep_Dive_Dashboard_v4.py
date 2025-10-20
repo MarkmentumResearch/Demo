@@ -1957,6 +1957,81 @@ with mid_stat:
   .sp-quad       {{ margin-top: 8px; font-size: 12px; color: #3c435a; font-weight: 700; }}
   .sp-quad-value {{ margin-top: 2px; font-size: 12px; color: #1a1a1a; }}
 </style>
+
+<div class="sp-card">
+  <h3>Signal Pack</h3>
+
+  <table class="sp">
+    <colgroup>
+      <col class="w-label">
+      <col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num">
+      <col class="w-bias">
+    </colgroup>
+    <tbody>
+
+      <tr class="subhead">
+        <th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th><th></th><th></th>
+      </tr>
+      <tr>
+        <td class="rowlabel left">Performance</td>
+        <td class="right">{_tint_pct(perf_d)}</td>
+        <td class="right">{_tint_pct(perf_w)}</td>
+        <td class="right">{_tint_pct(perf_m)}</td>
+        <td class="right">{_tint_pct(perf_q)}</td>
+        <td class="right"></td>
+        <td class="center"></td>
+
+      <tr class="subhead">
+        <th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th></th>
+      </tr>
+      <tr>
+        <td class="rowlabel left">Sharpe Rank</td>
+        <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
+        <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}</td>
+        <td class="center"></td>
+      </tr>
+
+      <tr class="subhead">
+        <th></th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th></th><th></th>
+      </tr>
+      <tr>
+        <td class="rowlabel left">MM Score</td>
+        <td class="right">{_badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
+        <td class="right">{_badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}</td>
+        <td class="right"></td>
+        <td class="center"></td>
+      </tr>
+
+      <tr class="subhead">
+        <th></th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th>
+      </tr>
+      <tr>
+        <td class="rowlabel left">Directional Trends</td>
+        <td class="right">{_tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}</td>
+        <td class="right">{_tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}</td>
+        <td class="right">{_tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}</td>
+        <td class="right">{_tint_pct(stc)}</td>
+        <td class="right">{_tint_pct(mtc)}</td>
+        <td class="center">{_badge(tape, "solidg" if tape in ("Buy","Leaning Bullish","Bottoming") else "solidr" if tape in ("Sell","Leaning Bearish","Topping") else "gray")}</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div style="margin-top:8px;">
+    <div style="font-weight:700; font-size:12px; color:#3c435a;">Volatility Spread Quadrant</div>
+    <div style="margin-top:4px;">{_badge(quad_lbl, "gray")}</div>
+  </div>
+
+
+
+
+
 """
 st_html(html_sig, height=440, scrolling=False)
 
