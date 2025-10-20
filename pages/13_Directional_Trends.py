@@ -158,10 +158,10 @@ def m2_label(st, mt, lt, stc, mtc):
 
     # delta helpers
     threshold = 0.0005  # = 0.05%
-    both_up   = (stc > threshold and mtc > threshold)
-    both_down = (stc < -threshold and mtc < -threshold)
-    st_up_mt_down = (stc > threshold and mtc < -threshold)
-    st_down_mt_up = (stc < -threshold and mtc > threshold)
+    both_up   = (stc >= threshold and mtc >= threshold)
+    both_down = (stc <= -threshold and mtc <= -threshold)
+    st_up_mt_down = (stc >= threshold and mtc <= -threshold)
+    st_down_mt_up = (stc <= -threshold and mtc >= threshold)
 
     # --------------------------
     # A) Confirmed bullish stack
