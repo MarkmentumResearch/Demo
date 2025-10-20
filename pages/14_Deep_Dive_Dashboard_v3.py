@@ -1884,91 +1884,142 @@ with mid_stat:
     html_sig = f"""<!doctype html>
 <meta charset="utf-8">
 <style>
-  /* keep double braces in CSS so f-strings don’t try to format them */
-  .sp-card {{ border:1px solid #D7D9E0; border-radius:8px; background:#fff; padding:10px 12px; margin-top:8px; }}
-  table.sp {{ border-collapse:collapse; table-layout:fixed; width:50%; }}
-  th, td {{ border:0.5px solid #D7D9E0; padding:6px 8px; font-size:12px; background:#fff; }}
-  th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
-  td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
-  col.w-label {{ width: 40px; }}
-  col.w-num   {{ width: 5ch;   }}
-  col.w-bias  {{ width: 10ch;  }}
-  td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a; }}
-  tr.subhead th {{ background:#F6F7FB; color:#3c435a; font-weight:600; }}
+  /* ===== Signal Pack — Stat Box matched =====
+     Mirrors the stat box structure (card + fixed-table grid)  */
+  :root {{
+    --cw: 78px;                        /* fixed, smaller column width */
+    --border-outer: 1px solid #D7D9E0;
+    --border-inner: 0.5px solid #D7D9E0;
+    --pad: 6px 8px;
+  }}
+
+  .sp-card {{
+    border: var(--border-outer);
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px 12px;
+    width: fit-content;                /* shrink-wrap like Stat Box */
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }}
+  .sp-title {{ margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; text-align: center; }}
+
+  table.sp {{ border-collapse: collapse; table-layout: fixed; border: var(--border-outer); margin: 0; }}
+  table.sp + table.sp {{ margin-top: 8px; }}     /* spacing between sections */
+
+  th, td {{
+    border: var(--border-inner);
+    padding: var(--pad);
+    font-size: 12px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    background: #fff;
+  }}
+  th {{ background: #F6F7FB; text-align: center; font-weight: 600; color: #3c435a; }}
+  td.right  {{ text-align: right;  }}
+  td.center {{ text-align: center; }}
+  td.left   {{ text-align: left;   }}
+
+  /* fixed widths just like the stat box (“col {{ width: var(--cw) }}”) */
+  col {{ width: var(--cw); }}
+
+  /* Make the first column slightly wider to fit “Directional Trends” label cleanly */
+  table.sp tr > th:first-child {{ width: 132px; max-width: 132px; }}
+
+  /* Keep Tape Bias column compact without badges */
+  .sp-bias-lastcol tr > *:last-child {{ width: 96px; max-width: 96px; }}
+
+  /* badges used elsewhere in the app; small to match Stat Box */
+  .sp-badge {{ display:inline-block; padding:2px 6px; border-radius:6px; font-size:11px; line-height:1.15; }}
+  .sp-badge.pos {{ background:#E8F6EC; color:#167C2E; }}
+  .sp-badge.neg {{ background:#FBEAEA; color:#A62323; }}
+  .sp-badge.neu {{ background:#EEF1F6; color:#3c435a; }}
+
+  /* Volatility Spread Quadrant: one line, no shading */
+  .sp-quad {{ margin-top:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px; font-weight:700; color:#3c435a; }}
+  .sp-quad .value {{ font-weight:600; color:#1a1a1a; }}
 </style>
 
 <div class="sp-card">
-  <h3>Signal Pack</h3>
+  <div class="sp-title">Signal Pack</div>
 
+  <!-- Performance -->
   <table class="sp">
-    <colgroup>
-      <col class="w-label">
-      <col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num">
-      <col class="w-bias">
-    </colgroup>
+    <colgroup><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
+    </thead>
     <tbody>
-
-      <tr class="subhead">
-        <th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th><th></th><th></th>
-      </tr>
       <tr>
-        <td class="rowlabel left">Performance</td>
+        <th class="left">Performance</th>
         <td class="right">{_tint_pct(perf_d)}</td>
         <td class="right">{_tint_pct(perf_w)}</td>
         <td class="right">{_tint_pct(perf_m)}</td>
         <td class="right">{_tint_pct(perf_q)}</td>
-        <td class="right"></td>
-        <td class="center"></td>
-
-      <tr class="subhead">
-        <th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th></th>
       </tr>
+    </tbody>
+  </table>
+
+  <!-- Sharpe Rank -->
+  <table class="sp">
+    <colgroup><col><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+    </thead>
+    <tbody>
       <tr>
-        <td class="rowlabel left">Sharpe Rank</td>
+        <th class="left">Sharpe Rank</th>
         <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
         <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}</td>
-        <td class="center"></td>
       </tr>
+    </tbody>
+  </table>
 
-      <tr class="subhead">
-        <th></th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th></th><th></th>
-      </tr>
+  <!-- MM Score -->
+  <table class="sp">
+    <colgroup><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+    </thead>
+    <tbody>
       <tr>
-        <td class="rowlabel left">MM Score</td>
+        <th class="left">MM Score</th>
         <td class="right">{_badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}</td>
-        <td class="right"></td>
-        <td class="center"></td>
       </tr>
+    </tbody>
+  </table>
 
-      <tr class="subhead">
-        <th></th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th>
-      </tr>
+  <!-- Directional Trends (mark table with sp-bias-lastcol to keep Tape Bias tight) -->
+  <table class="sp sp-bias-lastcol">
+    <colgroup><col><col><col><col><col><col><col></colgroup>
+    <thead>
+      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th></tr>
+    </thead>
+    <tbody>
       <tr>
-        <td class="rowlabel left">Directional Trends</td>
+        <th class="left">Directional Trends</th>
         <td class="right">{_tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}</td>
         <td class="right">{_tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}</td>
         <td class="right">{_tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}</td>
         <td class="right">{_tint_pct(stc)}</td>
         <td class="right">{_tint_pct(mtc)}</td>
-        <td class="center">{_badge(tape, "solidg" if tape in ("Buy","Leaning Bullish","Bottoming") else "solidr" if tape in ("Sell","Leaning Bearish","Topping") else "gray")}</td>
+        <td class="center">{tape or "—"}</td>  <!-- plain text; no badge -->
       </tr>
-
     </tbody>
   </table>
 
-  <div style="margin-top:8px;">
-    <div style="font-weight:700; font-size:12px; color:#3c435a;">Volatility Spread Quadrant</div>
-    <div style="margin-top:4px;">{_badge(quad_lbl, "gray")}</div>
-  </div>
+  <!-- Volatility Spread Quadrant — one line, no shading -->
+  <div class="sp-quad">Volatility Spread Quadrant <span class="value">{quad_lbl}</span></div>
 </div>
 """
+
 st_html(html_sig, height=440, scrolling=False)
+ 
 
 
 
