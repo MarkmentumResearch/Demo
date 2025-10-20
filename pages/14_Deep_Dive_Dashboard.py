@@ -492,8 +492,13 @@ def load_stats_for_ticker(csv_path: Path, ticker: str) -> pd.DataFrame:
     if sub.empty:
         return sub
     # >>> add this block <<<
-    if "spread_quad" in sub.columns:
-        sub["spread_quad"] = pd.to_numeric(sub["spread_quad"], errors="coerce")
+    sq_col = "spread_quad"
+    if sq_col in sub.columns:
+    # coerce "", "None", etc. to NaN; keep as float with NaN for downstream
+        sub[sq_col] = pd.to_numeric(sub[sq_col], errors="coerce")
+    else:
+    # ensure downstream code can always reference the column
+        sub[sq_col] = np.nan
     # ----------------------
     if "date" in sub.columns:
         num_cols = sub.select_dtypes(include=[np.number]).columns
