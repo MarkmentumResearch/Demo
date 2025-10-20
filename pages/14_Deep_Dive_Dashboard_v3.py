@@ -1891,8 +1891,8 @@ with mid_stat:
   th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
   td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
   col.w-label {{ width: 40px; }}
-  col.w-num   {{ width: 7ch;   }}
-  col.w-bias  {{ width: 17ch;  }}
+  col.w-num   {{ width: 5ch;   }}
+  col.w-bias  {{ width: 10ch;  }}
   td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a; }}
   tr.subhead th {{ background:#F6F7FB; color:#3c435a; font-weight:600; }}
 </style>
