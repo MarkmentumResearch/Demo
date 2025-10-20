@@ -26,7 +26,7 @@ import numpy as np
 # -------------------------
 # Page & shared style
 # -------------------------
-st.set_page_config(page_title="Markmentum – Ranking", layout="wide")
+st.set_page_config(page_title="Markmentum – Deep Dive Dashboard", layout="wide")
 st.markdown("""
 <style>
 /* Make the content wider on desktops while keeping nice margins */

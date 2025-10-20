@@ -10,7 +10,7 @@ from urllib.parse import quote_plus
 
 # ---------- Page ----------
 st.cache_data.clear()
-st.set_page_config(page_title="Trends & Changes", layout="wide")
+st.set_page_config(page_title="Directional Trends", layout="wide")
 
 # -------------------------
 # Paths
@@ -168,13 +168,13 @@ def m2_label(st, mt, lt, stc, mtc):
     # --------------------------
     if st < mt < lt:
         if both_up:               # #1
-            return "Buy Bias"
+            return "Buy"
         if st_up_mt_down:         # #2
             return "Bottoming"
         if st_down_mt_up:         # #3
             return "Bottoming"
         if both_down:             # #4
-            return "Sell Bias"
+            return "Sell"
         return "Neutral"
 
     # --------------------------
@@ -238,13 +238,13 @@ def m2_label(st, mt, lt, stc, mtc):
     # --------------------------
     if lt < mt < st:
         if both_up:               # #21
-            return "Buy Bias"
+            return "Buy"
         if st_up_mt_down:         # #22
             return "Topping"
         if st_down_mt_up:         # #23
             return "Topping"
         if both_down:             # #24
-            return "Sell Bias"
+            return "Sell"
         return "Neutral"
 
     # Fallback (ties/equalities or anything unexpected)
@@ -361,7 +361,7 @@ else:
         "ST Change":   [tint_cell(v) for v in m["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in m["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in m["lt_trend_change"]],
-        "Directional Trend":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
+        "Tape Bias":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                     zip(m["st_trend"], m["mt_trend"], m["lt_trend"],
                         m["st_trend_change"], m["mt_trend_change"])],
     })
@@ -443,7 +443,7 @@ if not df.empty:
         "ST Change":  [tint_cell(v) for v in g["ST_Change"]],
         "MT Change":  [tint_cell(v) for v in g["MT_Change"]],
         "LT Change":  [tint_cell(v) for v in g["LT_Change"]],
-        "Directional Trend":    [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
+        "Tape Bias":    [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                    zip(g["ST"], g["MT"], g["LT"], g["ST_Change"], g["MT_Change"])],
     })
 
@@ -518,7 +518,7 @@ if not df.empty:
         "ST Change":   [tint_cell(v) for v in d["st_trend_change"]],
         "MT Change":   [tint_cell(v) for v in d["mt_trend_change"]],
         "LT Change":   [tint_cell(v) for v in d["lt_trend_change"]],
-        "Directional Trend":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
+        "Tape Bias":     [trend_tag(m2_label(st, mt, lt, stc, mtc)) for st, mt, lt, stc, mtc in
                     zip(d["st_trend"], d["mt_trend"], d["lt_trend"],
                         d["st_trend_change"], d["mt_trend_change"])],
     })
