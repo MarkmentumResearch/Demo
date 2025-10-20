@@ -1919,11 +1919,9 @@ with mid_stat:
         <td class="right">{_tint_pct(perf_q)}</td>
         <td class="right"></td>
         <td class="center"></td>
-      </tr>
-      <div style="margin-top:8px;">
-      </div>
+
       <tr class="subhead">
-        <th></th><th>Rank</th><th>Daily △</th><th>WTD △</th><th>MTD △</th><th>QTD △</th><th></th>
+        <th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th><th></th>
       </tr>
       <tr>
         <td class="rowlabel left">Sharpe Rank</td>
