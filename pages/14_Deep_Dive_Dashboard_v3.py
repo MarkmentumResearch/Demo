@@ -161,7 +161,7 @@ st.markdown("""
   display:flex !important;
   justify-content:center !important;
   gap:0 !important;
-  margin-top:6px !important;     /* sits right under the stat box */
+  margin-top:2px !important;     /* sits right under the stat box */
 }
 
 /* Symmetric side gutters + shrink-to-fit middle column */
