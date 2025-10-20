@@ -156,26 +156,30 @@ html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
 st.markdown("""
 <style>
 /* ===== Signal Pack row — centered and tight under the Stat Box ===== */
-#sp-center + div[data-testid="stHorizontalBlock"]{
-  display:flex !important; 
-  justify-content:center !important; 
+/* Target the FIRST HorizontalBlock that appears anywhere after #sp-center */
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type{
+  display:flex !important;
+  justify-content:center !important;
   gap:0 !important;
-  margin-top: 6px !important;     /* sits right under the stat box */
+  margin-top:6px !important;     /* sits right under the stat box */
 }
 
-/* symmetric side gutters (col 1 & 3) + shrink-to-fit middle column */
-#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(1),
-#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(3){
-  flex:1 1 0 !important; 
+/* Symmetric side gutters + shrink-to-fit middle column */
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(1),
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(3){
+  flex:1 1 0 !important;
   min-width:0 !important;
 }
-#sp-center + div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-child(2){
-  flex:0 0 auto !important; 
-  min-width:0 !important;          /* let the card size itself like the Stat Box */
+
+#sp-center ~ div[data-testid="stHorizontalBlock"]:first-of-type
+  > div[data-testid="column"]:nth-child(2){
+  flex:0 0 auto !important;      /* middle column = content width (like Stat Box) */
+  min-width:0 !important;
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 
 def _image_b64(p: Path) -> str:
