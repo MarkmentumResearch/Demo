@@ -1885,24 +1885,24 @@ with mid_stat:
 <meta charset="utf-8">
 <style>
   /* ===== Signal Pack (stat-box style, fixed grid) ===== */
-  .sp-card {{ border:1px solid #D7D9E0; border-radius:8px; background:#fff; padding:10px 12px; margin-top:8px; }}
-  .sp-card h3 {{ margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center; }}
+  .sp-card {{ border:1px solid #D7D9E0; border-radius:8px; background:#fff; padding:10px 12px; margin-top:8px;}}
+  .sp-card h3 {{ margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a; text-align:center;}}
 
-  table.sp {{ border-collapse:collapse; table-layout:fixed; width:100%; }}
+  table.sp {{ border-collapse:collapse; table-layout:fixed; width:100%;}}
   th, td {{ border:0.5px solid #D7D9E0; padding:6px 8px; font-size:12px; background:#fff; }}
-  th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center; }}
+  th {{ background:#F6F7FB; color:#3c435a; font-weight:600; text-align:center;}}
   td.right {{ text-align:right; }} td.center {{ text-align:center; }} .left {{ text-align:left; }}
 
-  /* fixed column widths for ALL rows */
-  col.w-label {{ width: 220px; }}  /* long labels like Directional Trends */
-  col.w-num   {{ width: 7ch;   }}  /* percentage / delta chips */
-  col.w-bias  {{ width: 17ch;  }}  /* “Leaning Bullish”, etc. */
+  /* fixed column widths – shared by all rows */
+  col.w-label {{width: 220px; }}   /* long labels like Directional Trends */
+  col.w-num   {{width: 7ch;}}   /* numbers/deltas */
+  col.w-bias  {{width: 17ch;}}   /* “Leaning Bullish”, etc. */
 
   /* left label cell */
-  td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a; }}
-  /* sub-section under table */
-  .sub-title {{ font-weight:700; font-size:12px; color:#3c435a; }}
-  .sub-badge {{ margin-top:4px; }}
+  td.rowlabel {{background:#F6F7FB; font-weight:600; color:#3c435a; }}
+
+  /* per-section header row (like v2) */
+  tr.subhead th {{background:#F6F7FB; color:#3c435a; font-weight:600;}}
 </style>
 
 <div class="sp-card">
@@ -1914,55 +1914,62 @@ with mid_stat:
       <col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num"><col class="w-num">
       <col class="w-bias">
     </colgroup>
-    <thead>
-      <tr>
-        <th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th><th></th><th></th>
-      </tr>
-    </thead>
     <tbody>
 
-      <!-- Performance -->
+      <!-- ===== Performance ===== -->
+      <tr class="subhead">
+        <th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th><th></th><th></th>
+      </tr>
       <tr>
         <td class="rowlabel left">Performance</td>
-        <td class="right">{_tint_pct(perf_d)}</td>
-        <td class="right">{_tint_pct(perf_w)}</td>
-        <td class="right">{_tint_pct(perf_m)}</td>
-        <td class="right">{_tint_pct(perf_q)}</td>
+        <td class="right">{{_tint_pct(perf_d)}}</td>
+        <td class="right">{{_tint_pct(perf_w)}}</td>
+        <td class="right">{{_tint_pct(perf_m)}}</td>
+        <td class="right">{{_tint_pct(perf_q)}}</td>
         <td class="right"></td>
         <td class="center"></td>
       </tr>
 
-      <!-- Sharpe Rank -->
+      <!-- ===== Sharpe Rank ===== -->
+      <tr class="subhead">
+        <th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th><th></th>
+      </tr>
       <tr>
         <td class="rowlabel left">Sharpe Rank</td>
-        <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
-        <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}</td>
+        <td class="center">{{badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}}</td>
+        <td class="right">{{badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(sr_q)):+d}" if sr_q is not None else "—", "green" if (sr_q or 0)>0 else "red")}}</td>
         <td class="center"></td>
       </tr>
 
-      <!-- MM Score -->
+      <!-- ===== MM Score ===== -->
+      <tr class="subhead">
+        <th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th><th></th><th></th>
+      </tr>
       <tr>
         <td class="rowlabel left">MM Score</td>
-        <td class="right">{_badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
-        <td class="right">{_badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}</td>
+        <td class="right">{{badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}}</td>
+        <td class="right">{{badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}}</td>
         <td class="right"></td>
         <td class="center"></td>
       </tr>
 
-      <!-- Directional Trends -->
+      <!-- ===== Directional Trends ===== -->
+      <tr class="subhead">
+        <th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th>
+      </tr>
       <tr>
         <td class="rowlabel left">Directional Trends</td>
-        <td class="right">{_tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}</td>
-        <td class="right">{_tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}</td>
-        <td class="right">{_tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}</td>
-        <td class="right">{_tint_pct(stc)}</td>
-        <td class="right">{_tint_pct(mtc)}</td>
-        <td class="center">{_badge(tape, "solidg" if tape in ("Buy","Leaning Bullish","Bottoming") else "solidr" if tape in ("Sell","Leaning Bearish","Topping") else "gray")}</td>
+        <td class="right">{{tint_pct(st_tr/100.0 if st_tr and abs(st_tr)>1 else (st_tr or 0))}}</td>
+        <td class="right">{{tint_pct(mt_tr/100.0 if mt_tr and abs(mt_tr)>1 else (mt_tr or 0))}}</td>
+        <td class="right">{{tint_pct(lt_tr/100.0 if lt_tr and abs(lt_tr)>1 else (lt_tr or 0))}}</td>
+        <td class="right">{{tint_pct(stc)}}</td>
+        <td class="right">{{tint_pct(mtc)}}</td>
+        <td class="center">{{badge(tape, "solidg" if tape in ("Buy","Leaning Bullish","Bottoming") else "solidr" if tape in ("Sell","Leaning Bearish","Topping") else "gray")}}</td>
       </tr>
 
     </tbody>
@@ -1970,13 +1977,12 @@ with mid_stat:
 
   <!-- Quadrant -->
   <div style="margin-top:8px;">
-    <div class="sub-title">Volatility Spread Quadrant</div>
-    <div class="sub-badge">{_badge(quad_lbl, "gray")}</div>
+    <div style="font-weight:700; font-size:12px; color:#3c435a;">Volatility Spread Quadrant</div>
+    <div style="margin-top:4px;">{{badge(quad_lbl, "gray")}}</div>
   </div>
 </div>
 """
-st_html(html_sig, height=420, scrolling=False)
-
+st_html(html_sig, height=440, scrolling=False)
 
 
 
