@@ -157,10 +157,11 @@ def m2_label(st, mt, lt, stc, mtc):
         return "Insufficient data"
 
     # delta helpers
-    both_up   = (stc > 0 and mtc > 0)
-    both_down = (stc < 0 and mtc < 0)
-    st_up_mt_down = (stc > 0 and mtc < 0)
-    st_down_mt_up = (stc < 0 and mtc > 0)
+    threshold = 0.0005  # = 0.05%
+    both_up   = (stc > threshold and mtc > threshold)
+    both_down = (stc < -threshold and mtc < -threshold)
+    st_up_mt_down = (stc > threshold and mtc < -threshold)
+    st_down_mt_up = (stc < -threshold and mtc > threshold)
 
     # --------------------------
     # A) Confirmed bullish stack
