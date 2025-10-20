@@ -407,7 +407,7 @@ def _last_row_for_ticker(path: Path, ticker: str) -> pd.Series | None:
     except Exception:
         return None
 
-def _tint_pct(v, cap=0.03, neutral=0.0005):
+def _tint_pct(v, cap=0.03, neutral=0.0005, dp=1):
     """
     v is a DECIMAL change (0.012 -> 1.2%).
     Neutral band ±0.05% (0.0005) matches Trends page threshold.
@@ -426,7 +426,7 @@ def _tint_pct(v, cap=0.03, neutral=0.0005):
         alpha = 0.15 + 0.35*strength          # 0.15..0.50
         style = f"background:rgba({ '16,185,129' if x>0 else '239,68,68' },{alpha:.2f});"
 
-    return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.2f}%</span>'
+    return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.{dp}f}%</span>'
 
 def _badge(text, tone="gray"):
     colors = {
@@ -1983,10 +1983,10 @@ with mid_stat:
     <tbody>
       <tr>
         <th class="left">Performance</th>
-        <td class="right">{_tint_pct(perf_d)}</td>
-        <td class="right">{_tint_pct(perf_w)}</td>
-        <td class="right">{_tint_pct(perf_m)}</td>
-        <td class="right">{_tint_pct(perf_q)}</td>
+        <td class="right">{_tint_pct(perf_d, dp=2)}</td>
+        <td class="right">{_tint_pct(perf_w, dp=2)}</td>
+        <td class="right">{_tint_pct(perf_m, dp=2)}</td>
+        <td class="right">{_tint_pct(perf_q, dp=2)}</td>
       </tr>
     </tbody>
   </table>
