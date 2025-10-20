@@ -39,6 +39,7 @@ if st.query_params:
 # -------------------------
 # Page & shared style
 # -------------------------
+st.cache_data.clear()
 st.set_page_config(page_title="Markmentum – About", layout="wide", initial_sidebar_state="expanded")
 
 # Always expand sidebar on page load (safe: only clicks if collapsed control is present)
