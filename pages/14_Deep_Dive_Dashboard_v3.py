@@ -1922,7 +1922,7 @@ with mid_stat:
     --cw: 78px;                        /* fixed, smaller column width */
     --border-outer: 1px solid #D7D9E0;
     --border-inner: 0.5px solid #D7D9E0;
-    --pad: 2px 2px;
+    --pad: 6px 8px;
   }}
 
   .sp-card {{
