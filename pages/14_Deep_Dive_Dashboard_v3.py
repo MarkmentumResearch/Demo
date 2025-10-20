@@ -1909,12 +1909,8 @@ with mid_stat:
 
 
     # ---- HTML card ----
+    st.markdown('<div style="height:8px"></div>', unsafe_allow_html=True)  # small gap
     from streamlit.components.v1 import html as st_html
-st.markdown('<div id="sp-center"></div>', unsafe_allow_html=True)
-
-_, mid_sp, _ = st.columns([.9, 3, 1], gap="small")
-with mid_sp:
-
     html_sig = f"""<!doctype html>
 <meta charset="utf-8">
 <style>
@@ -2052,7 +2048,7 @@ with mid_sp:
 </div>
 """
 
-st_html(html_sig, height=440, scrolling=False)
+    st_html(html_sig, height=440, scrolling=False)
  
 
 
