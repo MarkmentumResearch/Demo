@@ -1898,7 +1898,7 @@ with mid_stat:
   col.w-bias  {{ width: 17ch; }}      /* e.g., "Leaning Bullish" */
 
   /* first column label cell styling */
-  td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a; width: 30px;}}
+  td.rowlabel {{ background:#F6F7FB; font-weight:600; color:#3c435a;}}
 </style>
 
 <div class="sp-card">
