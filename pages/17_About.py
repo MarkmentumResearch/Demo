@@ -148,7 +148,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <h3>What we publish</h3>
 <ul>
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
-  <li><b>Directional Trends</b> – Short, mid, and long-term trend lines alongside their changes with directional bias cues (Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
+  <li><b>Directional Trends</b> – Short, mid, and long-term trend lines alongside their changes with tape bias cues (Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
   <li><b>Volatility Stats</b> – Implied (Ivol) vs. realized (Rvol) spreads, percentile ranks, and Z-Scores to spot crowding and regime shifts.</li>
   <li><b>Markmentum Score</b> – a rules-based, volatility-adjusted risk–reward score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Heatmaps</b> – Data tables and heatmaps for broad performance distribution, risk-adjusted performance layer, and core signal distribution to surface opportunity and risk fast.</li>
@@ -160,7 +160,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <ul>
   <li><b>Morning Compass</b> – Your orientation dashboard across major indices, sectors, and macro levers — with a one-click Daily / Weekly / Monthly selector. 
   Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers and laggards by % change and by Markmentum Score, 
-  along with an optional category snapshot for deeper drill-downs. Auto-refreshed for a concise, data-first read on market direction and crowd positioning.</li>
+  along with an optional category snapshot for deeper drill-downs. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.</li>
   <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
     The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram.
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
