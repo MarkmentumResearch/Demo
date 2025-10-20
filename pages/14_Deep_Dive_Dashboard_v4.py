@@ -1894,6 +1894,7 @@ with mid_stat:
     border-radius: 8px;
     background: #fff;
     padding: 10px 12px;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     width: fit-content;              /* shrink-wrap to content */
   }}
 
