@@ -1898,13 +1898,7 @@ with mid_stat:
     width: fit-content;              /* shrink-wrap to content */
   }}
 
-  .sp-title {{
-    margin: 0 0 6px 0;
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a1a1a;
-    text-align: left;                /* match Stat Box */
-  }}
+  .sp-title {{margin: 0 0 6px 0; font-size: 12px; font-weight: 700; color: #1a1a1a; white-space: nowrap;}}
 
   /* each section is its own table (like the Stat Box) */
   table.sp {{
