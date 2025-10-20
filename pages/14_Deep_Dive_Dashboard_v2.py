@@ -1977,7 +1977,7 @@ with mid_stat:
   <div class="sp-title">{st.session_state.get("sb_title_text")}</div>
 
 <div style="font-size:12px; color:#666; margin-bottom:4px;">
-  Markmentum Research Signal Pack Box:
+  Markmentum Research Signal Box:
 </div>  
 
   <!-- Performance -->
