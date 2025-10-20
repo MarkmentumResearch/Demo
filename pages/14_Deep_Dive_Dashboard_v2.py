@@ -2006,7 +2006,7 @@ with mid_stat:
     <tbody>
       <tr>
         <th class="left">Sharpe Rank</th>
-        <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
+        <td class="right">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
         <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
