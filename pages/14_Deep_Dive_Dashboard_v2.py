@@ -400,6 +400,7 @@ def _tint_pct(v, cap=0.03, neutral=0.0005):
 
     return f'<span style="display:block; {style} padding:0 6px; border-radius:3px; text-align:right;">{x*100:,.1f}%</span>'
 
+
 def _badge(text, tone="gray"):
     colors = {
         "gray":   "background:rgba(107,114,128,0.12); color:#1a1a1a;",
