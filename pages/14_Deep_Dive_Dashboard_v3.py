@@ -1970,7 +1970,7 @@ with mid_stat:
 </style>
 
 <div class="sp-card">
-  <div class="sp-title">Signal Pack</div>
+  <div class="sp-title">Signal Pack — {{TICKER}}</div>
 
   <!-- Performance -->
   <table class="sp">
