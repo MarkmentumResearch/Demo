@@ -2050,13 +2050,8 @@ with mid_stat:
 </div>
 """
 
-    st_html(html_sig, height=440, scrolling=False)
+    st_html(html_sig, height=330, scrolling=False)
  
-
-
-
-
-
 
 # optional small spacer
 #st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
