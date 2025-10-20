@@ -1610,6 +1610,8 @@ with mid_stat:
     def render_stat_box_component(row: pd.Series):
         title  = f"{row.get('ticker_name', row.get('ticker',''))} - {_fmt_date(row.get('date'))}"
         ticker = (row.get("ticker","") or "").upper()
+        sb_title_text = title
+        st.session_state["sb_title_text"] = sb_title_text
         close  = _usd(row.get("close"))
         anchor = _usd(row.get("lt_pt_sm"))
         chg    = _pct(row.get("change_pct"))
@@ -1972,7 +1974,11 @@ with mid_stat:
 </style>
 
 <div class="sp-card">
-  <div class="sp-title">Signal Pack - {TICKER}</div>
+  <div class="sp-title">{st.session_state.get("sb_title_text")}</div>
+
+<div style="font-size:12px; color:#666; margin-bottom:4px;">
+  Markmentum Research Signal Box:
+</div>  
 
   <!-- Performance -->
   <table class="sp">
@@ -1995,12 +2001,12 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Rank</th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+      <tr><th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
         <th class="left">Sharpe Rank</th>
-        <td class="center">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
+        <td class="right">{_badge(f"{int(round(sr_rank))}" if sr_rank is not None else "—", "gray")}</td>
         <td class="right">{_badge(f"{int(round(sr_d)):+d}" if sr_d is not None else "—", "green" if (sr_d or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_w)):+d}" if sr_w is not None else "—", "green" if (sr_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(sr_m)):+d}" if sr_m is not None else "—", "green" if (sr_m or 0)>0 else "red")}</td>
@@ -2013,7 +2019,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Daily ▲</th><th>WTD ▲</th><th>MTD ▲</th><th>QTD ▲</th></tr>
+      <tr><th></th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2030,7 +2036,7 @@ with mid_stat:
   <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST ▲</th><th>MT ▲</th><th>Tape Bias</th></tr>
+      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2050,7 +2056,7 @@ with mid_stat:
 </div>
 """
 
-    st_html(html_sig, height=360, scrolling=False)
+    st_html(html_sig, height=375, scrolling=False)
  
 
 # optional small spacer
