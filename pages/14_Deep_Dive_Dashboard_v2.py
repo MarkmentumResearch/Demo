@@ -2003,6 +2003,12 @@ table.sp td:has(> .sp-badge.gray){{
   border-color: transparent !important;
 }}
 </style>
+/* === Signal Box tweaks: unshade left row labels === */
+table.sp td.rowlabel{{ 
+  background: #fff !important;    /* remove blue/gray shading */
+  color: #3c435a; 
+  font-weight: 600;
+}}
 
 
 <div class="sp-card">
