@@ -2009,6 +2009,19 @@ table.sp td.rowlabel{{
   color: #3c435a; 
   font-weight: 600;
 }}
+
+table.sp tbody th.left{{ 
+  background:#fff !important;   /* remove header tint */
+  color:#3c435a; 
+  font-weight:600;
+}}
+
+/* Fallback if some rows emit <th> without the 'left' class */
+table.sp tbody th:first-child{{ 
+  background:#fff !important;
+}}
+
+
 </style>
 
 <div class="sp-card">
