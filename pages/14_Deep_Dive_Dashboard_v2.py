@@ -1646,7 +1646,7 @@ with mid_stat:
 <meta charset="utf-8">
 <style>
   :root {{
-    --cw: 80px;
+    --cw: 84px;
     --border-outer: 1px solid #D7D9E0;
     --border-inner: 0.5px solid #D7D9E0;
     --pad: 6px 8px;
