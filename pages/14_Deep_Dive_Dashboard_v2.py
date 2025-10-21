@@ -2033,7 +2033,7 @@ table.sp td:has(> .sp-badge.gray){{
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
+      <tr><th class="left">Signal</th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
