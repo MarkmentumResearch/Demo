@@ -2215,25 +2215,33 @@ st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 _ticker = _active_tkr
 
 # ==============================
-# MASTER TOGGLE: Show/Hide Informational Charts (13–24)
+# MASTER TOGGLE: Show/Hide Advanced Charts (2–12)
 # ==============================
+
+# 1) Initialize from URL once (so it survives query-param updates)
+_adv_qp = st.query_params.get("adv", "0")
 if "show_Charts_2_12" not in st.session_state:
-    st.session_state.show_Charts_2_12 = False
+    st.session_state["show_Charts_2_12"] = (_adv_qp == "1")
+
+# 2) Keep URL in sync whenever the toggle changes
+def _persist_adv():
+    st.query_params.update({"adv": "1" if st.session_state.show_Charts_2_12 else "0"})
 
 tL, tM, tR = st.columns([1.2, 3, 0.8])
 with tM:
     st.toggle(
         "Show Advanced Charts",
-        key="show_Charts_2_12",     # widget owns state
+        key="show_Charts_2_12",
         help="Turn on to render Advanced Charts 2–12",
+        on_change=_persist_adv,
     )
 
 render_info = st.session_state.show_Charts_2_12
 ticker = _active_tkr
 
 if render_info:
-    st.session_state.show_Charts_2_12 = True
     
+
     def plot_g2_trend(df: pd.DataFrame, ticker: str):
         fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
