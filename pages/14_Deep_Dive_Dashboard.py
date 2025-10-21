@@ -284,6 +284,7 @@ else:
 date_str = f"{asof.month}/{asof.day}/{asof.year}" if pd.notna(asof) else ""
 
 st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 if date_str:
     st.markdown(
