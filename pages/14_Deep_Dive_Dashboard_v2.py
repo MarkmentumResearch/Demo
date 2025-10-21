@@ -1646,7 +1646,7 @@ with mid_stat:
 <meta charset="utf-8">
 <style>
   :root {{
-    --cw: 84px;
+    --cw: 80px;
     --border-outer: 1px solid #D7D9E0;
     --border-inner: 0.5px solid #D7D9E0;
     --pad: 6px 8px;
@@ -1929,7 +1929,7 @@ with mid_stat:
   /* ===== Signal Pack — Stat Box matched =====
      Mirrors the stat box structure (card + fixed-table grid)  */
   :root {{
-    --cw: 78px;                        /* fixed, smaller column width */
+    --cw: 82px;                        /* fixed, smaller column width */
     --border-outer: 1px solid #D7D9E0;
     --border-inner: 0.5px solid #D7D9E0;
     --pad: 6px 8px;
