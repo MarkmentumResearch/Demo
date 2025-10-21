@@ -2225,7 +2225,7 @@ with tM:
     st.toggle(
         "Show Advanced Charts",
         key="show_Charts_2_12",     # widget owns state
-        help="Turn on to render charts 2–12.",
+        help="Turn on to render Advanced Charts 2–12",
     )
 
 render_info = st.session_state.show_Charts_2_12
