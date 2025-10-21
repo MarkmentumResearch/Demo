@@ -2002,14 +2002,14 @@ table.sp td:has(> .sp-badge.gray){{
   background: transparent !important;
   border-color: transparent !important;
 }}
-</style>
+
 /* === Signal Box tweaks: unshade left row labels === */
 table.sp td.rowlabel{{ 
   background: #fff !important;    /* remove blue/gray shading */
   color: #3c435a; 
   font-weight: 600;
 }}
-
+</style>
 
 <div class="sp-card">
   <div class="sp-title">{st.session_state.get("sb_title_text")}</div>
