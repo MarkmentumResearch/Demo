@@ -2217,18 +2217,18 @@ _ticker = _active_tkr
 # ==============================
 # MASTER TOGGLE: Show/Hide Informational Charts (13–24)
 # ==============================
-if "show_Advanced_Charts_2_12" not in st.session_state:
-    st.session_state.show_Advanced_Charts_2_12 = False
+if "show_Charts_2_12" not in st.session_state:
+    st.session_state.show_Charts_2_12 = False
 
 tL, tM, tR = st.columns([1.2, 3, 0.8])
 with tM:
     st.toggle(
         "Show Advanced Charts",
-        key="show_informational_2_12",     # widget owns state
+        key="show_Charts_2_12",     # widget owns state
         help="Turn on to render charts 2–12.",
     )
 
-render_info = st.session_state.show_Advanced_Charts_2_12
+render_info = st.session_state.show_Charts_2_12
 ticker = _active_tkr
 
 if render_info:
