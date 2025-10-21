@@ -283,6 +283,8 @@ else:
 
 date_str = f"{asof.month}/{asof.day}/{asof.year}" if pd.notna(asof) else ""
 
+st.markdown('<div style="height:2px"></div>', unsafe_allow_html=True)  # small gap
+
 if date_str:
     st.markdown(
         f"""
