@@ -2773,501 +2773,501 @@ if render_info:
             df12v = apply_window_with_gutter(df12_all, _rng, date_col="date", gutter_days=5)
             st.pyplot(plot_g12_scatter(df12v, _ticker), use_container_width=True,clear_figure=True)
 
-# ==============================
-# ===== Graphs 11 & 12 - END 
-# ==============================
-ticker = _active_tkr
-# ==============================
-# MASTER TOGGLE: Show/Hide Informational Charts (13–24)
-# ==============================
-if "show_informational_13_24" not in st.session_state:
-    st.session_state.show_informational_13_24 = False
+    # ==============================
+    # ===== Graphs 11 & 12 - END 
+    # ==============================
+    ticker = _active_tkr
+    # ==============================
+    # MASTER TOGGLE: Show/Hide Informational Charts (13–24)
+    # ==============================
+    if "show_informational_13_24" not in st.session_state:
+        st.session_state.show_informational_13_24 = False
 
-tL, tM, tR = st.columns([1.2, 3, 0.8])
-with tM:
-    st.toggle(
-        "Show informational charts",
-        key="show_informational_13_24",     # widget owns state
-        help="Turn on to render charts 13–24.",
-    )
+    tL, tM, tR = st.columns([1.2, 3, 0.8])
+    with tM:
+        st.toggle(
+            "Show informational charts",
+            key="show_informational_13_24",     # widget owns state
+            help="Turn on to render charts 13–24.",
+        )
 
-render_info = st.session_state.show_informational_13_24
-ticker = _active_tkr
+    render_info = st.session_state.show_informational_13_24
+    ticker = _active_tkr
 
-if render_info:
+    if render_info:
 
+            # ---- Plotters ----
+        def plot_g13_daily_returns(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            # bar colors by sign (green positive, red negative)
+            colors = ["green" if v >= 0 else "red" for v in df["daily_return_pct"]]
+            ax.bar(df["date"], df["daily_return_pct"], width=1.0, color=colors, linewidth=0)
+
+            # bands
+            ax.axhline(y=df["daily_return_avg_pct"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["daily_return_hi_pct"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["daily_return_lo_pct"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Daily Returns", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            # percent formatter on y
+            from matplotlib.ticker import PercentFormatter
+            ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
+
+            # biweekly Monday ticks + 5-day gutter
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            # small legend centered below
+            from matplotlib.lines import Line2D
+            handles = [
+                Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
+                Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
+                Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
+            ]
+            ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=3, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g14_daily_range(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            ax.plot(df["date"], df["daily_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
+            ax.axhline(y=df["daily_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["daily_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["daily_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Daily Range", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g15_daily_volume(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            ax.plot(df["date"], df["daily_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
+            ax.axhline(y=df["daily_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["daily_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["daily_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Daily Volume", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+        # ---- Render row horizontally (13, 14, 15) ----
+        col13, col14, col15 = st.columns(3, gap="small")
+
+        with col13:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df13_all = load_g13_ticker(FILE_G13, _ticker)
+            if df13_all.empty:
+                st.info("No Daily Returns data.")
+            else:
+                df13v = apply_window_with_gutter(df13_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g13_daily_returns(df13v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col14:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df14_all = load_g14_ticker(FILE_G14, _ticker)
+            if df14_all.empty:
+                st.info("No Daily Range data.")
+            else:
+                df14v = apply_window_with_gutter(df14_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g14_daily_range(df14v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col15:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df15_all = load_g15_ticker(FILE_G15, _ticker)
+            if df15_all.empty:
+                st.info("No Daily Volume data.")
+            else:
+                df15v = apply_window_with_gutter(df15_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g15_daily_volume(df15v, _ticker), use_container_width=True,clear_figure=True)
+
+        # ==============================
+        # ===== Graphs 13, 14 & 15 (do not modify) END =====
+        # ==============================
+
+        # ==============================
+        # ===== Graphs 16, 17 & 18 START =====
+        # ==============================
         # ---- Plotters ----
-    def plot_g13_daily_returns(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        # bar colors by sign (green positive, red negative)
-        colors = ["green" if v >= 0 else "red" for v in df["daily_return_pct"]]
-        ax.bar(df["date"], df["daily_return_pct"], width=1.0, color=colors, linewidth=0)
-
-        # bands
-        ax.axhline(y=df["daily_return_avg_pct"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["daily_return_hi_pct"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["daily_return_lo_pct"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Daily Returns", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        # percent formatter on y
-        from matplotlib.ticker import PercentFormatter
-        ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
-
-        # biweekly Monday ticks + 5-day gutter
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        # small legend centered below
-        from matplotlib.lines import Line2D
-        handles = [
-            Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
-            Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
-            Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
-        ]
-        ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=3, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g14_daily_range(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        ax.plot(df["date"], df["daily_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
-        ax.axhline(y=df["daily_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["daily_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["daily_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Daily Range", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g15_daily_volume(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        ax.plot(df["date"], df["daily_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
-        ax.axhline(y=df["daily_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["daily_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["daily_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Daily Volume", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-    # ---- Render row horizontally (13, 14, 15) ----
-    col13, col14, col15 = st.columns(3, gap="small")
-
-    with col13:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df13_all = load_g13_ticker(FILE_G13, _ticker)
-        if df13_all.empty:
-            st.info("No Daily Returns data.")
-        else:
-            df13v = apply_window_with_gutter(df13_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g13_daily_returns(df13v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col14:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df14_all = load_g14_ticker(FILE_G14, _ticker)
-        if df14_all.empty:
-            st.info("No Daily Range data.")
-        else:
-            df14v = apply_window_with_gutter(df14_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g14_daily_range(df14v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col15:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df15_all = load_g15_ticker(FILE_G15, _ticker)
-        if df15_all.empty:
-            st.info("No Daily Volume data.")
-        else:
-            df15v = apply_window_with_gutter(df15_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g15_daily_volume(df15v, _ticker), use_container_width=True,clear_figure=True)
-
-    # ==============================
-    # ===== Graphs 13, 14 & 15 (do not modify) END =====
-    # ==============================
-
-    # ==============================
-    # ===== Graphs 16, 17 & 18 START =====
-    # ==============================
-    # ---- Plotters ----
-    def plot_g16_weekly_returns(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        # bar colors by sign
-        colors = ["green" if v >= 0 else "red" for v in df["weekly_return_pct"]]
-        ax.bar(df["date"], df["weekly_return_pct"], width=5.0, color=colors, linewidth=0)
-
-        # bands
-        ax.axhline(y=df["weekly_return_avg_pct"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["weekly_return_hi_pct"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["weekly_return_lo_pct"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Weekly Returns", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        from matplotlib.ticker import PercentFormatter
-        ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
-
-        # show weekly ticks (Mondays) and keep the 5-day gutter helper for consistency
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        from matplotlib.lines import Line2D
-        handles = [
-            Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
-            Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
-            Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
-        ]
-        ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                ncol=3, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g17_weekly_range(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        ax.plot(df["date"], df["weekly_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
-        ax.axhline(y=df["weekly_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["weekly_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["weekly_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Weekly Range", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g18_weekly_volume(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        ax.plot(df["date"], df["weekly_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
-        ax.axhline(y=df["weekly_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["weekly_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["weekly_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Weekly Volume", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-    # ---- Render row horizontally (16, 17, 18) ----
-    col16, col17, col18 = st.columns(3, gap="small")
-
-    with col16:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df16_all = load_g16_ticker(FILE_G16, _ticker)
-        if df16_all.empty:
-            st.info("No Weekly Returns data.")
-        else:
-            df16v = apply_window_with_gutter(df16_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g16_weekly_returns(df16v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col17:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df17_all = load_g17_ticker(FILE_G17, _ticker)
-        if df17_all.empty:
-            st.info("No Weekly Range data.")
-        else:
-            df17v = apply_window_with_gutter(df17_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g17_weekly_range(df17v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col18:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df18_all = load_g18_ticker(FILE_G18, _ticker)
-        if df18_all.empty:
-            st.info("No Weekly Volume data.")
-        else:
-            df18v = apply_window_with_gutter(df18_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g18_weekly_volume(df18v, _ticker), use_container_width=True,clear_figure=True)
-
-    # ==============================
-    # ===== Graphs 16, 17 & 18 END 
-    # ==============================
-
-    # ==============================
-    # ===== Graphs 19, 20 & 21 START
-    # ==============================
-    # ---- Plotters ----
-    def plot_g19_monthly_returns(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-        colors = ["green" if v >= 0 else "red" for v in df["monthly_return"]]
-        ax.bar(df["date"], df["monthly_return"], width=20.0, color=colors, linewidth=0)
-
-        ax.axhline(y=df["monthly_return_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["monthly_return_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["monthly_return_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Monthly Returns", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        from matplotlib.ticker import PercentFormatter
-        ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
-
-        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        from matplotlib.lines import Line2D
-        handles = [
-            Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
-            Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
-            Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
-        ]
-        ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=3, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g20_monthly_range(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-        ax.plot(df["date"], df["monthly_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
-        ax.axhline(y=df["monthly_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["monthly_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["monthly_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Monthly Range", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-
-    def plot_g21_monthly_volume(df: pd.DataFrame, ticker: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-        ax.plot(df["date"], df["monthly_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
-        ax.axhline(y=df["monthly_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
-        ax.axhline(y=df["monthly_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df["monthly_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(f"{_active_tkr} – Monthly Volume", fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-    # ---- Render row horizontally (19, 20, 21) ----
-    col19, col20, col21 = st.columns(3, gap="small")
-
-    with col19:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df19_all = load_g19_ticker(FILE_G19, _ticker)
-        if df19_all.empty:
-            st.info("No Monthly Returns data.")
-        else:
-            df19v = apply_window_with_gutter(df19_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g19_monthly_returns(df19v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col20:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df20_all = load_g20_ticker(FILE_G20, _ticker)
-        if df20_all.empty:
-            st.info("No Monthly Range data.")
-        else:
-            df20v = apply_window_with_gutter(df20_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g20_monthly_range(df20v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col21:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df21_all = load_g21_ticker(FILE_G21, _ticker)
-        if df21_all.empty:
-            st.info("No Monthly Volume data.")
-        else:
-            df21v = apply_window_with_gutter(df21_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g21_monthly_volume(df21v, _ticker), use_container_width=True,clear_figure=True)
-
-    # ==============================
-    # ===== Graphs 19, 20 & 21 (do not modify) END =====
-    # ==============================
-
-    # ==============================
-    # ===== Graphs 22, 23 & 24 START =====
-    # ==============================
-    # ---- Plotters ----
-    def _plot_trend_generic(df: pd.DataFrame, ticker: str, series_col: str,
-                            avg_col: str, hi_col: str, lo_col: str, title: str):
-        fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
-
-        # main series
-        ax.plot(df["date"], df[series_col], color=EXCEL_BLUE, linewidth=1.6, label=title.split(" – ")[-1])
-
-        # horizontal bands
-        ax.axhline(y=df[avg_col].iloc[0], color="gray",  linewidth=1.2, label="Avg")
-        ax.axhline(y=df[hi_col].iloc[0],  color="red",   linewidth=1.2, label="High")
-        ax.axhline(y=df[lo_col].iloc[0],  color="green", linewidth=1.2, label="Low")
-
-        ax.set_title(title, fontsize=12, pad=6)
-        ax.grid(True, linewidth=0.4, alpha=0.4)
-
-        # Percent axis (values are in %)
-        from matplotlib.ticker import PercentFormatter
-        ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
-
-        # Month ticks + a small gutter
-        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
-
-        pad = pd.Timedelta(days=5)
-        ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
-
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                  ncol=4, frameon=False, handlelength=2.8, fontsize=9)
-        fig.subplots_adjust(bottom=0.30)
-        plt.close(fig)  # 🔑 Prevents too many open figures
-        return fig
-
-    def plot_g22_st(df: pd.DataFrame, ticker: str):
-        return _plot_trend_generic(
-            df=df, ticker=ticker,
-            series_col="st_trend", avg_col="st_avg", hi_col="st_hi", lo_col="st_lo",
-            title=f"{_active_tkr} – Short Term Trend Line"
-        )
-
-    def plot_g23_mt(df: pd.DataFrame, ticker: str):
-        return _plot_trend_generic(
-            df=df, ticker=ticker,
-            series_col="mt_trend", avg_col="mt_avg", hi_col="mt_hi", lo_col="mt_lo",
-            title=f"{_active_tkr} – Mid Term Trend Line"
-        )
-
-    def plot_g24_lt(df: pd.DataFrame, ticker: str):
-        return _plot_trend_generic(
-            df=df, ticker=ticker,
-            series_col="lt_trend", avg_col="lt_avg", hi_col="lt_hi", lo_col="lt_lo",
-            title=f"{_active_tkr} – Long Term Trend Line"
-        )
-
-    # ---- Render row horizontally (22, 23, 24) ----
-    col22, col23, col24 = st.columns(3, gap="small")
-
-    with col22:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df22_all = load_g22_ticker(FILE_G22, _ticker)
-        if df22_all.empty:
-            st.info("No Short-Term Trend data.")
-        else:
-            df22v = apply_window_with_gutter(df22_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g22_st(df22v, _ticker), use_container_width=True,clear_figure=True)
-
-    with col23:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df23_all = load_g23_ticker(FILE_G23, _ticker)
-        if df23_all.empty:
-            st.info("No Mid-Term Trend data.")
-        else:
-            df23v = apply_window_with_gutter(df23_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g23_mt(df23v, _ticker), use_container_width=True,clear_figure=True)
-    with col24:
-        _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
-        _rng    = st.session_state.get("range_sel", "All")
-        df24_all = load_g24_ticker(FILE_G24, _ticker)
-        if df24_all.empty:
-            st.info("No Long-Term Trend data.")
-        else:
-            df24v = apply_window_with_gutter(df24_all, _rng, date_col="date", gutter_days=5)
-            st.pyplot(plot_g24_lt(df24v, _ticker), use_container_width=True,clear_figure=True)
-    # ==============================
-    # ===== Graphs 22, 23 & 24 END 
-    # ==============================
+        def plot_g16_weekly_returns(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            # bar colors by sign
+            colors = ["green" if v >= 0 else "red" for v in df["weekly_return_pct"]]
+            ax.bar(df["date"], df["weekly_return_pct"], width=5.0, color=colors, linewidth=0)
+
+            # bands
+            ax.axhline(y=df["weekly_return_avg_pct"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["weekly_return_hi_pct"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["weekly_return_lo_pct"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Weekly Returns", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            from matplotlib.ticker import PercentFormatter
+            ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
+
+            # show weekly ticks (Mondays) and keep the 5-day gutter helper for consistency
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            from matplotlib.lines import Line2D
+            handles = [
+                Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
+                Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
+                Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
+            ]
+            ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=3, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g17_weekly_range(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            ax.plot(df["date"], df["weekly_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
+            ax.axhline(y=df["weekly_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["weekly_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["weekly_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Weekly Range", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g18_weekly_volume(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            ax.plot(df["date"], df["weekly_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
+            ax.axhline(y=df["weekly_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["weekly_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["weekly_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Weekly Volume", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO, interval=2))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+        # ---- Render row horizontally (16, 17, 18) ----
+        col16, col17, col18 = st.columns(3, gap="small")
+
+        with col16:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df16_all = load_g16_ticker(FILE_G16, _ticker)
+            if df16_all.empty:
+                st.info("No Weekly Returns data.")
+            else:
+                df16v = apply_window_with_gutter(df16_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g16_weekly_returns(df16v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col17:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df17_all = load_g17_ticker(FILE_G17, _ticker)
+            if df17_all.empty:
+                st.info("No Weekly Range data.")
+            else:
+                df17v = apply_window_with_gutter(df17_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g17_weekly_range(df17v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col18:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df18_all = load_g18_ticker(FILE_G18, _ticker)
+            if df18_all.empty:
+                st.info("No Weekly Volume data.")
+            else:
+                df18v = apply_window_with_gutter(df18_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g18_weekly_volume(df18v, _ticker), use_container_width=True,clear_figure=True)
+
+        # ==============================
+        # ===== Graphs 16, 17 & 18 END 
+        # ==============================
+
+        # ==============================
+        # ===== Graphs 19, 20 & 21 START
+        # ==============================
+        # ---- Plotters ----
+        def plot_g19_monthly_returns(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+            colors = ["green" if v >= 0 else "red" for v in df["monthly_return"]]
+            ax.bar(df["date"], df["monthly_return"], width=20.0, color=colors, linewidth=0)
+
+            ax.axhline(y=df["monthly_return_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["monthly_return_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["monthly_return_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Monthly Returns", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            from matplotlib.ticker import PercentFormatter
+            ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
+
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            from matplotlib.lines import Line2D
+            handles = [
+                Line2D([0], [0], color="black", linewidth=1.2, label="Avg"),
+                Line2D([0], [0], color="red",   linewidth=1.2, label="High"),
+                Line2D([0], [0], color="green", linewidth=1.2, label="Low"),
+            ]
+            ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=3, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g20_monthly_range(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+            ax.plot(df["date"], df["monthly_range"], color=EXCEL_BLUE, linewidth=1.2, label="Range")
+            ax.axhline(y=df["monthly_range_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["monthly_range_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["monthly_range_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Monthly Range", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+
+        def plot_g21_monthly_volume(df: pd.DataFrame, ticker: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+            ax.plot(df["date"], df["monthly_volume"], color=EXCEL_BLUE, linewidth=1.2, label="Volume")
+            ax.axhline(y=df["monthly_volume_avg"].iloc[0], color="black", linewidth=1.2, label="Avg")
+            ax.axhline(y=df["monthly_volume_hi"].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df["monthly_volume_lo"].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(f"{_active_tkr} – Monthly Volume", fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+        # ---- Render row horizontally (19, 20, 21) ----
+        col19, col20, col21 = st.columns(3, gap="small")
+
+        with col19:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df19_all = load_g19_ticker(FILE_G19, _ticker)
+            if df19_all.empty:
+                st.info("No Monthly Returns data.")
+            else:
+                df19v = apply_window_with_gutter(df19_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g19_monthly_returns(df19v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col20:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df20_all = load_g20_ticker(FILE_G20, _ticker)
+            if df20_all.empty:
+                st.info("No Monthly Range data.")
+            else:
+                df20v = apply_window_with_gutter(df20_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g20_monthly_range(df20v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col21:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df21_all = load_g21_ticker(FILE_G21, _ticker)
+            if df21_all.empty:
+                st.info("No Monthly Volume data.")
+            else:
+                df21v = apply_window_with_gutter(df21_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g21_monthly_volume(df21v, _ticker), use_container_width=True,clear_figure=True)
+
+        # ==============================
+        # ===== Graphs 19, 20 & 21 (do not modify) END =====
+        # ==============================
+
+        # ==============================
+        # ===== Graphs 22, 23 & 24 START =====
+        # ==============================
+        # ---- Plotters ----
+        def _plot_trend_generic(df: pd.DataFrame, ticker: str, series_col: str,
+                                avg_col: str, hi_col: str, lo_col: str, title: str):
+            fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
+
+            # main series
+            ax.plot(df["date"], df[series_col], color=EXCEL_BLUE, linewidth=1.6, label=title.split(" – ")[-1])
+
+            # horizontal bands
+            ax.axhline(y=df[avg_col].iloc[0], color="gray",  linewidth=1.2, label="Avg")
+            ax.axhline(y=df[hi_col].iloc[0],  color="red",   linewidth=1.2, label="High")
+            ax.axhline(y=df[lo_col].iloc[0],  color="green", linewidth=1.2, label="Low")
+
+            ax.set_title(title, fontsize=12, pad=6)
+            ax.grid(True, linewidth=0.4, alpha=0.4)
+
+            # Percent axis (values are in %)
+            from matplotlib.ticker import PercentFormatter
+            ax.yaxis.set_major_formatter(PercentFormatter(xmax=100))
+
+            # Month ticks + a small gutter
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+            plt.setp(ax.get_xticklabels(), rotation=90, ha="center", fontsize=7)
+
+            pad = pd.Timedelta(days=5)
+            ax.set_xlim(df["date"].min() - pad, df["date"].max() + pad)
+
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                    ncol=4, frameon=False, handlelength=2.8, fontsize=9)
+            fig.subplots_adjust(bottom=0.30)
+            plt.close(fig)  # 🔑 Prevents too many open figures
+            return fig
+
+        def plot_g22_st(df: pd.DataFrame, ticker: str):
+            return _plot_trend_generic(
+                df=df, ticker=ticker,
+                series_col="st_trend", avg_col="st_avg", hi_col="st_hi", lo_col="st_lo",
+                title=f"{_active_tkr} – Short Term Trend Line"
+            )
+
+        def plot_g23_mt(df: pd.DataFrame, ticker: str):
+            return _plot_trend_generic(
+                df=df, ticker=ticker,
+                series_col="mt_trend", avg_col="mt_avg", hi_col="mt_hi", lo_col="mt_lo",
+                title=f"{_active_tkr} – Mid Term Trend Line"
+            )
+
+        def plot_g24_lt(df: pd.DataFrame, ticker: str):
+            return _plot_trend_generic(
+                df=df, ticker=ticker,
+                series_col="lt_trend", avg_col="lt_avg", hi_col="lt_hi", lo_col="lt_lo",
+                title=f"{_active_tkr} – Long Term Trend Line"
+            )
+
+        # ---- Render row horizontally (22, 23, 24) ----
+        col22, col23, col24 = st.columns(3, gap="small")
+
+        with col22:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df22_all = load_g22_ticker(FILE_G22, _ticker)
+            if df22_all.empty:
+                st.info("No Short-Term Trend data.")
+            else:
+                df22v = apply_window_with_gutter(df22_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g22_st(df22v, _ticker), use_container_width=True,clear_figure=True)
+
+        with col23:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df23_all = load_g23_ticker(FILE_G23, _ticker)
+            if df23_all.empty:
+                st.info("No Mid-Term Trend data.")
+            else:
+                df23v = apply_window_with_gutter(df23_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g23_mt(df23v, _ticker), use_container_width=True,clear_figure=True)
+        with col24:
+            _ticker = st.session_state.get("active_ticker", DEFAULT_TICKER)
+            _rng    = st.session_state.get("range_sel", "All")
+            df24_all = load_g24_ticker(FILE_G24, _ticker)
+            if df24_all.empty:
+                st.info("No Long-Term Trend data.")
+            else:
+                df24v = apply_window_with_gutter(df24_all, _rng, date_col="date", gutter_days=5)
+                st.pyplot(plot_g24_lt(df24v, _ticker), use_container_width=True,clear_figure=True)
+        # ==============================
+        # ===== Graphs 22, 23 & 24 END 
+        # ==============================
 
 # -------------------------
 # Footer disclaimer
