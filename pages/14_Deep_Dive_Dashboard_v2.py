@@ -2218,7 +2218,7 @@ _ticker = _active_tkr
 # MASTER TOGGLE: Show/Hide Informational Charts (13–24)
 # ==============================
 if "show_Advanced_Charts_2_12" not in st.session_state:
-    st.session_state.show_informational_2_12 = False
+    st.session_state.show_Advanced_Charts_2_12 = False
 
 tL, tM, tR = st.columns([1.2, 3, 0.8])
 with tM:
