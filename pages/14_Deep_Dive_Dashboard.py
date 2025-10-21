@@ -2232,7 +2232,8 @@ render_info = st.session_state.show_Charts_2_12
 ticker = _active_tkr
 
 if render_info:
-
+    st.session_state.show_Charts_2_12 = True
+    
     def plot_g2_trend(df: pd.DataFrame, ticker: str):
         fig, ax = plt.subplots(figsize=(9.5, 3.9), dpi=150)
 
