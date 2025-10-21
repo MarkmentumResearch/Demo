@@ -1929,7 +1929,7 @@ with mid_stat:
   /* ===== Signal Pack — Stat Box matched =====
      Mirrors the stat box structure (card + fixed-table grid)  */
   :root {{
-    --cw: 78px;                        /* fixed, smaller column width */
+    --cw: 82px;                        /* fixed, smaller column width */
     --border-outer: 1px solid #D7D9E0;
     --border-inner: 0.5px solid #D7D9E0;
     --pad: 6px 8px;
@@ -1979,6 +1979,49 @@ with mid_stat:
   /* Volatility Spread Quadrant: one line, no shading */
   .sp-quad {{ margin-top:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px; font-weight:700; color:#3c435a; }}
   .sp-quad .value {{ font-weight:600; color:#1a1a1a; }}
+
+
+/* ===== Hide visuals for blank/placeholder cells ===== */
+
+/* 1) If a TD is truly empty (e.g., formatter returned ""), remove its chrome */
+table.sp td:empty{{
+  background: transparent !important;
+  border-color: transparent !important;
+}}
+
+/* 2) If a placeholder badge (e.g., "—") is emitted with class 'sp-badge gray',
+      strip the badge look AND remove that cell’s borders/background */
+.sp-badge.gray{{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: #3c435a !important; /* normal text color */
+}}
+table.sp td:has(> .sp-badge.gray){{
+  background: transparent !important;
+  border-color: transparent !important;
+}}
+
+/* === Signal Box tweaks: unshade left row labels === */
+table.sp td.rowlabel{{ 
+  background: #fff !important;    /* remove blue/gray shading */
+  color: #3c435a; 
+  font-weight: 600;
+}}
+
+table.sp tbody th.left{{ 
+  background:#fff !important;   /* remove header tint */
+  color:#3c435a; 
+  font-weight:600;
+}}
+
+/* Fallback if some rows emit <th> without the 'left' class */
+table.sp tbody th:first-child{{ 
+  background:#fff !important;
+}}
+
+
 </style>
 
 <div class="sp-card">
@@ -1992,7 +2035,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
+      <tr><th class="left">Signal</th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2009,7 +2052,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
+      <tr><th class="left">Signal</th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2027,7 +2070,7 @@ with mid_stat:
   <table class="sp">
     <colgroup><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
+      <tr><th class="left">Signal</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2044,7 +2087,7 @@ with mid_stat:
   <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th></tr>
+      <tr><th class="left">Signal</th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th></tr>
     </thead>
     <tbody>
       <tr>
