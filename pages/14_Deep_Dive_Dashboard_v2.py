@@ -2016,7 +2016,7 @@ table.sp td:has(> .sp-badge.gray){{
   <table class="sp">
     <colgroup><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th></th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
+      <tr><th class="left">Signal</th><th>Daily</th><th>WTD</th><th>MTD</th><th>QTD</th></tr>
     </thead>
     <tbody>
       <tr>
