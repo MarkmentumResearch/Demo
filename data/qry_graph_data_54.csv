@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-10-20,128.54
-AAPL,APPLE INC.,Information Technology,2025-10-20,90.48
-INTC,INTEL ,Information Technology,2025-10-20,80.23
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-20,77.87
-T,AT&T INC.,Communication Services,2025-10-20,66.16
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-20,63.71
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-20,60.49
-HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,2025-10-20,60.18
-AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-20,56.74
-RF,REGIONS FINANCIAL ,Financials,2025-10-20,51.48
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-21,375.03
+NVDA,NVIDIA ,Information Technology,2025-10-21,252.78
+T,AT&T INC.,Communication Services,2025-10-21,166.6
+INTC,INTEL ,Information Technology,2025-10-21,153.36
+HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,2025-10-21,141.46
+AAPL,APPLE INC.,Information Technology,2025-10-21,137.17
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-21,118.13
+SLV,ISHARES:SILVER TRUST,Commodities,2025-10-21,117.32
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-21,116.74
+RIG,TRANSOCEAN LTD,MR Discretion,2025-10-21,109.8
