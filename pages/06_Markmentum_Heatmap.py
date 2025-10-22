@@ -674,7 +674,8 @@ with mid:
         ]
 
     cols_show = ["Name", "Ticker", "Category", "Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
-    df_all = df_all.sort_values(["Category", "Ticker"], ascending=[True, True]).reset_index(drop=True)
+    #df_all = df_all.sort_values(["Category", "Ticker"], ascending=[True, True]).reset_index(drop=True)
+    df_all = df_all[cols_show].sort_values(["Category", "Ticker"], ascending=False).reset_index(drop=True)
     #df_all = df_all[cols_show].sort_values("Score", ascending=False).reset_index(drop=True)
 
     st.dataframe(
