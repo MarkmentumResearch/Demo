@@ -637,58 +637,55 @@ if view_choice in ("Heatmap","Both"):
 # =========================
 # All Tickers — Sortable Table
 # =========================
-st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
-st.markdown(
-    """
-    <div style="text-align:center; margin:0 0 8px;
-                font-size:16px; font-weight:700; color:#1a1a1a;">
-        All Tickers — Sortable Table
-    </div>
-    <div style="text-align:center; margin:-6px 0 14px;
-                font-size:14px; font-weight:500; color:#6b7280;">
-        Current MM Score and timeframe changes across all categories
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+pad_l, mid, pad_r = st.columns([1, 2.2, 1])  # tweak 2.2 -> wider/narrower as needed
 
-# Basic text filter (Name / Ticker / Category)
-flt_col1, flt_col2, flt_col3 = st.columns([1,1,1])
-with flt_col2:
+with mid:
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            All Tickers — Sortable Table
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:14px; font-weight:500; color:#6b7280;">
+            Current MM Score and timeframe changes across all categories
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Filter input
     q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
 
-df_all = latest.copy()
-if q:
-    ql = q.strip().lower()
-    df_all = df_all[
-        df_all["Name"].str.lower().str.contains(ql, na=False)
-        | df_all["Ticker"].str.lower().str.contains(ql, na=False)
-        | df_all["Category"].str.lower().str.contains(ql, na=False)
-    ]
+    df_all = latest.copy()
+    if q:
+        ql = q.strip().lower()
+        df_all = df_all[
+            df_all["Name"].str.lower().str.contains(ql, na=False)
+            | df_all["Ticker"].str.lower().str.contains(ql, na=False)
+            | df_all["Category"].str.lower().str.contains(ql, na=False)
+        ]
 
-# Columns and default sort
-cols_show = ["Name", "Ticker", "Category", "Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
-df_all = df_all[cols_show].sort_values("Score", ascending=False)
-df_all = df_all.reset_index(drop=True)
+    cols_show = ["Name", "Ticker", "Category", "Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
+    df_all = df_all[cols_show].sort_values("Score", ascending=False).reset_index(drop=True)
 
-# Render: clickable sort headers built-in; width/formatting via column_config
-st.dataframe(
-    df_all,
-    use_container_width=True,
-    height=520,
-    hide_index=True,  # <- hides the leftmost index column
-    column_config={
-        "Name":     st.column_config.TextColumn(width="medium"),
-        "Ticker":   st.column_config.TextColumn(width="small"),
-        "Category": st.column_config.TextColumn(width="medium"),
-        "Score":    st.column_config.NumberColumn(format="%.0f",  help="Current MM Score",           width="small"),
-        "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", help="Change vs prior close",      width="small"),
-        "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", help="Change week-to-date",        width="small"),
-        "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", help="Change month-to-date",       width="small"),
-        "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", help="Change quarter-to-date",     width="small"),
-    },
-)
-
+    st.dataframe(
+        df_all,
+        use_container_width=True,   # fits to the width of the middle column
+        height=520,
+        hide_index=True,
+        column_config={
+            "Name":     st.column_config.TextColumn(width="medium"),
+            "Ticker":   st.column_config.TextColumn(width="small"),
+            "Category": st.column_config.TextColumn(width="medium"),
+            "Score":    st.column_config.NumberColumn(format="%.0f",  width="small", help="Current MM Score"),
+            "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", width="small", help="Change vs prior close"),
+            "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change week-to-date"),
+            "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change month-to-date"),
+            "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change quarter-to-date"),
+        },
+    )
 
 # -------------------------
 # Footer disclaimer
