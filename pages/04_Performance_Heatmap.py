@@ -695,10 +695,10 @@ with mid:
             "Name":     st.column_config.TextColumn(width="medium"),
             "Ticker":   st.column_config.TextColumn(width="small"),
             "Category": st.column_config.TextColumn(width="medium"),
-            "Daily":    st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Day % change"),
-            "WTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Week-to-date % change"),
-            "MTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Month-to-date % change"),
-            "QTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Quarter-to-date % change"),
+            "Daily":    st.column_config.NumberColumn(format="%.2f%%", width="small", help="Day % change"),
+            "WTD":      st.column_config.NumberColumn(format="%.2f%%", width="small", help="Week-to-date % change"),
+            "MTD":      st.column_config.NumberColumn(format="%.2f%%", width="small", help="Month-to-date % change"),
+            "QTD":      st.column_config.NumberColumn(format="%.2f%%", width="small", help="Quarter-to-date % change"),
         },
     )
 
