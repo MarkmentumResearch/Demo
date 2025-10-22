@@ -627,6 +627,92 @@ if view_choice in ("Heatmap", "Both"):
     with center:
         st.altair_chart(hm_sel, use_container_width=False)
 
+
+
+# =========================
+# All Tickers — Sortable Table (Performance)
+# =========================
+
+# small vertical breathing room
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+# Center the quick filter on top (same UX as Markmentum page)
+flt_col1, flt_col2, flt_col3 = st.columns([3, 1, 3])
+with flt_col2:
+    q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
+# Width wrapper so the table doesn't span the full page
+pad_l, mid, pad_r = st.columns([1, 2.2, 1])  # tweak 2.2 wider/narrower
+with mid:
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            All Tickers — Sortable Table
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:14px; font-weight:500; color:#6b7280;">
+            % change by ticker and timeframe across all categories
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Build from the latest row per ticker (already computed earlier as `latest`)
+    # Rename columns to match display headers
+    df_all = latest.rename(columns={
+        "Ticker_name": "Name",
+        "day_pct_change": "Daily",
+        "week_pct_change": "WTD",
+        "month_pct_change": "MTD",
+        "quarter_pct_change": "QTD",
+    }).copy()
+
+    # Optional quick filter
+    if q:
+        ql = q.strip().lower()
+        df_all = df_all[
+            df_all["Name"].str.lower().str.contains(ql, na=False)
+            | df_all["Ticker"].str.lower().str.contains(ql, na=False)
+            | df_all["Category"].str.lower().str.contains(ql, na=False)
+        ]
+
+    # Final columns + default sort by Category then Ticker (A→Z)
+    cols_show = ["Name", "Ticker", "Category", "Daily", "WTD", "MTD", "QTD"]
+    df_all = (df_all[cols_show]
+              .sort_values(["Category", "Ticker"], ascending=[True, True])
+              .reset_index(drop=True))
+
+    # Render compact, sortable table (percent formatting)
+    st.dataframe(
+        df_all,
+        use_container_width=True,   # fits to middle column
+        height=520,
+        hide_index=True,
+        column_config={
+            "Name":     st.column_config.TextColumn(width="medium"),
+            "Ticker":   st.column_config.TextColumn(width="small"),
+            "Category": st.column_config.TextColumn(width="medium"),
+            "Daily":    st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Day % change"),
+            "WTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Week-to-date % change"),
+            "MTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Month-to-date % change"),
+            "QTD":      st.column_config.NumberColumn(format="+%.2f%%", width="small", help="Quarter-to-date % change"),
+        },
+    )
+
+
+
+
+
+
+
+
+
+
+
+
 # -------------------------
 # Footer disclaimer
 # -------------------------
