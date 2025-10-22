@@ -679,10 +679,10 @@ with mid:
             "Ticker":   st.column_config.TextColumn(width="small"),
             "Category": st.column_config.TextColumn(width="medium"),
             "Rank":     st.column_config.NumberColumn(format="%.0f",  width="small", help="Sharpe Percentile Rank (0–100)"),
-            "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", width="small", help="Daily change in Rank"),
-            "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Week-to-date change in Rank"),
-            "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Month-to-date change in Rank"),
-            "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Quarter-to-date change in Rank"),
+            "ΔDaily":   st.column_config.NumberColumn(format="%.0f", width="small", help="Daily change in Rank"),
+            "ΔWTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Week-to-date change in Rank"),
+            "ΔMTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Month-to-date change in Rank"),
+            "ΔQTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Quarter-to-date change in Rank"),
         },
     )
 
