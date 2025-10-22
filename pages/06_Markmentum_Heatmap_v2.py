@@ -653,7 +653,7 @@ st.markdown(
 )
 
 # Basic text filter (Name / Ticker / Category)
-flt_col1, flt_col2, flt_col3 = st.columns([1,1.5,1])
+flt_col1, flt_col2, flt_col3 = st.columns([1,1,1])
 with flt_col2:
     q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
 
@@ -674,7 +674,7 @@ df_all = df_all.reset_index(drop=True)
 # Render: clickable sort headers built-in; width/formatting via column_config
 st.dataframe(
     df_all,
-    use_container_width=False,
+    use_container_width=True,
     height=520,
     hide_index=True,  # <- hides the leftmost index column
     column_config={
