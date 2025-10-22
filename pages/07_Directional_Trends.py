@@ -663,7 +663,7 @@ with mid:
     })
 
     # default sort strongest ST uptrends first (tweak to taste)
-    df_all = df_all.sort_values(["ST", "MT", "LT"], ascending=False).reset_index(drop=True)
+    df_all = df_all.sort_values(["Category", "Ticker"], ascending=[True, True]).reset_index(drop=True)
 
     # render compact, sortable table
     st.dataframe(
