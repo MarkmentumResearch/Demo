@@ -621,6 +621,73 @@ if view_choice in ("Heatmap","Both"):
     with center:
         st.altair_chart(hm_sel, use_container_width=False)
 
+
+# =========================
+# All Tickers — Sortable Table (Sharpe Rank)
+# =========================
+
+#st.markdown("<br>", unsafe_allow_html=True)
+#st.markdown("<br>", unsafe_allow_html=True)
+
+# Center the block and cap its width (adjust middle weight to tune width)
+pad_l, mid, pad_r = st.columns([1, 2.2, 1])
+with mid:
+    st.markdown(
+        """
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            All Tickers — Sortable Table
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:14px; font-weight:500; color:#6b7280;">
+            Current Sharpe Percentile Rank and timeframe changes across all categories
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Quick filter
+    f1, f2, f3 = st.columns([1, 1, 1])
+    with f2:
+        q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
+    # Use the 'latest' frame already built above
+    base = latest.copy()
+    if q:
+        ql = q.strip().lower()
+        base = base[
+            base["Name"].str.lower().str.contains(ql, na=False)
+            | base["Ticker"].str.lower().str.contains(ql, na=False)
+            | base["Category"].str.lower().str.contains(ql, na=False)
+        ]
+
+    # Columns + default sort by Category then Ticker (A→Z)
+    df_all = (
+        base[["Name", "Ticker", "Category", "Rank", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]]
+        .sort_values(["Category", "Ticker"], ascending=[True, True])
+        .reset_index(drop=True)
+    )
+
+    # Render compact, sortable table
+    st.dataframe(
+        df_all,
+        use_container_width=True,   # fits to the middle column width
+        height=520,
+        hide_index=True,
+        column_config={
+            "Name":     st.column_config.TextColumn(width="medium"),
+            "Ticker":   st.column_config.TextColumn(width="small"),
+            "Category": st.column_config.TextColumn(width="medium"),
+            "Rank":     st.column_config.NumberColumn(format="%.0f",  width="small", help="Sharpe Percentile Rank (0–100)"),
+            "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", width="small", help="Daily change in Rank"),
+            "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Week-to-date change in Rank"),
+            "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Month-to-date change in Rank"),
+            "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Quarter-to-date change in Rank"),
+        },
+    )
+
+
+
 # -------------------------
 # Footer disclaimer
 # -------------------------
