@@ -674,7 +674,7 @@ df_all = df_all.reset_index(drop=True)
 # Render: clickable sort headers built-in; width/formatting via column_config
 st.dataframe(
     df_all,
-    use_container_width=True,
+    use_container_width=False,
     height=520,
     hide_index=True,  # <- hides the leftmost index column
     column_config={
