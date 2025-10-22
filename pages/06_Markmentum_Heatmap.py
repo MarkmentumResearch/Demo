@@ -689,10 +689,10 @@ with mid:
             "Ticker":   st.column_config.TextColumn(width="small"),
             "Category": st.column_config.TextColumn(width="medium"),
             "Score":    st.column_config.NumberColumn(format="%.0f",  width="small", help="Current MM Score"),
-            "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", width="small", help="Change vs prior close"),
-            "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change week-to-date"),
-            "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change month-to-date"),
-            "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", width="small", help="Change quarter-to-date"),
+            "ΔDaily":   st.column_config.NumberColumn(format="%.0f", width="small", help="Change vs prior close"),
+            "ΔWTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Change week-to-date"),
+            "ΔMTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Change month-to-date"),
+            "ΔQTD":     st.column_config.NumberColumn(format="%.0f", width="small", help="Change quarter-to-date"),
         },
     )
 
