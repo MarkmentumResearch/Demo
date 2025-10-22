@@ -669,21 +669,23 @@ if q:
 # Columns and default sort
 cols_show = ["Name", "Ticker", "Category", "Score", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
 df_all = df_all[cols_show].sort_values("Score", ascending=False)
+df_all = df_all.reset_index(drop=True)
 
 # Render: clickable sort headers built-in; width/formatting via column_config
 st.dataframe(
     df_all,
     use_container_width=True,
     height=520,
+    hide_index=True,  # <- hides the leftmost index column
     column_config={
-        "Score":  st.column_config.NumberColumn(format="%.0f", help="Current MM Score"),
-        "ΔDaily": st.column_config.NumberColumn(format="+%.0f", help="Change vs prior close"),
-        "ΔWTD":   st.column_config.NumberColumn(format="+%.0f", help="Change week-to-date"),
-        "ΔMTD":   st.column_config.NumberColumn(format="+%.0f", help="Change month-to-date"),
-        "ΔQTD":   st.column_config.NumberColumn(format="+%.0f", help="Change quarter-to-date"),
-        "Ticker": st.column_config.TextColumn(help="Use the category table above for a Deep Dive link"),
-        "Name":   st.column_config.TextColumn(width="medium"),
+        "Name":     st.column_config.TextColumn(width="medium"),
+        "Ticker":   st.column_config.TextColumn(width="small"),
         "Category": st.column_config.TextColumn(width="medium"),
+        "Score":    st.column_config.NumberColumn(format="%.0f",  help="Current MM Score",           width="small"),
+        "ΔDaily":   st.column_config.NumberColumn(format="+%.0f", help="Change vs prior close",      width="small"),
+        "ΔWTD":     st.column_config.NumberColumn(format="+%.0f", help="Change week-to-date",        width="small"),
+        "ΔMTD":     st.column_config.NumberColumn(format="+%.0f", help="Change month-to-date",       width="small"),
+        "ΔQTD":     st.column_config.NumberColumn(format="+%.0f", help="Change quarter-to-date",     width="small"),
     },
 )
 
