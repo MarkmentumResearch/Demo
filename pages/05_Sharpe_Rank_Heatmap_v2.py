@@ -626,7 +626,7 @@ if view_choice in ("Heatmap","Both"):
 # All Tickers — Sortable Table (Sharpe Rank)
 # =========================
 
-st.markdown("<br>", unsafe_allow_html=True)
+#st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Center the block and cap its width (adjust middle weight to tune width)
