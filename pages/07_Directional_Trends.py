@@ -587,6 +587,106 @@ if not df.empty:
         unsafe_allow_html=True,
     )
 
+
+# =========================
+# All Tickers — Sortable Table (Directional Trends)
+# =========================
+
+#flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
+#with flt_col2:
+#    q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+# width wrapper so it doesn't span the whole page
+pad_l, mid, pad_r = st.columns([1, 2.8, 1])  # tweak 2.2 → wider/narrower
+with mid:
+    st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="text-align:center; margin:0 0 8px;
+                    font-size:16px; font-weight:700; color:#1a1a1a;">
+            All Tickers — Sortable Table
+        </div>
+        <div style="text-align:center; margin:-6px 0 14px;
+                    font-size:14px; font-weight:500; color:#6b7280;">
+            Current directional trends and timeframe changes across all categories
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # -------- dataset (latest row per ticker) --------
+    # reuse if already built; else compute
+    if "latest" not in locals():
+        df["_dt"] = pd.to_datetime(df["Date"], errors="coerce")
+        latest = (
+            df.sort_values(["Ticker", "_dt"], ascending=[True, False])
+              .drop_duplicates(subset=["Ticker"], keep="first")
+        )
+
+    base = latest.copy()
+
+    # optional quick filter
+    flt_col1, flt_col2, flt_col3 = st.columns([1,1,1])
+    with flt_col2:
+        q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+    #q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+    if q:
+        ql = q.strip().lower()
+        base = base[
+            base["Ticker_name"].str.lower().str.contains(ql, na=False)
+            | base["Ticker"].str.lower().str.contains(ql, na=False)
+            | base["Category"].str.lower().str.contains(ql, na=False)
+        ]
+
+    # compute Tape Bias label (text-only for the sortable grid)
+    tape = [m2_label(stv, mtv, ltv, stc, mtc)
+            for stv, mtv, ltv, stc, mtc in zip(
+                base["st_trend"], base["mt_trend"], base["lt_trend"],
+                base["st_trend_change"], base["mt_trend_change"]
+            )]
+
+    # build display frame (percent values shown as numbers suitable for NumberColumn formatting)
+    df_all = pd.DataFrame({
+        "Name":     base["Ticker_name"],
+        "Ticker":   base["Ticker"],
+        "Category": base["Category"],
+        "ST":       base["st_trend"] * 100.0,
+        "MT":       base["mt_trend"] * 100.0,
+        "LT":       base["lt_trend"] * 100.0,
+        "ΔST":      base["st_trend_change"] * 100.0,
+        "ΔMT":      base["mt_trend_change"] * 100.0,
+        "ΔLT":      base["lt_trend_change"] * 100.0,
+        "Tape Bias": tape,
+    })
+
+    # default sort strongest ST uptrends first (tweak to taste)
+    df_all = df_all.sort_values(["ST", "MT", "LT"], ascending=False).reset_index(drop=True)
+
+    # render compact, sortable table
+    st.dataframe(
+        df_all,
+        use_container_width=True,   # fits to the middle column width
+        height=520,
+        hide_index=True,
+        column_config={
+            "Name":     st.column_config.TextColumn(width="medium"),
+            "Ticker":   st.column_config.TextColumn(width="small"),
+            "Category": st.column_config.TextColumn(width="medium"),
+            "ST":       st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Short-term trend"),
+            "MT":       st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Mid-term trend"),
+            "LT":       st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Long-term trend"),
+            "ΔST":      st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Short-term daily change"),
+            "ΔMT":      st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Mid-term daily change"),
+            "ΔLT":      st.column_config.NumberColumn(format="+%.1f%%", width="small", help="Long-term daily change"),
+            "Tape Bias": st.column_config.TextColumn(width="medium"),
+        },
+    )
+
+
+
 # -------------------------
 # Footer disclaimer
 # -------------------------
