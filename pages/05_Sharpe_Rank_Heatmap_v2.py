@@ -627,7 +627,7 @@ if view_choice in ("Heatmap","Both"):
 # =========================
 
 #st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True)
+#st.markdown("<br>", unsafe_allow_html=True)
 
 # Center the block and cap its width (adjust middle weight to tune width)
 pad_l, mid, pad_r = st.columns([1, 2.2, 1])
