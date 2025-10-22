@@ -637,7 +637,8 @@ if view_choice in ("Heatmap","Both"):
 # =========================
 # All Tickers — Sortable Table
 # =========================
-
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
 with flt_col2:
     q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
