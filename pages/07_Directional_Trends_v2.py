@@ -628,7 +628,10 @@ with mid:
     base = latest.copy()
 
     # optional quick filter
+    flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
+    with flt_col2:
     q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+    #q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
     if q:
         ql = q.strip().lower()
         base = base[
