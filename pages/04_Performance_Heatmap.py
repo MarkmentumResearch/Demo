@@ -654,7 +654,7 @@ with mid:
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                     font-size:14px; font-weight:500; color:#6b7280;">
-            % change by ticker and timeframe across all categories
+            % change by ticker and timeframe across all tickers
         </div>
         """,
         unsafe_allow_html=True,

@@ -640,7 +640,7 @@ with mid:
         </div>
         <div style="text-align:center; margin:-6px 0 14px;
                     font-size:14px; font-weight:500; color:#6b7280;">
-            Current Sharpe Percentile Rank and timeframe changes across all categories
+            Current Sharpe Percentile Rank and timeframe changes across all tickers
         </div>
         """,
         unsafe_allow_html=True,
