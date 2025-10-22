@@ -653,7 +653,7 @@ st.markdown(
 )
 
 # Basic text filter (Name / Ticker / Category)
-flt_col1, flt_col2, flt_col3 = st.columns([1,1,1])
+flt_col1, flt_col2, flt_col3 = st.columns([1,1.5,1])
 with flt_col2:
     q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
 
