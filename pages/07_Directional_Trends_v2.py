@@ -593,7 +593,7 @@ if not df.empty:
 # =========================
 
 # width wrapper so it doesn't span the whole page
-pad_l, mid, pad_r = st.columns([1, 2.5, 1])  # tweak 2.2 → wider/narrower
+pad_l, mid, pad_r = st.columns([1, 2.8, 1])  # tweak 2.2 → wider/narrower
 with mid:
     st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
     st.markdown(
