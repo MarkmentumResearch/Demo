@@ -596,7 +596,8 @@ if not df.empty:
 #with flt_col2:
 #    q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
 
-
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # width wrapper so it doesn't span the whole page
 pad_l, mid, pad_r = st.columns([1, 2.8, 1])  # tweak 2.2 → wider/narrower
