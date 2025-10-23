@@ -98,11 +98,14 @@ with narrow_container(3):
         s = p.stat()
         ts = s.st_mtime
         dt_local = (
-            datetime.utcfromtimestamp(ts)                      # treat POSIX ts as UTC
-            .replace(tzinfo=ZoneInfo("UTC"))                   # make it timezone-aware
-            .astimezone(ZoneInfo(APP_TZ))                      # convert to display TZ
+            datetime.utcfromtimestamp(ts)      # treat POSIX ts as UTC
+            .replace(tzinfo=ZoneInfo("UTC"))   # make it timezone-aware
+            .astimezone(ZoneInfo(APP_TZ))      # convert to display TZ (e.g., America/New_York)
         )
-        updated_date_str = dt_local.strftime("%Y-%m-%d")       # date only
+        updated_date_str = dt_local.strftime("%Y-%m-%d")  # date only
+
+        # ✅ return the tuple (size, updated_date_str, mtime_epoch)
+        return s.st_size, updated_date_str, int(s.st_mtime)
 
     @st.cache_data(show_spinner=False)
     def _read_bytes_cached(path_str: str, mtime_epoch: int):
