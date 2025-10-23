@@ -639,9 +639,7 @@ if view_choice in ("Heatmap","Both"):
 # =========================
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
-flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
-with flt_col2:
-    q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
 
 
 pad_l, mid, pad_r = st.columns([1, 2.2, 1])  # tweak 2.2 -> wider/narrower as needed
@@ -664,6 +662,10 @@ with mid:
 
     # Filter input
     #q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+    flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
+    with flt_col2:
+        q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
 
     df_all = latest.copy()
     if q:
