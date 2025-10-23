@@ -51,9 +51,9 @@ button[kind="primary"] {
 """, unsafe_allow_html=True)
 
 # ---------------- Location ------------------
-APP_DIR = Path(__file__).resolve().parent
-if APP_DIR.name == "pages":
-    APP_DIR = APP_DIR.parent
+#APP_DIR = Path(__file__).resolve().parent
+#if APP_DIR.name == "pages":
+#    APP_DIR = APP_DIR.parent
 EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve()
 
 st.markdown("## Downloads")
