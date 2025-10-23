@@ -41,7 +41,7 @@ EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 st.markdown("## Downloads")
 
 
-st.caption(f"Export folder: `{EXPORT_DIR}`")
+#st.caption(f"Export folder: `{EXPORT_DIR}`")
 
 # ---------- Catalog: File → (Title, Output Name) ----------
 CATALOG = {
