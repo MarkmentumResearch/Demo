@@ -696,6 +696,16 @@ with mid:
         },
     )
 
+    # Download button centered with the table (same column)
+    st.download_button(
+        "Download current view (CSV)",
+        view.to_csv(index=False).encode("utf-8"),
+        file_name="universe_view.csv",
+        type="secondary",
+    )
+
+
+
 # -------------------------
 # Footer disclaimer
 # -------------------------
