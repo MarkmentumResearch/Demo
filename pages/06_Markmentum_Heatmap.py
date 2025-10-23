@@ -696,7 +696,7 @@ with mid:
         },
     )
 
-    # Download button centered with the table (same column)
+ 
     # Download button centered with the table (same column)
     csv_bytes = df_all.to_csv(index=False).encode("utf-8")
     st.download_button(

@@ -637,10 +637,7 @@ if view_choice in ("Heatmap", "Both"):
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Center the quick filter on top (same UX as Markmentum page)
-flt_col1, flt_col2, flt_col3 = st.columns([3, 1, 3])
-with flt_col2:
-    q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
 
 # Width wrapper so the table doesn't span the full page
 pad_l, mid, pad_r = st.columns([1, 2.2, 1])  # tweak 2.2 wider/narrower
@@ -669,6 +666,14 @@ with mid:
         "month_pct_change": "MTD",
         "quarter_pct_change": "QTD",
     }).copy()
+
+
+    # Center the quick filter on top (same UX as Markmentum page)
+    flt_col1, flt_col2, flt_col3 = st.columns([1.5, 1, 1.5])
+    with flt_col2:
+        q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
+
+
 
     # Optional quick filter
     if q:
@@ -703,6 +708,16 @@ with mid:
     )
 
 
+    # Download button centered with the table (same column)
+    csv_bytes = df_all.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="Download current view (CSV)",
+        data=csv_bytes,
+        file_name=f"Performance_{date_str.replace('/','-')}.csv",
+        mime="text/csv",
+        type="secondary",
+        key="dl_markmentum_alltickers",
+    )
 
 
 
