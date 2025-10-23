@@ -23,33 +23,21 @@ def _image_b64(p: Path) -> str:
 # -------------------------
 # Header: logo centered
 # -------------------------
-st.markdown("""
-<style>
-#mm-logo img { height:auto !important; max-height:none !important; }
-</style>
-""", unsafe_allow_html=True)
-
 if LOGO_PATH.exists():
     st.markdown(
         f"""
-        <div id="mm-logo" style="display:flex;justify-content:center;margin:12px 0 8px;">
-          <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" style="width:420px;height:auto;"/>
+        <div style="text-align:center; margin: 8px 0 16px;">
+            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
         </div>
         """,
         unsafe_allow_html=True,
     )
-
 #st.markdown("## Downloads")
 
 
 # compact, centered content
 #st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
-st.markdown("""
-<style>
-.main .block-container{ max-width: 980px; padding-top: 1rem; padding-bottom: 2rem; }
-.mm-center { display:flex; justify-content:center; }
-</style>
-""", unsafe_allow_html=True)
+
 
 st.markdown("## Downloads")
 
