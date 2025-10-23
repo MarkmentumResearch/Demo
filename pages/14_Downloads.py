@@ -86,6 +86,8 @@ with narrow_container(3):
             n /= 1024
         return f"{n:.0f} PB"
 
+    APP_TZ = os.getenv("MARKMENTUM_TZ", "America/New_York")  # change if you prefer
+
     @st.cache_data(show_spinner=False)
     def _file_info(path_str: str):
         """Return (size, updated_date_str, mtime_epoch) if file exists; else (None, None, None)."""
@@ -93,10 +95,8 @@ with narrow_container(3):
         if not p.exists():
             return None, None, None
         s = p.stat()
-        # local timezone
-        local_tz = datetime.now().astimezone().tzinfo
-        dt_local = datetime.fromtimestamp(s.st_mtime, tz=local_tz)
-        updated_date_str = dt_local.strftime("%Y-%m-%d")   # <-- date only
+        dt_local = datetime.fromtimestamp(s.st_mtime, tz=ZoneInfo(APP_TZ))
+        updated_date_str = dt_local.strftime("%Y-%m-%d")  # date only
         return s.st_size, updated_date_str, int(s.st_mtime)
 
     @st.cache_data(show_spinner=False)
