@@ -33,6 +33,9 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
+st.markdown("## Downloads")
+
+
 # compact, centered content
 #st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
 st.markdown("""
@@ -42,7 +45,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("## Downloads")
+#st.markdown("## Downloads")
 
 # ---------------- Catalog ----------------
 CATALOG = {
