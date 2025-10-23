@@ -31,19 +31,34 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-# ---------- Where CSVs live ----------
-# Default to APP_DIR/output; allow override with env var
+st.markdown("## Downloads")
+
+# ---------------- Page & CSS ----------------
+st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
+
+# compact, centered content
+st.markdown("""
+<style>
+.main .block-container{
+  max-width: 980px;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+button[kind="primary"] {
+  padding-top: 0.5rem; padding-bottom: 0.5rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------- Location ------------------
+APP_DIR = Path(__file__).resolve().parent
+if APP_DIR.name == "pages":
+    APP_DIR = APP_DIR.parent
 EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve()
-EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-
-
 
 st.markdown("## Downloads")
 
-
-#st.caption(f"Export folder: `{EXPORT_DIR}`")
-
-# ---------- Catalog: File → (Title, Output Name) ----------
+# ---------------- Catalog -------------------
 CATALOG = {
     "stat_box.csv":                    ("Stat Box",                          "stat_box.csv"),
     "signal_box.csv":                  ("Signal Box",                        "signal_box.csv"),
@@ -73,90 +88,95 @@ CATALOG = {
     "qry_graph_data_24.csv":           ("Long-Term Trend Line",              "Long-Term Trend Line.csv"),
 }
 
-# ---------- Helpers ----------
-def _human_size(n: int) -> str:
-    for unit in ["B","KB","MB","GB","TB"]:
-        if n < 1024:
-            return f"{n:.0f} {unit}"
+# ---------------- Helpers -------------------
+def _human_size(n: int | None) -> str:
+    if n is None: return "—"
+    for u in ["B","KB","MB","GB","TB"]:
+        if n < 1024: return f"{n:.0f} {u}"
         n /= 1024
     return f"{n:.0f} PB"
 
-def _read_bytes(p: Path) -> bytes:
-    with open(p, "rb") as f:
+@st.cache_data(show_spinner=False)
+def _file_info(path_str: str):
+    """Return (size, mtime_iso, mtime_epoch) for an existing file, else Nones."""
+    p = Path(path_str)
+    if not p.exists(): return None, None, None
+    s = p.stat()
+    return s.st_size, datetime.fromtimestamp(s.st_mtime).strftime("%Y-%m-%d %H:%M"), int(s.st_mtime)
+
+@st.cache_data(show_spinner=False)
+def _read_bytes_cached(path_str: str, mtime_epoch: int):
+    """Read bytes; cache key includes mtime so it refreshes only when file changes."""
+    with open(path_str, "rb") as f:
         return f.read()
 
-# ---------- Gather existing files ----------
+@st.cache_data(show_spinner=False)
+def _zip_all_cached(files_with_outnames_and_mtimes: tuple[tuple[str,str,int], ...]):
+    """Build zip once per (path,outname,mtime) signature."""
+    buf = BytesIO()
+    with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for path_str, outname, _mt in files_with_outnames_and_mtimes:
+            with open(path_str, "rb") as f:
+                zf.writestr(outname, f.read())
+    buf.seek(0)
+    return buf.getvalue()
+
+# ---------------- Build rows ----------------
 rows = []
 for fname, (title, outname) in CATALOG.items():
-    fpath = EXPORT_DIR / fname
-    if fpath.exists():
-        stat = fpath.stat()
-        rows.append({
-            "title": title,
-            "filename": fname,
-            "outname": outname,
-            "path": fpath,
-            "size": stat.st_size,
-            "updated": datetime.fromtimestamp(stat.st_mtime),
-        })
-    else:
-        rows.append({
-            "title": title,
-            "filename": fname,
-            "outname": outname,
-            "path": None,
-            "size": None,
-            "updated": None,
-        })
+    fpath = (EXPORT_DIR / fname).resolve()
+    size, updated_str, mtime_epoch = _file_info(str(fpath))
+    rows.append({
+        "title": title, "outname": outname,
+        "path": str(fpath) if mtime_epoch else None,
+        "size": size, "updated": updated_str, "mtime": mtime_epoch
+    })
 
-# ---------- Download ALL button (only existing files) ----------
-existing = [r for r in rows if r["path"] is not None]
+existing = [r for r in rows if r["path"]]
+
+# ---------------- Download ALL ----------------
 if existing:
-    zip_buf = BytesIO()
-    with zipfile.ZipFile(zip_buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-        for r in existing:
-            zf.writestr(r["outname"], _read_bytes(r["path"]))
-    zip_buf.seek(0)
+    sig = tuple((r["path"], r["outname"], r["mtime"]) for r in existing)
+    zip_bytes = _zip_all_cached(sig)
     st.download_button(
         "Download ALL (.zip)",
-        data=zip_buf,
+        data=zip_bytes,
         file_name="markmentum_downloads.zip",
         mime="application/zip",
         type="primary",
-        use_container_width=True,
+        use_container_width=True
     )
 else:
     st.info("No exports found yet. When the nightly job runs, files will appear here.")
 
 st.divider()
-
-# ---------- Table (no search; every possible file is listed) ----------
 st.markdown("#### Files")
-hdr = st.columns([3,3,1.5,1.2,1.4])
-hdr[0].markdown("**Title**")
-hdr[1].markdown("**File**")
-hdr[2].markdown("**Updated**")
-hdr[3].markdown("**Size**")
-hdr[4].markdown("**Download**")
+
+# ---------- Header (compact: Title • Updated • Size • Download) ----------
+h1, h2, h3, h4 = st.columns([3.2, 1.6, 1.2, 1.4])
+h1.markdown("**Title**")
+h2.markdown("**Updated**")
+h3.markdown("**Size**")
+h4.markdown("**Download**")
 
 for r in rows:
-    c1, c2, c3, c4, c5 = st.columns([3,3,1.5,1.2,1.4])
+    c1, c2, c3, c4 = st.columns([3.2, 1.6, 1.2, 1.4])
     c1.write(r["title"])
-    c2.code(r["filename"], language=None)
-    c3.write(r["updated"].strftime("%Y-%m-%d %H:%M") if r["updated"] else "—")
-    c4.write(_human_size(r["size"]) if r["size"] is not None else "—")
-    if r["path"] is None:
-        c5.button("Not Available", disabled=True, use_container_width=True, key=f"na-{r['filename']}")
+    c2.write(r["updated"] or "—")
+    c3.write(_human_size(r["size"]))
+    if not r["path"]:
+        c4.button("Not Available", disabled=True, use_container_width=True, key=f"na-{r['title']}")
     else:
-        with open(r["path"], "rb") as f:
-            c5.download_button(
-                "Download",
-                data=f.read(),
-                file_name=r["outname"],
-                mime="text/csv",
-                key=f"dl-{r['filename']}",
-                use_container_width=True,
-            )
+        data = _read_bytes_cached(r["path"], r["mtime"])
+        c4.download_button(
+            "Download",
+            data=data,
+            file_name=r["outname"],
+            mime="text/csv",
+            key=f"dl-{r['outname']}",
+            use_container_width=True,
+        )
+
 
 # -------------------------
 # Footer disclaimer
