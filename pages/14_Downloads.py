@@ -21,35 +21,31 @@ EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve(
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
         return base64.b64encode(f.read()).decode()
-
+# -------------------------
+# Header: logo centered
+# -------------------------
 if LOGO_PATH.exists():
     st.markdown(
         f"""
         <div style="text-align:center; margin: 8px 0 16px;">
-            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="420">
+            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-
 # compact, centered content
+st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
 st.markdown("""
 <style>
-.main .block-container{
-  max-width: 980px;
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-}
-button[kind="primary"] {
-  padding-top: 0.5rem; padding-bottom: 0.5rem;
-}
+.main .block-container{ max-width: 980px; padding-top: 1rem; padding-bottom: 2rem; }
+.mm-center { display:flex; justify-content:center; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("## Downloads")
 
-# ---------------- Catalog -------------------
+# ---------------- Catalog ----------------
 CATALOG = {
     "stat_box.csv":                    ("Stat Box",                          "stat_box.csv"),
     "signal_box.csv":                  ("Signal Box",                        "signal_box.csv"),
@@ -79,7 +75,7 @@ CATALOG = {
     "qry_graph_data_24.csv":           ("Long-Term Trend Line",              "Long-Term Trend Line.csv"),
 }
 
-# ---------------- Helpers -------------------
+# ---------------- Helpers ----------------
 def _human_size(n: int | None) -> str:
     if n is None: return "—"
     for u in ["B","KB","MB","GB","TB"]:
@@ -89,7 +85,7 @@ def _human_size(n: int | None) -> str:
 
 @st.cache_data(show_spinner=False)
 def _file_info(path_str: str):
-    """Return (size, mtime_iso, mtime_epoch) for an existing file, else Nones."""
+    """Return (size, updated_str, mtime_epoch) if file exists; else (None, None, None)."""
     p = Path(path_str)
     if not p.exists(): return None, None, None
     s = p.stat()
@@ -97,22 +93,21 @@ def _file_info(path_str: str):
 
 @st.cache_data(show_spinner=False)
 def _read_bytes_cached(path_str: str, mtime_epoch: int):
-    """Read bytes; cache key includes mtime so it refreshes only when file changes."""
+    """Read bytes; cache by mtime so we only re-read when a file changes."""
     with open(path_str, "rb") as f:
         return f.read()
 
-@st.cache_data(show_spinner=False)
-def _zip_all_cached(files_with_outnames_and_mtimes: tuple[tuple[str,str,int], ...]):
-    """Build zip once per (path,outname,mtime) signature."""
+def _build_zip(files):
+    """Build zip NOW (called only when user clicks)."""
     buf = BytesIO()
     with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-        for path_str, outname, _mt in files_with_outnames_and_mtimes:
+        for path_str, outname in files:
             with open(path_str, "rb") as f:
                 zf.writestr(outname, f.read())
     buf.seek(0)
     return buf.getvalue()
 
-# ---------------- Build rows ----------------
+# ---------------- Rows --------------------
 rows = []
 for fname, (title, outname) in CATALOG.items():
     fpath = (EXPORT_DIR / fname).resolve()
@@ -123,27 +118,10 @@ for fname, (title, outname) in CATALOG.items():
         "size": size, "updated": updated_str, "mtime": mtime_epoch
     })
 
-existing = [r for r in rows if r["path"]]
-
-# ---------------- Download ALL ----------------
-if existing:
-    sig = tuple((r["path"], r["outname"], r["mtime"]) for r in existing)
-    zip_bytes = _zip_all_cached(sig)
-    st.download_button(
-        "Download ALL (.zip)",
-        data=zip_bytes,
-        file_name="markmentum_downloads.zip",
-        mime="application/zip",
-        type="primary",
-        use_container_width=True
-    )
-else:
-    st.info("No exports found yet. When the nightly job runs, files will appear here.")
-
+# ---------------- Table (no File col) -----
 st.divider()
 st.markdown("#### Files")
 
-# ---------- Header (compact: Title • Updated • Size • Download) ----------
 h1, h2, h3, h4 = st.columns([3.2, 1.6, 1.2, 1.4])
 h1.markdown("**Title**")
 h2.markdown("**Updated**")
@@ -167,6 +145,25 @@ for r in rows:
             key=f"dl-{r['outname']}",
             use_container_width=True,
         )
+
+# ---------------- Download ALL (at bottom; build on click) -----
+st.divider()
+existing = [(r["path"], r["outname"]) for r in rows if r["path"]]
+if existing:
+    build = st.button("Prepare Download ALL (.zip)", type="primary", use_container_width=True)
+    if build:
+        st.session_state["zip_bytes"] = _build_zip(existing)
+        st.success("ZIP ready.")
+    if "zip_bytes" in st.session_state:
+        st.download_button(
+            "Download ALL (.zip)",
+            data=st.session_state["zip_bytes"],
+            file_name="markmentum_downloads.zip",
+            mime="application/zip",
+            use_container_width=True,
+        )
+else:
+    st.info("No exports found yet. When the nightly job runs, files will appear here.")
 
 
 # -------------------------
