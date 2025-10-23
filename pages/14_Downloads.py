@@ -4,6 +4,7 @@ from io import BytesIO
 import zipfile
 import os
 import streamlit as st
+import base64
 
 # ---------- Page setup ----------
 st.set_page_config(page_title="Markmentum - Downloads", layout="wide")
