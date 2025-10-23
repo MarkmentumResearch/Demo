@@ -88,11 +88,16 @@ with narrow_container(3):
 
     @st.cache_data(show_spinner=False)
     def _file_info(path_str: str):
-        """Return (size, updated_str, mtime_epoch) if file exists; else (None, None, None)."""
+        """Return (size, updated_date_str, mtime_epoch) if file exists; else (None, None, None)."""
         p = Path(path_str)
-        if not p.exists(): return None, None, None
+        if not p.exists():
+            return None, None, None
         s = p.stat()
-        return s.st_size, datetime.fromtimestamp(s.st_mtime).strftime("%Y-%m-%d %H:%M"), int(s.st_mtime)
+        # local timezone
+        local_tz = datetime.now().astimezone().tzinfo
+        dt_local = datetime.fromtimestamp(s.st_mtime, tz=local_tz)
+        updated_date_str = dt_local.strftime("%Y-%m-%d")   # <-- date only
+        return s.st_size, updated_date_str, int(s.st_mtime)
 
     @st.cache_data(show_spinner=False)
     def _read_bytes_cached(path_str: str, mtime_epoch: int):
