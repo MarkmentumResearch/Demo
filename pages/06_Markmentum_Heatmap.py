@@ -641,9 +641,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 
-
 pad_l, mid, pad_r = st.columns([1, 2.2, 1])  # tweak 2.2 -> wider/narrower as needed
-
 with mid:
     st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
     st.markdown(
