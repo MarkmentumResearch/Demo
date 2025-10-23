@@ -181,6 +181,9 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
   <li><b>Contact</b> – Have questions or feedback? Send us a note and we’ll get back to you as soon as possible.</li>  
+  <li><b>Downloads</b> – Central hub for exporting the same data that powers the Markmentum portal. Includes full-history CSVs for the Stat Box (all tickers, all dates), the latest Signal Box (all tickers, most recent date), and all datasets used in the Deep Dive Dashboard charts. 
+  Each file displays its last-updated timestamp and size, with one-click Download options or a consolidated Download ALL (.zip) built on demand. 
+  Exports refresh nightly and mirror the calculations shown throughout the app—ideal for back-testing, research notes, or integrating Markmentum data into custom models and reports.</li>  
 </ul>
 
 <h3>Methodology</h3>
