@@ -33,7 +33,7 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-st.markdown("## Downloads")
+#st.markdown("## Downloads")
 
 
 # compact, centered content
@@ -45,7 +45,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-#st.markdown("## Downloads")
+st.markdown("## Downloads")
 
 # ---------------- Catalog ----------------
 CATALOG = {
