@@ -165,14 +165,17 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
     The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram.
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
   <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
-  Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap.</li>
+  Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap. 
+  Includes a sortable, searchable, and downloadable table at the bottom.</li>
   <li><b>Sharpe Rank Heatmap</b> – Multi-layered view of risk-adjusted performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker Sharpe Percentile Ranks. 
-  Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market.</li>
+  Displays current rank alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to highlight where relative performance strength or weakness is emerging across the market. 
+  Includes a sortable, searchable, and downloadable table at the bottom.</li>
   <li><b>Markmentum Heatmap</b> – Multi-layered view of opportunity and risk across the entire instrument universe. Begins with key macro tickers and category-level averages, then allows a drill-down by category to see detailed per-ticker positioning. 
-  Displays the current score alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. Together, the table and heatmap reveal where opportunity and risk are shifting over time.</li>
+  Displays the current score alongside Daily, WTD, MTD, and QTD changes, with each timeframe independently scaled for clarity. Together, the table and heatmap reveal where opportunity and risk are shifting over time. 
+  Includes a sortable, searchable, and downloadable table at the bottom.</li>
   <li><b>Directional Trends</b> – Multi-timeframe dashboard visualizing short-, mid-, and long-term directional trends alongside their changes. Displays key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures) and category averages to highlight trend alignment or divergence across time horizons. 
   Includes per-ticker drill-downs by category to show how leadership and rotation are evolving beneath the surface. Color-coded for quick recognition of positive (green) and negative (red) shifts. 
-  Each row includes a Tape Bias field summarizing overall market bias (e.g., Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
+  Each row includes a Tape Bias field summarizing overall market bias (e.g., Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming). Includes a sortable, searchable, and downloadable table at the bottom. </li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Signals</b> – Tactical screens for chase/no chase, watch, up-cycle, crowding, and upside/downside lists to surface where conviction and risk are shifting.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
