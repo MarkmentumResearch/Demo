@@ -39,12 +39,14 @@ if LOGO_PATH.exists():
 #st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
 
 
-st.markdown("## Downloads")
+#st.markdown("## Downloads")
 
 def narrow_container(ratio: float = 3.0):
     return st.columns([1, ratio, 1])[1]
 
 with narrow_container(3):
+
+    st.markdown("## Downloads")
 
     # ---------------- Catalog ----------------
     CATALOG = {
