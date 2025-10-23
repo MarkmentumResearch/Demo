@@ -660,7 +660,7 @@ with mid:
 
     # Filter input
     #q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
-    flt_col1, flt_col2, flt_col3 = st.columns([3,1,3])
+    flt_col1, flt_col2, flt_col3 = st.columns([1.5,1,1.5])
     with flt_col2:
         q = st.text_input("Filter (name, ticker, category)", "", placeholder="e.g., Energy, XLF, Gold")
 
