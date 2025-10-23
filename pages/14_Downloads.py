@@ -7,7 +7,7 @@ import streamlit as st
 import base64
 
 # ---------- Page setup ----------
-st.set_page_config(page_title="Markmentum - Downloads", layout="wide")
+st.set_page_config(page_title="Markmentum – Downloads", layout="wide")
 st.cache_data.clear()
 
 # ---------- Paths / assets ----------
