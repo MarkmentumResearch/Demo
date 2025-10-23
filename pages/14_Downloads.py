@@ -23,11 +23,17 @@ def _image_b64(p: Path) -> str:
 # -------------------------
 # Header: logo centered
 # -------------------------
+st.markdown("""
+<style>
+#mm-logo img { height:auto !important; max-height:none !important; }
+</style>
+""", unsafe_allow_html=True)
+
 if LOGO_PATH.exists():
     st.markdown(
         f"""
-        <div style="text-align:center; margin: 8px 0 16px;">
-            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
+        <div id="mm-logo" style="display:flex;justify-content:center;margin:12px 0 8px;">
+          <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" style="width:420px;height:auto;"/>
         </div>
         """,
         unsafe_allow_html=True,
