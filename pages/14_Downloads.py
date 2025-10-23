@@ -138,14 +138,14 @@ with narrow_container(3):
     st.divider()
     st.markdown("#### Files")
 
-    h1, h3, h4 = st.columns([3.2, 1.2, 1.4])
+    h1, h3, h4 = st.columns([2, 1.2, 1.4])
     h1.markdown("**Title**")
     #h2.markdown("**Updated**")
     h3.markdown("**Size**")
     h4.markdown("**Download**")
 
     for r in rows:
-        c1, c3, c4 = st.columns([3.2, 1.2, 1.4])
+        c1, c3, c4 = st.columns([2, 1.2, 1.4])
         c1.write(r["title"])
         #c2.write(r["updated"] or "—")
         c3.write(_human_size(r["size"]))
