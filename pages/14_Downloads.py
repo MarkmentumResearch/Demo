@@ -31,17 +31,19 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-st.markdown("## Downloads")
-
 # ---------- Where CSVs live ----------
 # Default to APP_DIR/output; allow override with env var
-EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "output")).resolve()
+EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve()
 EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+
+st.markdown("## Downloads")
+
 
 st.caption(f"Export folder: `{EXPORT_DIR}`")
 
-# ---------- Catalog: file → (title, output name) ----------
-# Matches your screenshot mapping
+# ---------- Catalog: File → (Title, Output Name) ----------
 CATALOG = {
     "stat_box.csv":                    ("Stat Box",                          "stat_box.csv"),
     "signal_box.csv":                  ("Signal Box",                        "signal_box.csv"),
@@ -73,8 +75,6 @@ CATALOG = {
 
 # ---------- Helpers ----------
 def _human_size(n: int) -> str:
-    if n is None:
-        return "-"
     for unit in ["B","KB","MB","GB","TB"]:
         if n < 1024:
             return f"{n:.0f} {unit}"
@@ -85,67 +85,69 @@ def _read_bytes(p: Path) -> bytes:
     with open(p, "rb") as f:
         return f.read()
 
-# ---------- Search / filter ----------
-col_filter, col_zip = st.columns([3,1], vertical_alignment="center")
-query = col_filter.text_input("Filter (title or filename)", "", placeholder="e.g., Sharpe, Trend, Probable")
-make_zip = col_zip.checkbox("Prepare zip of visible files", value=True)
-
-# ---------- Build rows ----------
+# ---------- Gather existing files ----------
 rows = []
 for fname, (title, outname) in CATALOG.items():
     fpath = EXPORT_DIR / fname
-    if not fpath.exists():
-        continue
-    stat = fpath.stat()
-    rows.append({
-        "title": title,
-        "filename": fname,
-        "outname": outname,
-        "path": fpath,
-        "size": stat.st_size,
-        "updated": datetime.fromtimestamp(stat.st_mtime),
-    })
+    if fpath.exists():
+        stat = fpath.stat()
+        rows.append({
+            "title": title,
+            "filename": fname,
+            "outname": outname,
+            "path": fpath,
+            "size": stat.st_size,
+            "updated": datetime.fromtimestamp(stat.st_mtime),
+        })
+    else:
+        rows.append({
+            "title": title,
+            "filename": fname,
+            "outname": outname,
+            "path": None,
+            "size": None,
+            "updated": None,
+        })
 
-# Apply text filter
-if query:
-    q = query.lower()
-    rows = [r for r in rows if q in r["title"].lower() or q in r["filename"].lower()]
-
-if not rows:
-    st.info("No files found for the current filter.")
+# ---------- Download ALL button (only existing files) ----------
+existing = [r for r in rows if r["path"] is not None]
+if existing:
+    zip_buf = BytesIO()
+    with zipfile.ZipFile(zip_buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for r in existing:
+            zf.writestr(r["outname"], _read_bytes(r["path"]))
+    zip_buf.seek(0)
+    st.download_button(
+        "Download ALL (.zip)",
+        data=zip_buf,
+        file_name="markmentum_downloads.zip",
+        mime="application/zip",
+        type="primary",
+        use_container_width=True,
+    )
 else:
-    # ---- Optional ZIP of visible files ----
-    if make_zip:
-        zip_buf = BytesIO()
-        with zipfile.ZipFile(zip_buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-            for r in rows:
-                zf.writestr(r["outname"], _read_bytes(r["path"]))
-        zip_buf.seek(0)
-        st.download_button(
-            "Download All (visible) as .zip",
-            data=zip_buf,
-            file_name="markmentum_downloads.zip",
-            mime="application/zip",
-            type="primary",
-            use_container_width=True,
-        )
-        st.divider()
+    st.info("No exports found yet. When the nightly job runs, files will appear here.")
 
-    # ---- Table of individual downloads ----
-    st.markdown("#### Files")
-    hdr = st.columns([3,3,1.3,1.3,1.4])
-    hdr[0].markdown("**Title**")
-    hdr[1].markdown("**File**")
-    hdr[2].markdown("**Updated**")
-    hdr[3].markdown("**Size**")
-    hdr[4].markdown("**Download**")
+st.divider()
 
-    for r in rows:
-        c1, c2, c3, c4, c5 = st.columns([3,3,1.3,1.3,1.4])
-        c1.write(r["title"])
-        c2.code(r["filename"], language=None)
-        c3.write(r["updated"].strftime("%Y-%m-%d %H:%M"))
-        c4.write(_human_size(r["size"]))
+# ---------- Table (no search; every possible file is listed) ----------
+st.markdown("#### Files")
+hdr = st.columns([3,3,1.5,1.2,1.4])
+hdr[0].markdown("**Title**")
+hdr[1].markdown("**File**")
+hdr[2].markdown("**Updated**")
+hdr[3].markdown("**Size**")
+hdr[4].markdown("**Download**")
+
+for r in rows:
+    c1, c2, c3, c4, c5 = st.columns([3,3,1.5,1.2,1.4])
+    c1.write(r["title"])
+    c2.code(r["filename"], language=None)
+    c3.write(r["updated"].strftime("%Y-%m-%d %H:%M") if r["updated"] else "—")
+    c4.write(_human_size(r["size"]) if r["size"] is not None else "—")
+    if r["path"] is None:
+        c5.button("Not Available", disabled=True, use_container_width=True, key=f"na-{r['filename']}")
+    else:
         with open(r["path"], "rb") as f:
             c5.download_button(
                 "Download",
@@ -157,14 +159,6 @@ else:
             )
 
 st.markdown("---")
-st.markdown(
-    """
-    <div style="font-size: 12px; color: gray;">
-    © 2025 Markmentum Research. <b>Disclaimer</b>: This content is for informational purposes only.
-    Nothing herein constitutes an offer to sell, a solicitation of an offer to buy, or a recommendation regarding any security,
-    investment vehicle, or strategy. It does not represent legal, tax, accounting, or investment advice by Markmentum Research LLC
-    or its employees. Accuracy and completeness are not guaranteed. Investments involve risk.
-    </div>
-    """,
-    unsafe_allow_html=True,
+st.caption(
+    "© 2025 Markmentum Research. Disclaimer: Informational only; not investment advice. Accuracy and completeness not guaranteed."
 )
