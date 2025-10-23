@@ -16,6 +16,7 @@ _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH = ASSETS_DIR / "markmentum_logo.png"
+EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve()
 
 def _image_b64(p: Path) -> str:
     with open(p, "rb") as f:
@@ -31,10 +32,6 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-st.markdown("## Downloads")
-
-# ---------------- Page & CSS ----------------
-st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
 
 # compact, centered content
 st.markdown("""
@@ -49,12 +46,6 @@ button[kind="primary"] {
 }
 </style>
 """, unsafe_allow_html=True)
-
-# ---------------- Location ------------------
-#APP_DIR = Path(__file__).resolve().parent
-#if APP_DIR.name == "pages":
-#    APP_DIR = APP_DIR.parent
-EXPORT_DIR = Path(os.getenv("MARKMENTUM_EXPORT_DIR", APP_DIR / "data")).resolve()
 
 st.markdown("## Downloads")
 
