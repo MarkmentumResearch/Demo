@@ -96,9 +96,13 @@ with narrow_container(3):
         if not p.exists():
             return None, None, None
         s = p.stat()
-        dt_local = datetime.fromtimestamp(s.st_mtime, tz=ZoneInfo(APP_TZ))
-        updated_date_str = dt_local.strftime("%Y-%m-%d")  # date only
-        return s.st_size, updated_date_str, int(s.st_mtime)
+        ts = s.st_mtime
+        dt_local = (
+            datetime.utcfromtimestamp(ts)                      # treat POSIX ts as UTC
+            .replace(tzinfo=ZoneInfo("UTC"))                   # make it timezone-aware
+            .astimezone(ZoneInfo(APP_TZ))                      # convert to display TZ
+        )
+        updated_date_str = dt_local.strftime("%Y-%m-%d")       # date only
 
     @st.cache_data(show_spinner=False)
     def _read_bytes_cached(path_str: str, mtime_epoch: int):
