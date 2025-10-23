@@ -34,7 +34,7 @@ if LOGO_PATH.exists():
     )
 
 # compact, centered content
-st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
+#st.set_page_config(page_title="Markmentum - Downloads", layout="centered")
 st.markdown("""
 <style>
 .main .block-container{ max-width: 980px; padding-top: 1rem; padding-bottom: 2rem; }
