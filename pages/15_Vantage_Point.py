@@ -240,6 +240,25 @@ st.markdown("""
   padding: 0 !important;
 }            
 
+/* shared typography for all cards */
+.card h3{
+  margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;
+}
+.card .subtitle{
+  text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;
+}
+
+/* Macro table-specific alignment/scopes */
+.tbl-macro th:nth-child(5), .tbl-macro td:nth-child(5){ text-align:left; }  /* Tape Bias (macro only) */
+.tbl-macro th:nth-child(6), .tbl-macro td:nth-child(6){
+  border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
+}
+
+/* Category table-specific spacer is the 4th column, not 6th */
+.tbl-cat th:nth-child(4), .tbl-cat td:nth-child(4){
+  border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
+}            
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -283,8 +302,8 @@ def _build_macro_card(df: pd.DataFrame):
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
     })
 
-    html = render.to_html(index=False, classes="tbl", escape=False, border=0)
-    html = html.replace('class="dataframe tbl"', 'class="tbl"')
+    html = render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
+    html = html.replace('class="dataframe tbl tbl-macro"', 'class="tbl tbl-macro"')
     colgroup = """
     <colgroup>
       <col class="col-name">     <!-- Name -->
@@ -381,8 +400,8 @@ cat_render = pd.DataFrame({
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
-html_cat = cat_render.to_html(index=False, classes="tbl", escape=False, border=0)
-html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+html_cat = cat_render.to_html(index=False, classes="tbl tbl-cat", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl tbl-cat"', 'class="tbl tbl-cat"')
 
 colgroup_cat = """
 <colgroup>
