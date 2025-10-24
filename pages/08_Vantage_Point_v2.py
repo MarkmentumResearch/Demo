@@ -526,7 +526,8 @@ with ctf:
     local_tf = st.selectbox(
         "Select Timeframe (Per-Ticker)",
         list(TIMEFRAMES.keys()),
-        index=list(TIMEFRAMES.keys()).index(timeframe)
+        index=list(TIMEFRAMES.keys()).index(timeframe),
+        label_visibility="collapsed"
     )
 
 # Re-map tf to the locally selected timeframe
