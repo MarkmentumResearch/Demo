@@ -420,10 +420,9 @@ st.markdown(
           Avg current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Δ, MM Score Δ
         </div>
         {html_cat}
-        <div class="subnote">
-          Rank/Score cells use the same green/gray/red shading as your Sharpe/Markmentum pages.
-          Change columns use independent red/green scales per column.
-        </div>
+            <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
+              Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
+            </div>
       </div>
     </div>
     """,
