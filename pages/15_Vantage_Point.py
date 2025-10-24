@@ -501,7 +501,10 @@ preferred_order = [
     "Materials","Real Estate","Utilities","MR Discretion"
 ]
 cat_list = [c for c in preferred_order if c in latest["Category"].unique()]
-selected_cat = st.selectbox("Select Category", cat_list, index=0)
+
+_, csel, _ = st.columns([1, 1, 1])
+with csel:
+    selected_cat = st.selectbox("Select Category", cat_list, index=0)
 
 
 tcat = latest[latest["Category"] == selected_cat].copy()
