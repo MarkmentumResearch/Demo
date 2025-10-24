@@ -202,7 +202,7 @@ st.markdown(
 def _centered_select(label: str, options: list[str], default: str):
     c1, c2, c3 = st.columns([2, 1, 2])
     with c2:
-        return st.selectbox(label, options, index=options.index(default), label_visibility="collapsed")
+        return st.selectbox(label, options, index=options.index(default))
 
 timeframe = _centered_select("Timeframe", list(TIMEFRAMES.keys()), "Daily")  # :contentReference[oaicite:8]{index=8}
 tf = TIMEFRAMES[timeframe]
