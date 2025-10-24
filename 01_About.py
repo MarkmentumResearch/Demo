@@ -176,6 +176,8 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Directional Trends</b> – Multi-timeframe dashboard visualizing short-, mid-, and long-term directional trends alongside their changes. Displays key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures) and category averages to highlight trend alignment or divergence across time horizons. 
   Includes per-ticker drill-downs by category to show how leadership and rotation are evolving beneath the surface. Color-coded for quick recognition of positive (green) and negative (red) shifts. 
   Each row includes a Tape Bias field summarizing overall market bias (e.g., Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming). Includes a sortable, searchable, and downloadable table at the bottom. </li>
+  <li><b>Vantage Point</b> – Unified snapshot of Sharpe Rank, Markmentum Score, and Tape Bias by timeframe. Starts with macro orientation, then averages by category, and finally drills down to per-ticker detail. 
+  Highlights where performance, risk, and sentiment are aligning or diverging across the market.</li>
   <li><b>Deep Dive Dashboard</b> – Full instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Signals</b> – Tactical screens for chase/no chase, watch, up-cycle, crowding, and upside/downside lists to surface where conviction and risk are shifting.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
