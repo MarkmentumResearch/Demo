@@ -324,7 +324,7 @@ def _build_macro_card(df: pd.DataFrame):
           <div class="card">
             <h3>Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
             <div class="subtitle">
-                Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Δ, MM Score Δ
+                Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Rank Δ, MM Score Δ
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
@@ -417,7 +417,7 @@ st.markdown(
       <div class="card">
         <h3>Category Averages — {tf['title']} Changes</h3>
         <div class="subtitle">
-          Avg current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Δ, MM Score Δ
+          Avg Current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Rank Δ, MM Score Δ
         </div>
         {html_cat}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
