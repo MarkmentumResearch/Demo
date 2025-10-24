@@ -34,7 +34,7 @@ if LOGO_PATH.exists():
         unsafe_allow_html=True,
     )
 
-# ---------- Deep Dive link helper (same as other pages) ----------
+# --- Clickable Deep Dive helper & router (same UX as Heatmap)
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -44,6 +44,15 @@ def _mk_ticker_link(ticker: str) -> str:
         f'target="_self" rel="noopener" '
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
+qp = st.query_params
+dest = (qp.get("page") or "").strip().lower()
+if dest.replace("%20", " ") == "deep dive":
+    t = (qp.get("ticker") or "").strip().upper()
+    if t:
+        st.session_state["ticker"] = t
+        st.query_params.clear()
+        st.query_params["ticker"] = t
+    st.switch_page("pages/08_Deep_Dive_Dashboard.py")
 
 # ---------- Reused formatters & tints ----------
 def _fmt_int(x):
