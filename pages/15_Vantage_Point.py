@@ -344,6 +344,65 @@ _build_macro_card(sb)
 # =========================
 st.markdown("<br>", unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+.card2-wrap { display:flex; justify-content:center; }
+.card2{
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 10px 12px; width:100%;
+  max-width:1200px;
+}
+.tbl2 { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl2 th, .tbl2 td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tbl2 th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+.tbl2 th:nth-child(n+2) { text-align:center; }
+.tbl2 td:nth-child(n+2) { text-align:right; white-space:nowrap; }
+
+/* columns */
+.tbl2 col.col-name { width:35ch; min-width:35ch; max-width:35ch; }
+.tbl2 col.col-ticker { width:7ch; }
+.tbl2 col.col-spacer { width:8px; background:#f8f8f8; }
+
+/* allow name wrap */
+.tbl2 th:nth-child(1), .tbl2 td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
+
+/* center the Ticker col */
+.tbl2 th:nth-child(2), .tbl2 td:nth-child(2) { text-align:center; }
+
+/* make ticker link fill the cell for perfect centering */
+.tbl2 td:nth-child(2) a { display:inline-block; width:100%; }
+
+/* Left-align Tape Bias column (5th) */
+.tbl2 th:nth-child(5), .tbl2 td:nth-child(5) { text-align:left; }
+            
+
+/* shared typography for all card2s */
+.card2 h3{
+  margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;
+}
+.card2 .subtitle{
+  text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;
+}
+
+/* ── Table-specific rules ───────────────────────────────────────── */
+
+/* Macro table (has Tape Bias and spacer at col 6) */
+.tbl2-macro th:nth-child(5), .tbl2-macro td:nth-child(5){ text-align:left; }  /* Tape Bias */
+.tbl2-macro th:nth-child(6), .tbl2-macro td:nth-child(6){
+  border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
+}
+
+/* Category table (no Tape Bias; spacer is col 4) */
+.tbl2-cat th:nth-child(4), .tbl2-cat td:nth-child(4){
+  border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
+}
+            
+</style>
+""", unsafe_allow_html=True)
+
 
 
 # Use the latest row per ticker (in case the CSV ever has multiple dates)
@@ -394,8 +453,8 @@ cat_render = pd.DataFrame({
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
-html_cat = cat_render.to_html(index=False, classes="tbl", escape=False, border=0)
-html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+html_cat = cat_render.to_html(index=False, classes="tbl2", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl2"', 'class="tbl2"')
 
 colgroup_cat = """
 <colgroup>
@@ -409,12 +468,12 @@ colgroup_cat = """
 </colgroup>
 """.strip()
 
-html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup_cat}', 1)
+html_cat = html_cat.replace('<table class="tbl2">', f'<table class="tbl2">{colgroup_cat}', 1)
 
 st.markdown(
     f"""
-    <div class="card-wrap">
-      <div class="card">
+    <div class="card2-wrap">
+      <div class="card2">
         <h3>Category Averages — {tf['title']} Changes</h3>
         <div class="subtitle">
           Avg Current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Rank Δ, MM Score Δ
