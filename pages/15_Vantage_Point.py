@@ -254,6 +254,7 @@ st.markdown("""
 .tbl-cat th:nth-child(4), .tbl-cat td:nth-child(4){
   border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
 }
+.tbl-cat th:nth-child(5), .tbl td:nth-child(5) { text-align:center; }
 </style>
 """, unsafe_allow_html=True)
 
