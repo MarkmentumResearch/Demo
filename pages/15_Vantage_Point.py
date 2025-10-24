@@ -528,8 +528,8 @@ if not tcat.empty:
         "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
     })
 
-    html_t = t_render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
-    html_t = html_t.replace('class="dataframe tbl tbl-macro"', 'class="tbl tbl-macro"')
+    html_t = t_render.to_html(index=False, classes="tbl", escape=False, border=0)
+    html_t = html_t.replace('class="dataframe tbl"', 'class="tbl"')
 
     colgroup_t = """
     <colgroup>
