@@ -503,7 +503,7 @@ preferred_order = [
 ]
 cat_list = [c for c in preferred_order if c in latest["Category"].unique()]
 
-_, csel, _ = st.columns([1, 1, 1])
+_, csel, _ = st.columns([2, 1, 2])
 with csel:
     selected_cat = st.selectbox("Select Category", cat_list, index=0)
 
