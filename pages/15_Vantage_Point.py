@@ -75,22 +75,29 @@ def row_spacer(height_px: int = 14):
 DATA_DIR = APP_DIR / "data"
 SIGNAL_PATH = DATA_DIR / "signal_box.csv"
 
-# -------- Controls --------
+
+# --- put this near the top of 15_Vantage_Point.py, after imports/logo ---
+def _centered_select(label: str, options: list[str], default: str):
+    """Centered dropdown matching Morning Compass UI."""
+    c1, c2, c3 = st.columns([1, 0.8, 1])
+    with c2:
+        return st.selectbox(
+            label, options,
+            index=options.index(default) if default in options else 0,
+            label_visibility="collapsed"
+        )
+
+
+
+# --- replace your existing control block in 15_Vantage_Point.py ---
 st.title("Vantage Point")
 st.caption("All signals. One view.")
-top_c1, top_c2 = st.columns([1,1])
-with top_c1:
-    timeframe = st.segmented_control(
-        "Timeframe",
-        options=["Daily","WTD","MTD","QTD"],
-        default="Daily"
-    )
-with top_c2:
-    view_mode = st.segmented_control(
-        "View",
-        options=["By Category","By Tickers"],
-        default="By Category"
-    )
+
+# Timeframe dropdown (Daily / WTD / MTD / QTD), centered under title
+timeframe = _centered_select("Timeframe", ["Daily","WTD","MTD","QTD"], "Daily")
+
+# View dropdown (By Category / By Tickers), centered under title
+view_mode = _centered_select("View", ["By Category","By Tickers"], "By Category")
 
 # Macro Orientation universe (adjust as you wish)
 MACRO_TICKERS = [
@@ -186,6 +193,10 @@ def render_two_panel(title: str, df_current: pd.DataFrame, df_tf: pd.DataFrame):
             df_tf[["Name","Ticker","Category","% Return","Sharpe Δ","MM Score Δ"]],
             use_container_width=True, height=520
         )
+
+
+
+
 
 # =========================================================
 # 1) MACRO ORIENTATION (tickers)
