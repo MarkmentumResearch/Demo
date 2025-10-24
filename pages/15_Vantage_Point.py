@@ -254,7 +254,7 @@ st.markdown("""
 .tbl-cat th:nth-child(4), .tbl-cat td:nth-child(4){
   border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
 }
-.tbl-cat th:nth-child(5), .tbl td:nth-child(5) { text-align:center; }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -344,7 +344,11 @@ _build_macro_card(sb)
 # =========================
 st.markdown("<br>", unsafe_allow_html=True)
 
-
+st.markdown("""
+<style>
+.tbl-cat th:nth-child(5), .tbl td:nth-child(5) { text-align:center; }
+</style>
+""", unsafe_allow_html=True)
 
 # Use the latest row per ticker (in case the CSV ever has multiple dates)
 sb["_dt"] = pd.to_datetime(sb["Date"], errors="coerce")
