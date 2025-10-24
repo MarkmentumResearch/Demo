@@ -385,12 +385,12 @@ vmax_dmm = _robust_vmax(grp["dMM"],     q=0.98, floor=1.0, step=1.0)
 # Build render frame (keep the blank spacer column)
 cat_render = pd.DataFrame({
     "Name":      grp["Category"],
-    "Sharpe":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
-    "MM Score":  [ _score_cell(v)              for v in grp["MMScore"]  ],
+    "Avg Sharpe Rank":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
+    "Avg MM Score":  [ _score_cell(v)              for v in grp["MMScore"]  ],
     "":          [ ""                          for _ in range(len(grp)) ],  # spacer
-    "% Δ":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
-    "Sharpe Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
-    "MM Score Δ":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
+    "Avg % Δ":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
+    "Avg Sharpe Rank Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
+    "Avg MM Score Δ":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
