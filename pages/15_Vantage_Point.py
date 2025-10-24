@@ -289,12 +289,12 @@ def _build_macro_card(df: pd.DataFrame):
     render = pd.DataFrame({
         "Name":    m["Ticker_name"],
         "Ticker":  m["Ticker"].map(_mk_ticker_link),
-        "Sharpe":  m[CURRENT["rank"]].map(_rank_cell),
+        "Sharpe Rank":  m[CURRENT["rank"]].map(_rank_cell),
         "MM Score":      m[CURRENT["mm"]].map(_score_cell),
         "Tape Bias": m[CURRENT["tape"]].fillna(""),
         "":        [""] * len(m),  # spacer col
         "% Δ":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
-        "Sharpe Δ":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
+        "Sharpe Rank Δ":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
     })
 
