@@ -522,6 +522,7 @@ if not tcat.empty:
         "Ticker":      tcat["Ticker_link"],
         "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
         "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
+        "Tape Bias": m[CURRENT["tape"]].fillna(""),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
         "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
         "Sharpe Rank Δ":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
