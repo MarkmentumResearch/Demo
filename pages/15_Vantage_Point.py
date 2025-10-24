@@ -487,6 +487,82 @@ st.markdown(
 )
 
 
+# ========= Category selector =========
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+cat_list = [c for c in preferred_order if c in latest["Category"].unique()]
+selected_cat = st.selectbox("Select Category", cat_list, index=0)
+
+# ============================
+# Per-Ticker Card (within Category)
+# ============================
+tcat = latest[latest["Category"] == selected_cat].copy()
+if not tcat.empty:
+    tcat = tcat.sort_values("Ticker", kind="stable")
+    tcat["Ticker_link"] = tcat["Ticker"].map(_mk_ticker_link)
+
+    # independent color scaling for this category
+    vmaxC = {
+        "Ret": _robust_vmax(tcat["Ret"], q=0.98, floor=1.0, step=1.0)
+               if "Ret" in tcat else 1.0,
+        "dSharpe": _robust_vmax(tcat["dSharpe"], q=0.98, floor=1.0, step=1.0)
+                   if "dSharpe" in tcat else 1.0,
+        "dMM": _robust_vmax(tcat["dMM"], q=0.98, floor=1.0, step=1.0)
+               if "dMM" in tcat else 1.0,
+    }
+
+    t_render = pd.DataFrame({
+        "Name": tcat["Name"],
+        "Ticker": tcat["Ticker_link"],
+        "Sharpe": [ _rank_cell(v) for v in tcat["Sharpe"] ],
+        "MM Score": [ _score_cell(v) for v in tcat["MMScore"] ],
+        "": [ "" for _ in range(len(tcat)) ],  # spacer
+        "% Δ": [ _divergent_pct_cell(v, vmaxC["Ret"]) for v in tcat["Ret"] ],
+        "Sharpe Δ": [ _delta_cell(v, vmaxC["dSharpe"]) for v in tcat["dSharpe"] ],
+        "MM Score Δ": [ _delta_cell(v, vmaxC["dMM"]) for v in tcat["dMM"] ],
+    })
+
+    html_t = t_render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
+    html_t = html_t.replace('class="dataframe tbl tbl-macro"', 'class="tbl tbl-macro"')
+
+    colgroup_t = """
+    <colgroup>
+      <col class="col-name">      <!-- Name -->
+      <col class="col-ticker">    <!-- Ticker -->
+      <col class="col-num">       <!-- Sharpe -->
+      <col class="col-num">       <!-- MM Score -->
+      <col class="col-spacer">    <!-- Spacer -->
+      <col class="col-num">       <!-- % Δ -->
+      <col class="col-num">       <!-- Sharpe Δ -->
+      <col class="col-num">       <!-- MM Score Δ -->
+    </colgroup>
+    """.strip()
+    html_t = html_t.replace('<table class="tbl tbl-macro">', f'<table class="tbl tbl-macro">{colgroup_t}', 1)
+
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3>{selected_cat} – Tickers</h3>
+            <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
+            {html_t}
+            <div class="subnote">Alphabetical within {selected_cat}; same color scale logic as Macro Orientation.</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.info(f"No tickers found for {selected_cat}.")
+
+
+
+
 # -------------------------
 # Footer disclaimer
 # -------------------------
