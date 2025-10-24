@@ -326,7 +326,93 @@ def _build_macro_card(df: pd.DataFrame):
 # ---------- Render ----------
 _build_macro_card(sb)
 
+# =========================
+# Category Averages (card)
+# =========================
 
+# Use the latest row per ticker (in case the CSV ever has multiple dates)
+sb["_dt"] = pd.to_datetime(sb["Date"], errors="coerce")
+latest = (
+    sb.sort_values(["Ticker", "_dt"], ascending=[True, False])
+      .drop_duplicates(subset=["Ticker"], keep="first")
+)
+
+# Average by Category: current Sharpe/Score + timeframe changes (% return, ΔSharpe, ΔMM)
+grp = (
+    latest.groupby("Category", dropna=True, as_index=False)
+    .agg(
+        Sharpe=(CURRENT["rank"], "mean"),
+        MMScore=(CURRENT["mm"], "mean"),
+        Ret=(tf["ret"], "mean"),
+        dSharpe=(tf["d_sh"], "mean"),
+        dMM=(tf["d_mm"], "mean"),
+    )
+)
+
+# Preferred row order (same taxonomy you use elsewhere)
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion",
+]
+order_map = {name: i for i, name in enumerate(preferred_order)}
+grp["__ord__"] = grp["Category"].map(order_map)
+grp = grp.sort_values(["__ord__", "Category"], kind="stable").drop(columns="__ord__")
+
+# Independent, robust scales for the tinted columns
+vmax_ret = _robust_vmax(grp["Ret"],     q=0.98, floor=1.0, step=1.0)
+vmax_dsh = _robust_vmax(grp["dSharpe"], q=0.98, floor=1.0, step=1.0)
+vmax_dmm = _robust_vmax(grp["dMM"],     q=0.98, floor=1.0, step=1.0)
+
+# Build render frame (keep the blank spacer column)
+cat_render = pd.DataFrame({
+    "Name":      grp["Category"],
+    "Sharpe":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
+    "MM Score":  [ _score_cell(v)              for v in grp["MMScore"]  ],
+    "":          [ ""                          for _ in range(len(grp)) ],  # spacer
+    "% Δ":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
+    "Sharpe Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
+    "MM Score Δ":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
+})
+
+# HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
+html_cat = cat_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
+
+colgroup_cat = """
+<colgroup>
+  <col class="col-name">     <!-- Name -->
+  <col class="col-num">      <!-- Sharpe -->
+  <col class="col-num">      <!-- MM Score -->
+  <col class="col-spacer">   <!-- Spacer (no borders) -->
+  <col class="col-num">      <!-- % Δ -->
+  <col class="col-num">      <!-- Sharpe Δ -->
+  <col class="col-num">      <!-- MM Score Δ -->
+</colgroup>
+""".strip()
+
+html_cat = html_cat.replace('<table class="tbl">', f'<table class="tbl">{colgroup_cat}', 1)
+
+st.markdown(
+    f"""
+    <div class="card-wrap">
+      <div class="card">
+        <h3>Category Averages — {tf['title']} Changes</h3>
+        <div class="subtitle">
+          Avg current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Δ, MM Score Δ
+        </div>
+        {html_cat}
+        <div class="subnote">
+          Rank/Score cells use the same green/gray/red shading as your Sharpe/Markmentum pages.
+          Change columns use independent red/green scales per column.
+        </div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # -------------------------
