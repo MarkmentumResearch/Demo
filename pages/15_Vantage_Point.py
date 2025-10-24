@@ -543,7 +543,7 @@ if not tcat.empty:
       <col class="col-num">       <!-- MM Score Δ -->
     </colgroup>
     """.strip()
-    html_t = html_t.replace('<table class="tbl tbl-macro">', f'<table class="tbl tbl-macro">{colgroup_t}', 1)
+    html_t = html_t.replace('<table class="tbl">', f'<table class="tbl">{colgroup_t}', 1)
 
     st.markdown(
         f"""
