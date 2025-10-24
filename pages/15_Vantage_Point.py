@@ -317,12 +317,10 @@ def _build_macro_card(df: pd.DataFrame):
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3 style="margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;">
-              Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes
             <h3>Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
-                <div class="subtitle">
+            <div class="subtitle">
                 Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Δ, MM Score Δ
-                </div>
+            </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
               Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
