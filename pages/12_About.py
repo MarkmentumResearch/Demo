@@ -195,7 +195,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Trends</b> – Short-, mid-, and long-term composites derived by netting the volatility-adjusted factors behind probable highs and lows, providing a directional trend signal.</li>
   <li><b>Anchors</b> – Anchor levels are extrapolated by aligning short-term trend structure with long-term trend structure, creating a probabilistic reference to gauge extension and mean-reversion risk.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, Ivol/Rvol spreads, and regime flags.</li>
-  <li><b>Markmentum Score</b> – A proprietary, rules-based, volatility-adjusted risk-reward score blending multiple signals into a single intuitive scale. A high positive score favors the long side; a negative score favors the short side.</li>
+  <li><b>Markmentum Score</b> – A proprietary, rules-based, volatility-adjusted risk/reward framework that blends multiple market signals into a single intuitive scale. A high positive score favors the long side; a negative score favors the short side.</li>
 </ul>
 
 <h3>Our Why</h3>
