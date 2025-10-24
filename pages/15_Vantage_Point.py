@@ -487,6 +487,11 @@ st.markdown(
 )
 
 
+# ============================
+# Per-Ticker Card (within Category)
+# ============================
+
+
 # ========= Category selector =========
 preferred_order = [
     "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
@@ -498,33 +503,29 @@ preferred_order = [
 cat_list = [c for c in preferred_order if c in latest["Category"].unique()]
 selected_cat = st.selectbox("Select Category", cat_list, index=0)
 
-# ============================
-# Per-Ticker Card (within Category)
-# ============================
+
 tcat = latest[latest["Category"] == selected_cat].copy()
+
 if not tcat.empty:
+    # Alphabetical by ticker
     tcat = tcat.sort_values("Ticker", kind="stable")
     tcat["Ticker_link"] = tcat["Ticker"].map(_mk_ticker_link)
 
-    # independent color scaling for this category
-    vmaxC = {
-        "Ret": _robust_vmax(tcat["Ret"], q=0.98, floor=1.0, step=1.0)
-               if "Ret" in tcat else 1.0,
-        "dSharpe": _robust_vmax(tcat["dSharpe"], q=0.98, floor=1.0, step=1.0)
-                   if "dSharpe" in tcat else 1.0,
-        "dMM": _robust_vmax(tcat["dMM"], q=0.98, floor=1.0, step=1.0)
-               if "dMM" in tcat else 1.0,
-    }
+    # Robust per-card scales (use exact schema fields for the selected timeframe)
+    vmaxC_ret = _robust_vmax(tcat[tf["ret"]],  q=0.98, floor=1.0, step=1.0)
+    vmaxC_dsh = _robust_vmax(tcat[tf["d_sh"]], q=0.98, floor=1.0, step=1.0)
+    vmaxC_dmm = _robust_vmax(tcat[tf["d_mm"]], q=0.98, floor=1.0, step=1.0)
 
+    # Build render frame (current | spacer | timeframe changes)
     t_render = pd.DataFrame({
-        "Name": tcat["Name"],
-        "Ticker": tcat["Ticker_link"],
-        "Sharpe": [ _rank_cell(v) for v in tcat["Sharpe"] ],
-        "MM Score": [ _score_cell(v) for v in tcat["MMScore"] ],
-        "": [ "" for _ in range(len(tcat)) ],  # spacer
-        "% Δ": [ _divergent_pct_cell(v, vmaxC["Ret"]) for v in tcat["Ret"] ],
-        "Sharpe Δ": [ _delta_cell(v, vmaxC["dSharpe"]) for v in tcat["dSharpe"] ],
-        "MM Score Δ": [ _delta_cell(v, vmaxC["dMM"]) for v in tcat["dMM"] ],
+        "Name":        tcat["Ticker_name"],                             # <- was "Name"
+        "Ticker":      tcat["Ticker_link"],
+        "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
+        "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
+        "":            [ "" for _ in range(len(tcat)) ],               # spacer
+        "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
+        "Sharpe Rank Δ":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
+        "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
     })
 
     html_t = t_render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
@@ -534,11 +535,11 @@ if not tcat.empty:
     <colgroup>
       <col class="col-name">      <!-- Name -->
       <col class="col-ticker">    <!-- Ticker -->
-      <col class="col-num">       <!-- Sharpe -->
+      <col class="col-num">       <!-- Sharpe Rank -->
       <col class="col-num">       <!-- MM Score -->
       <col class="col-spacer">    <!-- Spacer -->
       <col class="col-num">       <!-- % Δ -->
-      <col class="col-num">       <!-- Sharpe Δ -->
+      <col class="col-num">       <!-- Sharpe Rank Δ -->
       <col class="col-num">       <!-- MM Score Δ -->
     </colgroup>
     """.strip()
@@ -548,10 +549,10 @@ if not tcat.empty:
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3>{selected_cat} – Tickers</h3>
+            <h3>{selected_cat} — Tickers</h3>
             <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
             {html_t}
-            <div class="subnote">Alphabetical within {selected_cat}; same color scale logic as Macro Orientation.</div>
+            <div class="subnote">Alphabetical within {selected_cat}; same color-scale logic as Macro Orientation.</div>
           </div>
         </div>
         """,
