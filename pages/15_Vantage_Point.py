@@ -123,19 +123,19 @@ TIMEFRAMES = {
         "d_mm": "MM_Score_daily_change",
         "title": "Daily"
     },
-    "WTD":   {
+    "Weekly":   {
         "ret":  "week_pct_change",
         "d_sh": "Sharpe_Rank_wtd_change",
         "d_mm": "MM_Score_wtd_change",
         "title": "Weekly"
     },
-    "MTD":   {
+    "Monthly":   {
         "ret":  "month_pct_change",
         "d_sh": "Sharpe_Rank_mtd_change",
         "d_mm": "MM_Score_mtd_change",
         "title": "Monthly"
     },
-    "QTD":   {
+    "Quarterly":   {
         "ret":  "quarter_pct_change",
         "d_sh": "Sharpe_Rank_qtd_change",
         "d_mm": "MM_Score_qtd_change",
