@@ -230,16 +230,6 @@ st.markdown("""
 /* make ticker link fill the cell for perfect centering */
 .tbl td:nth-child(2) a { display:inline-block; width:100%; }
 
-/* Left-align Tape Bias column (5th) */
-.tbl th:nth-child(5), .tbl td:nth-child(5) { text-align:left; }  
-            
-/* Make spacer column (6th) fully blank/no borders */
-.tbl th:nth-child(6), .tbl td:nth-child(6) {
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-}            
-
 /* shared typography for all cards */
 .card h3{
   margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;
@@ -248,17 +238,18 @@ st.markdown("""
   text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;
 }
 
-/* Macro table-specific alignment/scopes */
-.tbl-macro th:nth-child(5), .tbl-macro td:nth-child(5){ text-align:left; }  /* Tape Bias (macro only) */
+/* ── Table-specific rules ───────────────────────────────────────── */
+
+/* Macro table (has Tape Bias and spacer at col 6) */
+.tbl-macro th:nth-child(5), .tbl-macro td:nth-child(5){ text-align:left; }  /* Tape Bias */
 .tbl-macro th:nth-child(6), .tbl-macro td:nth-child(6){
   border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
 }
 
-/* Category table-specific spacer is the 4th column, not 6th */
+/* Category table (no Tape Bias; spacer is col 4) */
 .tbl-cat th:nth-child(4), .tbl-cat td:nth-child(4){
   border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
-}            
-
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -328,10 +319,10 @@ def _build_macro_card(df: pd.DataFrame):
           <div class="card">
             <h3 style="margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;">
               Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes
-            </h3>
-            <div style="text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;">
-              Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Δ, MM Score Δ
-            </div>
+            <h3>Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
+                <div class="subtitle">
+                Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Δ, MM Score Δ
+                </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
               Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
