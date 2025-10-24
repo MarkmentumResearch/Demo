@@ -173,7 +173,22 @@ sb = load_signal_box(CSV_PATH)
 # ---------- Title + timeframe dropdown (centered like Morning Compass) ----------
 #st.markdown("<h1 style='margin-bottom:2px;'>Vantage Point</h1><div style='color:#667; font-size:13px;'>All signals. One view.</div>", unsafe_allow_html=True)
 
+# --- Page title with date (centered, like Morning Compass) ---
+date_str = ""
+if not sb.empty and "Date" in sb.columns:
+    asof = pd.to_datetime(sb["Date"], errors="coerce").max()
+    if pd.notna(asof):
+        date_str = f"{asof.month}/{asof.day}/{asof.year}"
 
+st.markdown(
+    f"""
+    <div style="text-align:center; margin:-6px 0 8px;
+                font-size:18px; font-weight:600; color:#1a1a1a;">
+        Vantage Point – {date_str}
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 def _centered_select(label: str, options: list[str], default: str):
     c1, c2, c3 = st.columns([1, 0.8, 1])
@@ -214,6 +229,17 @@ st.markdown("""
 
 /* make ticker link fill the cell for perfect centering */
 .tbl td:nth-child(2) a { display:inline-block; width:100%; }
+
+/* Left-align Tape Bias column (5th) */
+.tbl th:nth-child(5), .tbl td:nth-child(5) { text-align:left; }  
+            
+/* Make spacer column (6th) fully blank/no borders */
+.tbl th:nth-child(6), .tbl td:nth-child(6) {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}            
+
 </style>
 """, unsafe_allow_html=True)
 
