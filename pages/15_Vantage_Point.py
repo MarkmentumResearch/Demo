@@ -474,7 +474,7 @@ st.markdown(
       <div class="card2">
         <h3>Category Averages — {tf['title']} Changes</h3>
         <div class="subtitle">
-          Avg Current Sharpe Rank / MM Score &nbsp;·&nbsp; then {tf['title']} % Δ, Sharpe Rank Δ, MM Score Δ
+          Avg Current Sharpe Rank / MM Score and {tf['title']} Avg Changes
         </div>
         {html_cat}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
