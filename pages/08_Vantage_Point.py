@@ -519,6 +519,22 @@ with csel:
 
 tcat = latest[latest["Category"] == selected_cat].copy()
 
+# --- Add local timeframe selector for per-ticker section ---
+st.markdown("<br>", unsafe_allow_html=True)
+_, ctf, _ = st.columns([2, 1, 2])
+with ctf:
+    local_tf = st.selectbox(
+        "Select Timeframe (Per-Ticker)",
+        list(TIMEFRAMES.keys()),
+        index=list(TIMEFRAMES.keys()).index(timeframe),
+        label_visibility="collapsed"
+    )
+
+# Re-map tf to the locally selected timeframe
+tf = TIMEFRAMES[local_tf]
+
+
+
 if not tcat.empty:
     # Alphabetical by ticker
     tcat = tcat.sort_values("Ticker", kind="stable")
