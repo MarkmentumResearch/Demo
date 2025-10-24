@@ -375,9 +375,7 @@ st.markdown("""
 /* make ticker link fill the cell for perfect centering */
 .tbl2 td:nth-child(2) a { display:inline-block; width:100%; }
 
-/* Left-align Tape Bias column (5th) */
-.tbl2 th:nth-child(5), .tbl2 td:nth-child(5) { text-align:left; }
-            
+       
 
 /* shared typography for all card2s */
 .card2 h3{
