@@ -188,7 +188,7 @@ st.markdown("""
 .card{
   border:1px solid #cfcfcf; border-radius:8px; background:#fff;
   padding:12px 12px 10px 12px; width:100%;
-  max-width:1100px;
+  max-width:1200px;
 }
 .tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl th, .tbl td {
@@ -200,7 +200,7 @@ st.markdown("""
 .tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
 
 /* columns */
-.tbl col.col-name { width:28ch; min-width:28ch; max-width:28ch; }
+.tbl col.col-name { width:35ch; min-width:35ch; max-width:35ch; }
 .tbl col.col-ticker { width:7ch; }
 .tbl col.col-spacer { width:8px; background:#f8f8f8; }
 
