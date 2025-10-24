@@ -256,9 +256,9 @@ st.markdown("""
 }
 
 /* Category table  */
-.tbl-cat th:nth-child(5) { text-align:center; }
+.tbl-cat th:nth-child(5){ text-align:center; }
   
-}            
+           
             
 </style>
 """, unsafe_allow_html=True)
