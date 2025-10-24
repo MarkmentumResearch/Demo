@@ -1,51 +1,40 @@
+# 15_Vantage_Point.py — Vantage Point (Market Orientation only)
 from pathlib import Path
 import base64
-import textwrap
 import pandas as pd
 import numpy as np
 import streamlit as st
-import matplotlib.pyplot as plt
 from urllib.parse import quote_plus
+from html import escape
 
-# -------------------------
-# Page & shared style
-# -------------------------
-st.set_page_config(page_title="Markmentum – Vantage Point", layout="wide")
+# ---------- Page ----------
+st.set_page_config(page_title="Vantage Point – Market Orientation", layout="wide")
 st.cache_data.clear()
 
-
-# -------------------------
-# Paths (portable for Cloud)
-# -------------------------
+# ---------- Paths ----------
 _here = Path(__file__).resolve().parent
 APP_DIR = _here if _here.name != "pages" else _here.parent
-
 DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
 LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
+CSV_PATH   = DATA_DIR / "signal_box.csv"      # <- single source file
 
-# -------------------------
-# Header (logo centered)
-# -------------------------
-def _image_to_base64(path: Path) -> str:
-    with open(path, "rb") as f:
+# ---------- Header (centered logo) ----------
+def _image_b64(p: Path) -> str:
+    with open(p, "rb") as f:
         return base64.b64encode(f.read()).decode()
-
 
 if LOGO_PATH.exists():
     st.markdown(
         f"""
         <div style="text-align:center; margin: 8px 0 16px;">
-            <img src="data:image/png;base64,{_image_to_base64(LOGO_PATH)}" width="440">
+            <img src="data:image/png;base64,{_image_b64(LOGO_PATH)}" width="440">
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-
-# -------------------------
-# Helpers
-# -------------------------
+# ---------- Deep Dive link helper (same as other pages) ----------
 def _mk_ticker_link(ticker: str) -> str:
     t = (ticker or "").strip().upper()
     if not t:
@@ -56,19 +45,258 @@ def _mk_ticker_link(ticker: str) -> str:
         f'style="text-decoration:none; font-weight:600;">{t}</a>'
     )
 
-# Lightweight router for Deep Dive links
-qp = st.query_params
-dest = (qp.get("page") or "").strip().lower()
-if dest.replace("%20", " ") == "deep dive":
-    t = (qp.get("ticker") or "").strip().upper()
-    if t:
-        st.session_state["ticker"] = t
-        st.query_params.clear()
-        st.query_params["ticker"] = t
-    st.switch_page("pages/08_Deep_Dive_Dashboard.py")
+# ---------- Reused formatters & tints ----------
+def _fmt_int(x):
+    try:
+        if pd.isna(x): return ""
+        return f"{int(round(float(x))):,}"
+    except Exception: return ""
 
-def row_spacer(height_px: int = 14):
-    st.markdown(f"<div style='height:{height_px}px'></div>", unsafe_allow_html=True)
+def _fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x): return ""
+        return f"{float(x)*100:,.{nd}f}%"
+    except Exception: return ""
+
+def _robust_vmax(series, q=0.98, floor=1.0, step=1.0):
+    s = pd.to_numeric(series, errors="coerce").abs().dropna()
+    if s.empty: return floor
+    vmax = float(np.quantile(s, q))
+    return max(floor, float(int(np.ceil(vmax / step) * step)))
+
+# === % Return tint (Performance Heatmap pattern) ===
+def _divergent_pct_cell(val: float, vmax: float) -> str:
+    if val is None or pd.isna(val) or vmax is None or vmax <= 0: return ""
+    s = min(abs(float(val)) / float(vmax), 1.0)
+    alpha = 0.12 + 0.28 * s
+    bg = "transparent"
+    if val > 0:   bg = f"rgba(16,185,129,{alpha:.3f})"  # green
+    elif val < 0: bg = f"rgba(239,68,68,{alpha:.3f})"  # red
+    label = _fmt_pct(val, 2)
+    return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px; text-align:right;">{label}</span>'  # :contentReference[oaicite:4]{index=4}
+
+# === Sharpe Rank cell (Sharpe Heatmap pattern) ===
+def _rank_cell(score: float, cap: float = 100.0) -> str:
+    if score is None or pd.isna(score): return ""
+    s = float(np.clip(score, 0, cap))
+    if s >= 70:   # high -> greener with intensity
+        rel = (s - 70.0) / 30.0
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        bg, color = f"rgba(16,185,129,{alpha:.3f})", "#0b513a"
+    elif s <= 30: # low -> redder with intensity
+        rel = (30.0 - s) / 30.0
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        bg, color = f"rgba(239,68,68,{alpha:.3f})", "#641515"
+    else:
+        bg, color = "rgba(156,163,175,0.18)", "#374151"
+    return f'<span style="display:block; background:{bg}; color:{color}; padding:0 6px; border-radius:2px; text-align:right;">{_fmt_int(s)}</span>'  # :contentReference[oaicite:5]{index=5}
+
+# === MM Score cell (Markmentum Heatmap pattern) ===
+def _score_cell(score: float, cap: float = 105.0) -> str:
+    if score is None or pd.isna(score): return ""
+    s = float(score)
+    if s >= 25:
+        rel = min(abs(s) / cap, 1.0); alpha = 0.12 + 0.28 * rel
+        bg, color = f"rgba(16,185,129,{alpha:.3f})", "#0b513a"
+    elif s <= -25:
+        rel = min(abs(s) / cap, 1.0); alpha = 0.12 + 0.28 * rel
+        bg, color = f"rgba(239,68,68,{alpha:.3f})", "#641515"
+    else:
+        bg, color = "rgba(156,163,175,0.18)", "#374151"
+    return f'<span style="display:block; background:{bg}; color:{color}; padding:0 6px; border-radius:2px; text-align:right;">{_fmt_int(s)}</span>'  # :contentReference[oaicite:6]{index=6}
+
+# === Delta tint (Sharpe/MM change columns) ===
+def _delta_cell(val: float, vmax: float) -> str:
+    if val is None or pd.isna(val) or vmax is None or vmax <= 0: return ""
+    s = min(abs(float(val)) / float(vmax), 1.0)
+    alpha = 0.12 + 0.28 * s
+    bg = "transparent"
+    if val > 0:   bg = f"rgba(16,185,129,{alpha:.3f})"
+    elif val < 0: bg = f"rgba(239,68,68,{alpha:.3f})"
+    return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:2px; text-align:right;">{_fmt_int(val)}</span>'  # 
+
+# ---------- Timeframe mapping (exact signal_box fields) ----------
+TIMEFRAMES = {
+    "Daily": {
+        "ret":  "day_pct_change",
+        "d_sh": "Sharpe_Rank_daily_change",
+        "d_mm": "MM_Score_daily_change",
+        "title": "Daily"
+    },
+    "WTD":   {
+        "ret":  "week_pct_change",
+        "d_sh": "Sharpe_Rank_wtd_change",
+        "d_mm": "MM_Score_wtd_change",
+        "title": "Weekly"
+    },
+    "MTD":   {
+        "ret":  "month_pct_change",
+        "d_sh": "Sharpe_Rank_mtd_change",
+        "d_mm": "MM_Score_mtd_change",
+        "title": "Monthly"
+    },
+    "QTD":   {
+        "ret":  "quarter_pct_change",
+        "d_sh": "Sharpe_Rank_qtd_change",
+        "d_mm": "MM_Score_qtd_change",
+        "title": "Quarterly"
+    },
+}
+
+CURRENT = {
+    "rank": "Sharpe_Rank",
+    "mm":   "MM_Score",
+    "tape": "Tape_Bias",
+}
+
+# ---------- Load source ----------
+@st.cache_data(show_spinner=False)
+def load_signal_box(p: Path) -> pd.DataFrame:
+    if not p.exists(): return pd.DataFrame()
+    df = pd.read_csv(p)
+    needed = [
+        "Date","Ticker","Ticker_name","Category",
+        CURRENT["rank"], CURRENT["mm"], CURRENT["tape"],
+        "day_pct_change","week_pct_change","month_pct_change","quarter_pct_change",
+        "Sharpe_Rank_daily_change","Sharpe_Rank_wtd_change","Sharpe_Rank_mtd_change","Sharpe_Rank_qtd_change",
+        "MM_Score_daily_change","MM_Score_wtd_change","MM_Score_mtd_change","MM_Score_qtd_change",
+    ]
+    if not all(c in df.columns for c in needed):
+        return pd.DataFrame()  # enforce schema
+    for c in needed:
+        if c not in ("Date","Ticker","Ticker_name","Category",CURRENT["tape"]):
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+    return df
+
+sb = load_signal_box(CSV_PATH)
+
+# ---------- Title + timeframe dropdown (centered like Morning Compass) ----------
+st.markdown("<h1 style='margin-bottom:2px;'>Vantage Point</h1><div style='color:#667; font-size:13px;'>All signals. One view.</div>", unsafe_allow_html=True)
+
+def _centered_select(label: str, options: list[str], default: str):
+    c1, c2, c3 = st.columns([1, 0.8, 1])
+    with c2:
+        return st.selectbox(label, options, index=options.index(default), label_visibility="collapsed")
+
+timeframe = _centered_select("Timeframe", list(TIMEFRAMES.keys()), "Daily")  # :contentReference[oaicite:8]{index=8}
+tf = TIMEFRAMES[timeframe]
+
+# ---------- Styling (card + table; same class names you already use) ----------
+st.markdown("""
+<style>
+.card-wrap { display:flex; justify-content:center; }
+.card{
+  border:1px solid #cfcfcf; border-radius:8px; background:#fff;
+  padding:12px 12px 10px 12px; width:100%;
+  max-width:1100px;
+}
+.tbl { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.tbl th, .tbl td {
+  border:1px solid #d9d9d9; padding:6px 8px; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tbl th { background:#f2f2f2; font-weight:700; color:#1a1a1a; text-align:left; }
+.tbl th:nth-child(n+2) { text-align:center; }
+.tbl td:nth-child(n+2) { text-align:right; white-space:nowrap; }
+
+/* columns */
+.tbl col.col-name { width:28ch; min-width:28ch; max-width:28ch; }
+.tbl col.col-ticker { width:7ch; }
+.tbl col.col-spacer { width:8px; background:#f8f8f8; }
+
+/* allow name wrap */
+.tbl th:nth-child(1), .tbl td:nth-child(1) { white-space:normal; overflow:visible; text-overflow:clip; }
+
+/* center the Ticker col */
+.tbl th:nth-child(2), .tbl td:nth-child(2) { text-align:center; }
+
+/* make ticker link fill the cell for perfect centering */
+.tbl td:nth-child(2) a { display:inline-block; width:100%; }
+</style>
+""", unsafe_allow_html=True)
+
+# ---------- Macro list ----------
+macro_list = [
+    "SPX","NDX","DJI","RUT",
+    "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
+    "GLD","UUP","TLT","BTC=F"
+]
+
+# ---------- Build card ----------
+def _build_macro_card(df: pd.DataFrame):
+    if df.empty:
+        st.info("`signal_box.csv` missing or columns incomplete.")
+        return
+
+    # latest per ticker
+    df["_dt"] = pd.to_datetime(df["Date"], errors="coerce")
+    latest = (df.sort_values(["Ticker","_dt"], ascending=[True, False])
+                .drop_duplicates(subset=["Ticker"], keep="first"))
+
+    m = latest[latest["Ticker"].isin(macro_list)].copy()
+    m["__ord__"] = m["Ticker"].map({t:i for i,t in enumerate(macro_list)})
+    m = m.sort_values(["__ord__"], kind="stable")
+
+    # vmax per timeframe (for % return and deltas)
+    vmax_ret = _robust_vmax(m[tf["ret"]], q=0.98, floor=0.5, step=0.5)
+    vmax_dsh = _robust_vmax(m[tf["d_sh"]], q=0.98, floor=1.0, step=1.0)
+    vmax_dmm = _robust_vmax(m[tf["d_mm"]], q=0.98, floor=1.0, step=1.0)
+
+    # HTML table (Current | spacer | timeframe changes)
+    render = pd.DataFrame({
+        "Name":    m["Ticker_name"],
+        "Ticker":  m["Ticker"].map(_mk_ticker_link),
+        "Sharpe":  m[CURRENT["rank"]].map(_rank_cell),
+        "MM":      m[CURRENT["mm"]].map(_score_cell),
+        "Tape Bias": m[CURRENT["tape"]].fillna(""),
+        "":        [""] * len(m),  # spacer col
+        "% Return":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
+        "Sharpe ▲":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
+        "MM Score ▲": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
+    })
+
+    html = render.to_html(index=False, classes="tbl", escape=False, border=0)
+    html = html.replace('class="dataframe tbl"', 'class="tbl"')
+    colgroup = """
+    <colgroup>
+      <col class="col-name">     <!-- Name -->
+      <col class="col-ticker">   <!-- Ticker -->
+      <col> <col> <col>          <!-- Sharpe | MM | Tape -->
+      <col class="col-spacer">   <!-- spacer -->
+      <col> <col> <col>          <!-- %Ret | Sharpe▲ | MM▲ -->
+    </colgroup>
+    """.strip()
+    html = html.replace('<table class="tbl">', f'<table class="tbl">{colgroup}', 1)
+
+    # As-of date
+    date_str = ""
+    if "Date" in m.columns:
+        dmax = pd.to_datetime(m["Date"], errors="coerce").max()
+        if pd.notna(dmax):
+            date_str = f"{dmax.month}/{dmax.day}/{dmax.year}"
+
+    st.markdown(
+        f"""
+        <div class="card-wrap">
+          <div class="card">
+            <h3 style="margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;">
+              Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes
+            </h3>
+            <div style="text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;">
+              Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Return, Sharpe ▲, MM Score ▲
+            </div>
+            {html}
+            <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
+              Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
+            </div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+# ---------- Render ----------
+_build_macro_card(sb)
 
 
 
