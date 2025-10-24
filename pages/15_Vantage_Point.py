@@ -564,7 +564,7 @@ if not tcat.empty:
         f"""
         <div class="card-wrap">
           <div class="card">
-            <h3>{selected_cat} — Per Ticker</h3>
+            <h3>{selected_cat} — Per Ticker {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
             <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
             {html_t}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
