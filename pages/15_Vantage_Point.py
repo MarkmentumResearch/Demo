@@ -230,6 +230,10 @@ st.markdown("""
 /* make ticker link fill the cell for perfect centering */
 .tbl td:nth-child(2) a { display:inline-block; width:100%; }
 
+/* Left-align Tape Bias column (5th) */
+.tbl th:nth-child(5), .tbl td:nth-child(5) { text-align:left; }
+            
+
 /* shared typography for all cards */
 .card h3{
   margin:0 0 -4px 0; font-size:16px; font-weight:700; text-align:center; color:#1a1a1a;
