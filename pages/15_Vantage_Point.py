@@ -250,7 +250,7 @@ def _build_macro_card(df: pd.DataFrame):
         "MM Score":      m[CURRENT["mm"]].map(_score_cell),
         "Tape Bias": m[CURRENT["tape"]].fillna(""),
         "":        [""] * len(m),  # spacer col
-        "Δ %":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
+        "% Δ":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
         "Sharpe Δ":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
     })
