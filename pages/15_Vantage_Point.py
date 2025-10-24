@@ -491,6 +491,7 @@ st.markdown(
 # Per-Ticker Card (within Category)
 # ============================
 
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ========= Category selector =========
 preferred_order = [
