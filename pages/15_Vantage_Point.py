@@ -255,6 +255,11 @@ st.markdown("""
   border:none !important; background:transparent !important; padding:0 !important; /* spacer col */
 }
 
+/* Category table  */
+.tbl-cat th:nth-child(5) { text-align:center; }
+  
+}            
+            
 </style>
 """, unsafe_allow_html=True)
 
