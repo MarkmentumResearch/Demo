@@ -330,7 +330,7 @@ _build_macro_card(sb)
 # Category Averages (card)
 # =========================
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True)
+
 
 
 # Use the latest row per ticker (in case the CSV ever has multiple dates)
