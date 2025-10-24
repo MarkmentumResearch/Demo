@@ -538,6 +538,7 @@ if not tcat.empty:
       <col class="col-ticker">    <!-- Ticker -->
       <col class="col-num">       <!-- Sharpe Rank -->
       <col class="col-num">       <!-- MM Score -->
+      <col class="col"> 
       <col class="col-spacer">    <!-- Spacer -->
       <col class="col-num">       <!-- % Δ -->
       <col class="col-num">       <!-- Sharpe Rank Δ -->
