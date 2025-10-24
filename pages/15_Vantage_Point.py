@@ -350,7 +350,7 @@ st.markdown("""
 .card2{
   border:1px solid #cfcfcf; border-radius:8px; background:#fff;
   padding:12px 12px 10px 12px; width:100%;
-  max-width:1200px;
+  max-width:900px;
 }
 .tbl2 { border-collapse: collapse; width: 100%; table-layout: fixed; }
 .tbl2 th, .tbl2 td {
