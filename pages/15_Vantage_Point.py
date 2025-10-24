@@ -293,8 +293,8 @@ def _build_macro_card(df: pd.DataFrame):
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
     })
 
-    html = render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
-    html = html.replace('class="dataframe tbl-macro"', 'class="tbl-macro"')
+    html = render.to_html(index=False, classes="tbl", escape=False, border=0)
+    html = html.replace('class="dataframe tbl"', 'class="tbl"')
     colgroup = """
     <colgroup>
       <col class="col-name">     <!-- Name -->
