@@ -400,12 +400,12 @@ html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
 colgroup_cat = """
 <colgroup>
   <col class="col-name">     <!-- Name -->
-  <col class="col-num">      <!-- Sharpe -->
-  <col class="col-num">      <!-- MM Score -->
+  <col class="col-num">      <!-- Avg Sharpe Rank -->
+  <col class="col-num">      <!-- Avg MM Score -->
   <col class="col-spacer">   <!-- Spacer (no borders) -->
-  <col class="col-num">      <!-- % Δ -->
-  <col class="col-num">      <!-- Sharpe Δ -->
-  <col class="col-num">      <!-- MM Score Δ -->
+  <col class="col-num">      <!-- Avg % Δ -->
+  <col class="col-num">      <!-- Avg Sharpe Rank Δ -->
+  <col class="col-num">      <!-- Avg MM Score Δ -->
 </colgroup>
 """.strip()
 
