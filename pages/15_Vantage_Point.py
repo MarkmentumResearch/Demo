@@ -311,7 +311,7 @@ def _build_macro_card(df: pd.DataFrame):
               Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes
             </h3>
             <div style="text-align:center; color:#6b7280; font-size:13.5px; margin-bottom:8px;">
-              Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Return, Sharpe ▲, MM Score ▲
+              Current Sharpe Rank / MM Score / Tape Bias &nbsp;·&nbsp; then {escape(timeframe)} % Δ, Sharpe Δ, MM Score Δ
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
