@@ -328,7 +328,7 @@ def _build_macro_card(df: pd.DataFrame):
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
+              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
             </div>
           </div>
         </div>
@@ -478,7 +478,7 @@ st.markdown(
         </div>
         {html_cat}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/Score cells use green/gray/red tints; change columns and % return use independent per-timeframe scales. As of {escape(date_str)}.
+              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
             </div>
       </div>
     </div>
@@ -558,8 +558,9 @@ if not tcat.empty:
             <h3>{selected_cat} — Tickers</h3>
             <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
             {html_t}
-            <div class="subnote">Alphabetical within {selected_cat}; same color-scale logic as Macro Orientation.</div>
-          </div>
+            <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
+              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
