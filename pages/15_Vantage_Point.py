@@ -173,18 +173,6 @@ sb = load_signal_box(CSV_PATH)
 # ---------- Title + timeframe dropdown (centered like Morning Compass) ----------
 #st.markdown("<h1 style='margin-bottom:2px;'>Vantage Point</h1><div style='color:#667; font-size:13px;'>All signals. One view.</div>", unsafe_allow_html=True)
 
-if date_str:
-    st.markdown(
-        f"""
-        <div style="text-align:center; margin:-6px 0 14px;
-                    font-size:18px; font-weight:600; color:#1a1a1a;">
-            Vantage Point – {date_str}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
 
 
 def _centered_select(label: str, options: list[str], default: str):
