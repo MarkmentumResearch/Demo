@@ -294,7 +294,7 @@ def _build_macro_card(df: pd.DataFrame):
     })
 
     html = render.to_html(index=False, classes="tbl tbl-macro", escape=False, border=0)
-    html = html.replace('class="dataframe tbl tbl-macro"', 'class="tbl tbl-macro"')
+    html = html.replace('class="dataframe tbl-macro"', 'class="tbl-macro"')
     colgroup = """
     <colgroup>
       <col class="col-name">     <!-- Name -->
