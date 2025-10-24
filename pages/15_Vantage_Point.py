@@ -393,8 +393,8 @@ cat_render = pd.DataFrame({
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
-html_cat = cat_render.to_html(index=False, classes="tbl-cat", escape=False, border=0)
-html_cat = html_cat.replace('class="dataframe tbl-cat"', 'class="tbl-cat"')
+html_cat = cat_render.to_html(index=False, classes="tbl", escape=False, border=0)
+html_cat = html_cat.replace('class="dataframe tbl"', 'class="tbl"')
 
 colgroup_cat = """
 <colgroup>
