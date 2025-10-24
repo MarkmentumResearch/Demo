@@ -337,7 +337,7 @@ def _build_macro_card(df: pd.DataFrame):
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
+              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales. Tape Bias from Directional Trends page.
             </div>
           </div>
         </div>
@@ -568,7 +568,8 @@ if not tcat.empty:
             <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
             {html_t}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
+              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales. 
+              Tape Bias from Directional Trends page
             </div>
         </div>
         """,
