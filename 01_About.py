@@ -207,6 +207,17 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Our mission is to deliver actionable, probability-driven insights without noise or narratives, 
   helping market participants steward their resources with confidence.
 </p>
+
+<h3>Why Markmentum Research</h3>
+<p>
+  We’ve all been taught that the best strategy is just buy and hold and over time you should do well. However, that strategy of yesteryear no longer holds for many reasons. 
+  Therefore, market participants need a new way to achieve consistent compounding of returns and preservation of capital with advanced risk management techniques. We provide this via a volatility adjusted probability-driven market momentum framework.  
+</p>
+<p>
+  Risk exists and our goal is to manage that risk properly while extracting consistent gains based on market signals over different time scales. 
+  Tipping the scales in your favor where the upside reward is greater than the downside risk is possible when you forget all your past learnings about how financial markets work and use a data dependent decision-making process.
+</p>
+
 </div>
 """,
     unsafe_allow_html=True,
