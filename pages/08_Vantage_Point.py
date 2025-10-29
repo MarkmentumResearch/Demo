@@ -521,7 +521,7 @@ tcat = latest[latest["Category"] == selected_cat].copy()
 
 # --- Add local timeframe selector for per-ticker section ---
 st.markdown("<br>", unsafe_allow_html=True)
-_, ctf, _ = st.columns([1, 1, 1])
+_, ctf, _ = st.columns([2, 1, 2])
 with ctf:
     local_tf = st.selectbox(
         "Select Timeframe (Per-Ticker)",
