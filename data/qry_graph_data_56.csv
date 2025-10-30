@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-MSCI,MSCI INC.,Financials,2025-10-28,-107.0,-32.0,75.0
-CMCSA,COMCAST ,Communication Services,2025-10-28,-84.0,-32.0,52.0
-CTRA,COTERRA ENERGY INC.,Energy,2025-10-28,-77.0,-39.0,38.0
-PBR,BRAZILIAN PETROLEUM  - PETROBRAS,MR Discretion,2025-10-28,-73.0,-42.0,31.0
-ROL,"ROLLINS, INC.",Industrials,2025-10-28,-70.0,-26.0,44.0
-TS,TENARIS SA,MR Discretion,2025-10-28,-70.0,-12.0,58.0
-AXON,"AXON ENTERPRISE, INC.",Industrials,2025-10-28,-67.0,-5.0,62.0
-QCOM,QUALCOMM INC.,Information Technology,2025-10-28,-67.0,-16.0,51.0
-SWKS,"SKYWORKS SOLUTIONS, INC.",Information Technology,2025-10-28,-67.0,-20.0,47.0
-FFIV,"F5, INC.",Information Technology,2025-10-28,-66.0,-29.0,37.0
+MSCI,MSCI INC.,Financials,2025-10-29,-89.0,-14.0,75.0
+UBER,"UBER TECHNOLOGIES, INC.",Industrials,2025-10-29,-82.0,-5.0,77.0
+TER,"TERADYNE, INC.",Information Technology,2025-10-29,-74.0,-23.0,51.0
+YUM,"YUM! BRANDS, INC.",Consumer Discretionary,2025-10-29,-74.0,-15.0,59.0
+PBR,BRAZILIAN PETROLEUM  - PETROBRAS,MR Discretion,2025-10-29,-73.0,-42.0,31.0
+TS,TENARIS SA,MR Discretion,2025-10-29,-70.0,-12.0,58.0
+AXON,"AXON ENTERPRISE, INC.",Industrials,2025-10-29,-67.0,-5.0,62.0
+USO,UNITED STATES OIL FUND,Commodities,2025-10-29,-65.0,-39.0,26.0
+ANET,"ARISTA NETWORKS, INC.",Information Technology,2025-10-29,-64.0,-13.0,51.0
+PAM,PAMPA ENERGIA SA,MR Discretion,2025-10-29,-64.0,-35.0,29.0
