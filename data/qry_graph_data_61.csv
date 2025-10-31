@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
-DOC,"HEALTHDOC PROPERTIES, INC.",Real Estate,2025-10-29,123.0,70.0,-53.0
-XLC,SEL SECTOR:COMM SVC SPDR,Sector & Style ETFs,2025-10-29,122.0,47.0,-75.0
-WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-10-29,120.0,33.0,-87.0
-APTV,APTIV PLC,Consumer Discretionary,2025-10-29,111.0,50.0,-61.0
-MTB,M&T BANK ,Financials,2025-10-29,106.0,98.0,-8.0
-NTAP,"NETAPP, INC.",Information Technology,2025-10-29,106.0,46.0,-60.0
-WYNN,"WYNN RESORTS, LIMITED",Consumer Discretionary,2025-10-29,105.0,81.0,-24.0
-EWT,ISHARES:MSCI TAIWAN,Foreign,2025-10-29,103.0,5.0,-98.0
-APP,APPLOVIN CORP,Communication Services,2025-10-29,102.0,74.0,-28.0
-CRWD,"CROWDSTRIKE HOLDINGS, INC.",Information Technology,2025-10-29,102.0,23.0,-79.0
+EFX,EQUIFAX INC.,Industrials,2025-10-30,133.0,42.0,-91.0
+APP,APPLOVIN CORP,Communication Services,2025-10-30,129.0,101.0,-28.0
+MTUM,ISHARES:MSCI USA MOM FCT,Sector & Style ETFs,2025-10-30,129.0,47.0,-82.0
+XLC,SEL SECTOR:COMM SVC SPDR,Sector & Style ETFs,2025-10-30,122.0,47.0,-75.0
+WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-10-30,120.0,33.0,-87.0
+APTV,APTIV PLC,Consumer Discretionary,2025-10-30,114.0,53.0,-61.0
+WYNN,"WYNN RESORTS, LIMITED",Consumer Discretionary,2025-10-30,112.0,81.0,-31.0
+AVGO,BROADCOM INC.,Information Technology,2025-10-30,108.0,74.0,-34.0
+MTB,M&T BANK ,Financials,2025-10-30,106.0,98.0,-8.0
+NWSA,NEWS CORP.,Communication Services,2025-10-30,105.0,72.0,-33.0
