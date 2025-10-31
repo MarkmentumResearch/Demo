@@ -298,13 +298,13 @@ def _build_macro_card(df: pd.DataFrame):
     render = pd.DataFrame({
         "Name":    m["Ticker_name"],
         "Ticker":  m["Ticker"].map(_mk_ticker_link),
-        "Sharpe Rank":  m[CURRENT["rank"]].map(_rank_cell),
         "MM Score":      m[CURRENT["mm"]].map(_score_cell),
+        "Sharpe Rank":  m[CURRENT["rank"]].map(_rank_cell),
         "Tape Bias": m[CURRENT["tape"]].fillna(""),
         "":        [""] * len(m),  # spacer col
         "% Δ":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
-        "Sharpe Rank Δ":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
+        "Sharpe Rank Δ":   [ _delta_cell(v, vmax_dsh)         for v in m[tf["d_sh"]] ],
     })
 
     html = render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -333,7 +333,7 @@ def _build_macro_card(df: pd.DataFrame):
           <div class="card">
             <h3>Macro Orientation — {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
             <div class="subtitle">
-                Current Sharpe Rank / MM Score and {tf['title']} Changes
+                Current MM Score / Sharpe Rank and {tf['title']} Changes
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
@@ -451,12 +451,12 @@ vmax_dmm = _robust_vmax(grp["dMM"],     q=0.98, floor=1.0, step=1.0)
 # Build render frame (keep the blank spacer column)
 cat_render = pd.DataFrame({
     "Name":      grp["Category"],
-    "Avg Sharpe Rank":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
     "Avg MM Score":  [ _score_cell(v)              for v in grp["MMScore"]  ],
+    "Avg Sharpe Rank":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
     "":          [ ""                          for _ in range(len(grp)) ],  # spacer
     "Avg % Δ":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
-    "Avg Sharpe Rank Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
     "Avg MM Score Δ":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
+    "Avg Sharpe Rank Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
@@ -483,7 +483,7 @@ st.markdown(
       <div class="card2">
         <h3>Category Averages — {tf['title']} Changes</h3>
         <div class="subtitle">
-          Avg Current Sharpe Rank / MM Score and {tf['title']} Avg Changes
+          Avg MM Score / Current Sharpe Rank and {tf['title']} Avg Changes
         </div>
         {html_cat}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
@@ -549,13 +549,13 @@ if not tcat.empty:
     t_render = pd.DataFrame({
         "Name":        tcat["Ticker_name"],                             # <- was "Name"
         "Ticker":      tcat["Ticker_link"],
-        "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
         "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
+        "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
         "Tape Bias": tcat[CURRENT["tape"]].fillna(""),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
         "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
-        "Sharpe Rank Δ":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
         "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
+        "Sharpe Rank Δ":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
     })
 
     html_t = t_render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -581,7 +581,7 @@ if not tcat.empty:
         <div class="card-wrap">
           <div class="card">
             <h3>{selected_cat} — Per Ticker {escape(TIMEFRAMES[timeframe]["title"])} Changes</h3>
-            <div class="subtitle">Current Sharpe Rank / MM Score and {tf['title']} Changes</div>
+            <div class="subtitle">Current MM Score / Sharpe Rank and {tf['title']} Changes</div>
             {html_t}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
               Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales. 
