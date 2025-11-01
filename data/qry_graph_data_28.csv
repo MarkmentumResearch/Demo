@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-10-30,178.86
-PFE,PFIZER INC.,Health Care,2025-10-30,157.47
-CMG,"CHIPOTLE MEXICAN GRILL, INC.",Consumer Discretionary,2025-10-30,110.05
-AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-30,102.25
-META,"META PLATFORMS, INC.",Communication Services,2025-10-30,88.44
-INTC,INTEL ,Information Technology,2025-10-30,84.85
-T,AT&T INC.,Communication Services,2025-10-30,82.16
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-30,80.76
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-30,76.33
-GOOGL,ALPHABET INC.,Communication Services,2025-10-30,74.87
+NVDA,NVIDIA ,Information Technology,2025-10-31,179.8
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-10-31,166.34
+PFE,PFIZER INC.,Health Care,2025-10-31,132.69
+T,AT&T INC.,Communication Services,2025-10-31,89.93
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-10-31,87.16
+AAPL,APPLE INC.,Information Technology,2025-10-31,86.16
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-10-31,83.13
+INTC,INTEL ,Information Technology,2025-10-31,80.47
+RIG,TRANSOCEAN LTD,MR Discretion,2025-10-31,69.55
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-10-31,68.86
