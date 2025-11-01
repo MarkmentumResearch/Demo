@@ -300,7 +300,7 @@ def _build_macro_card(df: pd.DataFrame):
         "Ticker":  m["Ticker"].map(_mk_ticker_link),
         "MM Score":      m[CURRENT["mm"]].map(_score_cell),
         "Sharpe Rank":  m[CURRENT["rank"]].map(_rank_cell),
-        "Tape": m[CURRENT["tape"]].fillna(""),
+        "Tape Bias": m[CURRENT["tape"]].fillna(""),
         "":        [""] * len(m),  # spacer col
         "% Δ":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
@@ -551,7 +551,7 @@ if not tcat.empty:
         "Ticker":      tcat["Ticker_link"],
         "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
         "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
-        "Tape": tcat[CURRENT["tape"]].fillna(""),
+        "Tape Bias": tcat[CURRENT["tape"]].fillna(""),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
         "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
         "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
