@@ -60,9 +60,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_qtd_change,current_Sharpe_
 2025-10-31,BF.B,BROWN-FORMAN ,Consumer Staples,Consumer Staples,18.9,50.8,31.9
 2025-10-31,BG,BUNGE LIMITED,Consumer Staples,Consumer Staples,31.2,90.7,59.5
 2025-10-31,BIIB,BIOGEN INC.,Health Care,Health Care,-30.2,36.1,66.3
-2025-10-31,BIL,SPDR Bbg 1-3 Mo T-Bill,,Bonds,-87.9,0.4,88.3
 2025-10-31,BK,THE BANK OF NEW YORK MELLON ,Financials,Financials,-13.9,38.9,52.8
-2025-10-31,BKLN,Invesco Senior Loan,,Bonds,40.3,64.5,24.2
 2025-10-31,BKNG,BOOKING HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,3.8,25.8,22.0
 2025-10-31,BKR,BAKER HUGHES COMPANY,Energy,Energy,-33.9,39.1,73.0
 2025-10-31,BLDR,"BUILDERS FIRSTSOURCE, INC.",Industrials,Industrials,2.6,26.2,23.6
@@ -510,7 +508,6 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_qtd_change,current_Sharpe_
 2025-10-31,SCHW,THE CHARLES SCHWAB ,Financials,Financials,-10.9,25.4,36.3
 2025-10-31,SD,"SANDRIDGE ENERGY, INC.",,MR Discretion,33.0,52.0,19.0
 2025-10-31,SDY,SPDR S&P DIVIDEND,,Sector & Style ETFs,-6.9,18.1,25.0
-2025-10-31,SGOV,iShares:0-3 Month Trs Bd,,Bonds,-89.7,3.8,93.5
 2025-10-31,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,35.9,59.3,23.4
 2025-10-31,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,-12.1,21.2,33.3
 2025-10-31,SILJ,ETFMG PRIME JR SILVR MNR,,Commodities,-57.0,34.9,91.9
@@ -556,7 +553,6 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_qtd_change,current_Sharpe_
 2025-10-31,TEL,TE CONNECTIVITY LTD,Information Technology,Information Technology,9.4,93.3,83.9
 2025-10-31,TER,"TERADYNE, INC.",Information Technology,Information Technology,1.7,81.3,79.6
 2025-10-31,TFC,TRUIST FINANCIAL ,Financials,Financials,22.8,49.6,26.8
-2025-10-31,TFLO,iShares:Tr Fl Rate Bond,,Bonds,-76.0,3.8,79.8
 2025-10-31,TGT,TARGET ,Consumer Staples,Consumer Staples,55.1,82.3,27.2
 2025-10-31,THD,ISHARES:MSCI THAI,,Foreign,3.6,62.5,58.9
 2025-10-31,TIP,ISHARES:TIPS BD ETF,Bonds,Bonds,-7.7,26.8,34.5
