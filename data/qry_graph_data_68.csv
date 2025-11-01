@@ -1,7 +1,7 @@
 Ticker,Ticker_name,Category,Date,model_score_qtd_change,current_model_score,previous_model_score
+MO,"ALTRIA GROUP, INC.",Consumer Staples,2025-10-31,-95.0,-24.0,71.0
 AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-10-31,-93.0,-67.0,26.0
 CHD,"CHURCH & DWIGHT CO., INC.",Consumer Staples,2025-10-31,-87.0,-31.0,56.0
-MO,"ALTRIA GROUP, INC.",Consumer Staples,2025-10-31,-87.0,-24.0,63.0
 LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,2025-10-31,-86.0,-57.0,29.0
 AVY,AVERY DENNISON ,Materials,2025-10-31,-80.0,-76.0,4.0
 KDP,KEURIG DR PEPPER INC.,Consumer Staples,2025-10-31,-78.0,-25.0,53.0

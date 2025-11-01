@@ -60,7 +60,9 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,BF.B,BROWN-FORMAN ,Consumer Staples,Consumer Staples,-50.0,-45.0,5.0
 2025-10-31,BG,BUNGE LIMITED,Consumer Staples,Consumer Staples,-57.0,-60.0,-3.0
 2025-10-31,BIIB,BIOGEN INC.,Health Care,Health Care,-28.0,-31.0,-3.0
+2025-10-31,BIL,SPDR Bbg 1-3 Mo T-Bill,,Bonds,5.0,4.0,-1.0
 2025-10-31,BK,THE BANK OF NEW YORK MELLON ,Financials,Financials,23.0,52.0,29.0
+2025-10-31,BKLN,Invesco Senior Loan,,Bonds,-4.0,-13.0,-9.0
 2025-10-31,BKNG,BOOKING HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,24.0,21.0,-3.0
 2025-10-31,BKR,BAKER HUGHES COMPANY,Energy,Energy,-20.0,-15.0,5.0
 2025-10-31,BLDR,"BUILDERS FIRSTSOURCE, INC.",Industrials,Industrials,-38.0,-32.0,6.0
@@ -78,6 +80,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,C,CITIGROUP INC.,Financials,Financials,89.0,63.0,-26.0
 2025-10-31,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,16.0,32.0,16.0
 2025-10-31,CAH,"CARDINAL HEALTH, INC.",Health Care,Health Care,5.0,-15.0,-20.0
+2025-10-31,CANE,Teucrium:Sugar,,Commodities,-34.0,-35.0,-1.0
 2025-10-31,CARR,CARRIER GLOBAL ,Industrials,Industrials,-20.0,-7.0,13.0
 2025-10-31,CAT,CATERPILLAR INC.,Industrials,Industrials,69.0,-8.0,-77.0
 2025-10-31,CB,CHUBB LTD,Financials,Financials,47.0,28.0,-19.0
@@ -111,9 +114,11 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,CNR,"CORE NATURAL RESOURCES, INC.",,MR Discretion,46.0,11.0,-35.0
 2025-10-31,COF,CAPITAL ONE FINANCIAL ,Financials,Financials,33.0,23.0,-10.0
 2025-10-31,COIN,"COINBASE GLOBAL, INC.",Financials,Financials,59.0,85.0,26.0
+2025-10-31,COMT,iShares:GSCI Comm Dyn RS,,Commodities,-3.0,-33.0,-30.0
 2025-10-31,COO,"THE COOPER COMPANIES, INC.",Health Care,Health Care,34.0,-3.0,-37.0
 2025-10-31,COP,CONOCOPHILLIPS,Energy,Energy,2.0,-17.0,-19.0
 2025-10-31,COR,"CENCORA, INC.",Health Care,Health Care,36.0,-17.0,-53.0
+2025-10-31,CORN,Teucrium:Corn,,Commodities,-17.0,6.0,23.0
 2025-10-31,COST,COSTCO WHOLESALE ,Consumer Staples,Consumer Staples,23.0,38.0,15.0
 2025-10-31,CPAY,"FLEETCOR TECHNOLOGIES, INC.",Financials,Financials,57.0,46.0,-11.0
 2025-10-31,CPB,CAMPBELL SOUP COMPANY,Consumer Staples,Consumer Staples,55.0,29.0,-26.0
@@ -137,7 +142,9 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,DAL,"DELTA AIR LINES, INC.",Industrials,Industrials,35.0,44.0,9.0
 2025-10-31,DASH,"DOORDASH, INC.",Consumer Discretionary,Consumer Discretionary,52.0,44.0,-8.0
 2025-10-31,DAY,CERIDIAN HCM HOLDING INC.,Industrials,Industrials,1.0,-26.0,-27.0
+2025-10-31,DBA,Invesco DB MS Agri,,Commodities,-5.0,48.0,53.0
 2025-10-31,DBB,INVESCO DB MS BMTL,,Commodities,8.0,-20.0,-28.0
+2025-10-31,DBC,Invesco DB Cm Idx,,Commodities,22.0,-38.0,-60.0
 2025-10-31,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,44.0,7.0,-37.0
 2025-10-31,DDOG,"DATADOG, INC.",Information Technology,Information Technology,56.0,-4.0,-60.0
 2025-10-31,DE,DEERE & COMPANY,Industrials,Industrials,-1.0,3.0,4.0
@@ -175,7 +182,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,EFX,EQUIFAX INC.,Industrials,Industrials,124.0,33.0,-91.0
 2025-10-31,EG,"EVEREST GROUP, LTD.",Financials,Financials,49.0,0.0,-49.0
 2025-10-31,EIDO,ISHARES:MSCI INDONESIA,,Foreign,-4.0,1.0,5.0
-2025-10-31,EIRL,ISHARES:MSCI IRELAND,,Foreign,12.0,16.0,4.0
+2025-10-31,EIRL,ISHARES:MSCI IRELAND,,Foreign,17.0,16.0,-1.0
 2025-10-31,EIS,ISHARES:MSCI ISRAEL,,Foreign,66.0,41.0,-25.0
 2025-10-31,EIX,EDISON INTERNATIONAL,Utilities,Utilities,21.0,-5.0,-26.0
 2025-10-31,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,-50.0,-41.0,9.0
@@ -206,7 +213,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,EWG,ISHARES:MSCI GERMANY,,Foreign,-44.0,30.0,74.0
 2025-10-31,EWH,ISHARES:MSCI HONG KONG,,Foreign,26.0,63.0,37.0
 2025-10-31,EWI,ISHARES:MSCI ITALY,,Foreign,94.0,84.0,-10.0
-2025-10-31,EWJ,ISHARES:MSCI JAPAN,,Foreign,49.0,5.0,-44.0
+2025-10-31,EWJ,ISHARES:MSCI JAPAN,,Foreign,34.0,-10.0,-44.0
 2025-10-31,EWK,ISHARES:MSCI BELGIUM,,Foreign,29.0,44.0,15.0
 2025-10-31,EWL,ISHARES:MSCI SWITZERLAND,,Foreign,3.0,36.0,33.0
 2025-10-31,EWM,ISHARES:MSCI MALAYSIA,,Foreign,69.0,26.0,-43.0
@@ -247,7 +254,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,FVX,5 YR TSY YLD NDX,Yields,Yields,0.0,-1.0,-1.0
 2025-10-31,FXA,INVESCO:AU DOLLAR,,Currencies,59.0,31.0,-28.0
 2025-10-31,FXB,INVESCO:GBP STERLING,,Currencies,-8.0,27.0,35.0
-2025-10-31,FXC,INVESCO:CANADIAN DOLLAR,,Currencies,0.0,36.0,36.0
+2025-10-31,FXC,INVESCO:CANADIAN DOLLAR,,Currencies,-27.0,9.0,36.0
 2025-10-31,FXE,INVESCO:EURO,,Currencies,31.0,30.0,-1.0
 2025-10-31,FXY,INVESCO:JAPANESE YEN,,Currencies,-31.0,-1.0,30.0
 2025-10-31,GD,GENERAL DYNAMICS ,Industrials,Industrials,44.0,50.0,6.0
@@ -297,6 +304,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,HUBB,HUBBELL INC.,Industrials,Industrials,-9.0,-27.0,-18.0
 2025-10-31,HUM,HUMANA INC.,Health Care,Health Care,-43.0,-58.0,-15.0
 2025-10-31,HWM,HOWMET AEROSPACE INC.,Industrials,Industrials,65.0,54.0,-11.0
+2025-10-31,HYD,VanEck:High Yield Muni,,Bonds,66.0,-27.0,-93.0
 2025-10-31,HYG,ISHARES:IBOXX $HY CORP,Bonds,Bonds,65.0,55.0,-10.0
 2025-10-31,IBKR,"INTERACTIVE BROKERS GROUP, INC.",Financials,Financials,20.0,30.0,10.0
 2025-10-31,IBM,INTERNATIONAL BUSINESS MACHINES ,Information Technology,Information Technology,68.0,33.0,-35.0
@@ -329,6 +337,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,JCI,JOHNSON CONTROLS INTERNATIONAL PLC,Industrials,Industrials,11.0,33.0,22.0
 2025-10-31,JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,Financials,-25.0,16.0,41.0
 2025-10-31,JNJ,JOHNSON & JOHNSON,Health Care,Health Care,11.0,-1.0,-12.0
+2025-10-31,JNK,SPDR Bbg High Yield Bd,,Bonds,38.0,20.0,-18.0
 2025-10-31,JPM,JPMORGAN CHASE & CO.,Financials,Financials,65.0,55.0,-10.0
 2025-10-31,K,KELLANOVA,Consumer Staples,Consumer Staples,-7.0,20.0,27.0
 2025-10-31,KDP,KEURIG DR PEPPER INC.,Consumer Staples,Consumer Staples,-78.0,-25.0,53.0
@@ -356,7 +365,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,LMT,LOCKHEED MARTIN ,Industrials,Industrials,49.0,40.0,-9.0
 2025-10-31,LNT,ALLIANT ENERGY ,Utilities,Utilities,-3.0,5.0,8.0
 2025-10-31,LOW,"LOWE'S COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,32.0,61.0,29.0
-2025-10-31,LQD,ISHARES:IBOXX $IG CORP,Bonds,Bonds,-13.0,-10.0,3.0
+2025-10-31,LQD,ISHARES:IBOXX $IG CORP,Bonds,Bonds,11.0,14.0,3.0
 2025-10-31,LRCX,LAM RESEARCH ,Information Technology,Information Technology,34.0,-9.0,-43.0
 2025-10-31,LULU,LULULEMON ATHLETICA INC.,Consumer Discretionary,Consumer Discretionary,25.0,-7.0,-32.0
 2025-10-31,LUV,SOUTHWEST AIRLINES CO.,Industrials,Industrials,63.0,37.0,-26.0
@@ -385,7 +394,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,MMC,"MARSH & MCLENNAN COMPANIES, INC.",Financials,Financials,-20.0,0.0,20.0
 2025-10-31,MMM,3M COMPANY,Industrials,Industrials,-30.0,-1.0,29.0
 2025-10-31,MNST,MONSTER BEVERAGE ,Consumer Staples,Consumer Staples,47.0,24.0,-23.0
-2025-10-31,MO,"ALTRIA GROUP, INC.",Consumer Staples,Consumer Staples,-87.0,-24.0,63.0
+2025-10-31,MO,"ALTRIA GROUP, INC.",Consumer Staples,Consumer Staples,-95.0,-24.0,71.0
 2025-10-31,MOH,"MOLINA HEALTHCARE, INC.",Health Care,Health Care,9.0,-29.0,-38.0
 2025-10-31,MOS,THE MOSAIC COMPANY,Materials,Materials,22.0,0.0,-22.0
 2025-10-31,MP,MP MATERIALS CORP,,MR Discretion,-64.0,-10.0,54.0
@@ -402,6 +411,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,MTD,METTLER-TOLEDO INTERNATIONAL INC.,Health Care,Health Care,-57.0,-43.0,14.0
 2025-10-31,MTUM,ISHARES:MSCI USA MOM FCT,,Sector & Style ETFs,117.0,35.0,-82.0
 2025-10-31,MU,"MICRON TECHNOLOGY, INC.",Information Technology,Information Technology,30.0,-16.0,-46.0
+2025-10-31,MUB,iShares:Natl Muni Bond,,Bonds,33.0,-1.0,-34.0
 2025-10-31,NCLH,NORWEGIAN CRUISE LINE HOLDINGS LTD.,Consumer Discretionary,Consumer Discretionary,35.0,61.0,26.0
 2025-10-31,NDAQ,"NASDAQ, INC.",Financials,Financials,-18.0,-18.0,0.0
 2025-10-31,NDSN,NORDSON ,Industrials,Industrials,54.0,6.0,-48.0
@@ -416,7 +426,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,NOV,NOV INC.,,MR Discretion,5.0,-14.0,-19.0
 2025-10-31,NOW,"SERVICENOW, INC.",Information Technology,Information Technology,49.0,10.0,-39.0
 2025-10-31,NQ=F,NASDAQ 100 FUTURES,,Futures,41.0,-10.0,-51.0
-2025-10-31,NRG,"NRG ENERGY, INC.",Utilities,Utilities,36.0,35.0,-1.0
+2025-10-31,NRG,"NRG ENERGY, INC.",Utilities,Utilities,32.0,35.0,3.0
 2025-10-31,NSC,NORFOLK SOUTHERN ,Industrials,Industrials,74.0,27.0,-47.0
 2025-10-31,NTAP,"NETAPP, INC.",Information Technology,Information Technology,98.0,38.0,-60.0
 2025-10-31,NTRS,NORTHERN TRUST ,Financials,Financials,30.0,28.0,-2.0
@@ -445,6 +455,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,PEG,PUBLIC SERVICE ENTERPRISE GROUP INC.,Utilities,Utilities,16.0,26.0,10.0
 2025-10-31,PEP,"PEPSICO, INC.",Consumer Staples,Consumer Staples,-66.0,-19.0,47.0
 2025-10-31,PFE,PFIZER INC.,Health Care,Health Care,35.0,25.0,-10.0
+2025-10-31,PFF,iShares:Pref and Inc Sec,,Bonds,128.0,99.0,-29.0
 2025-10-31,PFG,"PRINCIPAL FINANCIAL GROUP, INC.",Financials,Financials,53.0,13.0,-40.0
 2025-10-31,PG,THE PROCTER & GAMBLE COMPANY,Consumer Staples,Consumer Staples,-51.0,3.0,54.0
 2025-10-31,PGR,THE PROGRESSIVE ,Financials,Financials,5.0,-0.0,-5.0
@@ -462,11 +473,12 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,POWA,INVESCO BLOOMBERG PRICING POWER,,Sector & Style ETFs,25.0,29.0,4.0
 2025-10-31,PPG,"PPG INDUSTRIES, INC.",Materials,Materials,44.0,48.0,4.0
 2025-10-31,PPL,PPL ,Utilities,Utilities,-33.0,-1.0,32.0
+2025-10-31,PPLT,abrdn:Physical Platinum,,Commodities,77.0,50.0,-27.0
 2025-10-31,PRU,"PRUDENTIAL FINANCIAL, INC.",Financials,Financials,11.0,15.0,4.0
 2025-10-31,PSA,PUBLIC STORAGE.,Real Estate,Real Estate,0.0,15.0,15.0
 2025-10-31,PSKY,PARAMOUNT SKYDANCE ,Communication Services,Communication Services,84.0,39.0,-45.0
 2025-10-31,PSX,PHILLIPS 66,Energy,Energy,17.0,-2.0,-19.0
-2025-10-31,PTC,PTC INC.,Information Technology,Information Technology,16.0,56.0,40.0
+2025-10-31,PTC,PTC INC.,Information Technology,Information Technology,6.0,46.0,40.0
 2025-10-31,PWR,"QUANTA SERVICES, INC.",Industrials,Industrials,5.0,-18.0,-23.0
 2025-10-31,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,-17.0,35.0,52.0
 2025-10-31,QAT,ISHARES:MSCI QATAR,,Foreign,-16.0,2.0,18.0
@@ -494,9 +506,11 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,SBAC,SBA COMMUNICATIONS ,Real Estate,Real Estate,-26.0,30.0,56.0
 2025-10-31,SBLK,STAR BULK CARRIERS CORP.,,MR Discretion,-7.0,6.0,13.0
 2025-10-31,SBUX,STARBUCKS ,Consumer Discretionary,Consumer Discretionary,41.0,35.0,-6.0
+2025-10-31,SCHP,Schwab Str:US TIPS,,Bonds,-1.0,14.0,15.0
 2025-10-31,SCHW,THE CHARLES SCHWAB ,Financials,Financials,15.0,23.0,8.0
 2025-10-31,SD,"SANDRIDGE ENERGY, INC.",,MR Discretion,-51.0,-20.0,31.0
 2025-10-31,SDY,SPDR S&P DIVIDEND,,Sector & Style ETFs,85.0,89.0,4.0
+2025-10-31,SGOV,iShares:0-3 Month Trs Bd,,Bonds,7.0,9.0,2.0
 2025-10-31,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,-51.0,-5.0,46.0
 2025-10-31,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,6.0,40.0,34.0
 2025-10-31,SILJ,ETFMG PRIME JR SILVR MNR,,Commodities,93.0,76.0,-17.0
@@ -504,10 +518,12 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,SLB,SCHLUMBERGER N.V.,Energy,Energy,-32.0,-33.0,-1.0
 2025-10-31,SLV,ISHARES:SILVER TRUST,,Commodities,26.0,29.0,3.0
 2025-10-31,SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,Information Technology,48.0,10.0,-38.0
+2025-10-31,SMH,VanEck:Semiconductor,,Sector & Style ETFs,41.0,-3.0,-44.0
 2025-10-31,SNA,SNAP-ON INC.,Industrials,Industrials,78.0,38.0,-40.0
 2025-10-31,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,-5.0,-5.0,0.0
 2025-10-31,SO,THE SOUTHERN COMPANY,Utilities,Utilities,10.0,5.0,-5.0
 2025-10-31,SOLV,SOLVENTUM ,Health Care,Health Care,-14.0,-11.0,3.0
+2025-10-31,SOYB,Teucrium:Soybean,,Commodities,-3.0,-8.0,-5.0
 2025-10-31,SPG,"SIMON PROPERTY GROUP, INC.",Real Estate,Real Estate,64.0,36.0,-28.0
 2025-10-31,SPGI,S&P GLOBAL INC.,Financials,Financials,-43.0,-43.0,0.0
 2025-10-31,SPHB,INVESCO S&P500 HI BE,,Sector & Style ETFs,30.0,-11.0,-41.0
@@ -530,6 +546,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,SYK,STRYKER ,Health Care,Health Care,-9.0,3.0,12.0
 2025-10-31,SYY,SYSCO ,Consumer Staples,Consumer Staples,9.0,0.0,-9.0
 2025-10-31,T,AT&T INC.,Communication Services,Communication Services,17.0,-0.0,-17.0
+2025-10-31,TAGS,Teucrium:Agricultural,,Commodities,37.0,33.0,-4.0
 2025-10-31,TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,Consumer Staples,-8.0,17.0,25.0
 2025-10-31,TDG,TRANSDIGM GROUP INC.,Industrials,Industrials,54.0,3.0,-51.0
 2025-10-31,TDW,TIDEWATER INC.,,MR Discretion,10.0,-7.0,-17.0
@@ -539,6 +556,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,TEL,TE CONNECTIVITY LTD,Information Technology,Information Technology,9.0,-11.0,-20.0
 2025-10-31,TER,"TERADYNE, INC.",Information Technology,Information Technology,-15.0,-27.0,-12.0
 2025-10-31,TFC,TRUIST FINANCIAL ,Financials,Financials,-16.0,23.0,39.0
+2025-10-31,TFLO,iShares:Tr Fl Rate Bond,,Bonds,1.0,4.0,3.0
 2025-10-31,TGT,TARGET ,Consumer Staples,Consumer Staples,30.0,24.0,-6.0
 2025-10-31,THD,ISHARES:MSCI THAI,,Foreign,46.0,15.0,-31.0
 2025-10-31,TIP,ISHARES:TIPS BD ETF,Bonds,Bonds,-17.0,5.0,22.0
@@ -575,6 +593,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,UNH,UNITEDHEALTH GROUP INC.,Health Care,Health Care,94.0,12.0,-82.0
 2025-10-31,UNP,UNION PACIFIC ,Industrials,Industrials,71.0,18.0,-53.0
 2025-10-31,UPS,"UNITED PARCEL SERVICE, INC.",Industrials,Industrials,-26.0,-27.0,-1.0
+2025-10-31,URA,Glbl X Uranium ETF,,Commodities,60.0,33.0,-27.0
 2025-10-31,URI,"UNITED RENTALS, INC.",Industrials,Industrials,23.0,34.0,11.0
 2025-10-31,URNM,SPROTT URANIUM MINERS,,MR Discretion,55.0,15.0,-40.0
 2025-10-31,USB,U.S. BANCORP,Financials,Financials,70.0,54.0,-16.0
@@ -601,6 +620,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,85.0,-2.0,-87.0
 2025-10-31,WDAY,"WORKDAY, INC.",Information Technology,Information Technology,47.0,-10.0,-57.0
 2025-10-31,WDC,WESTERN DIGITAL ,Information Technology,Information Technology,8.0,-9.0,-17.0
+2025-10-31,WEAT,Teucrium:Wheat,,Commodities,11.0,8.0,-3.0
 2025-10-31,WEC,"WEC ENERGY GROUP, INC.",Utilities,Utilities,46.0,52.0,6.0
 2025-10-31,WELL,WELLTOWER INC.,Real Estate,Real Estate,37.0,55.0,18.0
 2025-10-31,WFC,WELLS FARGO & COMPANY,Financials,Financials,-25.0,-20.0,5.0
@@ -623,7 +643,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-10-31,XLK,SEL SECTOR:TECH SPDR,,Sector & Style ETFs,79.0,23.0,-56.0
 2025-10-31,XLP,SEL SECTOR:C STP SPDR,,Sector & Style ETFs,1.0,1.0,0.0
 2025-10-31,XLRE,SEL SECTOR:RL EST SPDR,,Sector & Style ETFs,56.0,62.0,6.0
-2025-10-31,XLU,SEL SECTOR:UTIL SPDR,,Sector & Style ETFs,-11.0,5.0,16.0
+2025-10-31,XLU,SEL SECTOR:UTIL SPDR,,Sector & Style ETFs,-14.0,5.0,19.0
 2025-10-31,XLV,SEL SECTOR:H CARE SPDR,,Sector & Style ETFs,28.0,16.0,-12.0
 2025-10-31,XLY,SEL SECTOR:C DSC SPDR,,Sector & Style ETFs,21.0,11.0,-10.0
 2025-10-31,XOM,EXXON MOBIL ,Energy,Energy,28.0,-10.0,-38.0
