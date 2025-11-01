@@ -132,7 +132,7 @@ def _tape_pill(label: str) -> str:
 
     bg = "transparent"
     color = "#1a1a1a"
-    pad = "3px 8px"
+    pad = "2px 8px"
     radius = "3px"
     weight = 500
 
