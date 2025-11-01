@@ -337,7 +337,7 @@ def _build_macro_card(df: pd.DataFrame):
             </div>
             {html}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales. Tape Bias from Directional Trends page.
+              MM Score/Rank cells use green/gray/red tints; Δ columns use independent per-timeframe scales. Tape Bias from Directional Trends page.
             </div>
           </div>
         </div>
@@ -487,7 +487,7 @@ st.markdown(
         </div>
         {html_cat}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
+              MM Score/Rank cells use green/gray/red tints; Δ columns use independent per-timeframe scales.
             </div>
       </div>
     </div>
@@ -551,7 +551,7 @@ if not tcat.empty:
         "Ticker":      tcat["Ticker_link"],
         "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
         "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
-        "Tape Bias": tcat[CURRENT["tape"]].fillna(""),
+        "Tape": tcat[CURRENT["tape"]].fillna(""),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
         "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
         "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
@@ -584,7 +584,7 @@ if not tcat.empty:
             <div class="subtitle">Current MM Score / Sharpe Rank and {tf['title']} Changes</div>
             {html_t}
             <div style="border-top:1px solid #e5e5e5; margin-top:8px; padding-top:10px; font-size:11px; color:#6c757d;">
-              Rank/MM Score cells use green/gray/red tints; Δ columns use independent per-timeframe scales. 
+              MM Score/Rank cells use green/gray/red tints; Δ columns use independent per-timeframe scales. 
               Tape Bias from Directional Trends page
             </div>
         </div>
