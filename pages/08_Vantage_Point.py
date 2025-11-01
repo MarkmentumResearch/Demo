@@ -82,7 +82,7 @@ def _divergent_pct_cell(val: float, vmax: float) -> str:
     if val > 0:   bg = f"rgba(16,185,129,{alpha:.3f})"  # green
     elif val < 0: bg = f"rgba(239,68,68,{alpha:.3f})"  # red
     label = _fmt_pct(val, 2)
-    return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:2px; text-align:right;">{label}</span>'  # :contentReference[oaicite:4]{index=4}
+    return f'<span style="display:block; background:{bg}; padding:0 4px; border-radius:1px; text-align:right;">{label}</span>'  # :contentReference[oaicite:4]{index=4}
 
 # === Sharpe Rank cell (Sharpe Heatmap pattern) ===
 def _rank_cell(score: float, cap: float = 100.0) -> str:
@@ -132,7 +132,7 @@ def _tape_pill(label: str) -> str:
 
     bg = "transparent"
     color = "#1a1a1a"
-    pad = "2px 8px"
+    pad = "1px 8px"
     radius = "3px"
     weight = 500
 
