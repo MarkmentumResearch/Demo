@@ -124,6 +124,34 @@ def _delta_cell(val: float, vmax: float) -> str:
     elif val < 0: bg = f"rgba(239,68,68,{alpha:.3f})"
     return f'<span style="display:block; background:{bg}; padding:0 6px; border-radius:2px; text-align:right;">{_fmt_int(val)}</span>'  # 
 
+# === Tape Bias pill (reuse Directional Trends styling) ===
+def _tape_pill(label: str) -> str:
+    if not isinstance(label, str):
+        return ""
+    l = label.strip()
+
+    bg = "transparent"
+    color = "#1a1a1a"
+    pad = "2px 8px"
+    radius = "3px"
+    weight = 500
+
+    if l == "Buy":
+        bg = "rgba(16,185,129,0.42)"
+    elif l == "Leaning Bullish":
+        bg = "rgba(16,185,129,0.12)"
+    elif l in ("Topping", "Bottoming"):
+        bg = "rgba(107,114,128,0.12)"
+    elif l == "Leaning Bearish":
+        bg = "rgba(239,68,68,0.12)"
+    elif l == "Sell":
+        bg = "rgba(239,68,68,0.42)"
+
+    return (
+        f'<span style="background:{bg}; color:{color}; '
+        f'padding:{pad}; border-radius:{radius}; font-weight:{weight};">{l}</span>'
+    )
+
 # ---------- Timeframe mapping (exact signal_box fields) ----------
 TIMEFRAMES = {
     "Daily": {
@@ -188,6 +216,7 @@ if not sb.empty and "Date" in sb.columns:
     asof = pd.to_datetime(sb["Date"], errors="coerce").max()
     if pd.notna(asof):
         date_str = f"{asof.month}/{asof.day}/{asof.year}"
+
 
 st.markdown(
     f"""
@@ -300,7 +329,7 @@ def _build_macro_card(df: pd.DataFrame):
         "Ticker":  m["Ticker"].map(_mk_ticker_link),
         "MM Score":      m[CURRENT["mm"]].map(_score_cell),
         "Sharpe Rank":  m[CURRENT["rank"]].map(_rank_cell),
-        "Tape Bias": m[CURRENT["tape"]].fillna(""),
+        "Tape Bias": m[CURRENT["tape"]].fillna("").map(_tape_pill),
         "":        [""] * len(m),  # spacer col
         "% Δ":   [ _divergent_pct_cell(v, vmax_ret) for v in m[tf["ret"]] ],
         "MM Score Δ": [ _delta_cell(v, vmax_dmm)         for v in m[tf["d_mm"]] ],
@@ -551,7 +580,7 @@ if not tcat.empty:
         "Ticker":      tcat["Ticker_link"],
         "MM Score":    [ _score_cell(v) for v in tcat[CURRENT["mm"]]   ],
         "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
-        "Tape Bias": tcat[CURRENT["tape"]].fillna(""),
+        "Tape Bias": tcat[CURRENT["tape"]].fillna("").map(_tape_pill),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
         "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
         "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
