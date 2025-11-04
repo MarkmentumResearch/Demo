@@ -222,9 +222,9 @@ def load_csv(path: Path) -> pd.DataFrame:
 
 def _fmt_pct(val):
     try:
-        v = float(val)
-        if abs(v) <= 1.0:
-            v *= 100.0
+        v = float(val) * 100
+        #if abs(v) <= 1.0:
+        #   v *= 100.0
         return f"{v:,.2f}%"
     except:
         return "—"
