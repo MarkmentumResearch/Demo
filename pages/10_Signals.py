@@ -375,7 +375,7 @@ def _mdy_no_leading_zeros(dt: pd.Timestamp) -> str:
 
 @st.cache_data(show_spinner=False)
 def _filters_title_date() -> str:
-    df = load_csv(DATA_DIR / "qry_graph_data_32.csv")  # #32
+    df = load_csv(DATA_DIR / "qry_graph_data_36.csv")  # #32
     if df.empty:
         return _mdy_no_leading_zeros(pd.Timestamp.today())
     dmax = pd.to_datetime(df.get("Date"), errors="coerce").max()
