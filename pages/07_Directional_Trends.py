@@ -163,6 +163,9 @@ def m2_label(st, mt, lt, stc, mtc):
     st_up_mt_down = (stc >= threshold and mtc <= -threshold)
     st_down_mt_up = (stc <= -threshold and mtc >= threshold)
 
+    if abs(stc) <= threshold or abs(mtc) <= threshold:
+        return "Neutral"
+
     # --------------------------
     # A) Confirmed bullish stack
     #    ST < MT < LT
