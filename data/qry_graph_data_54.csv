@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-11-06,763.57
-PFE,PFIZER INC.,Health Care,2025-11-06,538.41
-KVUE,KENVUE INC.,Consumer Staples,2025-11-06,409.9
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-11-06,367.55
-PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-11-06,356.99
-INTC,INTEL ,Information Technology,2025-11-06,315.78
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-11-06,312.21
-T,AT&T INC.,Communication Services,2025-11-06,297.14
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-11-06,295.18
-AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2025-11-06,234.16
+NVDA,NVIDIA ,Information Technology,2025-11-07,1028.51
+PFE,PFIZER INC.,Health Care,2025-11-07,656.21
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-11-07,471.02
+KVUE,KENVUE INC.,Consumer Staples,2025-11-07,457.19
+PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-11-07,430.98
+INTC,INTEL ,Information Technology,2025-11-07,411.3
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-11-07,395.77
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-11-07,392.22
+T,AT&T INC.,Communication Services,2025-11-07,359.58
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-11-07,303.62
