@@ -379,7 +379,7 @@ st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 # Long form from the grouped averages 'g'
 glong = g.melt(
     id_vars=["Category"],
-    value_vars=["Daily", "WTD", "MTD", "QTD"],
+    value_vars=["Daily Δ", "WTD Δ", "MTD Δ", "QTD Δ"],
     var_name="Timeframe",
     value_name="Pct",
 )
@@ -489,10 +489,10 @@ tlong_all = perf.melt(
 )
 # Map raw column names to display timeframes to match pages
 map_tf = {
-    "day_pct_change": "Daily",
-    "week_pct_change": "WTD",
-    "month_pct_change": "MTD",
-    "quarter_pct_change": "QTD",
+    "day_pct_change": "Daily Δ",
+    "week_pct_change": "WTD Δ",
+    "month_pct_change": "MTD Δ",
+    "quarter_pct_change": "QTD Δ",
 }
 tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
 tlong_all.drop(columns=["tf_raw"], inplace=True)
