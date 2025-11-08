@@ -2073,7 +2073,7 @@ table.sp tbody th:first-child{{
 
   <!-- MM Score -->
   <table class="sp">
-    <colgroup><col><col><col><col><col><col><<col></colgroup>
+    <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
       <tr><th class="left">Signal</th><th>Current</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
