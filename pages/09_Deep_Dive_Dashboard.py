@@ -1851,7 +1851,7 @@ with mid_stat:
     row_sr_w = _last_row_for_ticker(FILE_SR_W, TICKER)
     row_sr_m = _last_row_for_ticker(FILE_SR_M, TICKER)
     row_sr_q = _last_row_for_ticker(FILE_SR_Q, TICKER)
-
+    row_ms = _last_row_for_ticker(FILE_MS_D, TICKER)
     row_ms_d = _last_row_for_ticker(FILE_MS_D, TICKER)
     row_ms_w = _last_row_for_ticker(FILE_MS_W, TICKER)
     row_ms_m = _last_row_for_ticker(FILE_MS_M, TICKER)
@@ -1883,6 +1883,7 @@ with mid_stat:
     sr_q    = _g(row_sr_q, "Sharpe_Rank_qtd_change", default=None)
 
     # MM Score changes
+    ms = _g(row_ms, "model_score", default=None)
     ms_d = _g(row_ms_d, "model_score_daily_change", default=None)
     ms_w = _g(row_ms_w, "model_score_wtd_change",   default=None)
     ms_m = _g(row_ms_m, "model_score_mtd_change",   default=None)
@@ -2078,6 +2079,7 @@ table.sp tbody th:first-child{{
     <tbody>
       <tr>
         <th class="left">MM Score</th>
+        <td class="right">{_badge(f"{int(round(ms)):+d}" if ms is not None else "—", "green" if (ms or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_d)):+d}" if ms_d is not None else "—", "green" if (ms_d or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
