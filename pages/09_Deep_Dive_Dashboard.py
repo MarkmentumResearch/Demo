@@ -1715,7 +1715,7 @@ with mid_stat:
   </table>
 </div>
 """
-        st.session_state["mrating"] = {rating}
+        st.session_state["mrating"] = rating
         st_html(html_doc, height=328, scrolling=False)
 
     # ---------- type-ahead above the card ----------
