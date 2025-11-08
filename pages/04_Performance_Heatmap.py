@@ -379,7 +379,7 @@ st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 # Long form from the grouped averages 'g'
 glong = g.melt(
     id_vars=["Category"],
-    value_vars=["Daily Δ", "WTD Δ", "MTD Δ", "QTD Δ"],
+    value_vars=["Daily", "WTD", "MTD", "QTD"],
     var_name="Timeframe",
     value_name="Pct",
 )
