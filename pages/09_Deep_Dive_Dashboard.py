@@ -1715,7 +1715,7 @@ with mid_stat:
   </table>
 </div>
 """
-        st_html(html_doc, height=305, scrolling=False)
+        st_html(html_doc, height=310, scrolling=False)
 
     # ---------- type-ahead above the card ----------
     def render_ticker_typeahead_above(FILE_STATS: Path):
