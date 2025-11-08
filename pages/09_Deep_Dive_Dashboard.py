@@ -1924,7 +1924,7 @@ with mid_stat:
 
 
     # ---- HTML card ----
-    st.markdown('<div style="height:2px"></div>', unsafe_allow_html=True)  # small gap
+    #st.markdown('<div style="height:2px"></div>', unsafe_allow_html=True)  # small gap
     from streamlit.components.v1 import html as st_html
     html_sig = f"""<!doctype html>
 <meta charset="utf-8">
