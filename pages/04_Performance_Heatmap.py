@@ -270,10 +270,10 @@ vmaxM = {
 m_render = pd.DataFrame({
     "Name":   m["Ticker_name"],
     "Ticker": m["Ticker_link"],
-    "Daily Δ":  [ _divergent_tint_html(v, vmaxM["Daily"]) for v in m["day_pct_change"] ],
-    "WTD Δ":    [ _divergent_tint_html(v, vmaxM["WTD"])   for v in m["week_pct_change"] ],
-    "MTD Δ":    [ _divergent_tint_html(v, vmaxM["MTD"])   for v in m["month_pct_change"] ],
-    "QTD Δ":    [ _divergent_tint_html(v, vmaxM["QTD"])   for v in m["quarter_pct_change"] ],
+    "Daily":  [ _divergent_tint_html(v, vmaxM["Daily"]) for v in m["day_pct_change"] ],
+    "WTD":    [ _divergent_tint_html(v, vmaxM["WTD"])   for v in m["week_pct_change"] ],
+    "MTD":    [ _divergent_tint_html(v, vmaxM["MTD"])   for v in m["month_pct_change"] ],
+    "QTD":    [ _divergent_tint_html(v, vmaxM["QTD"])   for v in m["quarter_pct_change"] ],
 })
 
 html_macro = m_render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -339,10 +339,10 @@ vmax = {
 
 g_render = pd.DataFrame({
         "Name": g["Category"],
-        "Daily Δ": [ _divergent_tint_html(v, vmax["Daily"]) for v in g["Daily"] ],
-        "WTD Δ":   [ _divergent_tint_html(v, vmax["WTD"])   for v in g["WTD"]   ],
-        "MTD Δ":   [ _divergent_tint_html(v, vmax["MTD"])   for v in g["MTD"]   ],
-        "QTD Δ":   [ _divergent_tint_html(v, vmax["QTD"])   for v in g["QTD"]   ],
+        "Daily": [ _divergent_tint_html(v, vmax["Daily"]) for v in g["Daily"] ],
+        "WTD":   [ _divergent_tint_html(v, vmax["WTD"])   for v in g["WTD"]   ],
+        "MTD":   [ _divergent_tint_html(v, vmax["MTD"])   for v in g["MTD"]   ],
+        "QTD":   [ _divergent_tint_html(v, vmax["QTD"])   for v in g["QTD"]   ],
     })
 
 html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -403,7 +403,7 @@ base_hm = (
     .encode(
         x=alt.X(
             "Timeframe:N",
-            sort=["Daily Δ", "WTD Δ", "MTD Δ", "QTD Δ"],
+            sort=["Daily", "WTD", "MTD", "QTD"],
             axis=alt.Axis(orient="top",title=None, labelColor="#1a1a1a",labelFontSize=12, labelAngle=0,labelFlush=False,labelPadding=6)
         ),
         y=alt.Y(
@@ -489,10 +489,10 @@ tlong_all = perf.melt(
 )
 # Map raw column names to display timeframes to match pages
 map_tf = {
-    "day_pct_change": "Daily Δ",
-    "week_pct_change": "WTD Δ",
-    "month_pct_change": "MTD Δ",
-    "quarter_pct_change": "QTD Δ",
+    "day_pct_change": "Daily",
+    "week_pct_change": "WTD",
+    "month_pct_change": "MTD",
+    "quarter_pct_change": "QTD",
 }
 tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
 tlong_all.drop(columns=["tf_raw"], inplace=True)
@@ -535,7 +535,7 @@ hm_sel = (
     .mark_rect(stroke="#2b2f36", strokeWidth=0.6, strokeOpacity=0.95)
     .encode(
         x=alt.X("Timeframe:N",
-                sort=["Daily Δ","WTD Δ","MTD Δ","QTD Δ"],
+                sort=["Daily","WTD","MTD","QTD"],
                 axis=alt.Axis(orient="top", title=None, labelAngle=0, labelColor="#1a1a1a",labelFlush=False, labelFontSize=12)),
         y=alt.Y("Ticker:N",
                 sort=tickers_order,
@@ -548,7 +548,7 @@ hm_sel = (
         tooltip=[
             alt.Tooltip("Ticker:N"),
             alt.Tooltip("Timeframe:N"),
-            alt.Tooltip("Pct:Q", title="% Δ", format=",.2f")
+            alt.Tooltip("Pct:Q", title="%", format=",.2f")
         ],
     )
     .properties(width=420, height=max(360, 22*len(tickers_order)+24))
@@ -570,10 +570,10 @@ vmax2 = {
 d_render = pd.DataFrame({
         "Name":   d["Ticker_name"],
         "Ticker": d["Ticker_link"],
-        "Daily Δ":  [ _divergent_tint_html(v, vmax2["Daily"]) for v in d["day_pct_change"] ],
-        "WTD Δ":    [ _divergent_tint_html(v, vmax2["WTD"])   for v in d["week_pct_change"] ],
-        "MTD Δ":    [ _divergent_tint_html(v, vmax2["MTD"])   for v in d["month_pct_change"] ],
-        "QTD Δ":    [ _divergent_tint_html(v, vmax2["QTD"])   for v in d["quarter_pct_change"] ],
+        "Daily":  [ _divergent_tint_html(v, vmax2["Daily"]) for v in d["day_pct_change"] ],
+        "WTD":    [ _divergent_tint_html(v, vmax2["WTD"])   for v in d["week_pct_change"] ],
+        "MTD":    [ _divergent_tint_html(v, vmax2["MTD"])   for v in d["month_pct_change"] ],
+        "QTD":    [ _divergent_tint_html(v, vmax2["QTD"])   for v in d["quarter_pct_change"] ],
     })
 
 html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
