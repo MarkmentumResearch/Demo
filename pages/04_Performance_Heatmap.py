@@ -403,7 +403,7 @@ base_hm = (
     .encode(
         x=alt.X(
             "Timeframe:N",
-            sort=["Daily", "WTD", "MTD", "QTD"],
+            sort=["Daily Δ", "WTD Δ", "MTD Δ", "QTD Δ"],
             axis=alt.Axis(orient="top",title=None, labelColor="#1a1a1a",labelFontSize=12, labelAngle=0,labelFlush=False,labelPadding=6)
         ),
         y=alt.Y(
@@ -489,10 +489,10 @@ tlong_all = perf.melt(
 )
 # Map raw column names to display timeframes to match pages
 map_tf = {
-    "day_pct_change": "Daily Δ",
-    "week_pct_change": "WTD Δ",
-    "month_pct_change": "MTD Δ",
-    "quarter_pct_change": "QTD Δ",
+    "day_pct_change": "Daily",
+    "week_pct_change": "WTD",
+    "month_pct_change": "MTD",
+    "quarter_pct_change": "QTD",
 }
 tlong_all["Timeframe"] = tlong_all["tf_raw"].map(map_tf)
 tlong_all.drop(columns=["tf_raw"], inplace=True)
