@@ -2072,7 +2072,7 @@ table.sp tbody th:first-child{{
   </table>
 
   <!-- MM Score -->
-  <table class="sp">
+  <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
       <tr><th class="left">Signal</th><th>Current</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th>Rating</th></tr>
