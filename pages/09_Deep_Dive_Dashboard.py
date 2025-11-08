@@ -1715,6 +1715,7 @@ with mid_stat:
   </table>
 </div>
 """
+        st.session_state["mrating"] = {rating}
         st_html(html_doc, height=328, scrolling=False)
 
     # ---------- type-ahead above the card ----------
@@ -2072,7 +2073,7 @@ table.sp tbody th:first-child{{
 
   <!-- MM Score -->
   <table class="sp">
-    <colgroup><col><col><col><col><col><col></colgroup>
+    <colgroup><col><col><col><col><col><col><<col></colgroup>
     <thead>
       <tr><th class="left">Signal</th><th>Current</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
     </thead>
@@ -2084,6 +2085,8 @@ table.sp tbody th:first-child{{
         <td class="right">{_badge(f"{int(round(ms_w)):+d}" if ms_w is not None else "—", "green" if (ms_w or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_m)):+d}" if ms_m is not None else "—", "green" if (ms_m or 0)>0 else "red")}</td>
         <td class="right">{_badge(f"{int(round(ms_q)):+d}" if ms_q is not None else "—", "green" if (ms_q or 0)>0 else "red")}</td>
+        <td class="center">{st.session_state.get("mrating")}</td>  <!-- plain text; no badge -->
+        
       </tr>
     </tbody>
   </table>
