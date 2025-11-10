@@ -2227,9 +2227,9 @@ _ticker = _active_tkr
 # ==============================
 
 # 1) Initialize from URL once (so it survives query-param updates)
-_adv_qp = st.query_params.get("adv", "0")
 if "show_Charts_2_12" not in st.session_state:
-    st.session_state["show_Charts_2_12"] = (_adv_qp == "1")
+    adv_qp = st.query_params.get("adv", "0")
+    st.session_state["show_Charts_2_12"] = (adv_qp == "1")
 
 # 2) Keep URL in sync whenever the toggle changes
 def _persist_adv():
