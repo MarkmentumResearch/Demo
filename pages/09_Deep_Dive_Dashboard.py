@@ -2229,20 +2229,19 @@ _ticker = _active_tkr
 # ==============================
 
 # 1) Initialize from URL once (so it survives query-param updates)
-if ADV_TOGGLE_KEY not in st.session_state:
-    st.session_state[ADV_TOGGLE_KEY] = False   # or True if you want default ON
+if "show_Charts_2_12" not in st.session_state:
+    st.session_state["show_Charts_2_12"] = False   # or True if you want default ON
 
 # 2) Render the toggle, bound only to session_state
 tL, tM, tR = st.columns([1.2, 3, 0.8])
 with tM:
-    st.session_state[ADV_TOGGLE_KEY] = st.toggle(
+    st.toggle(
         "Show Advanced Charts",
-        value=st.session_state[ADV_TOGGLE_KEY],
-        key=ADV_TOGGLE_KEY,
+        key="show_Charts_2_12",
         help="Turn on to render Advanced Charts 2–12",
     )
 
-render_info = st.session_state[ADV_TOGGLE_KEY]
+render_info = st.session_state["show_Charts_2_12"]
 ticker = _active_tkr
 if render_info:
     
