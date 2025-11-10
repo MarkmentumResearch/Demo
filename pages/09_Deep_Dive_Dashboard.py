@@ -2245,7 +2245,7 @@ with tM:
         "Show Advanced Charts",
         key="show_Charts_2_12",
         help="Turn on to render Advanced Charts 2–12",
-        on_change=_persist_adv,
+        #on_change=_persist_adv,
     )
 
 render_info = st.session_state.show_Charts_2_12
