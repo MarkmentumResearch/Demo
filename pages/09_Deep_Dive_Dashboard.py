@@ -2804,6 +2804,9 @@ if render_info:
     # ==============================
     ticker = _active_tkr
 
+    # ==============================
+    # MASTER TOGGLE: Show/Hide Informational Charts (13–24)
+    # ==============================
     INFO_VALUE_KEY  = "dd_show_information_charts_value"   # master value you care about
     INFO_WIDGET_KEY = "dd_show_information_charts_widget"  # widget’s own state
 
@@ -2831,10 +2834,6 @@ if render_info:
     # Use this everywhere below
     render_info = st.session_state[INFO_VALUE_KEY]
     ticker = _active_tkr
-
-
-
-
 
     if render_info:
 
