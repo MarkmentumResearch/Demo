@@ -2242,14 +2242,6 @@ with tM:
         help="Turn on to render Advanced Charts 2–12",
     )
 
-tL, tM, tR = st.columns([1.2, 3, 0.8])
-with tM:
-    st.toggle(
-        "Show Advanced Charts",
-        key="show_Charts_2_12",
-        help="Turn on to render Advanced Charts 2–12",
-        on_change=_persist_adv,
-    )
 
 render_info = st.session_state.show_Charts_2_12
 ticker = _active_tkr
