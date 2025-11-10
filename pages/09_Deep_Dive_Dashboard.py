@@ -2228,25 +2228,32 @@ _ticker = _active_tkr
 # MASTER TOGGLE: Show/Hide Advanced Charts (2–12)
 # ==============================
 
-# 1) Initialize from URL once (so it survives query-param updates)
-_adv_qp = st.query_params.get("adv", "0")
-if "show_Charts_2_12" not in st.session_state:
-    st.session_state["show_Charts_2_12"] = (_adv_qp == "1")
+ADV_VALUE_KEY  = "dd_show_advanced_charts_value"   # master value you care about
+ADV_WIDGET_KEY = "dd_show_advanced_charts_widget"  # widget’s own state
 
-# 2) Keep URL in sync whenever the toggle changes
-def _persist_adv():
-    st.query_params.update({"adv": "1" if st.session_state.show_Charts_2_12 else "0"})
+# 1) Initialize master value once per browser session
+if ADV_VALUE_KEY not in st.session_state:
+    st.session_state[ADV_VALUE_KEY] = False   # or True if you want default ON
+
+def _on_adv_toggle():
+    """
+    Sync widget -> master value.
+    This runs whenever the visible toggle changes.
+    """
+    st.session_state[ADV_VALUE_KEY] = st.session_state[ADV_WIDGET_KEY]
 
 tL, tM, tR = st.columns([1.2, 3, 0.8])
 with tM:
     st.toggle(
         "Show Advanced Charts",
-        key="show_Charts_2_12",
+        key=ADV_WIDGET_KEY,
+        value=st.session_state[ADV_VALUE_KEY],   # push master value into widget
         help="Turn on to render Advanced Charts 2–12",
-        on_change=_persist_adv,
+        on_change=_on_adv_toggle,
     )
 
-render_info = st.session_state.show_Charts_2_12
+# Use this everywhere below
+render_info = st.session_state[ADV_VALUE_KEY]
 ticker = _active_tkr
 
 if render_info:
