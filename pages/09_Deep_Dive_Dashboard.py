@@ -2242,10 +2242,8 @@ with tM:
         help="Turn on to render Advanced Charts 2–12",
     )
 
-
-render_info = st.session_state.show_Charts_2_12
+render_info = st.session_state[ADV_TOGGLE_KEY]
 ticker = _active_tkr
-
 if render_info:
     
 
