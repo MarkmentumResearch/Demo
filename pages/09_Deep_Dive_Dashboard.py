@@ -2829,7 +2829,7 @@ if render_info:
         )
 
     # Use this everywhere below
-    render_info = st.session_state[ADV_VALUE_KEY]
+    render_info = st.session_state[INFO_VALUE_KEY]
     ticker = _active_tkr
 
 
