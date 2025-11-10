@@ -2803,22 +2803,38 @@ if render_info:
     # ===== Graphs 11 & 12 - END 
     # ==============================
     ticker = _active_tkr
-    # ==============================
-    # MASTER TOGGLE: Show/Hide Informational Charts (13–24)
-    # ==============================
-    if "show_informational_13_24" not in st.session_state:
-        st.session_state.show_informational_13_24 = False
+
+    INFO_VALUE_KEY  = "dd_show_information_charts_value"   # master value you care about
+    INFO_WIDGET_KEY = "dd_show_information_charts_widget"  # widget’s own state
+
+    # 1) Initialize master value once per browser session
+    if INFO_VALUE_KEY not in st.session_state:
+        st.session_state[INFO_VALUE_KEY] = False   # or True if you want default ON
+
+    def _on_info_toggle():
+        """
+        Sync widget -> master value.
+        This runs whenever the visible toggle changes.
+        """
+        st.session_state[INFO_VALUE_KEY] = st.session_state[INFO_WIDGET_KEY]
 
     tL, tM, tR = st.columns([1.2, 3, 0.8])
     with tM:
         st.toggle(
-            "Show informational charts",
-            key="show_informational_13_24",     # widget owns state
-            help="Turn on to render charts 13–24.",
+            "Show Informational Charts",
+            key=INFO_WIDGET_KEY,
+            value=st.session_state[INFO_VALUE_KEY],   # push master value into widget
+            help="Turn on to render Informational Charts 13-24",
+            on_change=_on_info_toggle,
         )
 
-    render_info = st.session_state.show_informational_13_24
+    # Use this everywhere below
+    render_info = st.session_state[ADV_VALUE_KEY]
     ticker = _active_tkr
+
+
+
+
 
     if render_info:
 
