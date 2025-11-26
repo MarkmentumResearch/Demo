@@ -1,5 +1,4 @@
 Ticker,Ticker_name,Category,Date,daily_return_pct
-WEAT,TEUCRIUM:WHEAT,Commodities,2025-11-25,4.0216
 KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,2025-11-25,0.1001
 BLDR,"BUILDERS FIRSTSOURCE, INC.",Industrials,2025-11-25,0.084
 ALB,ALBEMARLE ,Materials,2025-11-25,0.0809
@@ -9,3 +8,4 @@ VLTO,VERALTO ,Industrials,2025-11-25,0.0593
 DHI,"D.R. HORTON, INC.",Consumer Discretionary,2025-11-25,0.0578
 MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,2025-11-25,0.0544
 DLTR,"DOLLAR TREE, INC.",Consumer Staples,2025-11-25,0.054
+PHM,"PULTEGROUP, INC.",Consumer Discretionary,2025-11-25,0.0539

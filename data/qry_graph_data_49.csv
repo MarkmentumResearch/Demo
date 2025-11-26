@@ -617,7 +617,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_wtd_change,current_Sharpe_
 2025-11-25,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,-0.6,56.9,57.5
 2025-11-25,WDAY,"WORKDAY, INC.",Information Technology,Information Technology,31.7,48.8,17.1
 2025-11-25,WDC,WESTERN DIGITAL ,Information Technology,Information Technology,17.7,56.0,38.3
-2025-11-25,WEAT,TEUCRIUM:WHEAT,,Commodities,14.9,96.2,81.3
+2025-11-25,WEAT,TEUCRIUM:WHEAT,,Commodities,-19.4,61.9,81.3
 2025-11-25,WEC,"WEC ENERGY GROUP, INC.",Utilities,Utilities,1.6,10.5,8.9
 2025-11-25,WELL,WELLTOWER INC.,Real Estate,Real Estate,2.4,99.8,97.4
 2025-11-25,WFC,WELLS FARGO & COMPANY,Financials,Financials,9.6,16.3,6.7

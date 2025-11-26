@@ -1,6 +1,5 @@
 Ticker,Ticker_name,Category,Date,model_score_day_change,current_model_score,previous_model_score
 KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,2025-11-25,-82.0,-30.0,52.0
-WEAT,TEUCRIUM:WHEAT,Commodities,2025-11-25,-82.0,-26.0,56.0
 FIS,FIDELITY NATIONAL INFORMATION SERVICES,Financials,2025-11-25,-75.0,-20.0,55.0
 IWM,ISHARES:RUSS 2000 ETF,Sector & Style ETFs,2025-11-25,-73.0,11.0,84.0
 CBRE,"CBRE GROUP, INC.",Real Estate,2025-11-25,-68.0,-5.0,63.0
@@ -9,3 +8,4 @@ POWA,INVESCO BLOOMBERG PRICING POWER,Sector & Style ETFs,2025-11-25,-64.0,20.0,8
 BSX,BOSTON SCIENTIFIC ,Health Care,2025-11-25,-62.0,-22.0,40.0
 CHTR,"CHARTER COMMUNICATIONS, INC.",Communication Services,2025-11-25,-61.0,-13.0,48.0
 CMCSA,COMCAST ,Communication Services,2025-11-25,-61.0,-43.0,18.0
+HRL,HORMEL FOODS ,Consumer Staples,2025-11-25,-61.0,-3.0,58.0

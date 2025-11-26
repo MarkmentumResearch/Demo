@@ -1,5 +1,4 @@
 Ticker,Ticker_name,Category,Date,wtd_return_pct
-WEAT,TEUCRIUM:WHEAT,Commodities,2025-11-25,3.9857
 AVGO,BROADCOM INC.,Information Technology,2025-11-25,0.1318
 KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,2025-11-25,0.1317
 WDC,WESTERN DIGITAL ,Information Technology,2025-11-25,0.1165
@@ -9,3 +8,4 @@ CNC,CENTENE ,Health Care,2025-11-25,0.0866
 ADI,"ANALOG DEVICES, INC.",Information Technology,2025-11-25,0.0848
 MU,"MICRON TECHNOLOGY, INC.",Information Technology,2025-11-25,0.0828
 AMAT,"APPLIED MATERIALS, INC.",Information Technology,2025-11-25,0.0824
+MRK,"MERCK & CO., INC.",Health Care,2025-11-25,0.0808
