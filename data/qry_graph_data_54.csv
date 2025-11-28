@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-11-26,761.07
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-11-26,233.39
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-11-26,232.18
-GOOGL,ALPHABET INC.,Communication Services,2025-11-26,225.17
-INTC,INTEL ,Information Technology,2025-11-26,220.57
-KVUE,KENVUE INC.,Consumer Staples,2025-11-26,162.83
-QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-11-26,160.12
-AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-11-26,159.79
-F,FORD MOTOR COMPANY,Consumer Discretionary,2025-11-26,150.76
-AAPL,APPLE INC.,Information Technology,2025-11-26,145.93
+NVDA,NVIDIA ,Information Technology,2025-11-28,882.4
+INTC,INTEL ,Information Technology,2025-11-28,316.37
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-11-28,282.61
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-11-28,268.44
+GOOGL,ALPHABET INC.,Communication Services,2025-11-28,251.19
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-11-28,183.16
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-11-28,180.3
+AMD,"ADVANCED MICRO DEVICES, INC.",Information Technology,2025-11-28,178.45
+KVUE,KENVUE INC.,Consumer Staples,2025-11-28,172.03
+AAPL,APPLE INC.,Information Technology,2025-11-28,166.07
