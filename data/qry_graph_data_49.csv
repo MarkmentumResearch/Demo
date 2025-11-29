@@ -319,7 +319,6 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_wtd_change,current_Sharpe_
 2025-11-28,INTU,INTUIT INC.,Information Technology,Information Technology,-1.0,36.9,37.9
 2025-11-28,INVH,INVITATION HOMES INC.,Real Estate,Real Estate,6.6,64.7,58.1
 2025-11-28,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,63.5,75.8,12.3
-2025-11-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,1.0,29.4,28.4
 2025-11-28,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,21.7,78.6,56.9
 2025-11-28,IR,INGERSOLL RAND INC.,Industrials,Industrials,19.0,70.6,51.6
 2025-11-28,IRM,IRON MOUNTAIN INC.,Real Estate,Real Estate,8.7,12.1,3.4
@@ -518,6 +517,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_wtd_change,current_Sharpe_
 2025-11-28,SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,Information Technology,1.2,3.0,1.8
 2025-11-28,SMH,VANECK:SEMICONDUCTOR,,Sector & Style ETFs,16.3,24.8,8.5
 2025-11-28,SNA,SNAP-ON INC.,Industrials,Industrials,26.3,44.0,17.7
+2025-11-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,5.2,35.6,30.4
 2025-11-28,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,34.1,34.5,0.4
 2025-11-28,SO,THE SOUTHERN COMPANY,Utilities,Utilities,14.1,18.7,4.6
 2025-11-28,SOLV,SOLVENTUM ,Health Care,Health Care,3.0,99.8,96.8

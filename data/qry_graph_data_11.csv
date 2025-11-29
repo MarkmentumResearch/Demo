@@ -99839,318 +99839,6 @@ Date,Ticker,Ticker_name,Exposure,Category,Close,model_score
 2025-11-25,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,39.13,38.0
 2025-11-26,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,39.36,-5.0
 2025-11-28,IP,INTERNATIONAL PAPER COMPANY,Materials,Materials,39.48,-15.0
-2024-09-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.95,-12.0
-2024-09-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.47,-6.0
-2024-09-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.46,26.0
-2024-09-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.09,-16.0
-2024-09-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.06,-16.0
-2024-09-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.15,6.0
-2024-09-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.93,-16.0
-2024-09-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.54,-16.0
-2024-09-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.85,-16.0
-2024-09-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.17,52.0
-2024-09-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.23,27.0
-2024-09-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.08,27.0
-2024-09-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.49,47.0
-2024-09-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.11,27.0
-2024-09-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.3,27.0
-2024-09-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.22,51.0
-2024-09-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.72,51.0
-2024-09-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.49,54.0
-2024-09-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.62,66.0
-2024-09-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.63,35.0
-2024-10-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.22,32.0
-2024-10-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.07,67.0
-2024-10-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.82,89.0
-2024-10-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.79,56.0
-2024-10-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.66,42.0
-2024-10-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.87,46.0
-2024-10-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.02,49.0
-2024-10-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.06,21.0
-2024-10-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.39,40.0
-2024-10-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.5,16.0
-2024-10-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.63,9.0
-2024-10-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.93,6.0
-2024-10-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,32.06,6.0
-2024-10-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,32.03,-40.0
-2024-10-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,31.62,17.0
-2024-10-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.78,-8.0
-2024-10-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.04,-16.0
-2024-10-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.89,36.0
-2024-10-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.8,-30.0
-2024-10-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.24,36.0
-2024-10-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.03,19.0
-2024-10-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.95,-16.0
-2024-10-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.4,-8.0
-2024-11-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.48,-34.0
-2024-11-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.5,-34.0
-2024-11-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.77,-9.0
-2024-11-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.38,-21.0
-2024-11-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.07,3.0
-2024-11-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.83,-34.0
-2024-11-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.62,-4.0
-2024-11-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.25,-8.0
-2024-11-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.29,-8.0
-2024-11-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.2,18.0
-2024-11-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.09,-16.0
-2024-11-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.52,-14.0
-2024-11-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.66,3.0
-2024-11-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.38,54.0
-2024-11-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.15,-1.0
-2024-11-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.58,21.0
-2024-11-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.68,-44.0
-2024-11-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.63,-44.0
-2024-11-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.48,-62.0
-2024-11-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.81,-44.0
-2024-12-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.12,-34.0
-2024-12-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.9,-10.0
-2024-12-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.24,10.0
-2024-12-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.48,-1.0
-2024-12-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.26,-1.0
-2024-12-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.3,-15.0
-2024-12-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.38,-27.0
-2024-12-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,30.1,-27.0
-2024-12-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.78,-5.0
-2024-12-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.89,-10.0
-2024-12-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.92,-10.0
-2024-12-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.17,-45.0
-2024-12-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.07,-45.0
-2024-12-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.63,10.0
-2024-12-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.07,-5.0
-2024-12-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.5,-8.0
-2024-12-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.34,38.0
-2024-12-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.55,11.0
-2024-12-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.11,27.0
-2024-12-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.79,4.0
-2024-12-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.02,32.0
-2025-01-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.13,-44.0
-2025-01-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.13,-5.0
-2025-01-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.99,8.0
-2025-01-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.7,8.0
-2025-01-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.53,-11.0
-2025-01-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.64,4.0
-2025-01-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.82,4.0
-2025-01-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.3,-17.0
-2025-01-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.78,36.0
-2025-01-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.89,36.0
-2025-01-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.83,26.0
-2025-01-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.22,12.0
-2025-01-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.21,12.0
-2025-01-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.27,12.0
-2025-01-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.54,-14.0
-2025-01-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.28,7.0
-2025-01-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.85,19.0
-2025-01-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.78,-18.0
-2025-01-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.71,-29.0
-2025-01-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.67,-7.0
-2025-02-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,29.0,-50.0
-2025-02-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.8,-30.0
-2025-02-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.98,-54.0
-2025-02-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.72,-49.0
-2025-02-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.49,-19.0
-2025-02-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.18,-11.0
-2025-02-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.17,-20.0
-2025-02-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.78,26.0
-2025-02-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.96,-1.0
-2025-02-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.05,23.0
-2025-02-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.55,26.0
-2025-02-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.55,26.0
-2025-02-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.56,45.0
-2025-02-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.07,36.0
-2025-02-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.57,27.0
-2025-02-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.78,-2.0
-2025-02-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.66,4.0
-2025-02-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.01,-1.0
-2025-02-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.4,8.0
-2025-03-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.46,-4.0
-2025-03-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.71,23.0
-2025-03-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.16,12.0
-2025-03-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.33,-18.0
-2025-03-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.18,-22.0
-2025-03-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,28.19,-51.0
-2025-03-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.31,-63.0
-2025-03-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.35,-24.0
-2025-03-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.09,-34.0
-2025-03-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.43,-43.0
-2025-03-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.23,-0.0
-2025-03-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.56,-2.0
-2025-03-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.65,44.0
-2025-03-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.47,44.0
-2025-03-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.51,44.0
-2025-03-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.93,27.0
-2025-03-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.29,27.0
-2025-03-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.49,8.0
-2025-03-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.4,-34.0
-2025-03-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.29,-34.0
-2025-03-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.16,-60.0
-2025-04-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.12,-12.0
-2025-04-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.04,-32.0
-2025-04-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.58,-16.0
-2025-04-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.7,-4.0
-2025-04-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.28,-7.0
-2025-04-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,22.92,16.0
-2025-04-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.97,-12.0
-2025-04-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.04,0.0
-2025-04-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.59,-0.0
-2025-04-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.01,0.0
-2025-04-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.14,-31.0
-2025-04-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.27,52.0
-2025-04-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.94,11.0
-2025-04-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.5,3.0
-2025-04-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.9,-11.0
-2025-04-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.99,0.0
-2025-04-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.08,10.0
-2025-04-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.56,-1.0
-2025-04-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.83,-1.0
-2025-04-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.98,-1.0
-2025-04-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.12,-5.0
-2025-05-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.95,-47.0
-2025-05-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.38,-70.0
-2025-05-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.31,-27.0
-2025-05-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.03,-80.0
-2025-05-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.98,-64.0
-2025-05-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.24,-33.0
-2025-05-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.12,-36.0
-2025-05-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.65,-36.0
-2025-05-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.63,-36.0
-2025-05-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.09,-73.0
-2025-05-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.18,-80.0
-2025-05-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.49,-53.0
-2025-05-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.46,-85.0
-2025-05-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.21,-43.0
-2025-05-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.28,-83.0
-2025-05-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.06,-74.0
-2025-05-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.0,-47.0
-2025-05-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.48,-47.0
-2025-05-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.33,-15.0
-2025-05-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.31,-15.0
-2025-05-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.96,-38.0
-2025-06-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,22.87,-33.0
-2025-06-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.06,-38.0
-2025-06-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,22.95,-8.0
-2025-06-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,22.66,-61.0
-2025-06-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.06,-6.0
-2025-06-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.08,-6.0
-2025-06-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.77,2.0
-2025-06-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.76,2.0
-2025-06-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.64,-32.0
-2025-06-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.0,35.0
-2025-06-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.48,21.0
-2025-06-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.01,35.0
-2025-06-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.08,2.0
-2025-06-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,23.42,11.0
-2025-06-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.43,-24.0
-2025-06-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.69,-27.0
-2025-06-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.11,23.0
-2025-06-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.24,-20.0
-2025-06-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.25,-20.0
-2025-06-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.48,-57.0
-2025-07-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.13,15.0
-2025-07-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.55,-27.0
-2025-07-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.38,-64.0
-2025-07-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.16,-64.0
-2025-07-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.36,7.0
-2025-07-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.69,-64.0
-2025-07-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.0,7.0
-2025-07-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.75,-24.0
-2025-07-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.73,-96.0
-2025-07-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.19,-33.0
-2025-07-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.2,-86.0
-2025-07-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.13,-29.0
-2025-07-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.18,-17.0
-2025-07-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.02,5.0
-2025-07-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.69,-27.0
-2025-07-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.54,-35.0
-2025-07-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.31,-43.0
-2025-07-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.05,-50.0
-2025-07-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.52,-41.0
-2025-07-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.41,-41.0
-2025-07-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.84,-27.0
-2025-07-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.6,-28.0
-2025-08-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.24,8.0
-2025-08-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.54,-1.0
-2025-08-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.74,17.0
-2025-08-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.92,17.0
-2025-08-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.83,17.0
-2025-08-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.91,17.0
-2025-08-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.97,-1.0
-2025-08-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.27,-36.0
-2025-08-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.2,-41.0
-2025-08-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.85,-53.0
-2025-08-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.09,-60.0
-2025-08-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.09,-37.0
-2025-08-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.58,-50.0
-2025-08-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.61,-37.0
-2025-08-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.53,-10.0
-2025-08-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.26,-36.0
-2025-08-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.13,-26.0
-2025-08-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.72,-40.0
-2025-08-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.92,-43.0
-2025-08-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.69,-43.0
-2025-08-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.84,-43.0
-2025-09-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.3,-27.0
-2025-09-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.46,-27.0
-2025-09-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.84,-27.0
-2025-09-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.15,-37.0
-2025-09-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.01,-48.0
-2025-09-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.59,-48.0
-2025-09-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.96,-31.0
-2025-09-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.7,-58.0
-2025-09-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.39,-41.0
-2025-09-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.29,-31.0
-2025-09-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.36,-10.0
-2025-09-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.26,-10.0
-2025-09-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.02,5.0
-2025-09-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.65,5.0
-2025-09-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.51,14.0
-2025-09-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.08,14.0
-2025-09-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.3,-31.0
-2025-09-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.93,14.0
-2025-09-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.35,-24.0
-2025-09-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.09,-24.0
-2025-09-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.91,-68.0
-2025-10-01,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.51,-13.0
-2025-10-02,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.26,-13.0
-2025-10-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.5,8.0
-2025-10-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.8,35.0
-2025-10-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.24,-37.0
-2025-10-08,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.28,-41.0
-2025-10-09,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.55,8.0
-2025-10-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.12,35.0
-2025-10-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.11,35.0
-2025-10-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.79,25.0
-2025-10-15,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.04,-20.0
-2025-10-16,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.34,25.0
-2025-10-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.39,-1.0
-2025-10-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.63,-26.0
-2025-10-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.94,-58.0
-2025-10-22,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.78,-62.0
-2025-10-23,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.53,-37.0
-2025-10-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.06,-33.0
-2025-10-27,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,27.11,-28.0
-2025-10-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,26.35,-13.0
-2025-10-29,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.76,-13.0
-2025-10-30,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.71,-22.0
-2025-10-31,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.66,40.0
-2025-11-03,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.01,-39.0
-2025-11-04,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.27,-39.0
-2025-11-05,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.2,-66.0
-2025-11-06,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.03,-18.0
-2025-11-07,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.46,-27.0
-2025-11-10,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.98,-39.0
-2025-11-11,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.35,-66.0
-2025-11-12,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.45,-39.0
-2025-11-13,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.07,-39.0
-2025-11-14,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.79,-39.0
-2025-11-17,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.03,-18.0
-2025-11-18,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.2,-18.0
-2025-11-19,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.69,-43.0
-2025-11-20,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.55,-43.0
-2025-11-21,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.72,-33.0
-2025-11-24,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.71,26.0
-2025-11-25,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,25.06,26.0
-2025-11-26,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.57,-29.0
-2025-11-28,IPG,THE INTERPUBLIC GROUP,Communication Services,Communication Services,24.57,-21.0
 2024-09-03,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,248.81,-51.0
 2024-09-04,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,248.84,-10.0
 2024-09-05,IQV,IQVIA HOLDINGS INC,Health Care,Health Care,248.14,-24.0
@@ -161927,6 +161615,206 @@ Date,Ticker,Ticker_name,Exposure,Category,Close,model_score
 2025-11-25,SNA,SNAP-ON INC.,Industrials,Industrials,340.29,-5.0
 2025-11-26,SNA,SNAP-ON INC.,Industrials,Industrials,340.56,-32.0
 2025-11-28,SNA,SNAP-ON INC.,Industrials,Industrials,340.05,-32.0
+2025-02-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,36.0,0.0
+2025-02-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,36.65,0.0
+2025-02-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.15,0.0
+2025-02-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.0,0.0
+2025-02-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.26,0.0
+2025-02-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,50.37,0.0
+2025-02-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.6,0.0
+2025-02-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.16,0.0
+2025-02-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.58,0.0
+2025-02-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,45.16,0.0
+2025-02-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.85,0.0
+2025-03-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,50.31,0.0
+2025-03-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.69,0.0
+2025-03-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.47,0.0
+2025-03-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.5,0.0
+2025-03-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,51.0,0.0
+2025-03-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,53.0,0.0
+2025-03-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.16,0.0
+2025-03-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,50.44,0.0
+2025-03-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.44,0.0
+2025-03-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,54.82,2.0
+2025-03-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,55.65,-7.0
+2025-03-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,56.42,11.0
+2025-03-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,56.33,2.0
+2025-03-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,56.21,2.0
+2025-03-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,53.96,-14.0
+2025-03-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.99,11.0
+2025-03-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.2,11.0
+2025-03-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.62,2.0
+2025-03-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.88,-7.0
+2025-03-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.97,-14.0
+2025-03-31,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.61,-14.0
+2025-04-01,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.11,11.0
+2025-04-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.67,11.0
+2025-04-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.26,-14.0
+2025-04-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,30.11,-14.0
+2025-04-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,31.48,-14.0
+2025-04-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.35,11.0
+2025-04-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,36.58,11.0
+2025-04-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,31.075,11.0
+2025-04-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,31.97,11.0
+2025-04-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,33.55,11.0
+2025-04-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,33.23,11.0
+2025-04-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.03,-14.0
+2025-04-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,31.29,-14.0
+2025-04-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,29.81,-14.0
+2025-04-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,29.62,-14.0
+2025-04-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,30.36,11.0
+2025-04-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.29,2.0
+2025-04-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.85,2.0
+2025-04-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.27,2.0
+2025-04-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.94,2.0
+2025-04-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.11,2.0
+2025-05-01,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,32.59,2.0
+2025-05-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,34.4,2.0
+2025-05-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,34.61,-7.0
+2025-05-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,33.83,-7.0
+2025-05-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,34.97,-7.0
+2025-05-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,36.66,2.0
+2025-05-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,37.74,-14.0
+2025-05-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.27,-14.0
+2025-05-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.0,-14.0
+2025-05-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.93,-14.0
+2025-05-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,40.54,-14.0
+2025-05-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,40.44,-14.0
+2025-05-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.78,-14.0
+2025-05-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,40.18,-14.0
+2025-05-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.6,-14.0
+2025-05-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,37.84,-7.0
+2025-05-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,37.28,-7.0
+2025-05-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.18,-7.0
+2025-05-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.58,-7.0
+2025-05-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.6,-11.0
+2025-05-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,37.69,-7.0
+2025-06-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,37.33,-32.0
+2025-06-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,38.64,-32.0
+2025-06-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,39.82,-41.0
+2025-06-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,39.12,-32.0
+2025-06-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,39.15,-11.0
+2025-06-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.82,6.0
+2025-06-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.59,6.0
+2025-06-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,40.23,6.0
+2025-06-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.3,6.0
+2025-06-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.5,6.0
+2025-06-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.21,6.0
+2025-06-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.09,-4.0
+2025-06-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.62,-4.0
+2025-06-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.58,-8.0
+2025-06-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.95,-11.0
+2025-06-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.34,-11.0
+2025-06-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.25,-11.0
+2025-06-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.44,-27.0
+2025-06-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.15,-27.0
+2025-06-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,45.35,-25.0
+2025-07-01,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.96,-25.0
+2025-07-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.21,-20.0
+2025-07-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.41,-14.0
+2025-07-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,45.22,14.0
+2025-07-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.17,-20.0
+2025-07-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.2,-5.0
+2025-07-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.95,-14.0
+2025-07-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.09,-14.0
+2025-07-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.48,-53.0
+2025-07-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.72,-46.0
+2025-07-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.36,-46.0
+2025-07-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.52,-46.0
+2025-07-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.19,-46.0
+2025-07-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.61,-2.0
+2025-07-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.36,-22.0
+2025-07-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,43.0,5.0
+2025-07-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.06,5.0
+2025-07-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.48,-46.0
+2025-07-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.89,-2.0
+2025-07-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.93,-53.0
+2025-07-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,43.39,-5.0
+2025-07-31,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.92,5.0
+2025-08-01,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.33,-46.0
+2025-08-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.51,5.0
+2025-08-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,41.93,5.0
+2025-08-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,42.1,5.0
+2025-08-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,40.69,5.0
+2025-08-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.34,-5.0
+2025-08-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,43.37,-5.0
+2025-08-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.83,-11.0
+2025-08-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.01,-20.0
+2025-08-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.68,-32.0
+2025-08-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.54,-53.0
+2025-08-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,45.52,-53.0
+2025-08-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.58,-53.0
+2025-08-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,44.4,-53.0
+2025-08-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,45.5,-53.0
+2025-08-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.37,-5.0
+2025-08-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,46.78,24.0
+2025-08-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,47.35,24.0
+2025-08-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,48.44,21.0
+2025-08-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,50.87,-5.0
+2025-08-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,52.47,-12.0
+2025-09-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,51.07,12.0
+2025-09-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,53.01,9.0
+2025-09-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,62.5,4.0
+2025-09-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,68.55,7.0
+2025-09-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,70.495,7.0
+2025-09-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,70.51,7.0
+2025-09-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,73.92,-11.0
+2025-09-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,84.3,-11.0
+2025-09-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,86.13,-11.0
+2025-09-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,90.09,-12.0
+2025-09-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,91.55,-12.0
+2025-09-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,93.97,-12.0
+2025-09-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,98.87,-12.0
+2025-09-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,102.21,-12.0
+2025-09-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,102.92,-12.0
+2025-09-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,106.4,-12.0
+2025-09-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,99.83,-29.0
+2025-09-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,94.29,-29.0
+2025-09-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,97.12,-29.0
+2025-09-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,113.5,-22.0
+2025-09-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,112.2,5.0
+2025-10-01,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,121.12,46.0
+2025-10-02,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,124.14,23.0
+2025-10-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,128.41,7.0
+2025-10-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,121.17,23.0
+2025-10-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,120.95,23.0
+2025-10-08,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,131.88,12.0
+2025-10-09,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,129.68,10.0
+2025-10-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,116.91,27.0
+2025-10-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,134.61,16.0
+2025-10-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,127.29,14.0
+2025-10-15,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,144.3,41.0
+2025-10-16,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,144.27,41.0
+2025-10-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,140.16,50.0
+2025-10-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,148.04,16.0
+2025-10-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,149.29,25.0
+2025-10-22,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,146.95,16.0
+2025-10-23,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,167.05,12.0
+2025-10-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,186.16,34.0
+2025-10-27,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,176.49,41.0
+2025-10-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,175.53,41.0
+2025-10-29,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,204.36,38.0
+2025-10-30,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,195.82,38.0
+2025-10-31,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,199.33,38.0
+2025-11-03,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,207.01,52.0
+2025-11-04,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,194.57,27.0
+2025-11-05,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,216.5,29.0
+2025-11-06,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,207.69,27.0
+2025-11-07,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,239.48,51.0
+2025-11-10,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,267.95,51.0
+2025-11-11,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,271.58,51.0
+2025-11-12,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,283.1,51.0
+2025-11-13,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,243.57,29.0
+2025-11-14,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,254.16,25.0
+2025-11-17,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,265.88,-19.0
+2025-11-18,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,244.93,-16.0
+2025-11-19,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,245.96,-16.0
+2025-11-20,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,195.96,-9.0
+2025-11-21,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,200.27,-9.0
+2025-11-24,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,226.96,38.0
+2025-11-25,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,220.5,63.0
+2025-11-26,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,215.04,46.0
+2025-11-28,SNDK,SANDISK CORPORATION,Information Technology,Information Technology,223.28,38.0
 2024-09-03,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,481.22,-22.0
 2024-09-04,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,477.53,-13.0
 2024-09-05,SNPS,"SYNOPSYS, INC.",Information Technology,Information Technology,476.03,-22.0
