@@ -1,11 +1,1 @@
 Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
-DXCM,"DEXCOM, INC.",Health Care,2025-12-05,-116.0,-77.0,39.0
-MET,"METLIFE, INC.",Financials,2025-12-05,-106.0,-62.0,44.0
-HWM,HOWMET AEROSPACE INC.,Industrials,2025-12-05,-96.0,-17.0,79.0
-ZTS,ZOETIS INC.,Health Care,2025-12-05,-95.0,-51.0,44.0
-INTU,INTUIT INC.,Information Technology,2025-12-05,-91.0,-53.0,38.0
-CCI,CROWN CASTLE INC.,Real Estate,2025-12-05,-84.0,-22.0,62.0
-EWI,ISHARES:MSCI ITALY,Foreign,2025-12-05,-78.0,-34.0,44.0
-GE,GENERAL ELECTRIC COMPANY,Industrials,2025-12-05,-78.0,-13.0,65.0
-GNRC,GENERAC HOLDINGS INC.,Industrials,2025-12-05,-75.0,-30.0,45.0
-FXB,INVESCO:GBP STERLING,Currencies,2025-12-05,-73.0,-53.0,20.0
