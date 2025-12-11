@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2025-12-09,144.72
-WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-12-09,106.79
-TSLA,"TESLA, INC.",Consumer Discretionary,2025-12-09,62.37
-INTC,INTEL ,Information Technology,2025-12-09,61.88
-SLV,ISHARES:SILVER TRUST,Commodities,2025-12-09,59.74
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-12-09,58.31
-NFLX,"NETFLIX, INC.",Communication Services,2025-12-09,51.75
-BAC,BANK OF AMERICA ,Financials,2025-12-09,47.19
-XLF,SEL SECTOR:FINL S SPDR,Sector & Style ETFs,2025-12-09,46.34
-PFE,PFIZER INC.,Health Care,2025-12-09,43.48
+NVDA,NVIDIA ,Information Technology,2025-12-10,162.79
+WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,2025-12-10,103.65
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2025-12-10,85.67
+INTC,INTEL ,Information Technology,2025-12-10,75.97
+NFLX,"NETFLIX, INC.",Communication Services,2025-12-10,74.13
+F,FORD MOTOR COMPANY,Consumer Discretionary,2025-12-10,72.21
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-12-10,63.26
+PLTR,PALANTIR TECHNOLOGIES INC.,Information Technology,2025-12-10,59.4
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-12-10,55.03
+SLV,ISHARES:SILVER TRUST,Commodities,2025-12-10,54.92
