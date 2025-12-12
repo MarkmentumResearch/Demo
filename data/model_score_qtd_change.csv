@@ -41,6 +41,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-11,APP,APPLOVIN CORP,Communication Services,Communication Services,40.0,12.0,-28.0
 2025-12-11,APTV,APTIV PLC,Consumer Discretionary,Consumer Discretionary,72.0,11.0,-61.0
 2025-12-11,ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,Real Estate,41.0,0.0,-41.0
+2025-12-11,ARES,ARES MANAGEMENT CORP,Financials,Financials,-6.0,-34.0,-28.0
 2025-12-11,ASC,ARDMORE SHIPPING ,,MR Discretion,-15.0,-33.0,-18.0
 2025-12-11,ATO,ATMOS ENERGY ,Utilities,Utilities,-33.0,0.0,33.0
 2025-12-11,AVB,"AVALONBAY COMMUNITIES, INC.",Real Estate,Real Estate,46.0,-5.0,-51.0
@@ -337,7 +338,6 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-11,JNJ,JOHNSON & JOHNSON,Health Care,Health Care,-2.0,-14.0,-12.0
 2025-12-11,JNK,SPDR BBG HIGH YIELD BD,,Bonds,-9.0,-27.0,-18.0
 2025-12-11,JPM,JPMORGAN CHASE & CO.,Financials,Financials,18.0,8.0,-10.0
-2025-12-11,K,KELLANOVA,Consumer Staples,Consumer Staples,-49.0,-22.0,27.0
 2025-12-11,KDP,KEURIG DR PEPPER INC.,Consumer Staples,Consumer Staples,-62.0,-9.0,53.0
 2025-12-11,KEY,KEYCORP,Financials,Financials,-35.0,-43.0,-8.0
 2025-12-11,KEYS,"KEYSIGHT TECHNOLOGIES, INC.",Information Technology,Information Technology,-8.0,-46.0,-38.0
