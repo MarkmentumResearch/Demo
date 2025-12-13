@@ -1,7 +1,6 @@
 Ticker,Ticker_name,Category,Date,model_score
 GEHC,GE HEALTHCARE TECHNOLOGIES INC.,Health Care,2025-12-12,-102.0
 SOLV,SOLVENTUM ,Health Care,2025-12-12,-87.0
-FTI,TECHNIPFMC PLC,MR Discretion,2025-12-12,-83.0
 BX,BLACKSTONE INC,Financials,2025-12-12,-79.0
 OEF,ISHARES:S&P 100,Sector & Style ETFs,2025-12-12,-74.0
 RSG,"REPUBLIC SERVICES, INC.",Industrials,2025-12-12,-73.0
@@ -9,3 +8,4 @@ CRM,"SALESFORCE, INC.",Information Technology,2025-12-12,-70.0
 MCHP,MICROCHIP TECHNOLOGY INC.,Information Technology,2025-12-12,-70.0
 NXPI,NXP SEMICONDUCTORS NV,Information Technology,2025-12-12,-70.0
 ADBE,ADOBE INC.,Information Technology,2025-12-12,-68.0
+SNPS,"SYNOPSYS, INC.",Information Technology,2025-12-12,-68.0
