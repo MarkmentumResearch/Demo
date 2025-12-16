@@ -1,0 +1,11 @@
+Ticker,Ticker_name,Category,Date,model_score,R/R Ratio
+BALL,BALL ,Materials,2025-12-15,-80.0,-7.0
+CL,COLGATE-PALMOLIVE COMPANY,Consumer Staples,2025-12-15,-67.0,-5.1
+CCL,CARNIVAL CORP,Consumer Discretionary,2025-12-15,-63.0,-3.0
+GIS,"GENERAL MILLS, INC.",Consumer Staples,2025-12-15,-52.0,-4.4
+MCD,MCDONALD'S ,Consumer Discretionary,2025-12-15,-50.0,-3.5
+WM,"WASTE MANAGEMENT, INC.",Industrials,2025-12-15,-50.0,-7.7
+RSG,"REPUBLIC SERVICES, INC.",Industrials,2025-12-15,-48.0,-5.4
+LIN,LINDE PUBLIC LIMITED COMPANY,Materials,2025-12-15,-44.0,-3.0
+PG,THE PROCTER & GAMBLE COMPANY,Consumer Staples,2025-12-15,-43.0,-11.8
+TSLA,"TESLA, INC.",Consumer Discretionary,2025-12-15,-37.0,-3.5
