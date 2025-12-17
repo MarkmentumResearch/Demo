@@ -521,26 +521,25 @@ if show_daily_extra:
         st.markdown(
             f"""
 <style>
-/* Opportunity Density only */
-#od_card table {{
-width: 100% !important;
-table-layout: fixed !important;
+/* Opportunity Density card: keep same width behavior as other cards */
+#od_card {{
+  max-width: 720px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }}
-#od_card th, #od_card td {{
-padding: 4px 6px !important;
-font-size: 12px !important;
-white-space: normal !important;
-word-break: break-word !important;
-overflow-wrap: anywhere !important;
-}}
-#od_card th {{
-font-size: 11.5px !important;
+
+/* Keep table inside the card — scroll horizontally if needed (no font/padding changes) */
+#od_card .od_table_wrap {{
+  overflow-x: auto;
 }}
 </style>
 
 <div class="card" id="od_card">
-<h3>Opportunity Density</h3>
-{table_html}
+  <h3>Opportunity Density</h3>
+  <div class="od_table_wrap">
+    {table_html}
+  </div>
 </div>
 """,
 unsafe_allow_html=True,
