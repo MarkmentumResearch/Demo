@@ -495,6 +495,15 @@ if show_daily_extra:
                 """,
                 unsafe_allow_html=True,
             )
+    row_spacer(14)
+
+    df_od = load_csv(DATA_DIR / "qry_graph_data_92.csv").copy()
+
+    if df_od.empty:
+        st.info("No data for Opportunity Density.")
+    else:
+        # Show ALL columns (no filtering)
+        render_table_card(st.container(), "Opportunity Density", df_od)
 
 # ========= Market Read (per timeframe) =========
 import os
