@@ -522,6 +522,43 @@ if show_daily_extra:
 
         # -------------------------
 
+        # -------------------------
+        # Build OD table HTML manually (so typography matches the other cards exactly)
+        # -------------------------
+        def _esc(x):
+            s = "" if pd.isna(x) else str(x)
+            return (
+                s.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+            )
+
+        cols = list(df_od.columns)
+        ncols = len(cols)
+
+        # Keep your tight column widths
+        colgroup = (
+            "<colgroup>"
+            + '<col style="width:220px;">'
+            + "".join('<col style="width:50px;">' for _ in range(ncols - 1))
+            + "</colgroup>"
+        )
+
+        thead = "<thead><tr>" + "".join(f"<th>{_esc(c)}</th>" for c in cols) + "</tr></thead>"
+
+        rows = []
+        for _, r in df_od.iterrows():
+            tds = []
+            for c in cols:
+                tds.append(f"<td>{_esc(r[c])}</td>")
+            rows.append("<tr>" + "".join(tds) + "</tr>")
+        tbody = "<tbody>" + "".join(rows) + "</tbody>"
+
+        table_html = f'<table class="tbl">{colgroup}{thead}{tbody}</table>'
+
+
+
+
 
         st.markdown(
             f"""
