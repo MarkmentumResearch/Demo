@@ -537,7 +537,7 @@ if show_daily_extra:
 /* ---- TYPOGRAPHY MATCH ---- */
 #od_card, #od_card * {{
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-  font-size:16px; font-weight:700; color:#1a1a1a;
+  font-size:13px; font-weight:700; color:#1a1a1a;
 }}
 
 /* ---- ALIGNMENT FIXES ONLY (no font changes) ---- */
