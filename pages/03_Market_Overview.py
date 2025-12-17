@@ -503,7 +503,35 @@ if show_daily_extra:
         st.info("No data for Opportunity Density.")
     else:
         # Show ALL columns (no filtering)
-        render_table_card(st.container(), "Opportunity Density", df_od)
+        from streamlit import column_config
+
+    od_col_config = {
+        "Category": column_config.TextColumn("Category", width="large"),
+
+        "Buy": column_config.NumberColumn("Buy", width="small"),
+        "Neutral": column_config.NumberColumn("Neutral", width="small"),
+        "Sell": column_config.NumberColumn("Sell", width="small"),
+        "Total": column_config.NumberColumn("Total", width="small"),
+
+        "Buy_Pct": column_config.NumberColumn("Buy %", format="%.1f", width="small"),
+        "Neutral_Pct": column_config.NumberColumn("Neutral %", format="%.1f", width="small"),
+        "Sell_Pct": column_config.NumberColumn("Sell %", format="%.1f", width="small"),
+
+        "R/R >= 3": column_config.NumberColumn("R/R ≥ 3", width="small"),
+        "R/R Neutral": column_config.NumberColumn("R/R Neutral", width="small"),
+        "R/R <= -3": column_config.NumberColumn("R/R ≤ -3", width="small"),
+
+        "MM Score Buy": column_config.NumberColumn("MM Buy", width="small"),
+        "MM Score Neutral": column_config.NumberColumn("MM Neutral", width="small"),
+        "MM Score Sell": column_config.NumberColumn("MM Sell", width="small"),
+    }
+
+    render_table_card(
+        st.container(),
+        "Opportunity Density",
+        df_od,
+        column_config=od_col_config
+    )
 
 # ========= Market Read (per timeframe) =========
 import os
