@@ -500,6 +500,13 @@ if show_daily_extra:
 
     df_od = load_csv(DATA_DIR / "qry_graph_data_92.csv").copy()
 
+    # ---- FORMAT PERCENTAGE COLUMNS (display only) ----
+    for col in ["Buy %", "Neutral %", "Sell %"]:
+        if col in df_od.columns:
+            df_od[col] = df_od[col].apply(
+                lambda x: f"{x:.1f}%" if pd.notna(x) else ""
+            )
+
     if df_od.empty:
         st.info("No data for Opportunity Density.")
     else:
