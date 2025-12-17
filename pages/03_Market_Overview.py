@@ -563,7 +563,7 @@ if show_daily_extra:
   font-size: 12px;
   color: #6b7280;
 }}
-
+#od_card .od_note {{ padding-left: 2px; }}
 </style>
 
 <div class="card" id="od_card">
