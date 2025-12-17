@@ -545,15 +545,43 @@ if show_daily_extra:
   overflow-x: auto;
 }}
 
-/* ---- TYPOGRAPHY MATCH ---- */
-#od_card, #od_card * {{
+/* ---- TYPOGRAPHY MATCH (OD ONLY) ---- */
+
+/* Lock the card’s typography */
+#od_card {{
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
 }}
 
-/* ---- FORCE TABLE FONT SIZE MATCH ---- */
-#od_card table.tbl th,
-#od_card table.tbl td {{
+/* Lock the TABLE typography (critical fix) */
+#od_card table {{
+  font-family: inherit !important;
   font-size: 13px !important;
+  line-height: 1.25 !important;
+}}
+
+/* Force every cell to inherit (prevents markdown / pandas overrides) */
+#od_card table th,
+#od_card table td {{
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}}
+
+/* Match header/body weights to other cards */
+#od_card table thead th {{
+  font-weight: 700 !important;
+}}
+
+#od_card table tbody td {{
+  font-weight: 400 !important;
+}}
+
+/* Keep card title consistent */
+#od_card h3 {{
+  font-family: inherit !important;
 }}
 
 
