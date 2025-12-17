@@ -521,7 +521,7 @@ if show_daily_extra:
         st.markdown(
             f"""
 <style>
-/* Opportunity Density card: keep same width behavior as other cards */
+/* Opportunity Density card width only */
 #od_card {{
   max-width: 1450px !important;
   width: 100% !important;
@@ -529,10 +529,29 @@ if show_daily_extra:
   margin-right: auto !important;
 }}
 
-/* Keep table inside the card — scroll horizontally if needed (no font/padding changes) */
+/* Contain wide table */
 #od_card .od_table_wrap {{
   overflow-x: auto;
 }}
+
+/* ---- ALIGNMENT FIXES ONLY (no font changes) ---- */
+
+/* Center ALL headers */
+#od_card table thead th {{
+  text-align: center !important;
+}}
+
+/* Left-align Category column */
+#od_card table th:first-child,
+#od_card table td:first-child {{
+  text-align: left !important;
+}}
+
+/* Right-align ALL numeric cells */
+#od_card table tbody td:not(:first-child) {{
+  text-align: right !important;
+}}
+
 </style>
 
 <div class="card" id="od_card">
