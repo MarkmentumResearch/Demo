@@ -523,7 +523,7 @@ if show_daily_extra:
 <style>
 /* Opportunity Density card: keep same width behavior as other cards */
 #od_card {{
-  max-width: 1200px !important;
+  max-width: 1400px !important;
   width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
