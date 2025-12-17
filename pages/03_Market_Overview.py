@@ -555,27 +555,7 @@ if show_daily_extra:
 #od_card table.tbl td {{
   font-size: 13px !important;
 }}
-/* Tables */
-.tbl {{
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
 
-  /* FORCE same typography everywhere */
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 13px !important;
-}}
-
-.tbl th, .tbl td {{
-  border: 1px solid #d9d9d9;
-  padding: 6px 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  /* inherit table typography */
-  font-family: inherit !important;
-  font-size: inherit !important;
-}}
 
 /* ---- ALIGNMENT FIXES ONLY (no font changes) ---- */
 
