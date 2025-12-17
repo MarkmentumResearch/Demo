@@ -473,9 +473,9 @@ if show_daily_extra:
         else:
             mapping = {
                 "Below -100": "Strong Sell",
-                "-100 to -25": "Sell",
+                "-100 to -26": "Sell",
                 "-25 to 25": "Neutral",
-                "25 to 100": "Buy",
+                "26 to 100": "Buy",
                 "Above 100": "Strong Buy",
             }
             score_bin_col = "Score_Bin" if "Score_Bin" in df_hist.columns else "score_bin"
