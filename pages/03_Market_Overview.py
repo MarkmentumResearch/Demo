@@ -534,6 +534,11 @@ if show_daily_extra:
   overflow-x: auto;
 }}
 
+/* ---- TYPOGRAPHY MATCH ---- */
+#od_card, #od_card * {{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}}
+
 /* ---- ALIGNMENT FIXES ONLY (no font changes) ---- */
 
 /* Center ALL headers */
