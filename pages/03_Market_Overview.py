@@ -546,6 +546,13 @@ if show_daily_extra:
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }}
 
+/* ---- FORCE TABLE FONT SIZE MATCH ---- */
+#od_card table.tbl th,
+#od_card table.tbl td {{
+  font-size: 13px !important;
+}}
+
+
 /* ---- ALIGNMENT FIXES ONLY (no font changes) ---- */
 
 /* Center ALL headers */
