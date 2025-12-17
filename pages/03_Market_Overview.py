@@ -521,6 +521,10 @@ if show_daily_extra:
         )
 
         table_html = df_od.to_html(index=False, classes="tbl", escape=False)
+        # --- IMPORTANT: remove pandas "dataframe" class so Streamlit/pandas default CSS can't override .tbl ---
+        table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
+        table_html = table_html.replace('class="dataframe"', 'class="tbl"')  # safety fallback
+        table_html = table_html.replace('border="1"', 'border="0"')          # optional: keeps borders controlled by .tbl CSS
 
         # Inject <colgroup> right after the opening <table ...> tag
         table_html = table_html.replace(">", ">" + colgroup, 1)
