@@ -561,8 +561,15 @@ if show_daily_extra:
 
 <div class="card" id="od_card">
   <h3>Opportunity Density</h3>
+
   <div class="od_table_wrap">
     {table_html}
+  </div>
+
+  <div class="od_note">
+    <strong>Note:</strong>
+    Buy classifications require <em>Risk/Reward ≥ 3</em> <strong>and</strong> <em>MM Score &gt; 25</em>.
+    Sell classifications require <em>Risk/Reward ≤ −3</em> <strong>and</strong> <em>MM Score &lt; −25</em>.
   </div>
 </div>
 """,
