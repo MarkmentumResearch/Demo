@@ -508,8 +508,8 @@ if show_daily_extra:
 
         colgroup = (
             "<colgroup>"
-            + '<col style="width:260px;">'  # Category wide
-            + "".join('<col style="width:72px;">' for _ in range(ncols - 1))  # all other cols tight
+            + '<col style="width:220px;">'  # Category wide
+            + "".join('<col style="width:50px;">' for _ in range(ncols - 1))  # all other cols tight
             + "</colgroup>"
         )
 
