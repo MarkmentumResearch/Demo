@@ -495,6 +495,7 @@ if show_daily_extra:
                 """,
                 unsafe_allow_html=True,
             )
+            
     row_spacer(14)
 
     df_od = load_csv(DATA_DIR / "qry_graph_data_92.csv").copy()
@@ -502,36 +503,30 @@ if show_daily_extra:
     if df_od.empty:
         st.info("No data for Opportunity Density.")
     else:
-        # Show ALL columns (no filtering)
-        from streamlit import column_config
+        # Force column widths via HTML <colgroup> since render_table_card() uses df.to_html()
+        ncols = df_od.shape[1]
 
-    od_col_config = {
-        "Category": column_config.TextColumn("Category", width="large"),
+        colgroup = (
+            "<colgroup>"
+            + '<col style="width:260px;">'  # Category wide
+            + "".join('<col style="width:72px;">' for _ in range(ncols - 1))  # all other cols tight
+            + "</colgroup>"
+        )
 
-        "Buy": column_config.NumberColumn("Buy", width="small"),
-        "Neutral": column_config.NumberColumn("Neutral", width="small"),
-        "Sell": column_config.NumberColumn("Sell", width="small"),
-        "Total": column_config.NumberColumn("Total", width="small"),
+        table_html = df_od.to_html(index=False, classes="tbl", escape=False)
 
-        "Buy_Pct": column_config.NumberColumn("Buy %", format="%.1f", width="small"),
-        "Neutral_Pct": column_config.NumberColumn("Neutral %", format="%.1f", width="small"),
-        "Sell_Pct": column_config.NumberColumn("Sell %", format="%.1f", width="small"),
+        # Inject <colgroup> right after the opening <table ...> tag
+        table_html = table_html.replace(">", ">" + colgroup, 1)
 
-        "R/R >= 3": column_config.NumberColumn("R/R ≥ 3", width="small"),
-        "R/R Neutral": column_config.NumberColumn("R/R Neutral", width="small"),
-        "R/R <= -3": column_config.NumberColumn("R/R ≤ -3", width="small"),
-
-        "MM Score Buy": column_config.NumberColumn("MM Buy", width="small"),
-        "MM Score Neutral": column_config.NumberColumn("MM Neutral", width="small"),
-        "MM Score Sell": column_config.NumberColumn("MM Sell", width="small"),
-    }
-
-    render_table_card(
-        st.container(),
-        "Opportunity Density",
-        df_od,
-        column_config=od_col_config
-    )
+        st.markdown(
+            f"""
+            <div class="card">
+              <h3>Opportunity Density</h3>
+              {table_html}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # ========= Market Read (per timeframe) =========
 import os
