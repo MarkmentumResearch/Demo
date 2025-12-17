@@ -557,6 +557,13 @@ if show_daily_extra:
   text-align: right !important;
 }}
 
+/* Opportunity Density footnote */
+#od_card .od_note {{
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+}}
+
 </style>
 
 <div class="card" id="od_card">
