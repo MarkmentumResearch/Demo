@@ -519,31 +519,31 @@ if show_daily_extra:
         table_html = table_html.replace(">", ">" + colgroup, 1)
 
         st.markdown(
-        f"""
-        <style>
-        /* Opportunity Density only */
-        #od_card table {{
-        width: 100% !important;
-        table-layout: fixed !important;
-        }}
-        #od_card th, #od_card td {{
-        padding: 4px 6px !important;
-        font-size: 12px !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: anywhere !important;
-        }}
-        #od_card th {{
-        font-size: 11.5px !important;
-        }}
-        </style>
+            f"""
+            <style>
+            /* Opportunity Density only */
+            #od_card table {{
+            width: 100% !important;
+            table-layout: fixed !important;
+            }}
+            #od_card th, #od_card td {{
+            padding: 4px 6px !important;
+            font-size: 12px !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: anywhere !important;
+            }}
+            #od_card th {{
+            font-size: 11.5px !important;
+            }}
+            </style>
 
-        <div class="card" id="od_card">
-        <h3>Opportunity Density</h3>
-        {table_html}
-        </div>
-        """,
-        unsafe_allow_html=True,
+            <div class="card" id="od_card">
+            <h3>Opportunity Density</h3>
+            {table_html}
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
 # ========= Market Read (per timeframe) =========
