@@ -553,7 +553,7 @@ if show_daily_extra:
 /* ---- FORCE TABLE FONT SIZE MATCH ---- */
 #od_card table.tbl th,
 #od_card table.tbl td {{
-  font-size: 12px !important;
+  font-size: 13px !important;
 }}
 
 
@@ -588,10 +588,7 @@ if show_daily_extra:
   <h3>Opportunity Density</h3>
 
   <div class="od_table_wrap"
-      style="
-        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        font-size: 11px;
-      ">
+
     {table_html}
   </div>
 
