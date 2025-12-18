@@ -585,7 +585,8 @@ if show_daily_extra:
 </style>
 
 <div class="card" id="od_card">
-  <h3>Opportunity Density</h3>
+  <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+  Opportunity Density</h3>
 
   <div class="od_table_wrap">
     {table_html}
