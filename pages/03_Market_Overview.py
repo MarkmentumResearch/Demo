@@ -587,8 +587,7 @@ if show_daily_extra:
 <div class="card" id="od_card">
   <h3>Opportunity Density</h3>
 
-  <div class="od_table_wrap"
-
+  <div class="od_table_wrap">
     {table_html}
   </div>
 
