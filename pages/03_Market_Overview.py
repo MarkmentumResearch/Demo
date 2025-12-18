@@ -588,6 +588,11 @@ if show_daily_extra:
   <h3>Opportunity Density</h3>
 
   <div class="od_table_wrap">
+      style="
+          font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+          font-size: 13px;
+          line-height: 1.25;
+        ">
     {table_html}
   </div>
 
