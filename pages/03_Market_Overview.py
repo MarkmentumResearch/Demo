@@ -547,7 +547,7 @@ if show_daily_extra:
 
 /* ---- TYPOGRAPHY MATCH ---- */
 #od_card, #od_card * {{
-  font-family: inherit;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }}
 
 /* ---- FORCE TABLE FONT SIZE MATCH ---- */
