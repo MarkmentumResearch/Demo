@@ -591,11 +591,10 @@ if show_daily_extra:
       style="
         font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 13px;
-        line-height: 1.25;
       ">
     {table_html}
   </div>
-  
+
   <div class="od_note">
     <strong>Note:</strong>
     Buy classifications require <em>Risk/Reward ≥ 3</em> <strong>and</strong> <em>MM Score &gt; 25</em>.
