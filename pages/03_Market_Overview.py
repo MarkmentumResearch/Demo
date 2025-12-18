@@ -591,7 +591,6 @@ if show_daily_extra:
       style="
         font-family: system-ui;
         font-size: 13px;
-        line-height: 1.25;
       ">
     {table_html}
   </div>
