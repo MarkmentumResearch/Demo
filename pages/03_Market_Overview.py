@@ -589,7 +589,7 @@ if show_daily_extra:
 
   <div class="od_table_wrap"
       style="
-        font-family: system-ui;
+        font-family: 'Segoe UI';
         font-size: 13px;
       ">
     {table_html}
