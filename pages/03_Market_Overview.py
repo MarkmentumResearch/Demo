@@ -553,7 +553,7 @@ if show_daily_extra:
 /* ---- FORCE TABLE FONT SIZE MATCH ---- */
 #od_card table.tbl th,
 #od_card table.tbl td {{
-  font-size: 11px !important;
+  font-size: 12px !important;
 }}
 
 
