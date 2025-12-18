@@ -572,7 +572,7 @@ if show_daily_extra:
 
 /* Right-align ALL numeric cells */
 #od_card table tbody td:not(:first-child) {{
-  text-align: right !important; background:#f2f2f2; font-weight:700; color:#1a1a1a;
+  text-align: right !important; 
 }}
 
 /* Opportunity Density footnote */
