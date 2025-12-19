@@ -422,7 +422,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-18,NOC,NORTHROP GRUMMAN ,Industrials,Industrials,13.0,8.0,-5.0
 2025-12-18,NORW,GLBL X MSCI NORWAY ETF,,Foreign,-30.0,-48.0,-18.0
 2025-12-18,NOV,NOV INC.,,MR Discretion,37.0,3.0,-34.0
-2025-12-18,NOW,"SERVICENOW, INC.",Information Technology,Information Technology,-4.0,-6.0,-2.0
+2025-12-18,NOW,"SERVICENOW, INC.",Information Technology,Information Technology,-31.0,-33.0,-2.0
 2025-12-18,NQ=F,NASDAQ 100 FUTURES,,Futures,-38.0,-53.0,-15.0
 2025-12-18,NRG,"NRG ENERGY, INC.",Utilities,Utilities,-4.0,-10.0,-6.0
 2025-12-18,NSC,NORFOLK SOUTHERN ,Industrials,Industrials,-48.0,-29.0,19.0

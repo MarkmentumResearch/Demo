@@ -1,5 +1,4 @@
 Ticker,Ticker_name,Category,Date,mtd_return_pct
-NOW,"SERVICENOW, INC.",Information Technology,2025-12-18,-0.8112
 PSKY,PARAMOUNT SKYDANCE ,Communication Services,2025-12-18,-0.1879
 UNG,UNITED STATES NAT GAS,Commodities,2025-12-18,-0.1833
 AVGO,BROADCOM INC.,Information Technology,2025-12-18,-0.1814
@@ -9,3 +8,4 @@ DDOG,"DATADOG, INC.",Information Technology,2025-12-18,-0.1357
 AZO,"AUTOZONE, INC.",Consumer Discretionary,2025-12-18,-0.1335
 CMBT,CMB.TECH NV,MR Discretion,2025-12-18,-0.1335
 SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,2025-12-18,-0.1323
+MPC,MARATHON PETROLEUM ,Energy,2025-12-18,-0.1322
