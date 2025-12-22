@@ -1,8 +1,8 @@
 Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
 JBL,JABIL INC.,Information Technology,2025-12-19,-147.0,-72.0,75.0
-XLK,SEL SECTOR:TECH SPDR,Sector & Style ETFs,2025-12-19,-137.0,-83.0,54.0
 DIS,THE WALT DISNEY COMPANY,Communication Services,2025-12-19,-131.0,-67.0,64.0
 CHTR,"CHARTER COMMUNICATIONS, INC.",Communication Services,2025-12-19,-125.0,-77.0,48.0
+XLK,SEL SECTOR:TECH SPDR,Sector & Style ETFs,2025-12-19,-124.0,-53.0,71.0
 EWQ,ISHARES:MSCI FRANCE,Foreign,2025-12-19,-121.0,-66.0,55.0
 HUBB,HUBBELL INC.,Industrials,2025-12-19,-117.0,-66.0,51.0
 ZTS,ZOETIS INC.,Health Care,2025-12-19,-116.0,-72.0,44.0

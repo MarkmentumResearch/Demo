@@ -80,7 +80,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,-23.2,65.9,89.1
 2025-12-19,CAH,"CARDINAL HEALTH, INC.",Health Care,Health Care,-57.7,16.7,74.4
 2025-12-19,CALM,"CAL-MAINE FOODS, INC.",,MR Discretion,26.2,39.9,13.7
-2025-12-19,CANE,TEUCRIUM:SUGAR,,Commodities,-15.8,79.6,95.4
+2025-12-19,CANE,TEUCRIUM:SUGAR,,Commodities,-16.8,78.6,95.4
 2025-12-19,CARR,CARRIER GLOBAL ,Industrials,Industrials,50.6,87.1,36.5
 2025-12-19,CAT,CATERPILLAR INC.,Industrials,Industrials,19.9,53.0,33.1
 2025-12-19,CB,CHUBB LTD,Financials,Financials,-7.3,86.5,93.8
@@ -118,14 +118,14 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,COO,"THE COOPER COMPANIES, INC.",Health Care,Health Care,-0.2,99.4,99.6
 2025-12-19,COP,CONOCOPHILLIPS,Energy,Energy,19.6,82.5,62.9
 2025-12-19,COR,"CENCORA, INC.",Health Care,Health Care,-69.7,9.9,79.6
-2025-12-19,CORN,TEUCRIUM:CORN,,Commodities,-5.8,58.7,64.5
+2025-12-19,CORN,TEUCRIUM:CORN,,Commodities,-5.6,58.9,64.5
 2025-12-19,COST,COSTCO WHOLESALE ,Consumer Staples,Consumer Staples,-17.8,29.2,47.0
 2025-12-19,CPAY,"FLEETCOR TECHNOLOGIES, INC.",Financials,Financials,-3.3,91.3,94.6
 2025-12-19,CPB,CAMPBELL SOUP COMPANY,Consumer Staples,Consumer Staples,-37.3,34.7,72.0
 2025-12-19,CPER,UNITED STATES COPPER IDX,,Commodities,41.5,92.1,50.6
 2025-12-19,CPRT,"COPART, INC.",Industrials,Industrials,7.9,44.4,36.5
 2025-12-19,CPT,CAMDEN PROPERTY TRUST,Real Estate,Real Estate,-12.3,81.2,93.5
-2025-12-19,CRESY,CRESUD INC.,,MR Discretion,1.8,60.9,59.1
+2025-12-19,CRESY,CRESUD INC.,,MR Discretion,2.3,69.8,67.5
 2025-12-19,CRL,CHARLES RIVER LABORATORIES,Health Care,Health Care,50.2,98.6,48.4
 2025-12-19,CRM,"SALESFORCE, INC.",Information Technology,Information Technology,78.6,98.8,20.2
 2025-12-19,CRWD,"CROWDSTRIKE HOLDINGS, INC.",Information Technology,Information Technology,6.3,23.6,17.3
@@ -145,7 +145,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,DBA,INVESCO DB MS AGRI,,Commodities,-10.3,53.4,63.7
 2025-12-19,DBB,INVESCO DB MS BMTL,,Commodities,54.2,99.8,45.6
 2025-12-19,DBC,INVESCO DB CM IDX,,Commodities,-10.1,50.2,60.3
-2025-12-19,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,72.4,98.0,25.6
+2025-12-19,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,1.2,95.0,93.8
 2025-12-19,DDOG,"DATADOG, INC.",Information Technology,Information Technology,-31.1,17.1,48.2
 2025-12-19,DE,DEERE & COMPANY,Industrials,Industrials,-6.8,46.4,53.2
 2025-12-19,DECK,DECKERS OUTDOOR ,Consumer Discretionary,Consumer Discretionary,17.4,98.2,80.8
@@ -182,7 +182,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,EFX,EQUIFAX INC.,Industrials,Industrials,29.6,91.1,61.5
 2025-12-19,EG,"EVEREST GROUP, LTD.",Financials,Financials,24.6,99.0,74.4
 2025-12-19,EIDO,ISHARES:MSCI INDONESIA,,Foreign,-11.9,53.8,65.7
-2025-12-19,EIRL,ISHARES:MSCI IRELAND,,Foreign,8.3,97.4,89.1
+2025-12-19,EIRL,ISHARES:MSCI IRELAND,,Foreign,8.1,97.4,89.3
 2025-12-19,EIS,ISHARES:MSCI ISRAEL,,Foreign,58.3,98.2,39.9
 2025-12-19,EIX,EDISON INTERNATIONAL,Utilities,Utilities,-15.1,72.2,87.3
 2025-12-19,EL,THE ESTEE LAUDER COMPANIES INC.,Consumer Staples,Consumer Staples,71.8,99.8,28.0
@@ -190,7 +190,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,EME,"EMCOR GROUP, INC.",Industrials,Industrials,24.6,60.5,35.9
 2025-12-19,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,12.9,96.6,83.7
 2025-12-19,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,35.5,78.6,43.1
-2025-12-19,ENZL,ISHARES:MSCI NEW ZLND,,Foreign,30.4,79.6,49.2
+2025-12-19,ENZL,ISHARES:MSCI NEW ZLND,,Foreign,30.6,79.8,49.2
 2025-12-19,EOG,"EOG RESOURCES, INC.",Energy,Energy,-36.1,34.7,70.8
 2025-12-19,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,1.8,96.6,94.8
 2025-12-19,EPHE,ISHARES:MSCI PHILIPPINES,,Foreign,-15.8,67.7,83.5
@@ -204,7 +204,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,ES=F,E-MINI S&P 500 FUTURES,,Futures,50.4,87.9,37.5
 2025-12-19,ESS,"ESSEX PROPERTY TRUST, INC.",Real Estate,Real Estate,-32.8,57.9,90.7
 2025-12-19,ETN,EATON  PUBLIC LIMITED COMPANY,Industrials,Industrials,26.2,43.1,16.9
-2025-12-19,ETR,ENTERGY ,Utilities,Utilities,-28.4,22.8,51.2
+2025-12-19,ETR,ENTERGY ,Utilities,Utilities,-28.2,23.0,51.2
 2025-12-19,EVRG,"EVERGY, INC.",Utilities,Utilities,-23.6,9.1,32.7
 2025-12-19,EW,EDWARDS LIFESCIENCES ,Health Care,Health Care,-11.7,58.3,70.0
 2025-12-19,EWA,ISHARES:MSCI AUSTRALIA,,Foreign,67.2,85.1,17.9
@@ -214,7 +214,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,EWH,ISHARES:MSCI HONG KONG,,Foreign,-32.8,33.7,66.5
 2025-12-19,EWI,ISHARES:MSCI ITALY,,Foreign,35.5,85.5,50.0
 2025-12-19,EWJ,ISHARES:MSCI JAPAN,,Foreign,35.5,62.3,26.8
-2025-12-19,EWK,ISHARES:MSCI BELGIUM,,Foreign,-7.4,57.1,64.5
+2025-12-19,EWK,ISHARES:MSCI BELGIUM,,Foreign,-8.3,56.2,64.5
 2025-12-19,EWL,ISHARES:MSCI SWITZERLAND,,Foreign,18.6,95.8,77.2
 2025-12-19,EWM,ISHARES:MSCI MALAYSIA,,Foreign,19.7,90.5,70.8
 2025-12-19,EWN,ISHARES:MSCI NETHERLANDS,,Foreign,39.9,62.5,22.6
@@ -227,7 +227,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,EWW,ISHARES:MSCI MEXICO,,Foreign,13.5,72.2,58.7
 2025-12-19,EWY,ISHARES:MSCI S KOREA,,Foreign,35.7,52.8,17.1
 2025-12-19,EWZ,ISHARES:MSCI BRAZIL,,Foreign,-47.8,35.7,83.5
-2025-12-19,EXC,EXELON ,Utilities,Utilities,-16.2,28.4,44.6
+2025-12-19,EXC,EXELON ,Utilities,Utilities,-16.4,28.2,44.6
 2025-12-19,EXE,EXPAND ENERGY ,Energy,Energy,-72.6,27.2,99.8
 2025-12-19,EXPD,EXPEDITORS INTERNATIONAL OF WASHINGTON,Industrials,Industrials,-4.2,94.4,98.6
 2025-12-19,EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,Consumer Discretionary,21.8,99.8,78.0
@@ -254,7 +254,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,FVX,5 YR TSY YLD NDX,Yields,Yields,50.2,61.9,11.7
 2025-12-19,FXA,INVESCO:AU DOLLAR,,Currencies,50.0,86.7,36.7
 2025-12-19,FXB,INVESCO:GBP STERLING,,Currencies,26.6,80.8,54.2
-2025-12-19,FXC,INVESCO:CANADIAN DOLLAR,,Currencies,32.5,84.3,51.8
+2025-12-19,FXC,INVESCO:CANADIAN DOLLAR,,Currencies,32.9,84.3,51.4
 2025-12-19,FXE,INVESCO:EURO,,Currencies,12.1,26.6,14.5
 2025-12-19,FXY,INVESCO:JAPANESE YEN,,Currencies,36.7,55.4,18.7
 2025-12-19,GD,GENERAL DYNAMICS ,Industrials,Industrials,15.8,34.1,18.3
@@ -263,14 +263,14 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,GDXJ,VANECK:JR GOLD MINERS,,Commodities,17.7,92.5,74.8
 2025-12-19,GE,GENERAL ELECTRIC COMPANY,Industrials,Industrials,52.6,61.1,8.5
 2025-12-19,GEHC,GE HEALTHCARE TECHNOLOGIES INC.,Health Care,Health Care,4.4,88.9,84.5
-2025-12-19,GEN,GEN DIGITAL INC.,Information Technology,Information Technology,25.8,90.3,64.5
+2025-12-19,GEN,GEN DIGITAL INC.,Information Technology,Information Technology,25.6,90.1,64.5
 2025-12-19,GEOS,GEOSPACE TECHNOLOGIES ,,MR Discretion,43.1,50.2,7.1
 2025-12-19,GEV,GE VERNOVA INC.,Industrials,Industrials,13.4,68.8,55.4
 2025-12-19,GGB,GERDAU SA,,MR Discretion,18.4,86.3,67.9
 2025-12-19,GILD,"GILEAD SCIENCES, INC.",Health Care,Health Care,-40.9,35.5,76.4
 2025-12-19,GIS,"GENERAL MILLS, INC.",Consumer Staples,Consumer Staples,0.5,81.5,81.0
 2025-12-19,GL,GLOBE LIFE INC.,Financials,Financials,35.3,85.1,49.8
-2025-12-19,GLATF,GLOBAL ATOMIC ,,MR Discretion,32.7,96.0,63.3
+2025-12-19,GLATF,GLOBAL ATOMIC ,,MR Discretion,34.5,96.4,61.9
 2025-12-19,GLD,SPDR GOLD,Gold,Commodities,18.6,82.1,63.5
 2025-12-19,GLW,CORNING INC.,Information Technology,Information Technology,46.9,68.3,21.4
 2025-12-19,GM,GENERAL MOTORS COMPANY,Consumer Discretionary,Consumer Discretionary,23.2,99.8,76.6
@@ -293,7 +293,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,0.8,87.9,87.1
 2025-12-19,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",,MR Discretion,3.4,49.0,45.6
 2025-12-19,HOLX,"HOLOGIC, INC.",Health Care,Health Care,-2.9,4.4,7.3
-2025-12-19,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,43.7,90.7,47.0
+2025-12-19,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,69.5,90.7,21.2
 2025-12-19,HOOD,"ROBINHOOD MARKETS, INC.",Financials,Financials,38.3,56.2,17.9
 2025-12-19,HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,Information Technology,83.7,98.6,14.9
 2025-12-19,HPQ,HP INC.,Information Technology,Information Technology,42.0,72.8,30.8
@@ -304,7 +304,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,HUBB,HUBBELL INC.,Industrials,Industrials,74.2,87.5,13.3
 2025-12-19,HUM,HUMANA INC.,Health Care,Health Care,79.4,87.9,8.5
 2025-12-19,HWM,HOWMET AEROSPACE INC.,Industrials,Industrials,19.4,47.8,28.4
-2025-12-19,HYD,VANECK:HIGH YIELD MUNI,,Bonds,-12.3,22.0,34.3
+2025-12-19,HYD,VANECK:HIGH YIELD MUNI,,Bonds,-11.5,22.8,34.3
 2025-12-19,HYG,ISHARES:IBOXX $HY CORP,Bonds,Bonds,0.6,57.5,56.9
 2025-12-19,IBKR,"INTERACTIVE BROKERS GROUP, INC.",Financials,Financials,34.1,59.7,25.6
 2025-12-19,IBM,INTERNATIONAL BUSINESS MACHINES ,Information Technology,Information Technology,13.7,53.0,39.3
@@ -453,7 +453,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,PEG,PUBLIC SERVICE ENTERPRISE GROUP INC.,Utilities,Utilities,-45.4,37.5,82.9
 2025-12-19,PEP,"PEPSICO, INC.",Consumer Staples,Consumer Staples,0.4,60.1,59.7
 2025-12-19,PFE,PFIZER INC.,Health Care,Health Care,-19.3,73.2,92.5
-2025-12-19,PFF,ISHARES:PREF AND INC SEC,,Bonds,56.9,94.0,37.1
+2025-12-19,PFF,ISHARES:PREF AND INC SEC,,Bonds,56.0,93.3,37.3
 2025-12-19,PFG,"PRINCIPAL FINANCIAL GROUP, INC.",Financials,Financials,36.7,94.2,57.5
 2025-12-19,PG,THE PROCTER & GAMBLE COMPANY,Consumer Staples,Consumer Staples,1.4,57.7,56.3
 2025-12-19,PGR,THE PROGRESSIVE ,Financials,Financials,-45.6,50.2,95.8
@@ -478,8 +478,8 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,PSX,PHILLIPS 66,Energy,Energy,-7.9,30.8,38.7
 2025-12-19,PTC,PTC INC.,Information Technology,Information Technology,52.2,80.2,28.0
 2025-12-19,PWR,"QUANTA SERVICES, INC.",Industrials,Industrials,-11.7,36.1,47.8
-2025-12-19,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,54.4,76.2,21.8
-2025-12-19,QAT,ISHARES:MSCI QATAR,,Foreign,31.0,75.2,44.2
+2025-12-19,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,53.0,76.2,23.2
+2025-12-19,QAT,ISHARES:MSCI QATAR,,Foreign,31.2,75.2,44.0
 2025-12-19,QCOM,QUALCOMM INC.,Information Technology,Information Technology,72.6,94.4,21.8
 2025-12-19,QQQ,INVESCO QQQ TRUST 1,,Sector & Style ETFs,55.3,83.9,28.6
 2025-12-19,QUAL,ISHARES:MSCI USA QF,,Sector & Style ETFs,45.8,95.0,49.2
@@ -509,7 +509,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,SD,"SANDRIDGE ENERGY, INC.",,MR Discretion,-50.2,45.8,96.0
 2025-12-19,SDY,SPDR S&P DIVIDEND,,Sector & Style ETFs,9.2,91.5,82.3
 2025-12-19,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,-12.4,31.3,43.7
-2025-12-19,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,47.8,74.6,26.8
+2025-12-19,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,47.4,74.6,27.2
 2025-12-19,SILJ,ETFMG PRIME JR SILVR MNR,,Commodities,23.6,92.3,68.7
 2025-12-19,SJM,THE J. M. SMUCKER COMPANY,Consumer Staples,Consumer Staples,-44.4,18.1,62.5
 2025-12-19,SLB,SCHLUMBERGER N.V.,Energy,Energy,36.5,90.3,53.8
@@ -530,7 +530,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,SPY,SPDR S&P 500 ETF,,Sector & Style ETFs,41.5,86.9,45.4
 2025-12-19,SRE,SEMPRA,Utilities,Utilities,-44.8,12.7,57.5
 2025-12-19,STE,STERIS PUBLIC LIMITED COMPANY,Health Care,Health Care,-61.7,36.5,98.2
-2025-12-19,STIP,ISHARES:0-5 TIPS BD ETF,Bonds,Bonds,2.2,47.0,44.8
+2025-12-19,STIP,ISHARES:0-5 TIPS BD ETF,Bonds,Bonds,1.6,47.0,45.4
 2025-12-19,STLA,STELLANTIS NV,,MR Discretion,20.2,99.8,79.6
 2025-12-19,STLD,"STEEL DYNAMICS, INC.",Materials,Materials,25.4,99.4,74.0
 2025-12-19,STNG,SCORPIO TANKERS INC.,,MR Discretion,-17.6,3.4,21.0
@@ -544,7 +544,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,SYK,STRYKER ,Health Care,Health Care,-22.2,42.7,64.9
 2025-12-19,SYY,SYSCO ,Consumer Staples,Consumer Staples,-32.5,31.0,63.5
 2025-12-19,T,AT&T INC.,Communication Services,Communication Services,-76.8,9.1,85.9
-2025-12-19,TAGS,TEUCRIUM:AGRICULTURAL,,Commodities,-72.6,13.7,86.3
+2025-12-19,TAGS,TEUCRIUM:AGRICULTURAL,,Commodities,-73.6,12.3,85.9
 2025-12-19,TAP,MOLSON COORS BEVERAGE COMPANY,Consumer Staples,Consumer Staples,-1.2,86.7,87.9
 2025-12-19,TDG,TRANSDIGM GROUP INC.,Industrials,Industrials,-74.0,3.8,77.8
 2025-12-19,TDW,TIDEWATER INC.,,MR Discretion,-23.6,39.9,63.5
@@ -617,7 +617,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_mtd_change,current_Sharpe_
 2025-12-19,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,27.8,89.5,61.7
 2025-12-19,WDAY,"WORKDAY, INC.",Information Technology,Information Technology,42.8,73.0,30.2
 2025-12-19,WDC,WESTERN DIGITAL ,Information Technology,Information Technology,16.3,66.9,50.6
-2025-12-19,WEAT,TEUCRIUM:WHEAT,,Commodities,-66.2,2.6,68.8
+2025-12-19,WEAT,TEUCRIUM:WHEAT,,Commodities,-67.4,2.6,70.0
 2025-12-19,WEC,"WEC ENERGY GROUP, INC.",Utilities,Utilities,-26.0,7.7,33.7
 2025-12-19,WELL,WELLTOWER INC.,Real Estate,Real Estate,-93.6,6.2,99.8
 2025-12-19,WFC,WELLS FARGO & COMPANY,Financials,Financials,65.1,97.4,32.3

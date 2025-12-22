@@ -1,6 +1,5 @@
 Ticker,Ticker_name,Category,Date,qtd_return_pct
 FISV,"FISERV, INC.",Financials,2025-12-19,-0.473
-DD,"DUPONT DE NEMOURS, INC.",Materials,2025-12-19,-0.4703
 ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,2025-12-19,-0.4248
 SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,2025-12-19,-0.3511
 ORCL,ORACLE ,Information Technology,2025-12-19,-0.3174
@@ -9,3 +8,4 @@ PSKY,PARAMOUNT SKYDANCE ,Communication Services,2025-12-19,-0.3103
 COIN,"COINBASE GLOBAL, INC.",Financials,2025-12-19,-0.2737
 CHTR,"CHARTER COMMUNICATIONS, INC.",Communication Services,2025-12-19,-0.2548
 POOL,POOL ,Consumer Discretionary,2025-12-19,-0.2517
+LW,"LAMB WESTON HOLDINGS, INC.",Consumer Staples,2025-12-19,-0.2435

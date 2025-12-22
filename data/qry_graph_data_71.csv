@@ -1,9 +1,9 @@
 Ticker,Ticker_name,Category,Date,model_score_day_change,current_model_score,previous_model_score
 NDX,NASDAQ 100 INDEX,Indices,2025-12-19,-113.0,-87.0,26.0
 QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2025-12-19,-113.0,-87.0,26.0
-XLK,SEL SECTOR:TECH SPDR,Sector & Style ETFs,2025-12-19,-82.0,-83.0,-1.0
 CNP,"CENTERPOINT ENERGY, INC.",Utilities,2025-12-19,-81.0,-10.0,71.0
 JBL,JABIL INC.,Information Technology,2025-12-19,-77.0,-72.0,5.0
+XLK,SEL SECTOR:TECH SPDR,Sector & Style ETFs,2025-12-19,-68.0,-53.0,15.0
 OEF,ISHARES:S&P 100,Sector & Style ETFs,2025-12-19,-67.0,-83.0,-16.0
 DBB,INVESCO DB MS BMTL,Commodities,2025-12-19,-62.0,-52.0,10.0
 NDAQ,"NASDAQ, INC.",Financials,2025-12-19,-60.0,-70.0,-10.0
