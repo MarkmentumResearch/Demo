@@ -8,7 +8,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-22,ACN,ACCENTURE PUBLIC LIMITED COMPANY,Information Technology,Information Technology,-7.0,-67.0,-60.0
 2025-12-22,ADBE,ADOBE INC.,Information Technology,Information Technology,-10.0,-80.0,-70.0
 2025-12-22,ADI,"ANALOG DEVICES, INC.",Information Technology,Information Technology,11.0,-53.0,-64.0
-2025-12-22,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,0.0,-1.0,-1.0
+2025-12-22,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,12.0,11.0,-1.0
 2025-12-22,ADP,"AUTOMATIC DATA PROCESSING, INC.",Industrials,Industrials,-17.0,-62.0,-45.0
 2025-12-22,ADSK,"AUTODESK, INC.",Information Technology,Information Technology,0.0,-14.0,-14.0
 2025-12-22,AEE,AMEREN ,Utilities,Utilities,15.0,37.0,22.0
@@ -563,7 +563,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-22,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,10.0,44.0,34.0
 2025-12-22,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,-22.0,-16.0,6.0
 2025-12-22,TNX,10 Y TSY YLD NDX,Yields,Yields,-85.0,-86.0,-1.0
-2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,-7.0,-41.0,-34.0
+2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,105.0,21.0,-84.0
 2025-12-22,TPR,"TAPESTRY, INC.",Consumer Discretionary,Consumer Discretionary,0.0,-23.0,-23.0
 2025-12-22,TRGP,TARGA RESOURCES CORP.,Energy,Energy,-17.0,-100.0,-83.0
 2025-12-22,TRMB,TRIMBLE INC.,Information Technology,Information Technology,44.0,14.0,-30.0

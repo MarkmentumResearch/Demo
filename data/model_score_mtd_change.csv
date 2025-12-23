@@ -8,7 +8,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-12-22,ACN,ACCENTURE PUBLIC LIMITED COMPANY,Information Technology,Information Technology,-39.0,-67.0,-28.0
 2025-12-22,ADBE,ADOBE INC.,Information Technology,Information Technology,-50.0,-80.0,-30.0
 2025-12-22,ADI,"ANALOG DEVICES, INC.",Information Technology,Information Technology,-10.0,-53.0,-43.0
-2025-12-22,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,31.0,-1.0,-32.0
+2025-12-22,ADM,ARCHER-DANIELS-MIDLAND COMPANY.,Consumer Staples,Consumer Staples,43.0,11.0,-32.0
 2025-12-22,ADP,"AUTOMATIC DATA PROCESSING, INC.",Industrials,Industrials,-110.0,-62.0,48.0
 2025-12-22,ADSK,"AUTODESK, INC.",Information Technology,Information Technology,-9.0,-14.0,-5.0
 2025-12-22,AEE,AMEREN ,Utilities,Utilities,47.0,37.0,-10.0
@@ -563,7 +563,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-12-22,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,27.0,44.0,17.0
 2025-12-22,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,-13.0,-16.0,-3.0
 2025-12-22,TNX,10 Y TSY YLD NDX,Yields,Yields,-40.0,-86.0,-46.0
-2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,22.0,-41.0,-63.0
+2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,84.0,21.0,-63.0
 2025-12-22,TPR,"TAPESTRY, INC.",Consumer Discretionary,Consumer Discretionary,-71.0,-23.0,48.0
 2025-12-22,TRGP,TARGA RESOURCES CORP.,Energy,Energy,-30.0,-100.0,-70.0
 2025-12-22,TRMB,TRIMBLE INC.,Information Technology,Information Technology,31.0,14.0,-17.0
@@ -640,7 +640,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2025-12-22,XLK,SEL SECTOR:TECH SPDR,,Sector & Style ETFs,-80.0,-9.0,71.0
 2025-12-22,XLP,SEL SECTOR:C STP SPDR,,Sector & Style ETFs,25.0,-1.0,-26.0
 2025-12-22,XLRE,SEL SECTOR:RL EST SPDR,,Sector & Style ETFs,12.0,9.0,-3.0
-2025-12-22,XLU,SEL SECTOR:UTIL SPDR,,Sector & Style ETFs,-55.0,13.0,68.0
+2025-12-22,XLU,SEL SECTOR:UTIL SPDR,,Sector & Style ETFs,-40.0,13.0,53.0
 2025-12-22,XLV,SEL SECTOR:H CARE SPDR,,Sector & Style ETFs,48.0,18.0,-30.0
 2025-12-22,XLY,SEL SECTOR:C DSC SPDR,,Sector & Style ETFs,1.0,-20.0,-21.0
 2025-12-22,XOM,EXXON MOBIL ,Energy,Energy,11.0,-5.0,-16.0

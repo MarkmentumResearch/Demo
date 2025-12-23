@@ -1,4 +1,5 @@
 Ticker,Ticker_name,Category,Date,mtd_return_pct
+TPL,TEXAS PACIFIC LAND ,Energy,2025-12-22,-0.6497
 LW,"LAMB WESTON HOLDINGS, INC.",Consumer Staples,2025-12-22,-0.2753
 UNG,UNITED STATES NAT GAS,Commodities,2025-12-22,-0.1955
 LEN,LENNAR ,Consumer Discretionary,2025-12-22,-0.1851
@@ -8,4 +9,3 @@ PSKY,PARAMOUNT SKYDANCE ,Communication Services,2025-12-22,-0.1504
 MPC,MARATHON PETROLEUM ,Energy,2025-12-22,-0.1495
 VIX,CBOE MKT VOLATILITY IDX,Volatility,2025-12-22,-0.1388
 AZO,"AUTOZONE, INC.",Consumer Discretionary,2025-12-22,-0.1367
-NFLX,"NETFLIX, INC.",Communication Services,2025-12-22,-0.1334

@@ -1,4 +1,5 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
+TPL,TEXAS PACIFIC LAND ,Energy,2025-12-22,105.0,21.0,-84.0
 ICL,ICL GROUP LTD,MR Discretion,2025-12-22,86.0,77.0,-9.0
 DBB,INVESCO DB MS BMTL,Commodities,2025-12-22,77.0,25.0,-52.0
 CBRE,"CBRE GROUP, INC.",Real Estate,2025-12-22,76.0,-7.0,-83.0
@@ -8,4 +9,3 @@ EWA,ISHARES:MSCI AUSTRALIA,Foreign,2025-12-22,69.0,-24.0,-93.0
 TDG,TRANSDIGM GROUP INC.,Industrials,2025-12-22,69.0,12.0,-57.0
 GOOGL,ALPHABET INC.,Communication Services,2025-12-22,67.0,42.0,-25.0
 ROST,"ROSS STORES, INC.",Consumer Discretionary,2025-12-22,65.0,28.0,-37.0
-PSKY,PARAMOUNT SKYDANCE ,Communication Services,2025-12-22,64.0,54.0,-10.0
