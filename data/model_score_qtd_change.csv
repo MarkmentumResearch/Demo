@@ -563,7 +563,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-22,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,29.0,44.0,15.0
 2025-12-22,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,-44.0,-16.0,28.0
 2025-12-22,TNX,10 Y TSY YLD NDX,Yields,Yields,-118.0,-86.0,32.0
-2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,43.0,21.0,-22.0
+2025-12-22,TPL,TEXAS PACIFIC LAND ,Energy,Energy,-2.0,-41.0,-39.0
 2025-12-22,TPR,"TAPESTRY, INC.",Consumer Discretionary,Consumer Discretionary,-52.0,-23.0,29.0
 2025-12-22,TRGP,TARGA RESOURCES CORP.,Energy,Energy,-103.0,-100.0,3.0
 2025-12-22,TRMB,TRIMBLE INC.,Information Technology,Information Technology,23.0,14.0,-9.0
