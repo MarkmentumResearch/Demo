@@ -1,8 +1,8 @@
 Ticker,Ticker_name,Category,Date,model_score_mtd_change,current_model_score,previous_model_score
+STE,STERIS PUBLIC LIMITED COMPANY,Health Care,2025-12-23,127.0,57.0,-70.0
 VTR,"VENTAS, INC.",Real Estate,2025-12-23,104.0,42.0,-62.0
 BG,BUNGE LIMITED,Consumer Staples,2025-12-23,100.0,51.0,-49.0
 UHS,"UNIVERSAL HEALTH SERVICES, INC.",Health Care,2025-12-23,100.0,63.0,-37.0
-STE,STERIS PUBLIC LIMITED COMPANY,Health Care,2025-12-23,97.0,27.0,-70.0
 SYK,STRYKER ,Health Care,2025-12-23,97.0,75.0,-22.0
 EXE,EXPAND ENERGY ,Energy,2025-12-23,96.0,26.0,-70.0
 ORLY,"O'REILLY AUTOMOTIVE, INC.",Consumer Discretionary,2025-12-23,95.0,55.0,-40.0

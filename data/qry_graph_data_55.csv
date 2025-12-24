@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
 CBRE,"CBRE GROUP, INC.",Real Estate,2025-12-23,112.0,29.0,-83.0
+CAG,"CONAGRA BRANDS, INC.",Consumer Staples,2025-12-23,87.0,57.0,-30.0
 ICL,ICL GROUP LTD,MR Discretion,2025-12-23,86.0,77.0,-9.0
 OEF,ISHARES:S&P 100,Sector & Style ETFs,2025-12-23,85.0,2.0,-83.0
 PHM,"PULTEGROUP, INC.",Consumer Discretionary,2025-12-23,82.0,29.0,-53.0
 CNP,"CENTERPOINT ENERGY, INC.",Utilities,2025-12-23,81.0,71.0,-10.0
 ROK,"ROCKWELL AUTOMATION, INC.",Industrials,2025-12-23,80.0,39.0,-41.0
+STE,STERIS PUBLIC LIMITED COMPANY,Health Care,2025-12-23,79.0,57.0,-22.0
 GOOGL,ALPHABET INC.,Communication Services,2025-12-23,77.0,52.0,-25.0
 EXR,EXTRA SPACE STORAGE INC.,Real Estate,2025-12-23,73.0,26.0,-47.0
-TROW,"T. ROWE PRICE GROUP, INC.",Financials,2025-12-23,73.0,11.0,-62.0
-ABNB,"AIRBNB, INC.",Consumer Discretionary,2025-12-23,71.0,-9.0,-80.0

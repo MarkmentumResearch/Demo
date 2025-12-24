@@ -77,7 +77,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,BX,BLACKSTONE INC,Financials,Financials,18.0,-43.0,-61.0
 2025-12-23,BXP,"BOSTON PROPERTIES, INC.",Real Estate,Real Estate,31.0,36.0,5.0
 2025-12-23,C,CITIGROUP INC.,Financials,Financials,1.0,-22.0,-23.0
-2025-12-23,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,59.0,29.0,-30.0
+2025-12-23,CAG,"CONAGRA BRANDS, INC.",Consumer Staples,Consumer Staples,87.0,57.0,-30.0
 2025-12-23,CAH,"CARDINAL HEALTH, INC.",Health Care,Health Care,4.0,48.0,44.0
 2025-12-23,CALM,"CAL-MAINE FOODS, INC.",,MR Discretion,19.0,23.0,4.0
 2025-12-23,CANE,TEUCRIUM:SUGAR,,Commodities,34.0,12.0,-22.0
@@ -135,7 +135,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,CTAS,CINTAS ,Industrials,Industrials,-19.0,-42.0,-23.0
 2025-12-23,CTRA,COTERRA ENERGY INC.,Energy,Energy,21.0,8.0,-13.0
 2025-12-23,CTSH,COGNIZANT TECHNOLOGY SOLUTIONS ,Information Technology,Information Technology,27.0,-26.0,-53.0
-2025-12-23,CTVA,"CORTEVA, INC.",Materials,Materials,7.0,6.0,-1.0
+2025-12-23,CTVA,"CORTEVA, INC.",Materials,Materials,-4.0,-5.0,-1.0
 2025-12-23,CVS,CVS HEALTH ,Health Care,Health Care,23.0,4.0,-19.0
 2025-12-23,CVX,CHEVRON ,Energy,Energy,11.0,-1.0,-12.0
 2025-12-23,D,"DOMINION ENERGY, INC.",Utilities,Utilities,1.0,-8.0,-9.0
@@ -144,7 +144,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,DAY,CERIDIAN HCM HOLDING INC.,Industrials,Industrials,0.0,-27.0,-27.0
 2025-12-23,DBA,INVESCO DB MS AGRI,,Commodities,14.0,-12.0,-26.0
 2025-12-23,DBB,INVESCO DB MS BMTL,,Commodities,69.0,17.0,-52.0
-2025-12-23,DBC,INVESCO DB CM IDX,,Commodities,-9.0,21.0,30.0
+2025-12-23,DBC,INVESCO DB CM IDX,,Commodities,-19.0,11.0,30.0
 2025-12-23,DD,"DUPONT DE NEMOURS, INC.",Materials,Materials,3.0,-24.0,-27.0
 2025-12-23,DDOG,"DATADOG, INC.",Information Technology,Information Technology,3.0,-20.0,-23.0
 2025-12-23,DE,DEERE & COMPANY,Industrials,Industrials,10.0,18.0,8.0
@@ -157,7 +157,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,DHT,"DHT HOLDINGS, INC.",,MR Discretion,45.0,27.0,-18.0
 2025-12-23,DIA,SPDR DOW JONES INDUS AVG,,Sector & Style ETFs,2.0,-51.0,-53.0
 2025-12-23,DIS,THE WALT DISNEY COMPANY,Communication Services,Communication Services,-3.0,-70.0,-67.0
-2025-12-23,DJI,DOW JONES INDUSTRIAL AVERAGE INDEX,,Indices,3.0,-31.0,-34.0
+2025-12-23,DJI,DOW JONES INDUSTRIAL AVERAGE INDEX,,Indices,-14.0,-48.0,-34.0
 2025-12-23,DLR,"DIGITAL REALTY TRUST, INC.",Real Estate,Real Estate,-44.0,3.0,47.0
 2025-12-23,DLTR,"DOLLAR TREE, INC.",Consumer Staples,Consumer Staples,41.0,-19.0,-60.0
 2025-12-23,DOC,"HEALTHDOC PROPERTIES, INC.",Real Estate,Real Estate,28.0,-20.0,-48.0
@@ -191,7 +191,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,EMN,EASTMAN CHEMICAL COMPANY,Materials,Materials,63.0,-17.0,-80.0
 2025-12-23,EMR,EMERSON ELECTRIC CO.,Industrials,Industrials,-14.0,-24.0,-10.0
 2025-12-23,ENZL,ISHARES:MSCI NEW ZLND,,Foreign,34.0,29.0,-5.0
-2025-12-23,EOG,"EOG RESOURCES, INC.",Energy,Energy,20.0,35.0,15.0
+2025-12-23,EOG,"EOG RESOURCES, INC.",Energy,Energy,-7.0,8.0,15.0
 2025-12-23,EPAM,"EPAM SYSTEMS, INC.",Information Technology,Information Technology,3.0,-20.0,-23.0
 2025-12-23,EPHE,ISHARES:MSCI PHILIPPINES,,Foreign,30.0,-18.0,-48.0
 2025-12-23,EPOL,ISHARES:MSCI POLAND,,Foreign,28.0,28.0,0.0
@@ -259,7 +259,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,FXY,INVESCO:JAPANESE YEN,,Currencies,-15.0,3.0,18.0
 2025-12-23,GD,GENERAL DYNAMICS ,Industrials,Industrials,-23.0,10.0,33.0
 2025-12-23,GDDY,GODADDY INC.,Information Technology,Information Technology,0.0,-31.0,-31.0
-2025-12-23,GDX,VANECK:GOLD MINERS,,Commodities,69.0,16.0,-53.0
+2025-12-23,GDX,VANECK:GOLD MINERS,,Commodities,58.0,5.0,-53.0
 2025-12-23,GDXJ,VANECK:JR GOLD MINERS,,Commodities,-2.0,1.0,3.0
 2025-12-23,GE,GENERAL ELECTRIC COMPANY,Industrials,Industrials,-9.0,-31.0,-22.0
 2025-12-23,GEHC,GE HEALTHCARE TECHNOLOGIES INC.,Health Care,Health Care,32.0,-30.0,-62.0
@@ -274,7 +274,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,GLD,SPDR GOLD,Gold,Commodities,-20.0,3.0,23.0
 2025-12-23,GLW,CORNING INC.,Information Technology,Information Technology,-1.0,-25.0,-24.0
 2025-12-23,GM,GENERAL MOTORS COMPANY,Consumer Discretionary,Consumer Discretionary,-4.0,6.0,10.0
-2025-12-23,GNK,GENCO SHIPPING & TRADING LIMITED,,MR Discretion,-3.0,-4.0,-1.0
+2025-12-23,GNK,GENCO SHIPPING & TRADING LIMITED,,MR Discretion,4.0,3.0,-1.0
 2025-12-23,GNRC,GENERAC HOLDINGS INC.,Industrials,Industrials,31.0,24.0,-7.0
 2025-12-23,GOOGL,ALPHABET INC.,Communication Services,Communication Services,77.0,52.0,-25.0
 2025-12-23,GPC,GENUINE PARTS COMPANY,Consumer Discretionary,Consumer Discretionary,-8.0,11.0,19.0
@@ -291,7 +291,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,HIG,THE HARTFORD FINANCIAL SERVICES GROUP,Financials,Financials,16.0,-11.0,-27.0
 2025-12-23,HII,"HUNTINGTON INGALLS INDUSTRIES, INC.",Industrials,Industrials,-2.0,-37.0,-35.0
 2025-12-23,HLT,HILTON WORLDWIDE HOLDINGS INC.,Consumer Discretionary,Consumer Discretionary,14.0,-29.0,-43.0
-2025-12-23,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",,MR Discretion,-28.0,-13.0,15.0
+2025-12-23,HLX,"HELIX ENERGY SOLUTIONS GROUP, INC.",,MR Discretion,-2.0,13.0,15.0
 2025-12-23,HOLX,"HOLOGIC, INC.",Health Care,Health Care,0.0,-27.0,-27.0
 2025-12-23,HON,HONEYWELL INTERNATIONAL INC.,Industrials,Industrials,7.0,-36.0,-43.0
 2025-12-23,HOOD,"ROBINHOOD MARKETS, INC.",Financials,Financials,-6.0,-30.0,-24.0
@@ -330,13 +330,13 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,IWD,ISHARES:RUSS 1000 VL ETF,,Sector & Style ETFs,-7.0,-51.0,-44.0
 2025-12-23,IWF,ISHARES:RUSS 1000 GR ETF,,Sector & Style ETFs,-11.0,-25.0,-14.0
 2025-12-23,IWM,ISHARES:RUSS 2000 ETF,,Sector & Style ETFs,23.0,-51.0,-74.0
-2025-12-23,J,JACOBS SOLUTIONS INC.,Industrials,Industrials,29.0,13.0,-16.0
+2025-12-23,J,JACOBS SOLUTIONS INC.,Industrials,Industrials,56.0,40.0,-16.0
 2025-12-23,JBHT,"J. B. HUNT TRANSPORT SERVICES, INC.",Industrials,Industrials,-13.0,-56.0,-43.0
 2025-12-23,JBL,JABIL INC.,Information Technology,Information Technology,5.0,-67.0,-72.0
-2025-12-23,JCI,JOHNSON CONTROLS INTERNATIONAL PLC,Industrials,Industrials,-23.0,-9.0,14.0
+2025-12-23,JCI,JOHNSON CONTROLS INTERNATIONAL PLC,Industrials,Industrials,0.0,14.0,14.0
 2025-12-23,JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,Financials,10.0,-43.0,-53.0
 2025-12-23,JNJ,JOHNSON & JOHNSON,Health Care,Health Care,0.0,35.0,35.0
-2025-12-23,JNK,SPDR BBG HIGH YIELD BD,,Bonds,14.0,-18.0,-32.0
+2025-12-23,JNK,SPDR BBG HIGH YIELD BD,,Bonds,-13.0,-45.0,-32.0
 2025-12-23,JPM,JPMORGAN CHASE & CO.,Financials,Financials,-19.0,-41.0,-22.0
 2025-12-23,KDP,KEURIG DR PEPPER INC.,Consumer Staples,Consumer Staples,10.0,-10.0,-20.0
 2025-12-23,KEY,KEYCORP,Financials,Financials,44.0,-26.0,-70.0
@@ -348,7 +348,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,KMB,KIMBERLY-CLARK ,Consumer Staples,Consumer Staples,9.0,4.0,-5.0
 2025-12-23,KMI,"KINDER MORGAN, INC.",Energy,Energy,-26.0,-15.0,11.0
 2025-12-23,KMX,"CARMAX, INC.",Consumer Discretionary,Consumer Discretionary,-7.0,-50.0,-43.0
-2025-12-23,KO,THE COCA-COLA COMPANY,Consumer Staples,Consumer Staples,22.0,48.0,26.0
+2025-12-23,KO,THE COCA-COLA COMPANY,Consumer Staples,Consumer Staples,28.0,54.0,26.0
 2025-12-23,KR,THE KROGER CO.,Consumer Staples,Consumer Staples,0.0,0.0,0.0
 2025-12-23,KVUE,KENVUE INC.,Consumer Staples,Consumer Staples,40.0,-10.0,-50.0
 2025-12-23,L,LOEWS ,Financials,Financials,-36.0,-28.0,8.0
@@ -378,11 +378,11 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,MCD,MCDONALD'S ,Consumer Discretionary,Consumer Discretionary,40.0,-1.0,-41.0
 2025-12-23,MCHI,ISHARES:MSCI CHINA,,Foreign,0.0,47.0,47.0
 2025-12-23,MCHP,MICROCHIP TECHNOLOGY INC.,Information Technology,Information Technology,-32.0,-102.0,-70.0
-2025-12-23,MCK,MCKESSON ,Health Care,Health Care,-17.0,14.0,31.0
+2025-12-23,MCK,MCKESSON ,Health Care,Health Care,6.0,37.0,31.0
 2025-12-23,MCO,MOODY'S ,Financials,Financials,-10.0,-53.0,-43.0
 2025-12-23,MDLZ,"MONDELEZ INTERNATIONAL, INC.",Consumer Staples,Consumer Staples,38.0,23.0,-15.0
 2025-12-23,MDT,MEDTRONIC PUBLIC LIMITED COMPANY,Health Care,Health Care,-24.0,20.0,44.0
-2025-12-23,MDY,SPDR S&P MIDCAP 400 ETF,,Sector & Style ETFs,13.0,-40.0,-53.0
+2025-12-23,MDY,SPDR S&P MIDCAP 400 ETF,,Sector & Style ETFs,-14.0,-67.0,-53.0
 2025-12-23,MET,"METLIFE, INC.",Financials,Financials,10.0,-43.0,-53.0
 2025-12-23,META,"META PLATFORMS, INC.",Communication Services,Communication Services,4.0,-79.0,-83.0
 2025-12-23,MGM,MGM RESORTS INTERNATIONAL,Consumer Discretionary,Consumer Discretionary,27.0,-53.0,-80.0
@@ -436,7 +436,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,O,REALTY INCOME ,Real Estate,Real Estate,29.0,33.0,4.0
 2025-12-23,ODFL,"OLD DOMINION FREIGHT LINE, INC.",Industrials,Industrials,0.0,-70.0,-70.0
 2025-12-23,OEF,ISHARES:S&P 100,,Sector & Style ETFs,85.0,2.0,-83.0
-2025-12-23,OKE,"ONEOK, INC.",Energy,Energy,-70.0,-102.0,-32.0
+2025-12-23,OKE,"ONEOK, INC.",Energy,Energy,-45.0,-77.0,-32.0
 2025-12-23,OMC,OMNICOM GROUP INC.,Communication Services,Communication Services,-8.0,-68.0,-60.0
 2025-12-23,ON,ON SEMICONDUCTOR ,Information Technology,Information Technology,0.0,-86.0,-86.0
 2025-12-23,ORCL,ORACLE ,Information Technology,Information Technology,0.0,11.0,11.0
@@ -479,7 +479,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,PTC,PTC INC.,Information Technology,Information Technology,21.0,-14.0,-35.0
 2025-12-23,PWR,"QUANTA SERVICES, INC.",Industrials,Industrials,38.0,22.0,-16.0
 2025-12-23,PYPL,"PAYPAL HOLDINGS, INC.",Financials,Financials,-15.0,-20.0,-5.0
-2025-12-23,QAT,ISHARES:MSCI QATAR,,Foreign,31.0,15.0,-16.0
+2025-12-23,QAT,ISHARES:MSCI QATAR,,Foreign,23.0,7.0,-16.0
 2025-12-23,QCOM,QUALCOMM INC.,Information Technology,Information Technology,34.0,-35.0,-69.0
 2025-12-23,QQQ,INVESCO QQQ TRUST 1,,Sector & Style ETFs,13.0,-74.0,-87.0
 2025-12-23,QUAL,ISHARES:MSCI USA QF,,Sector & Style ETFs,24.0,-24.0,-48.0
@@ -504,12 +504,12 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,SBAC,SBA COMMUNICATIONS ,Real Estate,Real Estate,-9.0,-15.0,-6.0
 2025-12-23,SBLK,STAR BULK CARRIERS CORP.,,MR Discretion,-35.0,18.0,53.0
 2025-12-23,SBUX,STARBUCKS ,Consumer Discretionary,Consumer Discretionary,-40.0,-64.0,-24.0
-2025-12-23,SCHP,SCHWAB STR:US TIPS,,Bonds,31.0,44.0,13.0
+2025-12-23,SCHP,SCHWAB STR:US TIPS,,Bonds,32.0,45.0,13.0
 2025-12-23,SCHW,THE CHARLES SCHWAB ,Financials,Financials,-54.0,-64.0,-10.0
 2025-12-23,SD,"SANDRIDGE ENERGY, INC.",,MR Discretion,-16.0,3.0,19.0
 2025-12-23,SDY,SPDR S&P DIVIDEND,,Sector & Style ETFs,14.0,-5.0,-19.0
 2025-12-23,SHW,THE SHERWIN-WILLIAMS COMPANY,Materials,Materials,-33.0,4.0,37.0
-2025-12-23,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,56.0,55.0,-1.0
+2025-12-23,SHY,ISHARES:1-3 TRS BD ETF,Bonds,Bonds,51.0,50.0,-1.0
 2025-12-23,SILJ,ETFMG PRIME JR SILVR MNR,,Commodities,35.0,3.0,-32.0
 2025-12-23,SJM,THE J. M. SMUCKER COMPANY,Consumer Staples,Consumer Staples,-21.0,-13.0,8.0
 2025-12-23,SLB,SCHLUMBERGER N.V.,Energy,Energy,30.0,-24.0,-54.0
@@ -529,7 +529,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,SPX,S&P 500 INDEX,,Indices,73.0,-20.0,-93.0
 2025-12-23,SPY,SPDR S&P 500 ETF,,Sector & Style ETFs,41.0,-20.0,-61.0
 2025-12-23,SRE,SEMPRA,Utilities,Utilities,26.0,1.0,-25.0
-2025-12-23,STE,STERIS PUBLIC LIMITED COMPANY,Health Care,Health Care,49.0,27.0,-22.0
+2025-12-23,STE,STERIS PUBLIC LIMITED COMPANY,Health Care,Health Care,79.0,57.0,-22.0
 2025-12-23,STIP,ISHARES:0-5 TIPS BD ETF,Bonds,Bonds,0.0,35.0,35.0
 2025-12-23,STLA,STELLANTIS NV,,MR Discretion,19.0,-72.0,-91.0
 2025-12-23,STLD,"STEEL DYNAMICS, INC.",Materials,Materials,-12.0,-39.0,-27.0
@@ -558,7 +558,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,THD,ISHARES:MSCI THAI,,Foreign,9.0,-16.0,-25.0
 2025-12-23,TIP,ISHARES:TIPS BD ETF,Bonds,Bonds,-33.0,-26.0,7.0
 2025-12-23,TJX,"THE TJX COMPANIES, INC.",Consumer Discretionary,Consumer Discretionary,11.0,16.0,5.0
-2025-12-23,TKO,"TKO GROUP HOLDINGS, INC.",Communication Services,Communication Services,-17.0,-63.0,-46.0
+2025-12-23,TKO,"TKO GROUP HOLDINGS, INC.",Communication Services,Communication Services,5.0,-41.0,-46.0
 2025-12-23,TLT,ISHARES:20+ TRS BD ETF,Bonds,Bonds,3.0,-1.0,-4.0
 2025-12-23,TMO,THERMO FISHER SCIENTIFIC INC.,Health Care,Health Care,2.0,36.0,34.0
 2025-12-23,TMUS,"T-MOBILE US, INC.",Communication Services,Communication Services,-22.0,-16.0,6.0
@@ -579,7 +579,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,TUR,ISHARES:MSCI TURKEY,,Foreign,-17.0,-41.0,-24.0
 2025-12-23,TXN,TEXAS INSTRUMENTS INC.,Information Technology,Information Technology,-2.0,-66.0,-64.0
 2025-12-23,TXT,TEXTRON INC.,Industrials,Industrials,-26.0,-46.0,-20.0
-2025-12-23,TYL,"TYLER TECHNOLOGIES, INC.",Information Technology,Information Technology,-40.0,-45.0,-5.0
+2025-12-23,TYL,"TYLER TECHNOLOGIES, INC.",Information Technology,Information Technology,-13.0,-18.0,-5.0
 2025-12-23,TYX,30 Y TSY YLD NDX,Yields,Yields,-53.0,-54.0,-1.0
 2025-12-23,UAL,"UNITED AIRLINES HOLDINGS, INC.",Industrials,Industrials,0.0,-23.0,-23.0
 2025-12-23,UBER,"UBER TECHNOLOGIES, INC.",Industrials,Industrials,-34.0,-22.0,12.0
@@ -632,14 +632,14 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_wtd_change,current_model_s
 2025-12-23,WYNN,"WYNN RESORTS, LIMITED",Consumer Discretionary,Consumer Discretionary,-28.0,-25.0,3.0
 2025-12-23,XEL,XCEL ENERGY INC.,Utilities,Utilities,11.0,0.0,-11.0
 2025-12-23,XES,SPDR S&P OIL&GAS E&S,,MR Discretion,20.0,7.0,-13.0
-2025-12-23,XLB,SEL SECTOR:MATRLS SPDR,,Sector & Style ETFs,0.0,-20.0,-20.0
-2025-12-23,XLC,SEL SECTOR:COMM SVC SPDR,,Sector & Style ETFs,-2.0,-20.0,-18.0
-2025-12-23,XLE,SEL SECTOR:ENERGY SPDR,,Sector & Style ETFs,-11.0,-20.0,-9.0
+2025-12-23,XLB,SEL SECTOR:MATRLS SPDR,,Sector & Style ETFs,-14.0,-34.0,-20.0
+2025-12-23,XLC,SEL SECTOR:COMM SVC SPDR,,Sector & Style ETFs,-35.0,-53.0,-18.0
+2025-12-23,XLE,SEL SECTOR:ENERGY SPDR,,Sector & Style ETFs,-20.0,-29.0,-9.0
 2025-12-23,XLF,SEL SECTOR:FINL S SPDR,,Sector & Style ETFs,17.0,-26.0,-43.0
-2025-12-23,XLI,SEL SECTOR:INDUST SPDR,,Sector & Style ETFs,-35.0,-51.0,-16.0
+2025-12-23,XLI,SEL SECTOR:INDUST SPDR,,Sector & Style ETFs,-8.0,-24.0,-16.0
 2025-12-23,XLK,SEL SECTOR:TECH SPDR,,Sector & Style ETFs,0.0,-53.0,-53.0
 2025-12-23,XLP,SEL SECTOR:C STP SPDR,,Sector & Style ETFs,19.0,-1.0,-20.0
-2025-12-23,XLRE,SEL SECTOR:RL EST SPDR,,Sector & Style ETFs,26.0,9.0,-17.0
+2025-12-23,XLRE,SEL SECTOR:RL EST SPDR,,Sector & Style ETFs,0.0,-17.0,-17.0
 2025-12-23,XLU,SEL SECTOR:UTIL SPDR,,Sector & Style ETFs,0.0,0.0,0.0
 2025-12-23,XLV,SEL SECTOR:H CARE SPDR,,Sector & Style ETFs,14.0,9.0,-5.0
 2025-12-23,XLY,SEL SECTOR:C DSC SPDR,,Sector & Style ETFs,7.0,-20.0,-27.0

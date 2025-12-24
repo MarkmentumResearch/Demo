@@ -1,8 +1,8 @@
 Ticker,Ticker_name,Category,Date,model_score,R/R Ratio
+CAG,"CONAGRA BRANDS, INC.",Consumer Staples,2025-12-23,57.0,3.3
 BG,BUNGE LIMITED,Consumer Staples,2025-12-23,51.0,3.3
 LW,"LAMB WESTON HOLDINGS, INC.",Consumer Staples,2025-12-23,45.0,3.6
 HSIC,"HENRY SCHEIN, INC.",Health Care,2025-12-23,33.0,4.1
-CAG,"CONAGRA BRANDS, INC.",Consumer Staples,2025-12-23,29.0,3.3
 BF.B,BROWN-FORMAN ,Consumer Staples,2025-12-23,28.0,10.0
 GIS,"GENERAL MILLS, INC.",Consumer Staples,2025-12-23,28.0,14.6
 CALM,"CAL-MAINE FOODS, INC.",MR Discretion,2025-12-23,23.0,9.7

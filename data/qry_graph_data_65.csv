@@ -1,7 +1,7 @@
 Ticker,Ticker_name,Category,Date,qtd_return_pct
 FISV,"FISERV, INC.",Financials,2025-12-23,-0.4748
 ARE,"ALEXANDRIA REAL ESTATE EQUITIES, INC.",Real Estate,2025-12-23,-0.4232
-SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,2025-12-23,-0.3582
+SMCI,"SUPER MICRO COMPUTER, INC.",Information Technology,2025-12-23,-0.3584
 ORCL,ORACLE ,Information Technology,2025-12-23,-0.3054
 MOS,THE MOSAIC COMPANY,Materials,2025-12-23,-0.2996
 PSKY,PARAMOUNT SKYDANCE ,Communication Services,2025-12-23,-0.2849
