@@ -6,6 +6,13 @@ import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
 from urllib.parse import quote_plus
+import os
+from html import escape
+
+try:
+    from docx import Document
+except Exception:
+    Document = None
 
 # -------------------------
 # Page & shared style
@@ -120,6 +127,40 @@ def fmt_int(x):
         return f"{int(round(float(x))):,}"
     except Exception:
         return ""
+
+def _is_list_paragraph(paragraph) -> bool:
+    try:
+        return paragraph._p.pPr.numPr is not None
+    except Exception:
+        return False
+
+
+@st.cache_data(show_spinner=False)
+def load_docx_text(doc_path: str) -> str:
+    """
+    Reads a .docx and returns plain text (bullets preserved as '- ' lines).
+    Designed for short bottom-line docs like usd_correlation_bottom_line.docx.
+    """
+    if Document is None:
+        return "⚠️ Bottom line: python-docx is not installed (run: `pip install python-docx`)."
+
+    if not os.path.exists(doc_path):
+        return f"⚠️ Bottom line file not found: {doc_path}"
+
+    try:
+        doc = Document(doc_path)
+    except Exception as e:
+        return f"⚠️ Could not open bottom line file: {e}"
+
+    lines: list[str] = []
+    for p in doc.paragraphs:
+        t = (p.text or "").strip()
+        if not t:
+            continue
+        lines.append(f"- {t}" if _is_list_paragraph(p) else t)
+
+    return "\n".join(lines).strip()
+
 
 # ---------- UI renderers ----------
 def mm_badge_html(x):
@@ -266,6 +307,17 @@ st.markdown("""
 
 /* Keep ticker links bold without underline */
 .tbl a { text-decoration:none; font-weight:600; }
+            
+/* Correlation tables: center 15D/30D/90D cells */
+.tbl.corr th:nth-child(n+2),
+.tbl.corr td:nth-child(n+2) {
+  text-align: center !important;
+}
+
+/* keep correlation numbers on one line */
+.tbl.corr td:nth-child(n+2) { white-space: nowrap; }
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -338,6 +390,61 @@ st.markdown(
 )
 row_spacer(6)
 
+
+def render_correlation_card(title: str, csv_id: int, docx_name: str):
+    df = load_csv_by_id(csv_id, DATA_DIR)
+    if df.empty:
+        st.info(f"{title}: `qry_graph_data_{csv_id}.csv` not found.")
+        return
+
+    # format numeric columns
+    df_fmt = df.copy()
+    for c in ["15D", "30D", "90D"]:
+        if c in df_fmt.columns:
+            df_fmt[c] = df_fmt[c].map(lambda v: fmt_num(v, 2))
+
+    table_html = df_fmt.to_html(index=False, classes="tbl corr", escape=False, border=0)
+    table_html = table_html.replace('class="dataframe tbl corr"', 'class="tbl corr"')
+
+    # load bottom line from docx (plain text)
+    docx_path = (DATA_DIR / docx_name).resolve()
+    bl_text = load_docx_text(str(docx_path))
+    bl_html_safe = escape(bl_text).replace("\n", "<br>")
+    note_text = "Note: 15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    note_html_safe = escape(note_text)
+
+    card_html = f"""
+    <div class="card-wrap">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0; font-size:16px; font-weight:700; color:#1a1a1a;">
+          {title}
+        </h3>
+        {table_html}
+        <div class="bl">{bl_html_safe}</div>
+        <div class="bl note">{note_html_safe}</div>
+      </div>
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
+
+# =========================
+# USD & Rates Correlations
+# =========================
+render_correlation_card(
+    title="USD Correlations",
+    csv_id=93,
+    docx_name="usd_correlation_bottom_line.docx",
+)
+
+row_spacer(10)
+
+render_correlation_card(
+    title="Rates Correlations",
+    csv_id=94,
+    docx_name="tnx_correlation_bottom_line.docx",
+)
+
+row_spacer(14)
 
 # -------------------------
 # Card 1: Morning Compass table (uses selected timeframe)
