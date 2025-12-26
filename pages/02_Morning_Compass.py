@@ -410,7 +410,19 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     docx_path = (DATA_DIR / docx_name).resolve()
     bl_text = load_docx_text(str(docx_path))
     bl_html_safe = escape(bl_text).replace("\n", "<br>")
-    note_text = "Note: 15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    if csv_id == 93:
+        note_text = (
+            "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. "
+            "15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. "
+            "Negative = tends to move opposite. Positive = tends to move together."
+        )
+    else:
+        note_text = (
+            "Note: Rate correlations use the 10-Year U.S. Treasury yield (TNX) as the rates proxy. "
+            "15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. "
+            "Negative = tends to move opposite. Positive = tends to move together."
+        )
+
     note_html_safe = escape(note_text)
 
     card_html = f"""
