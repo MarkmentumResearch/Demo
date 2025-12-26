@@ -6,6 +6,13 @@ import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
 from urllib.parse import quote_plus
+import os
+from html import escape
+
+try:
+    from docx import Document
+except Exception:
+    Document = None
 
 # -------------------------
 # Page & shared style
