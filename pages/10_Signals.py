@@ -201,7 +201,7 @@ def _card_table_html_three(df: pd.DataFrame):
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Name</th>
+        <th style="min-width:42ch">Company</th>
         <th style="width:74px" class="col-ticker">Ticker</th>
         <th style="min-width:25ch">Category</th>
       </tr>
@@ -312,7 +312,7 @@ def _card_table_html(title: str, df: pd.DataFrame, value_col: str, value_label: 
   <table class="tbl">
     <thead>
       <tr>
-        <th style="min-width:42ch">Name</th>
+        <th style="min-width:42ch">Company</th>
         <th style="width:74px" class="col-ticker">Ticker</th>
         <th style="min-width:25ch">Category</th>
         <th style="width:90px" class="right col-value">{value_label}</th>
