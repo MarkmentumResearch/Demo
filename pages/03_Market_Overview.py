@@ -243,7 +243,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
   <table class="tbl">
     <thead>
       <tr>
-        <th class="col-company">Company</th>
+        <th class="col-company">Name</th>
         <th class="col-ticker">Ticker</th>
         <th class="col-category">Category</th>
         <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
