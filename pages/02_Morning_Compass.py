@@ -434,11 +434,6 @@ render_correlation_card(
     title="USD Correlations",
     csv_id=93,
     docx_name="usd_correlation_bottom_line.docx",
-    note_text=(
-        "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. "
-        "15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. "
-        "Negative = tends to move opposite. Positive = tends to move together."
-    ),
 )
 
 row_spacer(10)
@@ -447,11 +442,6 @@ render_correlation_card(
     title="Rates Correlations",
     csv_id=94,
     docx_name="tnx_correlation_bottom_line.docx",
-    note_text=(
-        "Note: Rate correlations use the 10-Year U.S. Treasury yield (TNX) as the rates proxy. "
-        "15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. "
-        "Negative = tends to move opposite. Positive = tends to move together."
-    ),
 )
 
 row_spacer(14)
