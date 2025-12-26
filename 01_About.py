@@ -170,9 +170,8 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <ul>
   <li><b>Morning Compass</b> – Your orientation dashboard across major indices, sectors, and macro levers — with a one-click Daily / Weekly / Monthly selector. 
   Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers and laggards by % change and by Markmentum Score, 
-  along with an optional category snapshot for deeper drill-downs. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.
-  On the Daily view, Morning Compass also includes USD and Rates Correlation snapshots, showing how equities, sectors, commodities, and other assets have recently moved 
-  relative to the U.S. Dollar (via UUP) and 10-Year Treasury yields — helping frame near-term sensitivity and cross-asset influences.</li>
+  along with an optional category snapshot for deeper drill-downs. On the Daily view, Morning Compass also includes USD and Rates Correlation snapshots, showing how equities, sectors, commodities, and other assets have recently moved 
+  relative to the U.S. Dollar (via UUP) and 10-Year Treasury yields — helping frame near-term sensitivity and cross-asset influences. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.</li>
   <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
     The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores and a Score histogram.
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
