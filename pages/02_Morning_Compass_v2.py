@@ -121,6 +121,40 @@ def fmt_int(x):
     except Exception:
         return ""
 
+def _is_list_paragraph(paragraph) -> bool:
+    try:
+        return paragraph._p.pPr.numPr is not None
+    except Exception:
+        return False
+
+
+@st.cache_data(show_spinner=False)
+def load_docx_text(doc_path: str) -> str:
+    """
+    Reads a .docx and returns plain text (bullets preserved as '- ' lines).
+    Designed for short bottom-line docs like usd_correlation_bottom_line.docx.
+    """
+    if Document is None:
+        return "⚠️ Bottom line: python-docx is not installed (run: `pip install python-docx`)."
+
+    if not os.path.exists(doc_path):
+        return f"⚠️ Bottom line file not found: {doc_path}"
+
+    try:
+        doc = Document(doc_path)
+    except Exception as e:
+        return f"⚠️ Could not open bottom line file: {e}"
+
+    lines: list[str] = []
+    for p in doc.paragraphs:
+        t = (p.text or "").strip()
+        if not t:
+            continue
+        lines.append(f"- {t}" if _is_list_paragraph(p) else t)
+
+    return "\n".join(lines).strip()
+
+
 # ---------- UI renderers ----------
 def mm_badge_html(x):
         try:
@@ -354,10 +388,10 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     table_html = df_fmt.to_html(index=False, classes="tbl", escape=False, border=0)
     table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
 
-    # load bottom line from docx
+    # load bottom line from docx (plain text)
     docx_path = (DATA_DIR / docx_name).resolve()
-    bl_text = load_market_read_md(str(docx_path)).strip()
-    bl_html_safe = escape(bl_text)
+    bl_text = load_docx_text(str(docx_path))
+    bl_html_safe = escape(bl_text).replace("\n", "<br>")
 
     card_html = f"""
     <div class="card-wrap">
