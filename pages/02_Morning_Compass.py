@@ -410,7 +410,7 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     docx_path = (DATA_DIR / docx_name).resolve()
     bl_text = load_docx_text(str(docx_path))
     bl_html_safe = escape(bl_text).replace("\n", "<br>")
-    #note_text = "Note: 15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    note_text = "Note: 15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
     note_html_safe = escape(note_text)
 
     card_html = f"""
