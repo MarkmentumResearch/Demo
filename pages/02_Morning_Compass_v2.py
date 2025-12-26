@@ -307,6 +307,17 @@ st.markdown("""
 
 /* Keep ticker links bold without underline */
 .tbl a { text-decoration:none; font-weight:600; }
+            
+/* Correlation tables: center 15D/30D/90D cells */
+.tbl.corr th:nth-child(n+2),
+.tbl.corr td:nth-child(n+2) {
+  text-align: center !important;
+}
+
+/* keep correlation numbers on one line */
+.tbl.corr td:nth-child(n+2) { white-space: nowrap; }
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -392,13 +403,15 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
         if c in df_fmt.columns:
             df_fmt[c] = df_fmt[c].map(lambda v: fmt_num(v, 2))
 
-    table_html = df_fmt.to_html(index=False, classes="tbl", escape=False, border=0)
-    table_html = table_html.replace('class="dataframe tbl"', 'class="tbl"')
+    table_html = df_fmt.to_html(index=False, classes="tbl corr", escape=False, border=0)
+    table_html = table_html.replace('class="dataframe tbl corr"', 'class="tbl corr"')
 
     # load bottom line from docx (plain text)
     docx_path = (DATA_DIR / docx_name).resolve()
     bl_text = load_docx_text(str(docx_path))
     bl_html_safe = escape(bl_text).replace("\n", "<br>")
+    note_text = "Note: 15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    note_html_safe = escape(note_text)
 
     card_html = f"""
     <div class="card-wrap">
@@ -408,6 +421,7 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
         </h3>
         {table_html}
         <div class="bl">{bl_html_safe}</div>
+        <div class="bl note">{note_html_safe}</div>
       </div>
     </div>
     """
