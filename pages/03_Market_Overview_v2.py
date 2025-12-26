@@ -66,7 +66,7 @@ html, body, [class^="css"], .stMarkdown, .stDataFrame, .stTable, .stText, .stBut
 .tbl thead th.col-value  { text-align: center; }
 
 /* Column widths (desktop defaults) */
-th.col-name, td.col-name { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
+th.col-Name, td.col-Name { white-space:nowrap; min-width:11ch; width:39ch; max-width:39ch; }
 th.col-category, td.col-category { white-space:nowrap; min-width:6ch;  width:22ch; max-width:22ch; }
 th.col-ticker,   td.col-ticker   { width:74px; }
 
@@ -124,7 +124,7 @@ html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
 # Paths (portable for Cloud)
 # -------------------------
 _here = Path(__file__).resolve().parent
-APP_DIR = _here if _here.name != "pages" else _here.parent
+APP_DIR = _here if _here.Name != "pages" else _here.parent
 
 DATA_DIR   = APP_DIR / "data"
 ASSETS_DIR = APP_DIR / "assets"
@@ -224,14 +224,14 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
     # tolerant column mapping
     cmap = {c.lower(): c for c in df.columns}
     tcol = cmap.get("ticker") or "Ticker"
-    ncol = cmap.get("ticker_name") or cmap.get("name") or "name"
+    ncol = cmap.get("ticker_Name") or cmap.get("Name") or "Name"
     ccol = cmap.get("category") or cmap.get("exposure") or "Exposure"
 
     rows = []
     for _, r in df.iterrows():
         rows.append(f"""
 <tr>
-  <td class="col-name">{r.get(ncol, "")}</td>
+  <td class="col-Name">{r.get(ncol, "")}</td>
   <td class="center col-ticker">{_mk_ticker_link(r.get(tcol, ""))}</td>
   <td class="col-category">{r.get(ccol, "")}</td>
   <td class="right col-value" style="width:{value_width_px}px">{value_fmt(r.get(value_col))}</td>
@@ -243,7 +243,7 @@ def _table_html(title: str, df: pd.DataFrame, value_col: str, value_label: str, 
   <table class="tbl">
     <thead>
       <tr>
-        <th class="col-name">name</th>
+        <th class="col-Name">Name</th>
         <th class="col-ticker">Ticker</th>
         <th class="col-category">Category</th>
         <th class="right col-value" style="width:{value_width_px}px">{value_label}</th>
