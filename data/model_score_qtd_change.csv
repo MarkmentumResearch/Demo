@@ -634,7 +634,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-26,XES,SPDR S&P OIL&GAS E&S,,MR Discretion,40.0,13.0,-27.0
 2025-12-26,XLB,SEL SECTOR:MATRLS SPDR,,Sector & Style ETFs,-35.0,-13.0,22.0
 2025-12-26,XLC,SEL SECTOR:COMM SVC SPDR,,Sector & Style ETFs,35.0,-40.0,-75.0
-2025-12-26,XLE,SEL SECTOR:ENERGY SPDR,,Sector & Style ETFs,-45.0,-31.0,14.0
+2025-12-26,XLE,SEL SECTOR:ENERGY SPDR,,Sector & Style ETFs,-9.0,-13.0,-4.0
 2025-12-26,XLF,SEL SECTOR:FINL S SPDR,,Sector & Style ETFs,-35.0,-40.0,-5.0
 2025-12-26,XLI,SEL SECTOR:INDUST SPDR,,Sector & Style ETFs,-10.0,-20.0,-10.0
 2025-12-26,XLK,SEL SECTOR:TECH SPDR,,Sector & Style ETFs,79.0,29.0,-50.0
