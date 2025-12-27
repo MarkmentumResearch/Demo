@@ -541,7 +541,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-12-26,SWK,"STANLEY BLACK & DECKER, INC.",Industrials,Industrials,-69.0
 2025-12-26,SWKS,"SKYWORKS SOLUTIONS, INC.",Information Technology,Information Technology,14.0
 2025-12-26,SYF,SYNCHRONY FINANCIAL,Financials,Financials,-67.0
-2025-12-26,SYK,STRYKER ,Health Care,Health Care,28.0
+2025-12-26,SYK,STRYKER ,Health Care,Health Care,-4.0
 2025-12-26,SYY,SYSCO ,Consumer Staples,Consumer Staples,23.0
 2025-12-26,T,AT&T INC.,Communication Services,Communication Services,31.0
 2025-12-26,TAGS,TEUCRIUM:AGRICULTURAL,,Commodities,40.0
@@ -595,7 +595,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score
 2025-12-26,URNM,SPROTT URANIUM MINERS,,MR Discretion,-39.0
 2025-12-26,USB,U.S. BANCORP,Financials,Financials,-53.0
 2025-12-26,USO,UNITED STATES OIL FUND,Energy Complex,Commodities,-18.0
-2025-12-26,UUP,INVESCO DB USD IDX BL,USD,Currencies,-0.0
+2025-12-26,UUP,INVESCO DB USD IDX BL,USD,Currencies,-16.0
 2025-12-26,V,VISA INC.,Financials,Financials,-41.0
 2025-12-26,VAL,VALARIS LIMITED,,MR Discretion,27.0
 2025-12-26,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,4.0

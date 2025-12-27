@@ -214,7 +214,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_wtd_change,current_Sharpe_
 2025-12-26,EWH,ISHARES:MSCI HONG KONG,,Foreign,-9.5,24.2,33.7
 2025-12-26,EWI,ISHARES:MSCI ITALY,,Foreign,-26.4,59.1,85.5
 2025-12-26,EWJ,ISHARES:MSCI JAPAN,,Foreign,-48.6,13.7,62.3
-2025-12-26,EWK,ISHARES:MSCI BELGIUM,,Foreign,-42.7,13.5,56.2
+2025-12-26,EWK,ISHARES:MSCI BELGIUM,,Foreign,-42.3,13.9,56.2
 2025-12-26,EWL,ISHARES:MSCI SWITZERLAND,,Foreign,-7.9,87.9,95.8
 2025-12-26,EWM,ISHARES:MSCI MALAYSIA,,Foreign,-6.0,84.5,90.5
 2025-12-26,EWN,ISHARES:MSCI NETHERLANDS,,Foreign,-36.3,26.2,62.5
@@ -405,7 +405,7 @@ Date,Ticker,Ticker_name,Exposure,Category,Sharpe_Rank_wtd_change,current_Sharpe_
 2025-12-26,MSFT,MICROSOFT ,Information Technology,Information Technology,-5.9,52.0,57.9
 2025-12-26,MSI,"MOTOROLA SOLUTIONS, INC.",Information Technology,Information Technology,15.1,71.4,56.3
 2025-12-26,MTB,M&T BANK ,Financials,Financials,-2.6,94.2,96.8
-2025-12-26,MTCH,"MATCH GROUP, INC.",Communication Services,Communication Services,-68.0,13.9,81.9
+2025-12-26,MTCH,"MATCH GROUP, INC.",Communication Services,Communication Services,-67.2,14.7,81.9
 2025-12-26,MTD,METTLER-TOLEDO INTERNATIONAL INC.,Health Care,Health Care,-32.0,7.5,39.5
 2025-12-26,MTUM,ISHARES:MSCI USA MOM FCT,,Sector & Style ETFs,-11.9,71.2,83.1
 2025-12-26,MU,"MICRON TECHNOLOGY, INC.",Information Technology,Information Technology,-3.6,69.4,73.0

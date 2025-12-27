@@ -541,7 +541,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-26,SWK,"STANLEY BLACK & DECKER, INC.",Industrials,Industrials,-38.0,-69.0,-31.0
 2025-12-26,SWKS,"SKYWORKS SOLUTIONS, INC.",Information Technology,Information Technology,68.0,14.0,-54.0
 2025-12-26,SYF,SYNCHRONY FINANCIAL,Financials,Financials,-63.0,-67.0,-4.0
-2025-12-26,SYK,STRYKER ,Health Care,Health Care,16.0,28.0,12.0
+2025-12-26,SYK,STRYKER ,Health Care,Health Care,-16.0,-4.0,12.0
 2025-12-26,SYY,SYSCO ,Consumer Staples,Consumer Staples,32.0,23.0,-9.0
 2025-12-26,T,AT&T INC.,Communication Services,Communication Services,48.0,31.0,-17.0
 2025-12-26,TAGS,TEUCRIUM:AGRICULTURAL,,Commodities,12.0,40.0,28.0
@@ -595,7 +595,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_qtd_change,current_model_s
 2025-12-26,URNM,SPROTT URANIUM MINERS,,MR Discretion,1.0,-39.0,-40.0
 2025-12-26,USB,U.S. BANCORP,Financials,Financials,-37.0,-53.0,-16.0
 2025-12-26,USO,UNITED STATES OIL FUND,Energy Complex,Commodities,14.0,-18.0,-32.0
-2025-12-26,UUP,INVESCO DB USD IDX BL,USD,Currencies,10.0,-0.0,-10.0
+2025-12-26,UUP,INVESCO DB USD IDX BL,USD,Currencies,-6.0,-16.0,-10.0
 2025-12-26,V,VISA INC.,Financials,Financials,-72.0,-41.0,31.0
 2025-12-26,VAL,VALARIS LIMITED,,MR Discretion,7.0,27.0,20.0
 2025-12-26,VICI,VICI PROPERTIES INC.,Real Estate,Real Estate,-36.0,4.0,40.0
