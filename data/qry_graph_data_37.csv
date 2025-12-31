@@ -1,2 +1,1 @@
 Ticker,Ticker_name,Category,Date,ST_Trend,MT_Trend,ST_Trend_Change,MT_Trend_Change,prem_disc,ChaseScore,model_score
-NDAQ,"NASDAQ, INC.",Financials,2025-12-29,0.0348,0.0222,0.0001,0.0007,-0.309,-0.3215,-57.0
