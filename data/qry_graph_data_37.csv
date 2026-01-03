@@ -1,1 +1,2 @@
 Ticker,Ticker_name,Category,Date,ST_Trend,MT_Trend,ST_Trend_Change,MT_Trend_Change,prem_disc,ChaseScore,model_score
+KMI,"KINDER MORGAN, INC.",Energy,2026-01-02,0.0032,0.0003,0.0069,0.0032,-0.16,-0.1629,-24.0
