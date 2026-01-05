@@ -408,8 +408,8 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
         0.85*inch,  # MM Chg
     ]
 
-    rr_col = header.index("Risk / Reward")
-    mm_col = header.index("MM Score")
+    rr_col = 6  # Risk / Reward column index in our fixed header list
+    mm_col = 7  # MM Score column index in our fixed header list
 
     t = _build_table(
         data_rows=data_rows,
@@ -423,7 +423,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
     bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
     if bl:
         flowables.append(Spacer(1, 6))
-        flowables.append(Paragraph(bl.replace("\n", "<br/>"), P))
+        flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
 
     flowables.append(Spacer(1, 4))
     flowables.append(Paragraph(
