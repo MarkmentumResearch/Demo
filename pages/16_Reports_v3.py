@@ -574,7 +574,7 @@ if include_morning_compass:
 
     with left:
         tf_keys = st.multiselect(
-            "Add Timeframes (optional)",
+            "Add Timeframes (Optional)",
             ["Weekly", "Monthly"],
             default=[]
         )
