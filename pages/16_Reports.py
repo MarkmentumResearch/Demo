@@ -9,7 +9,7 @@ import streamlit as st
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage, PageBreak
 )
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -73,11 +73,13 @@ def load_csv_by_id(n: int, base_dir: Path) -> pd.DataFrame:
     return pd.read_csv(p)
 
 def _read_docx_plain_text(doc_path: Path) -> str:
-    """Reads a .docx and returns plain text (paragraphs separated by newlines)."""
+    """Return docx text, or empty string if missing/unreadable (never print errors into PDF)."""
     if Document is None:
-        return "⚠️ python-docx not installed."
+        return ""
+
     if not doc_path.exists():
-        return f"⚠️ File not found: {doc_path.name}"
+        return ""
+
     try:
         doc = Document(str(doc_path))
         lines = []
@@ -86,8 +88,9 @@ def _read_docx_plain_text(doc_path: Path) -> str:
             if t:
                 lines.append(t)
         return "\n".join(lines).strip()
-    except Exception as e:
-        return f"⚠️ Could not read {doc_path.name}: {e}"
+    except Exception:
+        # IMPORTANT: do not return the exception string, it ends up in the PDF
+        return ""
 
 DISCLAIMER_TEXT = (
     "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
@@ -404,9 +407,9 @@ def build_morning_compass_pdf(
 
     doc = SimpleDocTemplate(
         buffer,
-        pagesize=letter,
-        leftMargin=0.6*inch, rightMargin=0.6*inch,
-        topMargin=0.55*inch, bottomMargin=0.75*inch
+        pagesize=landscape(letter),
+        leftMargin=0.45*inch, rightMargin=0.45*inch,
+        topMargin=0.50*inch, bottomMargin=0.65*inch
     )
 
     flow = []
