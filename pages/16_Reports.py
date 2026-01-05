@@ -14,6 +14,7 @@ from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.utils import simpleSplit
 
 try:
     from docx import Document
@@ -87,10 +88,31 @@ def _read_docx_plain_text(doc_path: Path) -> str:
             t = (p.text or "").strip()
             if t:
                 lines.append(t)
-        return "\n".join(lines).strip()
+        return clean_text("\n".join(lines).strip())
     except Exception:
         # IMPORTANT: do not return the exception string, it ends up in the PDF
         return ""
+
+def clean_text(s: str) -> str:
+    """Normalize common unicode punctuation so Helvetica can render it (prevents ■■)."""
+    if s is None:
+        return ""
+    s = str(s)
+
+    # dashes/hyphens
+    s = s.replace("\u2011", "-")  # non-breaking hyphen
+    s = s.replace("\u2013", "-")  # en dash
+    s = s.replace("\u2014", "-")  # em dash
+
+    # quotes/apostrophes
+    s = s.replace("\u2018", "'").replace("\u2019", "'")
+    s = s.replace("\u201C", '"').replace("\u201D", '"')
+
+    # misc invisible/soft
+    s = s.replace("\u00ad", "")   # soft hyphen
+    s = s.replace("\u200b", "")   # zero-width space
+
+    return s
 
 DISCLAIMER_TEXT = (
     "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
@@ -144,29 +166,32 @@ H1 = ParagraphStyle("H1", parent=styles["Heading1"], alignment=TA_CENTER, fontSi
 H2 = ParagraphStyle("H2", parent=styles["Heading2"], alignment=TA_LEFT, fontSize=12, spaceBefore=10, spaceAfter=6)
 P  = ParagraphStyle("P", parent=styles["BodyText"], fontSize=9, leading=12)
 NOTE = ParagraphStyle("NOTE", parent=styles["BodyText"], fontSize=8, leading=11, textColor=colors.grey)
+TH = ParagraphStyle(
+    "TH",
+    parent=styles["BodyText"],
+    fontName="Helvetica-Bold",
+    fontSize=8,
+    leading=9,
+    alignment=TA_CENTER,
+)
+
+def th(text: str) -> Paragraph:
+    return Paragraph(clean_text(text), TH)
 
 def _footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 7)
     canvas.setFillGray(0.45)
 
-    # wrap-ish footer
-    max_chars = 140
-    lines = []
-    s = DISCLAIMER_TEXT.strip()
-    while len(s) > max_chars:
-        cut = s.rfind(" ", 0, max_chars)
-        if cut <= 0:
-            cut = max_chars
-        lines.append(s[:cut].strip())
-        s = s[cut:].strip()
-    if s:
-        lines.append(s)
+    available_width = doc.width
+    lines = simpleSplit(DISCLAIMER_TEXT.strip(), "Helvetica", 7, available_width)
 
     x = doc.leftMargin
-    y = 0.45 * inch
-    for i, line in enumerate(lines[:3]):  # keep it compact (3 lines)
-        canvas.drawString(x, y + (2 - i) * 9, line)
+    y = 0.25 * inch  # closer to bottom edge
+    max_lines = 6    # show more (but still controlled)
+
+    for i, line in enumerate(lines[:max_lines]):
+        canvas.drawString(x, y + (max_lines - 1 - i) * 9, line)
 
     canvas.restoreState()
 
@@ -225,8 +250,10 @@ def _build_table(data_rows, col_widths, shade_rr=False, shade_mm=False, rr_col=N
         ("ALIGN", (2,1), (-1,-1), "RIGHT"),
         ("LEFTPADDING", (0,0), (-1,-1), 6),
         ("RIGHTPADDING", (0,0), (-1,-1), 6),
-        ("TOPPADDING", (0,0), (-1,-1), 4),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+        ("TOPPADDING", (0,0), (-1,0), 6),
+        ("BOTTOMPADDING", (0,0), (-1,0), 6),
+        ("TOPPADDING", (0,1), (-1,-1), 4),
+        ("BOTTOMPADDING", (0,1), (-1,-1), 4),
     ])
     tbl.setStyle(base)
 
@@ -303,7 +330,7 @@ def _section_correlations(flowables):
         bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
         if bl:
             flowables.append(Spacer(1, 6))
-            flowables.append(Paragraph(bl.replace("\n", "<br/>"), P))
+            flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
 
         flowables.append(Spacer(1, 4))
         flowables.append(Paragraph(note_text, NOTE))
@@ -354,7 +381,18 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
         "MM Score Change": d["model_score_delta"].map(lambda v: fmt_int(v)),
     })
 
-    header = list(out.columns)
+    # Wrap headers to prevent collisions in PDF
+    header = [
+        th("Name"),
+        th("Ticker"),
+        th("Close"),
+        th("% Change"),
+        th("Probable<br/>Low"),
+        th("Probable<br/>High"),
+        th("Risk /<br/>Reward"),
+        th("MM<br/>Score"),
+        th("MM Score<br/>Change"),
+    ]
     data_rows = [header] + out.values.tolist()
 
     # widths tuned for letter
@@ -409,7 +447,7 @@ def build_morning_compass_pdf(
         buffer,
         pagesize=landscape(letter),
         leftMargin=0.45*inch, rightMargin=0.45*inch,
-        topMargin=0.50*inch, bottomMargin=0.65*inch
+        topMargin=0.50*inch, bottomMargin=0.95*inch
     )
 
     flow = []
@@ -438,6 +476,7 @@ def build_morning_compass_pdf(
             flow.append(Spacer(1, 10))
         else:
             _section_correlations(flow)
+            flow.append(PageBreak())
 
     cfg = TIMEFRAMES[tf_key]
 
@@ -449,6 +488,7 @@ def build_morning_compass_pdf(
             csv_id=cfg["ids"]["main"],
             bottom_docx=cfg["docx_macro"]
         )
+        flow.append(PageBreak())
 
     if include_pct:
         _section_macro_table(
@@ -458,7 +498,8 @@ def build_morning_compass_pdf(
             csv_id=cfg["ids"]["leaders"],
             bottom_docx=""  # no bottom line on those cards
         )
-
+        flow.append(PageBreak())
+                    
     if include_mm:
         _section_macro_table(
             flowables=flow,
@@ -467,7 +508,8 @@ def build_morning_compass_pdf(
             csv_id=cfg["ids"]["mm"],
             bottom_docx=""
         )
-
+        flow.append(PageBreak())
+                    
     if include_delta:
         _section_macro_table(
             flowables=flow,
@@ -476,6 +518,7 @@ def build_morning_compass_pdf(
             csv_id=cfg["ids"]["delta"],
             bottom_docx=""
         )
+        flow.append(PageBreak())
 
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
 
