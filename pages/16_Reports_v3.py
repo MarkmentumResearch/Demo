@@ -582,7 +582,7 @@ if include_morning_compass:
         # Always include Daily first
         tf_keys = ["Daily"] + tf_keys
     st.caption(
-        "Daily Morning Compass is always included. "
+        "Daily Morning Compass is always included by default. "
         "Select Weekly and/or Monthly to add them to the report."
     )
     with mid:
