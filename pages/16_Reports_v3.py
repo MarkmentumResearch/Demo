@@ -581,7 +581,10 @@ if include_morning_compass:
 
         # Always include Daily first
         tf_keys = ["Daily"] + tf_keys
-
+    st.caption(
+        "Daily Morning Compass is always included. "
+        "Select Weekly and/or Monthly to add them to the report."
+    )
     with mid:
         st.markdown("**Include Sections**")
         include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
