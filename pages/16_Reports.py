@@ -344,6 +344,8 @@ def _section_correlations(flowables):
         "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
     )
 
+    flowables.append(PageBreak())
+    
     corr_table(
         df_tnx,
         "Rates Correlations",
