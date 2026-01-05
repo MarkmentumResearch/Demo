@@ -1,0 +1,555 @@
+from pathlib import Path
+import io
+import os
+import pandas as pd
+import numpy as np
+import streamlit as st
+
+# PDF (ReportLab)
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage, PageBreak
+)
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+
+try:
+    from docx import Document
+except Exception:
+    Document = None
+
+
+# -------------------------
+# Page config
+# -------------------------
+st.set_page_config(page_title="Markmentum – Reports", layout="wide")
+
+
+# -------------------------
+# Paths (match Morning Compass style)
+# -------------------------
+_here = Path(__file__).resolve().parent
+APP_DIR = _here if _here.name != "pages" else _here.parent
+
+DATA_DIR   = APP_DIR / "data"
+ASSETS_DIR = APP_DIR / "assets"
+LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
+
+
+# -------------------------
+# Shared helpers (copied/consistent with Morning Compass)
+# -------------------------
+def fmt_num(x, nd=2):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{float(x):,.{nd}f}"
+    except Exception:
+        return ""
+
+def fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{float(x)*100:,.{nd}f}%"
+    except Exception:
+        return ""
+
+def fmt_int(x):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{int(round(float(x))):,}"
+    except Exception:
+        return ""
+
+@st.cache_data(show_spinner=False)
+def load_csv_by_id(n: int, base_dir: Path) -> pd.DataFrame:
+    p = base_dir / f"qry_graph_data_{n}.csv"
+    if not p.exists():
+        return pd.DataFrame()
+    return pd.read_csv(p)
+
+def _read_docx_plain_text(doc_path: Path) -> str:
+    """Reads a .docx and returns plain text (paragraphs separated by newlines)."""
+    if Document is None:
+        return "⚠️ python-docx not installed."
+    if not doc_path.exists():
+        return f"⚠️ File not found: {doc_path.name}"
+    try:
+        doc = Document(str(doc_path))
+        lines = []
+        for p in doc.paragraphs:
+            t = (p.text or "").strip()
+            if t:
+                lines.append(t)
+        return "\n".join(lines).strip()
+    except Exception as e:
+        return f"⚠️ Could not read {doc_path.name}: {e}"
+
+DISCLAIMER_TEXT = (
+    "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
+    "Nothing herein constitutes an offer to sell, a solicitation of an offer to buy, or a recommendation "
+    "regarding any security, investment vehicle, or strategy. It does not represent legal, tax, accounting, "
+    "or investment advice by Markmentum Research LLC or its employees. The information is provided without "
+    "regard to individual objectives or risk parameters and is general, non-tailored, and non-specific. "
+    "Sources are believed to be reliable, but accuracy and completeness are not guaranteed. "
+    "Markmentum Research LLC is not responsible for errors, omissions, or losses arising from use of this material. "
+    "Investments involve risk, and financial markets are subject to fluctuation. Consult your financial professional "
+    "before making investment decisions."
+)
+
+# Timeframe config (aligned with Morning Compass)
+TIMEFRAMES = {
+    "Daily": {
+        "ids": {"main": 73, "leaders": 74, "mm": 75, "delta": 77},
+        "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
+        "docx_macro": "bottom_line_daily.docx",
+        "title_macro": "Daily Macro Orientation",
+        "title_leaders": "Daily Top Five Leaders/Laggards by % Change",
+        "title_mm": "Daily Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Daily Top Five Leaders/Laggards by MM Score Change",
+    },
+    "Weekly": {
+        "ids": {"main": 78, "leaders": 79, "mm": 80, "delta": 82},
+        "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
+        "docx_macro": "bottom_line_weekly.docx",
+        "title_macro": "Weekly Macro Orientation",
+        "title_leaders": "Weekly Top Five Leaders/Laggards by % Change",
+        "title_mm": "Weekly Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Weekly Top Five Leaders/Laggards by MM Score Change",
+    },
+    "Monthly": {
+        "ids": {"main": 83, "leaders": 84, "mm": 85, "delta": 87},
+        "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
+        "docx_macro": "bottom_line_monthly.docx",
+        "title_macro": "Monthly Macro Orientation",
+        "title_leaders": "Monthly Top Five Leaders/Laggards by % Change",
+        "title_mm": "Monthly Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Monthly Top Five Leaders/Laggards by MM Score Change",
+    },
+}
+
+
+# -------------------------
+# PDF styling + builders
+# -------------------------
+styles = getSampleStyleSheet()
+H1 = ParagraphStyle("H1", parent=styles["Heading1"], alignment=TA_CENTER, fontSize=16, spaceAfter=10)
+H2 = ParagraphStyle("H2", parent=styles["Heading2"], alignment=TA_LEFT, fontSize=12, spaceBefore=10, spaceAfter=6)
+P  = ParagraphStyle("P", parent=styles["BodyText"], fontSize=9, leading=12)
+NOTE = ParagraphStyle("NOTE", parent=styles["BodyText"], fontSize=8, leading=11, textColor=colors.grey)
+
+def _footer(canvas, doc):
+    canvas.saveState()
+    canvas.setFont("Helvetica", 7)
+    canvas.setFillGray(0.45)
+
+    # wrap-ish footer
+    max_chars = 140
+    lines = []
+    s = DISCLAIMER_TEXT.strip()
+    while len(s) > max_chars:
+        cut = s.rfind(" ", 0, max_chars)
+        if cut <= 0:
+            cut = max_chars
+        lines.append(s[:cut].strip())
+        s = s[cut:].strip()
+    if s:
+        lines.append(s)
+
+    x = doc.leftMargin
+    y = 0.45 * inch
+    for i, line in enumerate(lines[:3]):  # keep it compact (3 lines)
+        canvas.drawString(x, y + (2 - i) * 9, line)
+
+    canvas.restoreState()
+
+def _rr_bg_color(v: float, cap: float = 3.0):
+    """Light green/red shading similar to portal RR tint."""
+    try:
+        v = float(v)
+    except Exception:
+        return colors.white
+    s = min(abs(v) / cap, 1.0)
+    # light pastel
+    if v > 0:
+        return colors.Color(0.90 - 0.10*s, 0.98, 0.94 - 0.10*s)  # greenish
+    if v < 0:
+        return colors.Color(0.98, 0.92 - 0.08*s, 0.92 - 0.08*s)  # reddish
+    return colors.white
+
+def _mm_bg_color(v: float):
+    """MM pill-like shading bins similar to portal logic."""
+    try:
+        v = float(v)
+    except Exception:
+        return colors.white
+
+    if v <= -100:
+        return colors.Color(0.93, 0.75, 0.75)  # deeper red
+    if v < -25:
+        return colors.Color(0.97, 0.84, 0.84)  # red
+    if v <= 25:
+        return colors.Color(0.93, 0.93, 0.93)  # gray
+    if v < 100:
+        return colors.Color(0.84, 0.95, 0.90)  # green
+    return colors.Color(0.75, 0.92, 0.85)      # darker green
+
+def _build_table(data_rows, col_widths, shade_rr=False, shade_mm=False, rr_col=None, mm_col=None):
+    """
+    data_rows: list of lists (already strings for display)
+    shade_rr/mm: apply background colors based on numeric values
+    rr_col/mm_col: index of RR / MM Score columns in the table
+    """
+    tbl = Table(data_rows, colWidths=col_widths, repeatRows=1)
+
+    base = TableStyle([
+        ("FONT", (0,0), (-1,0), "Helvetica-Bold", 9),
+        ("BACKGROUND", (0,0), (-1,0), colors.HexColor("#f2f2f2")),
+        ("TEXTCOLOR", (0,0), (-1,0), colors.HexColor("#1a1a1a")),
+        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#d9d9d9")),
+        ("FONT", (0,1), (-1,-1), "Helvetica", 8),
+        ("ALIGN", (0,0), (0,-1), "LEFT"),
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        # center headers except first col
+        ("ALIGN", (1,0), (-1,0), "CENTER"),
+        # center ticker col (assumes col 1)
+        ("ALIGN", (1,1), (1,-1), "CENTER"),
+        # right-align numeric cols (from col 2 onward)
+        ("ALIGN", (2,1), (-1,-1), "RIGHT"),
+        ("LEFTPADDING", (0,0), (-1,-1), 6),
+        ("RIGHTPADDING", (0,0), (-1,-1), 6),
+        ("TOPPADDING", (0,0), (-1,-1), 4),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+    ])
+    tbl.setStyle(base)
+
+    # shading
+    if shade_rr and rr_col is not None:
+        for r in range(1, len(data_rows)):
+            raw = data_rows[r][rr_col]
+            try:
+                v = float(str(raw).replace(",", ""))
+            except Exception:
+                continue
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (rr_col, r), (rr_col, r), _rr_bg_color(v))
+            ]))
+
+    if shade_mm and mm_col is not None:
+        for r in range(1, len(data_rows)):
+            raw = data_rows[r][mm_col]
+            try:
+                v = float(str(raw).replace(",", ""))
+            except Exception:
+                continue
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (mm_col, r), (mm_col, r), _mm_bg_color(v))
+            ]))
+
+    return tbl
+
+
+def _asof_date_from_main(tf_key: str) -> str:
+    cfg = TIMEFRAMES[tf_key]
+    df = load_csv_by_id(cfg["ids"]["main"], DATA_DIR)
+    if df.empty or "Date" not in df.columns:
+        return ""
+    asof = pd.to_datetime(df["Date"], errors="coerce").max()
+    if pd.isna(asof):
+        return ""
+    return f"{asof.month}/{asof.day}/{asof.year}"
+
+
+def _section_correlations(flowables):
+    """Daily-only correlations section (USD + Rates)."""
+    # USD correlations = id 93
+    df_usd = load_csv_by_id(93, DATA_DIR)
+    df_tnx = load_csv_by_id(94, DATA_DIR)
+
+    if df_usd.empty:
+        flowables.append(Paragraph("USD Correlations (missing qry_graph_data_93.csv)", NOTE))
+        return
+    if df_tnx.empty:
+        flowables.append(Paragraph("Rates Correlations (missing qry_graph_data_94.csv)", NOTE))
+        return
+
+    # format tables
+    def corr_table(df, title, bottom_docx, note_text):
+        flowables.append(Paragraph(title, H2))
+
+        cols = [c for c in ["Metric", "15D", "30D", "90D"] if c in df.columns]
+        d = df[cols].copy()
+        for c in ["15D", "30D", "90D"]:
+            if c in d.columns:
+                d[c] = d[c].map(lambda v: fmt_num(v, 2))
+
+        data_rows = [cols] + d.values.tolist()
+
+        # widths: Metric wide, 3 equal
+        w_metric = 3.6 * inch
+        w_num = 1.1 * inch
+        col_widths = [w_metric] + [w_num]*(len(cols)-1)
+
+        t = _build_table(data_rows, col_widths)
+        flowables.append(t)
+
+        bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
+        if bl:
+            flowables.append(Spacer(1, 6))
+            flowables.append(Paragraph(bl.replace("\n", "<br/>"), P))
+
+        flowables.append(Spacer(1, 4))
+        flowables.append(Paragraph(note_text, NOTE))
+        flowables.append(Spacer(1, 10))
+
+    corr_table(
+        df_usd,
+        "USD Correlations",
+        "usd_correlation_bottom_line.docx",
+        "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. 15D/30D/90D are trading-day windows. "
+        "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    )
+
+    corr_table(
+        df_tnx,
+        "Rates Correlations",
+        "tnx_correlation_bottom_line.docx",
+        "Note: Rate correlations use the 10-Year U.S. Treasury yield (TNX) as the rates proxy. 15D/30D/90D are trading-day windows. "
+        "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    )
+
+
+def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom_docx: str):
+    cfg = TIMEFRAMES[tf_key]
+    cols = cfg["cols"]
+
+    df = load_csv_by_id(csv_id, DATA_DIR)
+    req = ["Ticker_name", "Ticker", "Close", cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score", "model_score_delta"]
+    if df.empty or not all(c in df.columns for c in req):
+        flowables.append(Paragraph(f"{title} (missing or incomplete qry_graph_data_{csv_id}.csv)", NOTE))
+        flowables.append(Spacer(1, 8))
+        return
+
+    flowables.append(Paragraph(title, H2))
+
+    # build display table
+    d = df.copy()
+
+    out = pd.DataFrame({
+        "Name": d["Ticker_name"],
+        "Ticker": d["Ticker"],
+        "Close": d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change": d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low": d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High": d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward": d[cols["rr"]].map(lambda v: fmt_num(v, 1)),
+        "MM Score": d["model_score"].map(lambda v: fmt_int(v)),
+        "MM Score Change": d["model_score_delta"].map(lambda v: fmt_int(v)),
+    })
+
+    header = list(out.columns)
+    data_rows = [header] + out.values.tolist()
+
+    # widths tuned for letter
+    col_widths = [
+        2.35*inch,  # Name
+        0.70*inch,  # Ticker
+        0.75*inch,  # Close
+        0.80*inch,  # % Change
+        0.85*inch,  # Prob Low
+        0.85*inch,  # Prob High
+        0.75*inch,  # RR
+        0.70*inch,  # MM
+        0.85*inch,  # MM Chg
+    ]
+
+    rr_col = header.index("Risk / Reward")
+    mm_col = header.index("MM Score")
+
+    t = _build_table(
+        data_rows=data_rows,
+        col_widths=col_widths,
+        shade_rr=True, shade_mm=True,
+        rr_col=rr_col, mm_col=mm_col
+    )
+    flowables.append(t)
+
+    # bottom line (macro)
+    bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
+    if bl:
+        flowables.append(Spacer(1, 6))
+        flowables.append(Paragraph(bl.replace("\n", "<br/>"), P))
+
+    flowables.append(Spacer(1, 4))
+    flowables.append(Paragraph(
+        "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly.",
+        NOTE
+    ))
+    flowables.append(Spacer(1, 10))
+
+
+def build_morning_compass_pdf(
+    include_correlations: bool,
+    include_macro: bool,
+    include_pct: bool,
+    include_mm: bool,
+    include_delta: bool,
+    tf_key: str
+) -> bytes:
+    buffer = io.BytesIO()
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        leftMargin=0.6*inch, rightMargin=0.6*inch,
+        topMargin=0.55*inch, bottomMargin=0.75*inch
+    )
+
+    flow = []
+
+    # Logo
+    if LOGO_PATH.exists():
+        # scale to ~4.8 in wide
+        img = RLImage(str(LOGO_PATH))
+        img.drawHeight = 0.55 * inch
+        img.drawWidth = 4.8 * inch
+        img.hAlign = "CENTER"
+        flow.append(img)
+        flow.append(Spacer(1, 8))
+    else:
+        flow.append(Paragraph("Markmentum Research", H1))
+
+    asof = _asof_date_from_main(tf_key)
+    title = f"Morning Compass – {asof}" if asof else "Morning Compass"
+    flow.append(Paragraph(title, H1))
+    flow.append(Spacer(1, 6))
+
+    # Correlations (Daily only)
+    if include_correlations:
+        if tf_key != "Daily":
+            flow.append(Paragraph("Correlations are available for Daily only.", NOTE))
+            flow.append(Spacer(1, 10))
+        else:
+            _section_correlations(flow)
+
+    cfg = TIMEFRAMES[tf_key]
+
+    if include_macro:
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_macro"],
+            csv_id=cfg["ids"]["main"],
+            bottom_docx=cfg["docx_macro"]
+        )
+
+    if include_pct:
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_leaders"],
+            csv_id=cfg["ids"]["leaders"],
+            bottom_docx=""  # no bottom line on those cards
+        )
+
+    if include_mm:
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_mm"],
+            csv_id=cfg["ids"]["mm"],
+            bottom_docx=""
+        )
+
+    if include_delta:
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_delta"],
+            csv_id=cfg["ids"]["delta"],
+            bottom_docx=""
+        )
+
+    doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
+
+    pdf_bytes = buffer.getvalue()
+    buffer.close()
+    return pdf_bytes
+
+
+# -------------------------
+# UI
+# -------------------------
+st.markdown(
+    "<div style='text-align:center; font-size:22px; font-weight:700; margin-top:8px;'>Reports</div>",
+    unsafe_allow_html=True
+)
+st.markdown("<div style='text-align:center; color:#6c757d; margin-bottom:16px;'>Build a PDF from portal sections</div>",
+            unsafe_allow_html=True)
+
+c1, c2, c3 = st.columns([1, 1.2, 1])
+
+with c2:
+    st.subheader("Report Builder")
+    report_choice = st.selectbox("Select Report", ["Morning Compass"], index=0)
+
+st.divider()
+
+# Morning Compass builder
+if report_choice == "Morning Compass":
+    left, mid, right = st.columns([1, 1, 1])
+
+    with left:
+        tf_key = st.selectbox("Timeframe", list(TIMEFRAMES.keys()), index=0)
+
+    with mid:
+        st.markdown("**Include Sections**")
+        include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
+        include_macro        = st.checkbox("Macro Orientation (by timeframe)", value=True)
+
+    with right:
+        st.markdown("**Top Five Cards (by timeframe)**")
+        include_pct   = st.checkbox("Top Five Leaders/Laggards by % Change", value=True)
+        include_mm    = st.checkbox("Top Five Leaders/Laggards by MM Score", value=True)
+        include_delta = st.checkbox("Top Five Leaders/Laggards by MM Score Change", value=True)
+
+    st.divider()
+
+    # Preview metadata
+    asof = _asof_date_from_main(tf_key)
+    st.markdown(
+        f"**Preview:** Morning Compass – {asof if asof else '(date not found)'}  |  Timeframe: **{tf_key}**"
+    )
+
+    # Generate
+    gen = st.button("Generate PDF", type="primary")
+
+    if gen:
+        pdf_bytes = build_morning_compass_pdf(
+            include_correlations=include_correlations,
+            include_macro=include_macro,
+            include_pct=include_pct,
+            include_mm=include_mm,
+            include_delta=include_delta,
+            tf_key=tf_key
+        )
+
+        filename = f"markmentum_morning_compass_{tf_key.lower()}_{asof.replace('/','-') if asof else 'report'}.pdf"
+
+        st.success("PDF ready.")
+        st.download_button(
+            label="Download PDF",
+            data=pdf_bytes,
+            file_name=filename,
+            mime="application/pdf"
+        )
+
+st.markdown("---")
+st.markdown(
+    f"<div style='font-size: 12px; color: gray;'>{DISCLAIMER_TEXT}</div>",
+    unsafe_allow_html=True
+)
