@@ -119,7 +119,7 @@ def clean_text(s: str) -> str:
     return s
 
 DISCLAIMER_TEXT = (
-    "© 2025 Test Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
+    "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
     "Nothing herein constitutes an offer to sell, a solicitation of an offer to buy, or a recommendation "
     "regarding any security, investment vehicle, or strategy. It does not represent legal, tax, accounting, "
     "or investment advice by Markmentum Research LLC or its employees. The information is provided without "
