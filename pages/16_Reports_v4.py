@@ -559,7 +559,7 @@ st.divider()
 
 # ---- Module checkboxes (future-ready) ----
 include_morning_compass = st.checkbox("Morning Compass", value=True)
-#include_market_overview = st.checkbox("Market Overview", value=False)
+include_market_overview = st.checkbox("Market Overview", value=False)
 
 # Placeholder (future): other pages will become checkboxes too
 # st.checkbox("Market Overview", value=False)
@@ -569,7 +569,19 @@ include_morning_compass = st.checkbox("Morning Compass", value=True)
 # st.checkbox("Directional Trends", value=False)
 # st.checkbox("Vantage Point", value=False)
 
-
+# Market Overview builder options (UI ONLY)
+market_tf_keys = []
+if include_market_overview:
+    market_tf_keys = st.multiselect(
+        "Market Overview Timeframe(s)",
+        ["Daily", "Weekly", "Monthly", "Quarterly"],
+        default=["Daily"],
+    )
+    st.caption(
+        "Daily Market Overview includes Highest/Lowest MM Score, "
+        "MM Score Histogram, and Opportunity Density. "
+        "Other timeframes omit those daily-only sections."
+    )
 
 
 # Morning Compass builder options
@@ -693,23 +705,6 @@ st.markdown("---")
 # -------------------------
 # Market Overview builder options
 # -------------------------
-include_market_overview = st.checkbox("Market Overview", value=False)
-
-# Market Overview builder options (UI ONLY)
-market_tf_keys = []
-if include_market_overview:
-    market_tf_keys = st.multiselect(
-        "Market Overview Timeframe(s)",
-        ["Daily", "Weekly", "Monthly", "Quarterly"],
-        default=["Daily"],
-    )
-    st.caption(
-        "Daily Market Overview includes Highest/Lowest MM Score, "
-        "MM Score Histogram, and Opportunity Density. "
-        "Other timeframes omit those daily-only sections."
-    )
-
-    
 if include_market_overview:
     left, mid = st.columns([1, 2])
 
