@@ -377,6 +377,8 @@ st.divider()
 include_morning_compass = st.checkbox("Morning Compass", value=True)
 include_market_overview = st.checkbox("Market Overview", value=False)
 
+st.markdown("---")
+
 # NOTE: other pages will become checkboxes too (later)
 # st.checkbox("Performance Heatmap", value=False)
 # st.checkbox("Sharpe Rank Heatmap", value=False)
