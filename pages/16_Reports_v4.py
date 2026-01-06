@@ -614,6 +614,10 @@ if include_morning_compass:
 
     st.divider()
 
+    if include_morning_compass and include_market_overview:
+        st.markdown("###")
+        st.divider()
+
     if not tf_keys:
         st.warning("Select at least one timeframe.")
         st.stop()
@@ -702,31 +706,7 @@ if include_morning_compass:
                 mime="application/pdf"
             )
 st.markdown("---")
-# -------------------------
-# Market Overview builder options
-# -------------------------
-if include_market_overview:
-    left, mid = st.columns([1, 2])
 
-    with left:
-        mo_timeframe = st.selectbox(
-            "Market Overview Timeframe",
-            ["Daily", "Weekly", "Monthly", "Quarterly"],
-            index=0
-        )
-
-    with mid:
-        st.caption(
-            "Market Overview includes breadth, leaders/laggards, and macro context. "
-            "Daily additionally includes Highest/Lowest MM Score, MM Score Histogram, "
-            "and Opportunity Density."
-        )
-
-    st.divider()
-
-    st.markdown(
-        f"**Preview:** Market Overview – {mo_timeframe}"
-    )
 
 
 st.markdown("---")
