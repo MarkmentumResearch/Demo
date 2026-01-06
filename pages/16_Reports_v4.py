@@ -559,7 +559,7 @@ st.divider()
 
 # ---- Module checkboxes (future-ready) ----
 include_morning_compass = st.checkbox("Morning Compass", value=True)
-include_market_overview = st.checkbox("Market Overview", value=False)
+#include_market_overview = st.checkbox("Market Overview", value=False)
 
 # Placeholder (future): other pages will become checkboxes too
 # st.checkbox("Market Overview", value=False)
@@ -617,6 +617,7 @@ if include_morning_compass:
     # =========================
     # Market Overview Section
     # =========================
+    include_market_overview = st.checkbox("Market Overview", value=False)
     if include_market_overview:
         st.subheader("Market Overview")
 
