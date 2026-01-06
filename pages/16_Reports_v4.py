@@ -1,37 +1,122 @@
+# 16_Reports_v4.py
+from pathlib import Path
 import io
 import os
-import re
-from datetime import datetime
-
 import pandas as pd
+import numpy as np
 import streamlit as st
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.units import inch
+# PDF (ReportLab)
 from reportlab.platypus import (
-    BaseDocTemplate,
-    Frame,
-    Image,
-    PageBreak,
-    PageTemplate,
-    Paragraph,
-    Spacer,
-    Table,
-    TableStyle,
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage, PageBreak
 )
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.utils import simpleSplit
+
+# Merge PDFs (UI layer only)
+from pypdf import PdfReader, PdfWriter
+
+try:
+    from docx import Document
+except Exception:
+    Document = None
+
 
 # -------------------------
-# CONFIG
+# Page config
 # -------------------------
-st.set_page_config(page_title="Reports", layout="wide")
+st.set_page_config(page_title="Markmentum – Reports", layout="wide")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))
 
-DATA_DIR = os.path.join(PROJECT_ROOT, "data")
-LOGO_PATH = os.path.join(PROJECT_ROOT, "assets", "logo.png")
+# -------------------------
+# Paths (match Morning Compass style)
+# -------------------------
+_here = Path(__file__).resolve().parent
+APP_DIR = _here if _here.name != "pages" else _here.parent
+
+DATA_DIR   = APP_DIR / "data"
+ASSETS_DIR = APP_DIR / "assets"
+LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
+
+
+# -------------------------
+# Shared helpers (unchanged)
+# -------------------------
+def fmt_num(x, nd=2):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{float(x):,.{nd}f}"
+    except Exception:
+        return ""
+
+def fmt_pct(x, nd=2):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{float(x)*100:,.{nd}f}%"
+    except Exception:
+        return ""
+
+def fmt_int(x):
+    try:
+        if pd.isna(x):
+            return ""
+        return f"{int(round(float(x))):,}"
+    except Exception:
+        return ""
+
+@st.cache_data(show_spinner=False)
+def load_csv_by_id(n: int, base_dir: Path) -> pd.DataFrame:
+    p = base_dir / f"qry_graph_data_{n}.csv"
+    if not p.exists():
+        return pd.DataFrame()
+    return pd.read_csv(p)
+
+def clean_text(s: str) -> str:
+    """Normalize common unicode punctuation so Helvetica can render it (prevents ■■)."""
+    if s is None:
+        return ""
+    s = str(s)
+
+    # dashes/hyphens
+    s = s.replace("\u2011", "-")  # non-breaking hyphen
+    s = s.replace("\u2013", "-")  # en dash
+    s = s.replace("\u2014", "-")  # em dash
+
+    # quotes/apostrophes
+    s = s.replace("\u2018", "'").replace("\u2019", "'")
+    s = s.replace("\u201C", '"').replace("\u201D", '"')
+
+    # misc invisible/soft
+    s = s.replace("\u00ad", "")   # soft hyphen
+    s = s.replace("\u200b", "")   # zero-width space
+
+    return s
+
+def _read_docx_plain_text(doc_path: Path) -> str:
+    """Return docx text, or empty string if missing/unreadable (never print errors into PDF)."""
+    if Document is None:
+        return ""
+
+    if not doc_path.exists():
+        return ""
+
+    try:
+        doc = Document(str(doc_path))
+        lines = []
+        for p in doc.paragraphs:
+            t = (p.text or "").strip()
+            if t:
+                lines.append(t)
+        return clean_text("\n".join(lines).strip())
+    except Exception:
+        return ""
+
 
 DISCLAIMER_TEXT = (
     "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
@@ -39,224 +124,301 @@ DISCLAIMER_TEXT = (
     "regarding any security, investment vehicle, or strategy. It does not represent legal, tax, accounting, "
     "or investment advice by Markmentum Research LLC or its employees. The information is provided without "
     "regard to individual objectives or risk parameters and is general, non-tailored, and non-specific. "
-    "Sources are believed to be reliable, but accuracy and completeness are not guaranteed. Markmentum Research LLC "
-    "is not responsible for errors, omissions, or losses arising from use of this material. Investments involve risk, "
-    "and financial markets are subject to fluctuation. Consult your financial professional before making investment decisions."
+    "Sources are believed to be reliable, but accuracy and completeness are not guaranteed. "
+    "Markmentum Research LLC is not responsible for errors, omissions, or losses arising from use of this material. "
+    "Investments involve risk, and financial markets are subject to fluctuation. Consult your financial professional "
+    "before making investment decisions."
 )
 
-# -------------------------
-# CSV HELPERS (Morning Compass uses qry ids)
-# -------------------------
-def _safe_read_csv(path: str) -> pd.DataFrame:
-    if not os.path.exists(path):
-        return pd.DataFrame()
-    try:
-        return pd.read_csv(path)
-    except Exception:
-        try:
-            return pd.read_csv(path, encoding="latin1")
-        except Exception:
-            return pd.DataFrame()
-
-
-def _load_qry_csv(qry_id: int) -> pd.DataFrame:
-    # expects files named like: qry_graph_data_92.csv, etc
-    path = os.path.join(DATA_DIR, f"qry_graph_data_{qry_id}.csv")
-    return _safe_read_csv(path)
-
-
-def _infer_asof_date_from_df(df: pd.DataFrame) -> str | None:
-    # Tries to find a date in the DF (common columns: 'date', 'Date', 'asof', etc)
-    if df is None or df.empty:
-        return None
-    date_cols = [c for c in df.columns if c.lower() in ("date", "asof", "as_of", "dt")]
-    if not date_cols:
-        return None
-
-    col = date_cols[0]
-    s = df[col].dropna().astype(str)
-    if s.empty:
-        return None
-
-    # Take the last value; normalize to M/D/YYYY if possible
-    val = s.iloc[-1]
-    for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%m/%d/%y", "%Y/%m/%d"):
-        try:
-            d = datetime.strptime(val.split(" ")[0], fmt)
-            return f"{d.month}/{d.day}/{d.year}"
-        except Exception:
-            continue
-    return val
-
-
-def _asof_date_from_main(tf_key: str) -> str | None:
-    # Morning Compass “main” df differs by timeframe
-    # Daily uses 32 in our prior flow (from Morning Compass page)
-    # Weekly uses 33, Monthly uses 34, etc (adjust if your IDs differ).
-    tf_to_qry = {
-        "Daily": 32,
-        "Weekly": 33,
-        "Monthly": 34,
-        "Quarterly": 35,
-    }
-    qry_id = tf_to_qry.get(tf_key)
-    if not qry_id:
-        return None
-    df = _load_qry_csv(qry_id)
-    return _infer_asof_date_from_df(df)
+# Timeframe config (aligned with Morning Compass)
+TIMEFRAMES = {
+    "Daily": {
+        "ids": {"main": 73, "leaders": 74, "mm": 75, "delta": 77},
+        "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
+        "docx_macro": "bottom_line_daily.docx",
+        "title_macro": "Daily Macro Orientation",
+        "title_leaders": "Daily Top Five Leaders/Laggards by % Change",
+        "title_mm": "Daily Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Daily Top Five Leaders/Laggards by MM Score Change",
+    },
+    "Weekly": {
+        "ids": {"main": 78, "leaders": 79, "mm": 80, "delta": 82},
+        "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
+        "docx_macro": "bottom_line_weekly.docx",
+        "title_macro": "Weekly Macro Orientation",
+        "title_leaders": "Weekly Top Five Leaders/Laggards by % Change",
+        "title_mm": "Weekly Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Weekly Top Five Leaders/Laggards by MM Score Change",
+    },
+    "Monthly": {
+        "ids": {"main": 83, "leaders": 84, "mm": 85, "delta": 87},
+        "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
+        "docx_macro": "bottom_line_monthly.docx",
+        "title_macro": "Monthly Macro Orientation",
+        "title_leaders": "Monthly Top Five Leaders/Laggards by % Change",
+        "title_mm": "Monthly Top Five Leaders/Laggards by MM Score",
+        "title_delta": "Monthly Top Five Leaders/Laggards by MM Score Change",
+    },
+}
 
 
 # -------------------------
-# PDF UTILITIES (Morning Compass)
+# PDF styling + builders (unchanged)
 # -------------------------
-def _register_styles():
-    styles = getSampleStyleSheet()
+styles = getSampleStyleSheet()
+H1 = ParagraphStyle("H1", parent=styles["Heading1"], alignment=TA_CENTER, fontSize=16, spaceAfter=10)
+H2 = ParagraphStyle("H2", parent=styles["Heading2"], alignment=TA_LEFT, fontSize=12, spaceBefore=10, spaceAfter=6)
+P  = ParagraphStyle("P", parent=styles["BodyText"], fontSize=9, leading=12)
+NOTE = ParagraphStyle("NOTE", parent=styles["BodyText"], fontSize=8, leading=11, textColor=colors.grey)
+TH = ParagraphStyle(
+    "TH",
+    parent=styles["BodyText"],
+    fontName="Helvetica-Bold",
+    fontSize=8,
+    leading=9,
+    alignment=TA_CENTER,
+)
 
-    styles.add(
-        ParagraphStyle(
-            name="MR_Title",
-            fontSize=16,
-            leading=18,
-            spaceAfter=8,
-            alignment=1,  # center
-            fontName="Helvetica-Bold",
-        )
-    )
-    styles.add(
-        ParagraphStyle(
-            name="MR_Subtitle",
-            fontSize=11,
-            leading=13,
-            spaceAfter=12,
-            alignment=1,
-            textColor=colors.HexColor("#6c757d"),
-        )
-    )
-    styles.add(
-        ParagraphStyle(
-            name="MR_H2",
-            fontSize=12,
-            leading=14,
-            spaceBefore=10,
-            spaceAfter=6,
-            fontName="Helvetica-Bold",
-        )
-    )
-    styles.add(
-        ParagraphStyle(
-            name="MR_Body",
-            fontSize=9,
-            leading=11,
-            spaceAfter=6,
-        )
-    )
-    styles.add(
-        ParagraphStyle(
-            name="MR_Note",
-            fontSize=8,
-            leading=10,
-            textColor=colors.HexColor("#6c757d"),
-            spaceBefore=6,
-            spaceAfter=6,
-        )
-    )
-    return styles
-
-
-STYLES = _register_styles()
-
+def th(text: str) -> Paragraph:
+    return Paragraph(clean_text(text), TH)
 
 def _footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 7)
-    canvas.setFillColor(colors.HexColor("#808080"))
-    w, h = letter
-    canvas.drawString(0.6 * inch, 0.45 * inch, DISCLAIMER_TEXT[:240])
-    canvas.drawString(0.6 * inch, 0.33 * inch, DISCLAIMER_TEXT[240:480])
-    canvas.drawString(0.6 * inch, 0.21 * inch, DISCLAIMER_TEXT[480:720])
+    canvas.setFillGray(0.45)
+
+    available_width = doc.width
+    lines = simpleSplit(DISCLAIMER_TEXT.strip(), "Helvetica", 7, available_width)
+
+    x = doc.leftMargin
+    y = 0.25 * inch
+    max_lines = 6
+
+    for i, line in enumerate(lines[:max_lines]):
+        canvas.drawString(x, y + (max_lines - 1 - i) * 9, line)
+
     canvas.restoreState()
 
+def _rr_bg_color(v: float, cap: float = 3.0):
+    try:
+        v = float(v)
+    except Exception:
+        return colors.white
+    s = min(abs(v) / cap, 1.0)
+    if v > 0:
+        return colors.Color(0.90 - 0.10*s, 0.98, 0.94 - 0.10*s)
+    if v < 0:
+        return colors.Color(0.98, 0.92 - 0.08*s, 0.92 - 0.08*s)
+    return colors.white
 
-def _header_logo(story):
-    if os.path.exists(LOGO_PATH):
-        try:
-            story.append(Image(LOGO_PATH, width=4.6 * inch, height=0.7 * inch))
-            story.append(Spacer(1, 10))
-        except Exception:
-            pass
+def _mm_bg_color(v: float):
+    try:
+        v = float(v)
+    except Exception:
+        return colors.white
 
+    if v <= -100:
+        return colors.Color(0.93, 0.75, 0.75)
+    if v < -25:
+        return colors.Color(0.97, 0.84, 0.84)
+    if v <= 25:
+        return colors.Color(0.93, 0.93, 0.93)
+    if v < 100:
+        return colors.Color(0.84, 0.95, 0.90)
+    return colors.Color(0.75, 0.92, 0.85)
 
-def _table_from_df(
-    df: pd.DataFrame,
-    col_widths=None,
-    header_bg=colors.HexColor("#f2f2f2"),
-    font_size=8,
-    header_font_size=8,
-    repeat_header=True,
-):
-    if df is None or df.empty:
-        return Paragraph("No data available.", STYLES["MR_Note"])
+def _build_table(data_rows, col_widths, shade_rr=False, shade_mm=False, rr_col=None, mm_col=None):
+    tbl = Table(data_rows, colWidths=col_widths, repeatRows=1)
 
-    # Make sure column names are clean strings
-    df = df.copy()
-    df.columns = [str(c) for c in df.columns]
+    base = TableStyle([
+        ("FONT", (0,0), (-1,0), "Helvetica-Bold", 9),
+        ("BACKGROUND", (0,0), (-1,0), colors.HexColor("#f2f2f2")),
+        ("TEXTCOLOR", (0,0), (-1,0), colors.HexColor("#1a1a1a")),
+        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#d9d9d9")),
+        ("FONT", (0,1), (-1,-1), "Helvetica", 8),
+        ("ALIGN", (0,0), (0,-1), "LEFT"),
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        ("ALIGN", (1,0), (-1,0), "CENTER"),
+        ("ALIGN", (1,1), (1,-1), "CENTER"),
+        ("ALIGN", (2,1), (-1,-1), "RIGHT"),
+        ("LEFTPADDING", (0,0), (-1,-1), 6),
+        ("RIGHTPADDING", (0,0), (-1,-1), 6),
+        ("TOPPADDING", (0,0), (-1,0), 6),
+        ("BOTTOMPADDING", (0,0), (-1,0), 6),
+        ("TOPPADDING", (0,1), (-1,-1), 4),
+        ("BOTTOMPADDING", (0,1), (-1,-1), 4),
+    ])
+    tbl.setStyle(base)
 
-    data = [list(df.columns)] + df.values.tolist()
+    if shade_rr and rr_col is not None:
+        for r in range(1, len(data_rows)):
+            raw = data_rows[r][rr_col]
+            try:
+                v = float(str(raw).replace(",", ""))
+            except Exception:
+                continue
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (rr_col, r), (rr_col, r), _rr_bg_color(v))
+            ]))
 
-    # Basic cleanup to avoid ■■ for weird characters
-    cleaned = []
-    for row in data:
-        cleaned_row = []
-        for cell in row:
-            if pd.isna(cell):
-                cleaned_row.append("")
-            else:
-                s = str(cell)
-                s = s.replace("\u25a0", "").replace("■", "")  # kill black squares
-                cleaned_row.append(s)
-        cleaned.append(cleaned_row)
+    if shade_mm and mm_col is not None:
+        for r in range(1, len(data_rows)):
+            raw = data_rows[r][mm_col]
+            try:
+                v = float(str(raw).replace(",", ""))
+            except Exception:
+                continue
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (mm_col, r), (mm_col, r), _mm_bg_color(v))
+            ]))
 
-    tbl = Table(cleaned, colWidths=col_widths, repeatRows=1 if repeat_header else 0)
-
-    ts = TableStyle(
-        [
-            ("BACKGROUND", (0, 0), (-1, 0), header_bg),
-            ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("FONTSIZE", (0, 0), (-1, 0), header_font_size),
-            ("ALIGN", (0, 0), (-1, 0), "CENTER"),
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-            ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#d9d9d9")),
-            ("FONTSIZE", (0, 1), (-1, -1), font_size),
-            ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
-        ]
-    )
-    tbl.setStyle(ts)
     return tbl
 
+def _asof_date_from_main(tf_key: str) -> str:
+    cfg = TIMEFRAMES[tf_key]
+    df = load_csv_by_id(cfg["ids"]["main"], DATA_DIR)
+    if df.empty or "Date" not in df.columns:
+        return ""
+    asof = pd.to_datetime(df["Date"], errors="coerce").max()
+    if pd.isna(asof):
+        return ""
+    return f"{asof.month}/{asof.day}/{asof.year}"
 
-def merge_pdfs(pdf_bytes_list: list[bytes]) -> bytes:
-    # Safe merge without adding dependencies (PyPDF2 not assumed).
-    # ReportLab can’t merge, so we keep this minimal:
-    # If you already added a merge function in your working version, keep using it.
-    # Here we use PyPDF2 if installed; otherwise fall back to returning the first doc.
-    try:
-        from PyPDF2 import PdfMerger
+def _section_correlations(flowables):
+    df_usd = load_csv_by_id(93, DATA_DIR)
+    df_tnx = load_csv_by_id(94, DATA_DIR)
 
-        merger = PdfMerger()
-        for b in pdf_bytes_list:
-            merger.append(io.BytesIO(b))
-        out = io.BytesIO()
-        merger.write(out)
-        merger.close()
-        return out.getvalue()
-    except Exception:
-        # fallback: return first
-        return pdf_bytes_list[0] if pdf_bytes_list else b""
+    if df_usd.empty:
+        flowables.append(Paragraph("USD Correlations (missing qry_graph_data_93.csv)", NOTE))
+        return
+    if df_tnx.empty:
+        flowables.append(Paragraph("Rates Correlations (missing qry_graph_data_94.csv)", NOTE))
+        return
+
+    def corr_table(df, title, bottom_docx, note_text):
+        flowables.append(Paragraph(title, H2))
+
+        cols = [c for c in ["Metric", "15D", "30D", "90D"] if c in df.columns]
+        d = df[cols].copy()
+        for c in ["15D", "30D", "90D"]:
+            if c in d.columns:
+                d[c] = d[c].map(lambda v: fmt_num(v, 2))
+
+        data_rows = [cols] + d.values.tolist()
+
+        w_metric = 3.6 * inch
+        w_num = 1.1 * inch
+        col_widths = [w_metric] + [w_num]*(len(cols)-1)
+
+        t = _build_table(data_rows, col_widths)
+        flowables.append(t)
+
+        bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
+        if bl:
+            flowables.append(Spacer(1, 6))
+            flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
+
+        flowables.append(Spacer(1, 4))
+        flowables.append(Paragraph(note_text, NOTE))
+        flowables.append(Spacer(1, 10))
+
+    corr_table(
+        df_usd,
+        "USD Correlations",
+        "usd_correlation_bottom_line.docx",
+        "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. 15D/30D/90D are trading-day windows. "
+        "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    )
+
+    flowables.append(PageBreak())
+
+    corr_table(
+        df_tnx,
+        "Rates Correlations",
+        "tnx_correlation_bottom_line.docx",
+        "Note: Rate correlations use the 10-Year U.S. Treasury yield (TNX) as the rates proxy. 15D/30D/90D are trading-day windows. "
+        "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
+    )
+
+def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom_docx: str):
+    cfg = TIMEFRAMES[tf_key]
+    cols = cfg["cols"]
+
+    df = load_csv_by_id(csv_id, DATA_DIR)
+    req = ["Ticker_name", "Ticker", "Close", cols["ret"], cols["pr_low"], cols["pr_high"], cols["rr"], "model_score", "model_score_delta"]
+    if df.empty or not all(c in df.columns for c in req):
+        flowables.append(Paragraph(f"{title} (missing or incomplete qry_graph_data_{csv_id}.csv)", NOTE))
+        flowables.append(Spacer(1, 8))
+        return
+
+    flowables.append(Paragraph(title, H2))
+
+    d = df.copy()
+
+    out = pd.DataFrame({
+        "Name": d["Ticker_name"],
+        "Ticker": d["Ticker"],
+        "Close": d["Close"].map(lambda v: fmt_num(v, 2)),
+        "% Change": d[cols["ret"]].map(lambda v: fmt_pct(v, 2)),
+        "Probable Low": d[cols["pr_low"]].map(lambda v: fmt_num(v, 2)),
+        "Probable High": d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
+        "Risk / Reward": d[cols["rr"]].map(lambda v: fmt_num(v, 1)),
+        "MM Score": d["model_score"].map(lambda v: fmt_int(v)),
+        "MM Score Change": d["model_score_delta"].map(lambda v: fmt_int(v)),
+    })
+
+    header = [
+        th("Name"),
+        th("Ticker"),
+        th("Close"),
+        th("% Change"),
+        th("Probable<br/>Low"),
+        th("Probable<br/>High"),
+        th("Risk /<br/>Reward"),
+        th("MM<br/>Score"),
+        th("MM Score<br/>Change"),
+    ]
+    data_rows = [header] + out.values.tolist()
+
+    col_widths = [
+        2.35*inch,
+        0.70*inch,
+        0.75*inch,
+        0.80*inch,
+        0.85*inch,
+        0.85*inch,
+        0.75*inch,
+        0.70*inch,
+        0.85*inch,
+    ]
+
+    rr_col = 6
+    mm_col = 7
+
+    t = _build_table(
+        data_rows=data_rows,
+        col_widths=col_widths,
+        shade_rr=True, shade_mm=True,
+        rr_col=rr_col, mm_col=mm_col
+    )
+    flowables.append(t)
+
+    bl = _read_docx_plain_text(DATA_DIR / bottom_docx) if bottom_docx else ""
+    if bl:
+        flowables.append(Spacer(1, 6))
+        flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
+
+    flowables.append(Spacer(1, 4))
+    flowables.append(Paragraph(
+        "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly.",
+        NOTE
+    ))
+    flowables.append(Spacer(1, 10))
 
 
 # -------------------------
-# Morning Compass PDF BUILDER (EXISTING)
+# !!! DO NOT CHANGE OUTPUT LOGIC !!!
+# Morning Compass PDF builder stays intact; we wrap it as a module.
 # -------------------------
 def build_morning_compass_pdf(
     include_correlations: bool,
@@ -264,100 +426,238 @@ def build_morning_compass_pdf(
     include_pct: bool,
     include_mm: bool,
     include_delta: bool,
-    tf_key: str,
-    asof: str | None,
+    tf_key: str
 ) -> bytes:
     buffer = io.BytesIO()
 
-    doc = BaseDocTemplate(
+    doc = SimpleDocTemplate(
         buffer,
-        pagesize=letter,
-        leftMargin=0.6 * inch,
-        rightMargin=0.6 * inch,
-        topMargin=0.55 * inch,
-        bottomMargin=0.75 * inch,
+        pagesize=landscape(letter),
+        leftMargin=0.45*inch, rightMargin=0.45*inch,
+        topMargin=0.50*inch, bottomMargin=0.95*inch
     )
 
-    frame = Frame(
-        doc.leftMargin,
-        doc.bottomMargin,
-        doc.width,
-        doc.height,
-        id="normal",
-        showBoundary=0,
-    )
+    flow = []
 
-    template = PageTemplate(id="Main", frames=[frame], onPage=_footer)
-    doc.addPageTemplates([template])
+    # Logo + title only for Daily (matches your current behavior)
+    if tf_key == "Daily":
+        if LOGO_PATH.exists():
+            img = RLImage(str(LOGO_PATH))
+            img.drawHeight = 0.55 * inch
+            img.drawWidth = 4.8 * inch
+            img.hAlign = "CENTER"
+            flow.append(img)
+            flow.append(Spacer(1, 8))
+        else:
+            flow.append(Paragraph("Markmentum Research", H1))
 
-    story = []
+        asof = _asof_date_from_main(tf_key)
+        title = f"Morning Compass – {asof}" if asof else "Morning Compass"
+        flow.append(Paragraph(title, H1))
+        flow.append(Spacer(1, 6))
 
-    # Header (keep as you already had)
-    _header_logo(story)
-
-    title_asof = asof if asof else "(date not found)"
-    story.append(Paragraph(f"Morning Compass – {title_asof}", STYLES["MR_Title"]))
-    story.append(Spacer(1, 8))
-
-    # NOTE: correlations daily-only
+    # Correlations (Daily only)
     if include_correlations and tf_key == "Daily":
-        # USD correlations
-        story.append(Paragraph("USD Correlations", STYLES["MR_H2"]))
-        df_usd = _load_qry_csv(36)  # adjust if your ids differ
-        story.append(_table_from_df(df_usd, col_widths=[3.2 * inch, 1.2 * inch, 1.2 * inch, 1.2 * inch]))
-        story.append(PageBreak())
+        _section_correlations(flow)
+        flow.append(PageBreak())
 
-        # Rates correlations
-        story.append(Paragraph("Rates Correlations", STYLES["MR_H2"]))
-        df_rates = _load_qry_csv(37)  # adjust if your ids differ
-        story.append(_table_from_df(df_rates, col_widths=[3.2 * inch, 1.2 * inch, 1.2 * inch, 1.2 * inch]))
-        story.append(Spacer(1, 10))
-    elif include_correlations and tf_key != "Daily":
-        story.append(Paragraph("Correlations are available for Daily only.", STYLES["MR_Note"]))
-        story.append(Spacer(1, 10))
+    cfg = TIMEFRAMES[tf_key]
 
-    # Macro Orientation (by timeframe)
     if include_macro:
-        story.append(Paragraph(f"{tf_key} Macro Orientation", STYLES["MR_H2"]))
-        tf_to_macro_qry = {"Daily": 32, "Weekly": 33, "Monthly": 34, "Quarterly": 35}
-        df_macro = _load_qry_csv(tf_to_macro_qry.get(tf_key, 32))
-        story.append(_table_from_df(df_macro))
-        story.append(Spacer(1, 10))
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_macro"],
+            csv_id=cfg["ids"]["main"],
+            bottom_docx=cfg["docx_macro"]
+        )
+        flow.append(PageBreak())
 
-        # Bottom line text (if your daily/weekly/mth have it in another qry id, add it here)
-        # Keeping minimal and consistent with your working version:
-        story.append(Paragraph("Bottom line:", STYLES["MR_Body"]))
-        story.append(Paragraph(" ", STYLES["MR_Body"]))
-        story.append(Spacer(1, 6))
-        story.append(Paragraph("Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly.", STYLES["MR_Note"]))
-        story.append(Spacer(1, 8))
-
-    # Top Five sections (by timeframe)
     if include_pct:
-        story.append(Paragraph(f"{tf_key} Top Five Leaders/Laggards by % Change", STYLES["MR_H2"]))
-        df_pct = _load_qry_csv(38)  # adjust
-        story.append(_table_from_df(df_pct))
-        story.append(Spacer(1, 10))
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_leaders"],
+            csv_id=cfg["ids"]["leaders"],
+            bottom_docx=""
+        )
+        flow.append(PageBreak())
 
     if include_mm:
-        story.append(Paragraph(f"{tf_key} Top Five Leaders/Laggards by MM Score", STYLES["MR_H2"]))
-        df_mm = _load_qry_csv(39)  # adjust
-        story.append(_table_from_df(df_mm))
-        story.append(Spacer(1, 10))
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_mm"],
+            csv_id=cfg["ids"]["mm"],
+            bottom_docx=""
+        )
+        flow.append(PageBreak())
 
     if include_delta:
-        story.append(Paragraph(f"{tf_key} Top Five Leaders/Laggards by MM Score Change", STYLES["MR_H2"]))
-        df_delta = _load_qry_csv(40)  # adjust
-        story.append(_table_from_df(df_delta))
-        story.append(Spacer(1, 10))
+        _section_macro_table(
+            flowables=flow,
+            tf_key=tf_key,
+            title=cfg["title_delta"],
+            csv_id=cfg["ids"]["delta"],
+            bottom_docx=""
+        )
+        flow.append(PageBreak())
 
-    doc.build(story)
-    return buffer.getvalue()
+    doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
+
+    pdf_bytes = buffer.getvalue()
+    buffer.close()
+    return pdf_bytes
 
 
-# -------------------------
-# UI (v4 layout)
-# -------------------------
+# =========================================================
+# MODULAR PACKET ARCHITECTURE (NEW)
+# =========================================================
+def merge_pdf_bytes_in_order(pdf_blobs: list[bytes]) -> bytes:
+    """Merge already-built PDFs into one PDF (order preserved)."""
+    writer = PdfWriter()
+    for blob in pdf_blobs:
+        reader = PdfReader(io.BytesIO(blob))
+        for page in reader.pages:
+            writer.add_page(page)
+    out = io.BytesIO()
+    writer.write(out)
+    return out.getvalue()
+
+def normalize_timeframes(selected: list[str]) -> list[str]:
+    """Enforce your current behavior: Daily always included for Morning Compass packet."""
+    if not selected:
+        return ["Daily"]
+    # ensure Daily first if included
+    s = list(dict.fromkeys(selected))
+    if "Daily" in s:
+        s = ["Daily"] + [x for x in s if x != "Daily"]
+    return s
+
+class ReportModuleBase:
+    key: str = "base"
+    label: str = "Base Module"
+
+    def ui(self) -> dict:
+        """
+        Render module UI and return an options dict.
+        Must be deterministic given Streamlit state.
+        """
+        return {}
+
+    def build(self, options: dict) -> tuple[list[bytes], str]:
+        """
+        Return (pdfs_in_order, filename_stub)
+        - pdfs_in_order: list of pdf bytes blobs
+        - filename_stub: used to name download file
+        """
+        return ([], "report")
+
+
+class MorningCompassModule(ReportModuleBase):
+    key = "morning_compass"
+    label = "Morning Compass"
+
+    def ui(self) -> dict:
+        left, mid, right = st.columns([1, 1, 1])
+
+        with left:
+            tf_keys = st.multiselect(
+                "Add Timeframes (Optional)",
+                ["Weekly", "Monthly"],
+                default=[]
+            )
+            # preserve your current rule: Daily always included
+            tf_keys = ["Daily"] + tf_keys
+
+        st.caption(
+            "Daily Morning Compass is always included by default. "
+            "Select Weekly and/or Monthly to add them to the report."
+        )
+
+        with mid:
+            st.markdown("**Include Sections**")
+            include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
+            include_macro        = st.checkbox("Macro Orientation (by timeframe)", value=True)
+
+        with right:
+            st.markdown("**Top Five Cards (by timeframe)**")
+            include_pct   = st.checkbox("Top Five Leaders/Laggards by % Change", value=True)
+            include_mm    = st.checkbox("Top Five Leaders/Laggards by MM Score", value=True)
+            include_delta = st.checkbox("Top Five Leaders/Laggards by MM Score Change", value=True)
+
+        # Preview metadata (show all selected timeframes)
+        preview_parts = []
+        for k in tf_keys:
+            asof_k = _asof_date_from_main(k)
+            preview_parts.append(f"{k}: {asof_k if asof_k else '(date not found)'}")
+        st.markdown("**Preview:** Morning Compass – " + " | ".join(preview_parts))
+
+        return {
+            "tf_keys": tf_keys,
+            "include_correlations": include_correlations,
+            "include_macro": include_macro,
+            "include_pct": include_pct,
+            "include_mm": include_mm,
+            "include_delta": include_delta,
+        }
+
+    def build(self, options: dict) -> tuple[list[bytes], str]:
+        tf_keys = options.get("tf_keys", ["Daily"])
+        # already Daily-first; keep as-is
+        blobs: list[bytes] = []
+
+        for tf_key in tf_keys:
+            blobs.append(
+                build_morning_compass_pdf(
+                    include_correlations=options.get("include_correlations", True),
+                    include_macro=options.get("include_macro", True),
+                    include_pct=options.get("include_pct", True),
+                    include_mm=options.get("include_mm", True),
+                    include_delta=options.get("include_delta", True),
+                    tf_key=tf_key
+                )
+            )
+
+        # naming: matches your current logic using Daily date if present
+        tf_for_date = "Daily" if "Daily" in tf_keys else tf_keys[0]
+        asof = _asof_date_from_main(tf_for_date)
+        tf_slug = "-".join([t.lower() for t in tf_keys])
+        filename_stub = f"markmentum_morning_compass_{tf_slug}_{asof.replace('/','-') if asof else 'report'}"
+        return (blobs, filename_stub)
+
+
+class PlaceholderModule(ReportModuleBase):
+    """Safe placeholder so you can turn on modules without breaking the packet builder."""
+    def __init__(self, key: str, label: str):
+        self.key = key
+        self.label = label
+
+    def ui(self) -> dict:
+        st.info(f"{self.label} module is not wired to PDF yet. (Placeholder)")
+        return {}
+
+    def build(self, options: dict) -> tuple[list[bytes], str]:
+        # returns no pdfs; packet builder will skip it
+        return ([], self.key)
+
+
+REGISTERED_MODULES: list[ReportModuleBase] = [
+    MorningCompassModule(),
+    PlaceholderModule("market_overview", "Market Overview"),
+    PlaceholderModule("performance_heatmap", "Performance Heatmap"),
+    PlaceholderModule("sharpe_rank_heatmap", "Sharpe Rank Heatmap"),
+    PlaceholderModule("markmentum_heatmap", "Markmentum Heatmap"),
+    PlaceholderModule("directional_trends", "Directional Trends"),
+    PlaceholderModule("vantage_point", "Vantage Point"),
+]
+
+MODULE_BY_KEY = {m.key: m for m in REGISTERED_MODULES}
+
+
+# =========================================================
+# UI (MODULAR)
+# =========================================================
 st.markdown(
     "<div style='text-align:center; font-size:22px; font-weight:700; margin-top:8px;'>Reports</div>",
     unsafe_allow_html=True
@@ -367,179 +667,70 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-c1, c2, c3 = st.columns([1, 1.2, 1])
-with c2:
-    st.subheader("Report Builder")
+st.divider()
+
+# ---- Module selection ----
+# Default only Morning Compass ON (same as your current behavior)
+default_selected = ["morning_compass"]
+
+selected_keys = []
+for m in REGISTERED_MODULES:
+    checked = st.checkbox(m.label, value=(m.key in default_selected))
+    if checked:
+        selected_keys.append(m.key)
+
+# ---- Module options blocks ----
+module_options: dict[str, dict] = {}
+
+# Separator between selection list and builder options
+st.divider()
+
+for key in selected_keys:
+    module = MODULE_BY_KEY[key]
+    with st.expander(f"{module.label} Options", expanded=(key == "morning_compass")):
+        module_options[key] = module.ui()
 
 st.divider()
 
-# ---- Module checkboxes (future-ready) ----
-include_morning_compass = st.checkbox("Morning Compass", value=True)
-include_market_overview = st.checkbox("Market Overview", value=False)
-
-st.markdown("---")
-
-# NOTE: other pages will become checkboxes too (later)
-# st.checkbox("Performance Heatmap", value=False)
-# st.checkbox("Sharpe Rank Heatmap", value=False)
-# st.checkbox("Markmentum Heatmap", value=False)
-# st.checkbox("Directional Trends", value=False)
-# st.checkbox("Vantage Point", value=False)
-
-# -------------------------
-# Morning Compass options
-# -------------------------
-mc_tf_keys = []
-include_correlations = False
-include_macro = False
-include_pct = False
-include_mm = False
-include_delta = False
-
-if include_morning_compass:
-    st.markdown("**Morning Compass**")
-
-    left, mid, right = st.columns([1, 1, 1])
-
-    with left:
-        mc_tf_keys = st.multiselect(
-            "Add Timeframes (Optional)",
-            ["Weekly", "Monthly"],
-            default=[]
-        )
-
-        # Always include Daily first
-        mc_tf_keys = ["Daily"] + mc_tf_keys
-
-        st.caption(
-            "Daily Morning Compass is always included by default. "
-            "Select Weekly and/or Monthly to add them to the report."
-        )
-
-    with mid:
-        st.markdown("**Include Sections**")
-        include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
-        include_macro        = st.checkbox("Macro Orientation (by timeframe)", value=True)
-
-    with right:
-        st.markdown("**Top Five Cards (by timeframe)**")
-        include_pct   = st.checkbox("Top Five Leaders/Laggards by % Change", value=True)
-        include_mm    = st.checkbox("Top Five Leaders/Laggards by MM Score", value=True)
-        include_delta = st.checkbox("Top Five Leaders/Laggards by MM Score Change", value=True)
-
-# Separator between module blocks
-if include_morning_compass and include_market_overview:
-    st.divider()
-
-# -------------------------
-# Market Overview options (UI only for now)
-# -------------------------
-mo_tf_keys = []
-
-if include_market_overview:
-    st.markdown("**Market Overview**")
-
-    mo_tf_keys = st.multiselect(
-        "Add Timeframes (Optional)",
-        ["Weekly", "Monthly", "Quarterly"],
-        default=[],
-        key="mo_timeframes"
-    )
-
-    # Always include Daily first
-    mo_tf_keys = ["Daily"] + mo_tf_keys
-
-    st.caption(
-        "Daily Market Overview includes Highest/Lowest MM Score, MM Score Histogram, and Opportunity Density. "
-        "Other timeframes omit those daily-only sections."
-    )
-
-st.divider()
-
-# -------------------------
-# Preview + Generate (single output PDF)
-# -------------------------
-if not include_morning_compass and not include_market_overview:
-    st.info("Select at least one report module to generate a PDF.")
-    st.stop()
-
-preview_parts = []
-
-if include_morning_compass:
-    for k in mc_tf_keys:
-        asof_k = _asof_date_from_main(k)
-        preview_parts.append(f"Morning Compass – {k}: {asof_k if asof_k else '(date not found)'}")
-
-if include_market_overview:
-    for k in mo_tf_keys:
-        asof_k = _asof_date_from_main(k)
-        preview_parts.append(f"Market Overview – {k}: {asof_k if asof_k else '(date not found)'}")
-
-st.markdown("**Preview:** " + " | ".join(preview_parts))
-
-gen = st.button("Generate PDF", type="primary")
+# ---- Generate packet ----
+gen = st.button("Generate PDF", type="primary", disabled=(len(selected_keys) == 0))
 
 if gen:
-    pdf_blobs = []
+    pdf_parts: list[bytes] = []
+    filename_parts: list[str] = []
 
-    # ---- Morning Compass PDFs (existing builder, unchanged) ----
-    if include_morning_compass:
-        if not mc_tf_keys:
-            st.warning("Morning Compass: select at least one timeframe.")
-            st.stop()
+    for key in selected_keys:
+        module = MODULE_BY_KEY[key]
+        blobs, stub = module.build(module_options.get(key, {}))
+        if blobs:
+            pdf_parts.extend(blobs)
+            filename_parts.append(stub)
 
-        # If only one timeframe, keep exact behavior (single builder call)
-        if len(mc_tf_keys) == 1:
-            tf_key = mc_tf_keys[0]
-            asof = _asof_date_from_main(tf_key)
-
-            pdf_bytes = build_morning_compass_pdf(
-                include_correlations=include_correlations,
-                include_macro=include_macro,
-                include_pct=include_pct,
-                include_mm=include_mm,
-                include_delta=include_delta,
-                tf_key=tf_key,
-                asof=asof,
-            )
-            pdf_blobs.append(pdf_bytes)
-        else:
-            # Multi-timeframe: build each, then merge (existing behavior)
-            blobs = []
-            for tf_key in mc_tf_keys:
-                asof = _asof_date_from_main(tf_key)
-                blobs.append(
-                    build_morning_compass_pdf(
-                        include_correlations=include_correlations,
-                        include_macro=include_macro,
-                        include_pct=include_pct,
-                        include_mm=include_mm,
-                        include_delta=include_delta,
-                        tf_key=tf_key,
-                        asof=asof,
-                    )
-                )
-            pdf_blobs.append(merge_pdfs(blobs))
-
-    # ---- Market Overview (UI is ready; PDF wiring comes next) ----
-    if include_market_overview:
-        st.warning("Market Overview PDF generation is not wired yet (UI only).")
-
-    if not pdf_blobs:
+    if not pdf_parts:
+        st.warning("No PDFs were generated (selected modules are placeholders or missing data).")
         st.stop()
 
-    # If multiple module PDFs exist, merge them into ONE output
-    merged_pdf = merge_pdfs(pdf_blobs) if len(pdf_blobs) > 1 else pdf_blobs[0]
+    # If only one part, keep exact “single blob” behavior; else merge.
+    if len(pdf_parts) == 1:
+        final_pdf = pdf_parts[0]
+    else:
+        final_pdf = merge_pdf_bytes_in_order(pdf_parts)
 
-    # Build filename
-    asof_for_name = _asof_date_from_main("Daily")
-    file_date = asof_for_name.replace("/", "-") if asof_for_name else "report"
-    filename = f"markmentum_report_{file_date}.pdf"
+    # Filename:
+    # - If only Morning Compass, the stub already matches your v3 naming.
+    # - If multiple modules, create a clean packet name.
+    if len(filename_parts) == 1:
+        filename = f"{filename_parts[0]}.pdf"
+    else:
+        # include Daily as-of if possible (best-effort)
+        asof = _asof_date_from_main("Daily")
+        date_slug = asof.replace("/", "-") if asof else "report"
+        filename = f"markmentum_packet_{date_slug}.pdf"
 
     st.success("PDF ready.")
     st.download_button(
         label="Download PDF",
-        data=merged_pdf,
+        data=final_pdf,
         file_name=filename,
         mime="application/pdf"
     )
