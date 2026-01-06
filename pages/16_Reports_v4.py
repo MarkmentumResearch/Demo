@@ -614,6 +614,26 @@ if include_morning_compass:
 
     st.divider()
 
+    # =========================
+    # Market Overview Section
+    # =========================
+    if include_market_overview:
+        st.subheader("Market Overview")
+
+        market_tf_keys = st.multiselect(
+            "Market Overview Timeframe(s)",
+            ["Daily", "Weekly", "Monthly", "Quarterly"],
+            default=["Daily"],
+        )
+
+        st.caption(
+            "Daily Market Overview includes Highest/Lowest MM Score, MM Score Histogram, "
+            "and Opportunity Density. Other timeframes omit those daily-only sections."
+        )
+
+        st.divider()
+
+
     if include_morning_compass and include_market_overview:
         st.markdown("###")
         st.divider()
