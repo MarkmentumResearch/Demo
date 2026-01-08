@@ -1065,6 +1065,11 @@ class MarketOverviewModule(ReportModuleBase):
         with c3:
             include_market_read = st.checkbox("Include Market Read", value=True)
 
+        st.caption(
+            "Daily Market Overview is always included by default. "
+            "Select Weekly, Monthly, Quarterly to add them to the report."
+        )
+
         # Preview
         preview_parts = []
         for k in tf_keys:
