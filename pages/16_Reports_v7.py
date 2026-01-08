@@ -165,8 +165,8 @@ def _market_read_to_flowables(mr_text: str) -> list:
             in_bullets = False
             continue
 
-        if low in ("the market is saying:", "The market is saying (all numbers are wtd % returns):", 
-                   "The market is saying (all numbers are mtd % returns):","The market is saying (all numbers are qtd % returns):","macro levers:", "macro levers (wtd % returns):", 
+        if low in ("the market is saying:", "the market is saying (all numbers are wtd % returns):", 
+                   "the market is saying (all numbers are mtd % returns):","the market is saying (all numbers are qtd % returns):","macro levers:", "macro levers (wtd % returns):", 
                    "macro levers (mtd % returns):", "macro levers (qtd % returns):"):
             # flush existing bullets
             if bullets:
