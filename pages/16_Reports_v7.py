@@ -159,13 +159,15 @@ def _market_read_to_flowables(mr_text: str) -> list:
         low = ln.lower()
 
         # section headers / labels
-        if low.startswith("Market Read:") or low.startswith("Weekly market read:") or low.startswith("Monthly Market Read:") or low.startswith("Quarterly Market Read:"):
+        if low.startswith("Market Read:") or low.startswith("Weekly Market Read:") or low.startswith("Monthly Market Read:") or low.startswith("Quarterly Market Read:"):
             out.append(Spacer(1, 6))
             out.append(Paragraph(clean_text(ln), H2))
             in_bullets = False
             continue
 
-        if low in ("the market is saying:", "macro levers:", "macro levers (wtd % returns):", "macro levers (mtd % returns):", "macro levers (qtd % returns):"):
+        if low in ("the market is saying:", "The market is saying (all numbers are WTD % returns):", 
+                   "The market is saying (all numbers are MTD % returns):","The market is saying (all numbers are QTD % returns):","macro levers:", "macro levers (wtd % returns):", 
+                   "macro levers (mtd % returns):", "macro levers (qtd % returns):"):
             # flush existing bullets
             if bullets:
                 out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
