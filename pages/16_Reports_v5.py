@@ -451,7 +451,7 @@ def build_title_page_pdf(asof: str) -> bytes:
     flow.append(Spacer(1, 0.5 * inch))
 
     # Big centered title
-    cover_title = Paragraph("Markmentum Research Pack", ParagraphStyle(
+    cover_title = Paragraph("Research Pack", ParagraphStyle(
         "COVER_TITLE",
         parent=styles["Heading1"],
         alignment=TA_CENTER,
@@ -509,7 +509,7 @@ def build_morning_compass_pdf(
         #    flow.append(Paragraph("Markmentum Research", H1))
 
         asof = _asof_date_from_main(tf_key)
-        title = f"Morning Compass – {asof}" if asof else "Morning Compass"
+        title = f"Morning Compass" if asof else "Morning Compass"
         flow.append(Paragraph(title, H1))
         flow.append(Spacer(1, 6))
 
