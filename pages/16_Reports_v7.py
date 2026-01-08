@@ -965,7 +965,7 @@ class MarketOverviewModule(ReportModuleBase):
                 ["Weekly", "Monthly", "Quarterly"],
                 default=[]
         )
-        tf_key = ["Daily"] + extra_tfs
+        tf_keys = ["Daily"] + extra_tfs
 
         c1, c2, c3 = st.columns([1, 1, 1])
 
@@ -991,14 +991,14 @@ class MarketOverviewModule(ReportModuleBase):
 
         # Preview
         preview_parts = []
-        for k in tf_key:
+        for k in tf_keys:
             dfs = mo_load_for_timeframe(k)
             asof = _mo_asof_from_df(dfs[0])
             preview_parts.append(f"{k}: {asof if asof else '(date not found)'}")
         st.markdown("**Preview:** Market Overview – " + " | ".join(preview_parts))
 
         return {
-            "tf_key": tf_key,
+            "tf_keys": tf_keys,
             "include_top_cards": include_top_cards,
             "include_score_change_cards": include_score_change_cards,
             "include_daily_extras": include_daily_extras,   # applies to Daily only in build()
@@ -1006,15 +1006,15 @@ class MarketOverviewModule(ReportModuleBase):
         }
 
     def build(self, options: dict) -> tuple[list[bytes], str]:
-        tf_key = options.get("tf_key", ["Daily"])
+        tf_keys = options.get("tf_keys", ["Daily"])
 
         # enforce order: Daily, Weekly, Monthly, Quarterly
         order = ["Daily", "Weekly", "Monthly", "Quarterly"]
-        tf_key = [t for t in order if t in tf_key]
+        tf_keys = [t for t in order if t in tf_keys]
 
         blobs: list[bytes] = []
 
-        for tf_key in tf_key:
+        for tf_key in tf_keys:
             blobs.append(
                 build_market_overview_pdf(
                     tf_key=tf_key,
@@ -1025,11 +1025,11 @@ class MarketOverviewModule(ReportModuleBase):
                 )
             )
 
-        # filename stub (packet filename is handled globally, but keep a useful stub anyway)
-        tf_for_date = "Daily" if "Daily" in tf_key else tf_key[0]
+        # filename stub
+        tf_for_date = "Daily" if "Daily" in tf_keys else tf_keys[0]
         asof = _mo_asof_from_df(mo_load_for_timeframe(tf_for_date)[0])
         date_slug = asof.replace("/", "-") if asof else "report"
-        tf_slug = "-".join([t.lower() for t in tf_key])
+        tf_slug = "-".join([t.lower() for t in tf_keys])
         stub = f"market_overview_{tf_slug}_{date_slug}"
 
         return (blobs, stub)
