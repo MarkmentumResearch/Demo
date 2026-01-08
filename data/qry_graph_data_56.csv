@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_wtd_change,current_model_score,previous_model_score
-EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,2026-01-06,-88.0,-53.0,35.0
-JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,2026-01-06,-83.0,-12.0,71.0
-SPGI,S&P GLOBAL INC.,Financials,2026-01-06,-78.0,-43.0,35.0
-VTR,"VENTAS, INC.",Real Estate,2026-01-06,-68.0,-9.0,59.0
-ADI,"ANALOG DEVICES, INC.",Information Technology,2026-01-06,-67.0,-10.0,57.0
-SBLK,STAR BULK CARRIERS CORP.,MR Discretion,2026-01-06,-65.0,-27.0,38.0
-ALB,ALBEMARLE ,Materials,2026-01-06,-64.0,-41.0,23.0
-CPB,CAMPBELL SOUP COMPANY,Consumer Staples,2026-01-06,-63.0,-23.0,40.0
-USB,U.S. BANCORP,Financials,2026-01-06,-61.0,-26.0,35.0
-BALL,BALL ,Materials,2026-01-06,-60.0,-53.0,7.0
+JKHY,"JACK HENRY & ASSOCIATES, INC.",Financials,2026-01-07,-104.0,-33.0,71.0
+ADI,"ANALOG DEVICES, INC.",Information Technology,2026-01-07,-84.0,-27.0,57.0
+EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,2026-01-07,-83.0,-48.0,35.0
+VTR,"VENTAS, INC.",Real Estate,2026-01-07,-68.0,-9.0,59.0
+ALB,ALBEMARLE ,Materials,2026-01-07,-64.0,-41.0,23.0
+SYK,STRYKER ,Health Care,2026-01-07,-64.0,-68.0,-4.0
+AMZN,"AMAZON.COM, INC.",Consumer Discretionary,2026-01-07,-63.0,-17.0,46.0
+REGN,"REGENERON PHARMACEUTICALS, INC.",Health Care,2026-01-07,-62.0,-64.0,-2.0
+HUM,HUMANA INC.,Health Care,2026-01-07,-61.0,-52.0,9.0
+SOLV,SOLVENTUM ,Health Care,2026-01-07,-60.0,-41.0,19.0
