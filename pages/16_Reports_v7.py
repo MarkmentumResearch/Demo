@@ -1171,7 +1171,7 @@ st.divider()
 
 for key in selected_keys:
     module = MODULE_BY_KEY[key]
-    with st.expander(f"{module.label} Options", expanded=(key == "morning_compass")):
+    with st.expander(f"{module.label} Options", expanded=(key in selected_keys)):
         module_options[key] = module.ui()
 
 st.divider()
