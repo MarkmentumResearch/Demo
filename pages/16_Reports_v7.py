@@ -159,7 +159,7 @@ def _market_read_to_flowables(mr_text: str) -> list:
         low = ln.lower()
 
         # section headers / labels
-        if low.startswith("Market Read:") or low.startswith("Weekly Market Read:") or low.startswith("Monthly Market Read:") or low.startswith("Quarterly Market Read:"):
+        if low.startswith("market read:") or low.startswith("weekly market read:") or low.startswith("monthly market read:") or low.startswith("quarterly market read:"):
             out.append(Spacer(1, 6))
             out.append(Paragraph(clean_text(ln), H2))
             in_bullets = False
