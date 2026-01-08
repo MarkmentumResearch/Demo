@@ -8,7 +8,8 @@ import streamlit as st
 
 # PDF (ReportLab)
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
+    Image as RLImage, PageBreak, KeepInFrame
 )
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
@@ -883,8 +884,19 @@ def build_market_overview_pdf(
         if not mr_text:
             flow.append(Paragraph(f"Market Read missing or empty: {docx_name}", NOTE))
         else:
-            for item in _market_read_to_flowables(mr_text):
-                flow.append(item)
+            mr_items = _market_read_to_flowables(mr_text)
+
+    # Force Market Read to stay on ONE page by shrinking content if needed
+    # doc.height is the usable height (already respects your margins: bottomMargin=0.95")
+    mr_box = KeepInFrame(
+        maxWidth=doc.width,
+        maxHeight=doc.height,
+        content=mr_items,
+        mode="shrink",      # <— key: auto-scale down to fit
+        hAlign="LEFT",
+        vAlign="TOP",
+    )
+    flow.append(mr_box)
 
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
 
