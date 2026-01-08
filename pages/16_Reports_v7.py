@@ -874,7 +874,7 @@ def build_market_overview_pdf(
     # Market Read (docx)
     # -------------------------
     if include_market_read:
-        flow.append(Paragraph("Market Read", H1))
+        #flow.append(Paragraph("Market Read", H1))
         docx_name = MO_MARKET_READ_DOCX.get(tf_key, "")
         mr_text = _read_docx_plain_text(DATA_DIR / docx_name) if docx_name else ""
 
