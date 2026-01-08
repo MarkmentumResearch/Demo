@@ -16,6 +16,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.utils import simpleSplit
+from reportlab.platypus import ListFlowable, ListItem
 
 # Merge PDFs (UI layer only)
 from pypdf import PdfReader, PdfWriter
@@ -142,6 +143,57 @@ def _read_docx_plain_text(doc_path: Path) -> str:
         return clean_text("\n".join(lines).strip())
     except Exception:
         return ""
+
+def _market_read_to_flowables(mr_text: str) -> list:
+    """
+    Converts Market Read plain text into PDF flowables with bullets for key lines.
+    """
+    out = []
+    lines = [ln.strip() for ln in (mr_text or "").splitlines()]
+    lines = [ln for ln in lines if ln]  # drop blanks
+
+    bullets = []
+    in_bullets = False
+
+    for ln in lines:
+        low = ln.lower()
+
+        # section headers / labels
+        if low.startswith("market read:") or low.endswith("market read:"):
+            out.append(Spacer(1, 6))
+            out.append(Paragraph(clean_text(ln), H2))
+            in_bullets = False
+            continue
+
+        if low in ("the market is saying:", "macro levers:", "macro levers (wtd % returns):", "macro levers (mtd % returns):", "macro levers (qtd % returns):"):
+            # flush existing bullets
+            if bullets:
+                out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
+                bullets = []
+            out.append(Spacer(1, 6))
+            out.append(Paragraph(clean_text(ln), H2))
+            in_bullets = True
+            continue
+
+        if low.startswith("bottom line:"):
+            if bullets:
+                out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
+                bullets = []
+            out.append(Spacer(1, 10))
+            out.append(Paragraph(clean_text(ln), P))
+            in_bullets = False
+            continue
+
+        # normal lines
+        if in_bullets:
+            bullets.append(ListItem(Paragraph(clean_text(ln), P)))
+        else:
+            out.append(Paragraph(clean_text(ln), P))
+
+    if bullets:
+        out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
+
+    return out
 
 
 DISCLAIMER_TEXT = (
@@ -642,7 +694,7 @@ def build_market_overview_pdf(
     flow.append(Paragraph(clean_text(title), H1))
     flow.append(Spacer(1, 6))
 
-    def _simple_card(title_txt: str, df: pd.DataFrame):
+    def _simple_card(title_txt: str, df: pd.DataFrame, value_header: str = "Value"):
         if df.empty:
             flow.append(Paragraph(f"{title_txt} (no data)", NOTE))
             flow.append(Spacer(1, 8))
@@ -677,20 +729,27 @@ def build_market_overview_pdf(
         if ncol: rename_map[ncol] = "Name"
         if tcol: rename_map[tcol] = "Ticker"
         if ccol: rename_map[ccol] = "Category"
-        if value_col: rename_map[value_col] = "Value"
+        if value_col: rename_map[value_col] = value_header
         d = d.rename(columns=rename_map)
 
         # formatting: if looks like percent (0.xx), show %; else int
-        if "Value" in d.columns:
+        if value_header in d.columns:
             def _fmt_val(v):
                 try:
                     fv = float(v)
                 except Exception:
                     return str(v) if v is not None else ""
-                if abs(fv) <= 2 and "percent" in title_txt.lower():
+
+                # Formatting by type
+                if value_header.lower() == "percent":
                     return fmt_pct(fv, 2)
-                return fmt_num(fv, 2) if abs(fv) < 1_000_000 else fmt_int(fv)
-            d["Value"] = d["Value"].map(_fmt_val)
+                if value_header.lower() == "shares":
+                    return fmt_num(fv, 2)  # you can switch to fmt_int if you want no decimals
+                if value_header.lower() in ("change", "score"):
+                    return fmt_int(fv)
+                return fmt_num(fv, 2)
+
+            d[value_header] = d[value_header].map(_fmt_val)
 
         header = [th(c) for c in d.columns.tolist()]
         data_rows = [header] + d.values.tolist()
@@ -715,17 +774,19 @@ def build_market_overview_pdf(
     # Row 1: gainers/decliners/most active
     # -------------------------
     if include_top_cards:
-        _simple_card(f"{tf_key} – Top Ten Percentage Gainers", dfs[0])
-        _simple_card(f"{tf_key} – Top Ten Percentage Decliners", dfs[1])
-        _simple_card(f"{tf_key} – Most Active (Shares)", dfs[2])
+        _simple_card(f"{tf_key} – Top Ten Percentage Gainers", dfs[0], value_header="Percent")
+        flow.append(PageBreak())
+        _simple_card(f"{tf_key} – Top Ten Percentage Decliners", dfs[1], value_header="Percent")
+        flow.append(PageBreak())
+        _simple_card(f"{tf_key} – Most Active (Shares)", dfs[2], value_header="Shares")
         flow.append(PageBreak())
 
     # -------------------------
     # Row 2: Score gainers/decliners + score change distribution
     # -------------------------
     if include_score_change_cards:
-        _simple_card(f"{tf_key} – Top Ten Markmentum Score Gainers", dfs[3])
-        _simple_card(f"{tf_key} – Top Ten Markmentum Score Decliners", dfs[4])
+        _simple_card(f"{tf_key} – Top Ten Markmentum Score Gainers", dfs[3], value_header="Change")
+        _simple_card(f"{tf_key} – Top Ten Markmentum Score Decliners", dfs[4], value_header="Change")
 
         # Dist table (Score Bin / Ticker Count)
         df_dist = dfs[5].copy()
@@ -751,8 +812,8 @@ def build_market_overview_pdf(
     # Daily extras: highest/lowest/hist + opportunity density
     # -------------------------
     if tf_key == "Daily" and include_daily_extras:
-        _simple_card("Daily – Highest Markmentum Score", dfs[6])
-        _simple_card("Daily – Lowest Markmentum Score", dfs[7])
+        _simple_card("Daily – Highest Markmentum Score", dfs[6], value_header="Score")
+        _simple_card("Daily – Lowest Markmentum Score", dfs[7], value_header="Score")
 
         # Histogram table
         df_hist = dfs[8].copy()
@@ -816,11 +877,12 @@ def build_market_overview_pdf(
         flow.append(Paragraph("Market Read", H1))
         docx_name = MO_MARKET_READ_DOCX.get(tf_key, "")
         mr_text = _read_docx_plain_text(DATA_DIR / docx_name) if docx_name else ""
+
         if not mr_text:
             flow.append(Paragraph(f"Market Read missing or empty: {docx_name}", NOTE))
         else:
-            # simple paragraph formatting, preserve line breaks
-            flow.append(Paragraph(clean_text(mr_text).replace("\n", "<br/>"), P))
+            for item in _market_read_to_flowables(mr_text):
+                flow.append(item)
 
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
 
