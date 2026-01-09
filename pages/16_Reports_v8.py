@@ -571,6 +571,8 @@ def build_title_page_pdf(trading_session: str, data_asof: str) -> bytes:
     ))
     flow.append(cover_title)
 
+    flow.append(Spacer(1, 0.5 * inch))
+    
     if trading_session:
         flow.append(Paragraph(
             f"<b>Trading Session:</b> {trading_session}",
