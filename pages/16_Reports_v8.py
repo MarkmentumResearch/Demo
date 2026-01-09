@@ -1538,12 +1538,21 @@ if gen:
     # Trading session = next calendar day
     from datetime import datetime, timedelta
 
-    data_asof = _asof_date_from_main("Daily")
-    
     trading_session = ""
-    if data_asof:
-        dt = datetime.strptime(data_asof, "%m/%d/%Y")
-        trading_session = (dt + timedelta(days=1)).strftime("%-m/%-d/%Y")
+    data_asof = ""
+
+    session_str = _asof_date_from_main("Daily")  # this is your "Trading Session" date
+    if session_str:
+        dt_session = datetime.strptime(session_str, "%m/%d/%Y")
+
+        # Data-as-of = prior trading day (simple weekday fallback)
+        dt_asof = dt_session - timedelta(days=1)
+        while dt_asof.weekday() >= 5:  # 5=Sat, 6=Sun
+            dt_asof -= timedelta(days=1)
+
+        # Windows-safe formatting (no %-m / %-d)
+        trading_session = f"{dt_session.month}/{dt_session.day}/{dt_session.year}"
+        data_asof = f"{dt_asof.month}/{dt_asof.day}/{dt_asof.year}"
 
     cover_pdf = build_title_page_pdf(trading_session, data_asof)
 
@@ -1566,7 +1575,7 @@ if gen:
     #    filename = f"markmentum_packet_{date_slug}.pdf"
 
     asof = _asof_date_from_main("Daily")
-    date_slug = asof.replace("/", "-") if asof else "report"
+    date_slug = trading_session.replace("/", "-") if trading_session else "report"
     filename = f"Markmentum Research Pack - {date_slug}.pdf"
 
 
