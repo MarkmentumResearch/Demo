@@ -1075,8 +1075,8 @@ def build_performance_heatmap_pdf(
 
     # Header
     flow.append(Paragraph("<b>Performance Heatmap</b>", STYLES["Title"]))
-    if asof_str:
-        flow.append(Paragraph(asof_str, STYLES["Normal"]))
+    #if asof_str:
+    #    flow.append(Paragraph(asof_str, STYLES["Normal"]))
     flow.append(Spacer(1, 10))
 
     if perf.empty:
