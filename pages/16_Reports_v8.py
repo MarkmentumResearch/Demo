@@ -559,6 +559,7 @@ def build_title_page_pdf(trading_session: str, data_asof: str) -> bytes:
         flow.append(img)
 
     flow.append(Spacer(1, 0.5 * inch))
+    flow.append(Spacer(1, 0.5 * inch))
 
     # Big centered title
     cover_title = Paragraph("Research Pack", ParagraphStyle(
@@ -581,6 +582,8 @@ def build_title_page_pdf(trading_session: str, data_asof: str) -> bytes:
                 spaceAfter=6
             )
         ))
+    
+    flow.append(Spacer(1, 0.5 * inch))
 
     if data_asof:
         flow.append(Paragraph(
