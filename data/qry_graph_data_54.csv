@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-NVDA,NVIDIA ,Information Technology,2026-01-07,513.94
-INTC,INTEL ,Information Technology,2026-01-07,329.09
-SLV,ISHARES:SILVER TRUST,Commodities,2026-01-07,302.53
-TSLA,"TESLA, INC.",Consumer Discretionary,2026-01-07,216.86
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2026-01-07,216.79
-XLE,SEL SECTOR:ENERGY SPDR,Sector & Style ETFs,2026-01-07,207.27
-F,FORD MOTOR COMPANY,Consumer Discretionary,2026-01-07,185.28
-T,AT&T INC.,Communication Services,2026-01-07,155.92
-PFE,PFIZER INC.,Health Care,2026-01-07,154.99
-AAPL,APPLE INC.,Information Technology,2026-01-07,146.31
+NVDA,NVIDIA ,Information Technology,2026-01-08,686.39
+INTC,INTEL ,Information Technology,2026-01-08,417.33
+SLV,ISHARES:SILVER TRUST,Commodities,2026-01-08,380.45
+F,FORD MOTOR COMPANY,Consumer Discretionary,2026-01-08,339.56
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2026-01-08,280.81
+TSLA,"TESLA, INC.",Consumer Discretionary,2026-01-08,273.9
+XLE,SEL SECTOR:ENERGY SPDR,Sector & Style ETFs,2026-01-08,258.72
+T,AT&T INC.,Communication Services,2026-01-08,199.69
+PFE,PFIZER INC.,Health Care,2026-01-08,197.97
+AAPL,APPLE INC.,Information Technology,2026-01-08,196.73
