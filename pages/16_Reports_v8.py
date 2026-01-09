@@ -530,7 +530,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
 # !!! DO NOT CHANGE OUTPUT LOGIC !!!
 # Morning Compass PDF builder stays intact; we wrap it as a module.
 # -------------------------
-def build_title_page_pdf(asof: str) -> bytes:
+def build_title_page_pdf(trading_session: str, data_asof: str) -> bytes:
     """
     Creates a simple title page:
     - centered logo
@@ -570,14 +570,29 @@ def build_title_page_pdf(asof: str) -> bytes:
     ))
     flow.append(cover_title)
 
-    if asof:
-        flow.append(Paragraph(asof, ParagraphStyle(
-            "COVER_DATE",
-            parent=styles["BodyText"],
-            alignment=TA_CENTER,
-            fontSize=14,
-            textColor=colors.HexColor("#444444")
-        )))
+    if trading_session:
+        flow.append(Paragraph(
+            f"<b>Trading Session:</b> {trading_session}",
+            ParagraphStyle(
+                "COVER_SESSION",
+                parent=styles["BodyText"],
+                alignment=TA_CENTER,
+                fontSize=14,
+                spaceAfter=6
+            )
+        ))
+
+    if data_asof:
+        flow.append(Paragraph(
+            f"Data as of: {data_asof}",
+            ParagraphStyle(
+                "COVER_ASOF",
+                parent=styles["BodyText"],
+                alignment=TA_CENTER,
+                fontSize=11,
+                textColor=colors.HexColor("#666666")
+            )
+        ))
 
     # IMPORTANT: no disclaimer/footer on title page
     doc.build(flow)
@@ -1520,8 +1535,17 @@ if gen:
     #    final_pdf = merge_pdf_bytes_in_order(pdf_parts)
 
     # Build cover page using Daily as-of (best effort)
-    asof = _asof_date_from_main("Daily")
-    cover_pdf = build_title_page_pdf(asof)
+    # Trading session = next calendar day
+    from datetime import datetime, timedelta
+
+    data_asof = _asof_date_from_main("Daily")
+    
+    trading_session = ""
+    if data_asof:
+        dt = datetime.strptime(data_asof, "%m/%d/%Y")
+        trading_session = (dt + timedelta(days=1)).strftime("%-m/%-d/%Y")
+
+    cover_pdf = build_title_page_pdf(trading_session, data_asof)
 
     # Always prepend cover page
     pdf_parts_with_cover = [cover_pdf] + pdf_parts
