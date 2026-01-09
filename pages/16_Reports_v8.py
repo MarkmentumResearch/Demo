@@ -991,6 +991,20 @@ def _ph_interp_color(val: float, vmax: float):
 
     return colors.Color(r, g, b)
 
+def _ph_fmt_pct(x) -> str:
+    """Format values like the portal: 2 decimals + %.
+    Handles either fractions (0.0043) or already-percent values (0.43).
+    """
+    try:
+        v = float(x)
+    except Exception:
+        return ""
+
+    # If it's likely a fraction (like 0.0043), convert to percent
+    if abs(v) <= 2.0:
+        v = v * 100.0
+
+    return f"{v:.2f}%"
 
 def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str) -> list:
     """ReportLab flowables for a titled % table with per-column shading."""
@@ -1000,7 +1014,16 @@ def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str)
 
     # build table data
     cols = list(df.columns)
-    data = [cols] + df.values.tolist()
+    data = [cols]
+    for r in range(len(df)):
+        row = []
+        for c in cols:
+            v = df.loc[df.index[r], c]
+            if c in ("Daily", "WTD", "MTD", "QTD"):
+                row.append(_ph_fmt_pct(v))
+            else:
+                row.append(v)
+        data.append(row)
 
     # base table
     t = Table(data, hAlign="CENTER")
@@ -1042,7 +1065,7 @@ def build_performance_heatmap_pdf(
 
     doc = SimpleDocTemplate(
         buffer,
-        pagesize=letter,   # portrait fits these tables nicely
+        pagesize=landscape(letter),
         leftMargin=0.60*inch, rightMargin=0.60*inch,
         topMargin=0.60*inch, bottomMargin=0.85*inch
     )
@@ -1123,6 +1146,8 @@ def build_performance_heatmap_pdf(
                 "MTD":   float(cat_df["MTD"].abs().max(skipna=True) or 0.0),
                 "QTD":   float(cat_df["QTD"].abs().max(skipna=True) or 0.0),
             }
+
+            flow.append(PageBreak())
 
             flow.extend(_ph_make_colored_table(cat_df, vmaxC, "Category Averages"))
 
@@ -1379,7 +1404,7 @@ class PerformanceHeatmapModule(ReportModuleBase):
         # defaults: keep it tight; table shading already conveys “heatmap”
         include_macro = st.checkbox("Include Macro Orientation", value=True)
         include_cat = st.checkbox("Include Category Averages", value=True)
-        include_heatmap = st.checkbox("Include Category Heatmap (Optional)", value=False)
+        include_heatmap = False #skip for now
 
         # preview date
         _, asof = _ph_load_latest()
