@@ -1447,7 +1447,7 @@ def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include
             display_headers.append(c)
 
     # build table data (header row as strings, like Performance)
-    data = [cols]
+    data = [display_headers]
     for _, r in df.iterrows():
         row = []
         for c in cols:
