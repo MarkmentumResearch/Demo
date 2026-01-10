@@ -1367,10 +1367,10 @@ def _sr_load_latest() -> tuple[pd.DataFrame, str]:
     df = df.rename(columns={
         "Ticker_name": "Name",
         "Sharpe_Rank": "Rank",
-        "Sharpe_Rank_daily_change": "Daily Δ",
-        "Sharpe_Rank_wtd_change":   "WTD Δ",
-        "Sharpe_Rank_mtd_change":   "MTD Δ",
-        "Sharpe_Rank_qtd_change":   "QTD Δ",
+        "Sharpe_Rank_daily_change": "Daily",
+        "Sharpe_Rank_wtd_change":   "WTD",
+        "Sharpe_Rank_mtd_change":   "MTD",
+        "Sharpe_Rank_qtd_change":   "QTD",
     })
 
     # keep only the fields we need (Category may be absent in some bad exports)
