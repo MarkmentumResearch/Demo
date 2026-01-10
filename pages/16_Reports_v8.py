@@ -1029,7 +1029,8 @@ def _ph_fmt_pct(x) -> str:
 def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str) -> list:
     """ReportLab flowables for a titled % table with per-column shading."""
     flow = []
-    flow.append(Paragraph(f"<b>{title}</b>", STYLES["Heading3"]))
+    #flow.append(Paragraph(f"<b>{title}</b>", STYLES["Heading3"]))
+    flow.append(Paragraph(clean_text(title), H2))
     flow.append(Spacer(1, 6))
 
     # build table data
