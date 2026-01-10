@@ -1793,7 +1793,7 @@ class SharpeRankHeatmapModule(ReportModuleBase):
             include_category_averages=include_cat,
         )
 
-        return [(self.label, pdf_bytes)], None
+        return ([pdf_bytes], "sharpe_rank_heatmap")
 
 
 class PlaceholderModule(ReportModuleBase):
