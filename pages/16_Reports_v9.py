@@ -1453,7 +1453,7 @@ def build_sharpe_rank_heatmap_pdf(
         flow.append(Spacer(1, 0.12*inch))
         flow.append(Paragraph(
             "Rank cells are High/Neutral/Low (green/gray/red); change columns use independent red/green scales.",
-            NOTE["footnote"]
+            NOTE
         ))
 
         # separate page before category averages
