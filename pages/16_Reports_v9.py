@@ -525,6 +525,72 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
     ))
     flowables.append(Spacer(1, 10))
 
+import numpy as np
+from reportlab.lib import colors
+
+def _robust_vmax(series, q=0.98, floor=1.0, step=1.0):
+    s = pd.to_numeric(pd.Series(series), errors="coerce").abs().dropna()
+    if s.empty:
+        return float(floor)
+    vmax = float(np.quantile(s, q))
+    return max(float(floor), float(np.ceil(vmax / step) * step))
+
+def _blend_with_white(rgb_255, alpha):
+    """
+    Simulate CSS rgba(rgb, alpha) on white background.
+    rgb_255: (R,G,B) 0-255
+    alpha: 0..1
+    """
+    a = float(max(0.0, min(alpha, 1.0)))
+    r, g, b = [c / 255.0 for c in rgb_255]
+    # white is (1,1,1)
+    rr = 1.0 * (1.0 - a) + r * a
+    gg = 1.0 * (1.0 - a) + g * a
+    bb = 1.0 * (1.0 - a) + b * a
+    return colors.Color(rr, gg, bb)
+
+def _sr_rank_bg(score, cap=100.0):
+    """
+    Match portal Rank shading:
+    - >=70 green (stronger as approaches 100)
+    - <=30 red (stronger as approaches 0)
+    - else neutral gray tint
+    """
+    if score is None or pd.isna(score):
+        return None
+
+    s = float(np.clip(float(score), 0.0, float(cap)))
+
+    if s >= 70.0:
+        rel = (s - 70.0) / 30.0
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        return _blend_with_white((16, 185, 129), alpha)   # green
+    elif s <= 30.0:
+        rel = (30.0 - s) / 30.0
+        alpha = 0.12 + 0.28 * max(0.0, min(rel, 1.0))
+        return _blend_with_white((239, 68, 68), alpha)    # red
+    else:
+        return _blend_with_white((156, 163, 175), 0.18)   # neutral gray
+
+def _sr_delta_bg(val, vmax):
+    """
+    Match portal delta shading:
+    alpha = 0.12 + 0.28 * min(abs(val)/vmax, 1)
+    green if val>0, red if val<0, transparent if 0
+    """
+    if val is None or pd.isna(val) or vmax is None or float(vmax) <= 0:
+        return None
+
+    v = float(val)
+    s = min(abs(v) / float(vmax), 1.0)
+    alpha = 0.12 + 0.28 * s
+
+    if v > 0:
+        return _blend_with_white((16, 185, 129), alpha)
+    elif v < 0:
+        return _blend_with_white((239, 68, 68), alpha)
+    else:
+        return None
 
 # -------------------------
 # !!! DO NOT CHANGE OUTPUT LOGIC !!!
@@ -1301,10 +1367,10 @@ def _sr_load_latest() -> tuple[pd.DataFrame, str]:
     df = df.rename(columns={
         "Ticker_name": "Name",
         "Sharpe_Rank": "Rank",
-        "Sharpe_Rank_daily_change": "Daily",
-        "Sharpe_Rank_wtd_change":   "WTD",
-        "Sharpe_Rank_mtd_change":   "MTD",
-        "Sharpe_Rank_qtd_change":   "QTD",
+        "Sharpe_Rank_daily_change": "Daily Δ",
+        "Sharpe_Rank_wtd_change":   "WTD Δ",
+        "Sharpe_Rank_mtd_change":   "MTD Δ",
+        "Sharpe_Rank_qtd_change":   "QTD Δ",
     })
 
     # keep only the fields we need (Category may be absent in some bad exports)
@@ -1398,7 +1464,7 @@ def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include
         j = cols.index("Rank")
         for i in range(1, len(data)):
             rv = pd.to_numeric(df.iloc[i-1].get("Rank"), errors="coerce")
-            ts.add("BACKGROUND", (j, i), (j, i), _sr_rank_bg_color(rv))
+            ts.add("BACKGROUND", (j, i), (j, i), _sr_rank_bg(rv))
 
     # Change shading (independent per timeframe)
     for c in ("Daily", "WTD", "MTD", "QTD"):
@@ -1408,7 +1474,7 @@ def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include
         col_vmax = vmax_map.get(c, 1.0) or 1.0
         for i in range(1, len(data)):
             v = pd.to_numeric(df.iloc[i-1].get(c), errors="coerce")
-            ts.add("BACKGROUND", (j, i), (j, i), _ph_interp_color(v, col_vmax))
+            ts.add("BACKGROUND", (j, i), (j, i), _sr_delta_bg(v, col_vmax))
 
     t.setStyle(ts)
     return t
@@ -1460,7 +1526,8 @@ def build_sharpe_rank_heatmap_pdf(
         if m.empty:
             flow.append(Paragraph("No macro orientation rows found.", NOTE))
         else:
-            vmax = {c: _sr_vmax(m[c]) for c in ["Daily", "WTD", "MTD", "QTD"] if c in m.columns}
+            vmax = {c: _robust_vmax(m[c], q=0.98, floor=1.0, step=1.0)
+                for c in ["Daily", "WTD", "MTD", "QTD"] if c in m.columns}
             flow.append(_sr_make_colored_table(m, vmax, include_ticker=("Ticker" in m.columns)))
 
         flow.append(Spacer(1, 12))
@@ -1492,7 +1559,8 @@ def build_sharpe_rank_heatmap_pdf(
 
         cat = g.rename(columns={"Category": "Name"})[["Name", "Rank", "Daily", "WTD", "MTD", "QTD"]].copy()
 
-        vmax = {c: _sr_vmax(cat[c]) for c in ["Daily", "WTD", "MTD", "QTD"] if c in cat.columns}
+        vmax = {c: _robust_vmax(cat[c], q=0.98, floor=1.0, step=1.0)
+            for c in ["Daily", "WTD", "MTD", "QTD"] if c in cat.columns}
         flow.append(_sr_make_colored_table(cat, vmax, include_ticker=False))
 
     elif include_category_averages:
