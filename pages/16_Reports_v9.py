@@ -1358,17 +1358,16 @@ def _sr_vmax(series: pd.Series, floor: float = 1.0) -> float:
 
 def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include_ticker: bool) -> Table:
     """
-    Build a ReportLab table with:
-      - Rank column shaded via _sr_rank_bg_color
-      - Change columns shaded via existing _ph_interp_color (green/red scale)
+    Match Performance Heatmap look:
+      - centered table (hAlign="CENTER")
+      - same header style/padding/grid weights as _ph_make_colored_table
+      - Rank column uses rank shading
+      - change columns use _ph_interp_color with per-column vmax
     """
     cols = df.columns.tolist()
 
-    # Header row
-    header = [th(c) for c in cols]
-    data_rows = [header]
-
-    # Body rows
+    # build table data (header row as strings, like Performance)
+    data = [cols]
     for _, r in df.iterrows():
         row = []
         for c in cols:
@@ -1376,51 +1375,42 @@ def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include
                 row.append(_sr_fmt_int(r.get(c)))
             else:
                 row.append("" if pd.isna(r.get(c)) else str(r.get(c)))
-        data_rows.append(row)
+        data.append(row)
 
-    # widths (mirror your perf heatmap proportions)
-    if include_ticker and ("Ticker" in cols):
-        col_widths = [220, 60, 55, 55, 55, 55, 55]  # Name, Ticker, Rank, Daily, WTD, MTD, QTD
-    else:
-        col_widths = [240, 55, 55, 55, 55, 55]      # Name, Rank, Daily, WTD, MTD, QTD
+    # IMPORTANT: match Performance alignment behavior
+    t = Table(data, hAlign="CENTER")
 
-    t = Table(data_rows, colWidths=col_widths, hAlign="LEFT")
-
-    # base table style matches your existing look
-    style_cmds = [
+    ts = TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.whitesmoke),
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
         ("FONTSIZE", (0, 0), (-1, 0), 9),
-        ("BACKGROUND", (0, 0), (-1, 0), colors.Color(0.95, 0.95, 0.95)),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
-        ("GRID", (0, 0), (-1, -1), 0.25, colors.Color(0.80, 0.80, 0.80)),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("FONTSIZE", (0, 1), (-1, -1), 9),
         ("ALIGN", (0, 0), (-1, 0), "CENTER"),
-    ]
+        ("ALIGN", (0, 1), (0, -1), "LEFT"),      # Name left
+        ("ALIGN", (1, 1), (-1, -1), "CENTER"),   # rest centered like Performance
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.lightgrey),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+    ])
 
-    # align numeric columns right
-    for c in ("Rank", "Daily", "WTD", "MTD", "QTD"):
-        if c in cols:
-            ci = cols.index(c)
-            style_cmds.append(("ALIGN", (ci, 1), (ci, -1), "RIGHT"))
+    # Rank shading
+    if "Rank" in cols:
+        j = cols.index("Rank")
+        for i in range(1, len(data)):
+            rv = pd.to_numeric(df.iloc[i-1].get("Rank"), errors="coerce")
+            ts.add("BACKGROUND", (j, i), (j, i), _sr_rank_bg_color(rv))
 
-    # apply per-cell shading
-    for r_i in range(1, len(data_rows)):
-        # Rank shading
-        if "Rank" in cols:
-            ci = cols.index("Rank")
-            rv = pd.to_numeric(df.iloc[r_i - 1].get("Rank"), errors="coerce")
-            style_cmds.append(("BACKGROUND", (ci, r_i), (ci, r_i), _sr_rank_bg_color(rv)))
+    # Change shading (independent per timeframe)
+    for c in ("Daily", "WTD", "MTD", "QTD"):
+        if c not in cols:
+            continue
+        j = cols.index(c)
+        col_vmax = vmax_map.get(c, 1.0) or 1.0
+        for i in range(1, len(data)):
+            v = pd.to_numeric(df.iloc[i-1].get(c), errors="coerce")
+            ts.add("BACKGROUND", (j, i), (j, i), _ph_interp_color(v, col_vmax))
 
-        # delta shading (independent per timeframe)
-        for c in ("Daily", "WTD", "MTD", "QTD"):
-            if c not in cols:
-                continue
-            ci = cols.index(c)
-            v = pd.to_numeric(df.iloc[r_i - 1].get(c), errors="coerce")
-            vmax = vmax_map.get(c, 1.0)
-            style_cmds.append(("BACKGROUND", (ci, r_i), (ci, r_i), _ph_interp_color(v, vmax)))
-
-    t.setStyle(TableStyle(style_cmds))
+    t.setStyle(ts)
     return t
 
 
