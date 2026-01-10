@@ -1433,7 +1433,7 @@ def build_sharpe_rank_heatmap_pdf(
     buf = io.BytesIO()
     doc = SimpleDocTemplate(
         buf,
-        pagesize=landscape(letter)
+        pagesize=landscape(letter),
         leftMargin=36, rightMargin=36,
         topMargin=36, bottomMargin=40
     )
