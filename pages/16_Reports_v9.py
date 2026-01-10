@@ -1422,7 +1422,7 @@ def build_sharpe_rank_heatmap_pdf(
             s = pd.to_numeric(macro[k], errors="coerce")
             vmax[k] = float(s.abs().max(skipna=True) or 0.0)
 
-        flow.append(Paragraph("<b>Macro Orientation</b>", STYLES["h2_left"]))
+        flow.append(Paragraph("<b>Macro Orientation</b>", H2))
         flow.append(Paragraph("Current Sharpe Percentile Rank and Change by timeframe", STYLES["subtle_center"]))
         flow.append(Spacer(1, 0.15*inch))
 
