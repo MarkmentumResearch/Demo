@@ -583,7 +583,7 @@ def _sr_delta_bg(val, vmax):
 
     v = float(val)
     s = min(abs(v) / float(vmax), 1.0)
-    alpha = 0.12 + 0.28 * s
+    alpha = 0.05 + 0.18 * s
 
     if v > 0:
         return _blend_with_white((16, 185, 129), alpha)
