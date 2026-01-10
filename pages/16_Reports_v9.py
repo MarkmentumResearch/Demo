@@ -563,14 +563,14 @@ def _sr_rank_bg(score, cap=100.0):
 
     if s >= 70.0:
         rel = (s - 70.0) / 30.0
-        alpha = 0.06 + 0.16 * max(0.0, min(rel, 1.0))
+        alpha = 0.05 + 0.14 * max(0.0, min(rel, 1.0))
         return _blend_with_white((16, 185, 129), alpha)   # green
     elif s <= 30.0:
         rel = (30.0 - s) / 30.0
-        alpha = 0.06 + 0.16 * max(0.0, min(rel, 1.0))
+        alpha = 0.05 + 0.14 * max(0.0, min(rel, 1.0))
         return _blend_with_white((239, 68, 68), alpha)    # red
     else:
-        return _blend_with_white((156, 163, 175), 0.10)   # neutral gray
+        return _blend_with_white((156, 163, 175), 0.08)   # neutral gray
 
 def _sr_delta_bg(val, vmax):
     """
@@ -583,7 +583,7 @@ def _sr_delta_bg(val, vmax):
 
     v = float(val)
     s = min(abs(v) / float(vmax), 1.0)
-    alpha = 0.05 + 0.18 * s
+    alpha = 0.05 + 0.14 * s
 
     if v > 0:
         return _blend_with_white((16, 185, 129), alpha)
