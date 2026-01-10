@@ -1726,7 +1726,7 @@ class MarketOverviewModule(ReportModuleBase):
         c1, c2, c3 = st.columns([1, 1, 1])
 
         with c1:
-            include_top_cards = st.checkbox("Include Top/Bottom/Most Active", value=True)
+            include_top_cards = st.checkbox("Include Top % Gainers / Top % Decliners / Most Active", value=True)
             include_score_change_cards = st.checkbox("Include MM Score Gainers/Decliners + Change Distribution", value=True)
 
         with c2:
