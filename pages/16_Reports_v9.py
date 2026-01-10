@@ -1453,7 +1453,7 @@ def build_sharpe_rank_heatmap_pdf(
         flow.append(Spacer(1, 0.12*inch))
         flow.append(Paragraph(
             "Rank cells are High/Neutral/Low (green/gray/red); change columns use independent red/green scales.",
-            STYLES["footnote"]
+            NOTE["footnote"]
         ))
 
         # separate page before category averages
@@ -1485,8 +1485,8 @@ def build_sharpe_rank_heatmap_pdf(
             s = pd.to_numeric(grp[k], errors="coerce")
             vmax[k] = float(s.abs().max(skipna=True) or 0.0)
 
-        flow.append(Paragraph("<b>Category Averages</b>", STYLES["h2_center"]))
-        flow.append(Paragraph("Avg Sharpe Percentile Rank and Change by category and timeframe", STYLES["subtle_center"]))
+        flow.append(Paragraph("<b>Category Averages</b>", H2))
+        flow.append(Paragraph("Avg Sharpe Percentile Rank and Change by category and timeframe", NOTE))
         flow.append(Spacer(1, 0.15*inch))
 
         header = ["Name", "Rank", "Daily", "WTD", "MTD", "QTD"]
