@@ -198,14 +198,6 @@ def _market_read_to_flowables(mr_text: str) -> list:
 
     return out
 
-# -------------------------
-# Sharpe Rank Heatmap files
-# -------------------------
-SR_CSV_BASE = DATA_DIR / "qry_graph_data_48.csv"  # Rank snapshot
-SR_CSV_WTD  = DATA_DIR / "qry_graph_data_49.csv"  # WTD change
-SR_CSV_MTD  = DATA_DIR / "qry_graph_data_50.csv"  # MTD change
-SR_CSV_QTD  = DATA_DIR / "qry_graph_data_51.csv"  # QTD change
-
 
 DISCLAIMER_TEXT = (
     "© 2025 Markmentum Research LLC. Disclaimer: This content is for informational purposes only. "
@@ -1215,316 +1207,313 @@ def build_performance_heatmap_pdf(
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
     return buffer.getvalue()
 
+# =========================================================
+# SHARPE RANK HEATMAP (PDF)
+#   - Macro Orientation + Category Averages ONLY
+#   - Uses existing global styles + same red/green delta shading logic
+# =========================================================
 
-def _sr_safe_num(x):
-    try:
-        if pd.isna(x):
-            return None
-        return float(x)
-    except Exception:
-        return None
+SR_CSV_BASE = DATA_DIR / "qry_graph_data_48.csv"  # Sharpe_Rank + daily change (and/or previous)
+SR_CSV_WTD  = DATA_DIR / "qry_graph_data_49.csv"  # Sharpe_Rank_wtd_change
+SR_CSV_MTD  = DATA_DIR / "qry_graph_data_50.csv"  # Sharpe_Rank_mtd_change
+SR_CSV_QTD  = DATA_DIR / "qry_graph_data_51.csv"  # Sharpe_Rank_qtd_change
 
+# Reuse the same ordering you use on the portal page (05_Sharpe_Rank_Heatmap.py)
+SR_MACRO_LIST = [
+    "SPX","NDX","DJI","RUT",
+    "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
+    "GLD","UUP","TLT","BTC=F"
+]
 
-def _sr_rank_bg_color(rank_val: float | None):
+SR_CATEGORY_ORDER = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities","Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
+
+def _sr_load_latest() -> tuple[pd.DataFrame, str]:
     """
-    Rank shading:
-      - High: green
-      - Neutral: gray
-      - Low: red
-    Thresholds chosen to match portal feel (rough terciles).
+    Build a single Sharpe Rank frame similar to the portal page:
+      - Latest row per ticker
+      - Columns: Name, Ticker, Category, Rank, Daily, WTD, MTD, QTD
     """
-    if rank_val is None:
-        return colors.white
-    if rank_val >= 67:
-        return colors.HexColor("#D9F2E6")  # soft green
-    if rank_val <= 33:
-        return colors.HexColor("#F8D7DA")  # soft red
-    return colors.HexColor("#E9ECEF")      # soft gray
+    if not SR_CSV_BASE.exists():
+        return pd.DataFrame(), ""
 
+    base = pd.read_csv(SR_CSV_BASE)
+    if base.empty or "Ticker" not in base.columns:
+        return pd.DataFrame(), ""
 
-def _sr_delta_bg_color(v: float | None, vmax: float):
-    """
-    Independent red/green scale per timeframe column.
-    """
-    if v is None:
-        return colors.white
-    vmax = float(vmax or 0.0)
-    if vmax <= 0:
-        return colors.white
-    # normalize -1..+1
-    t = max(-1.0, min(1.0, float(v) / vmax))
-    if t >= 0:
-        # white -> green
-        return colors.Color(
-            1.0 - 0.25 * t,
-            1.0,
-            1.0 - 0.30 * t
+    # as-of date (best effort)
+    asof_str = ""
+    if "Date" in base.columns:
+        dtmax = pd.to_datetime(base["Date"], errors="coerce").max()
+        if pd.notna(dtmax):
+            asof_str = f"{dtmax.month}/{dtmax.day}/{dtmax.year}"
+
+    # latest per ticker
+    if "Date" in base.columns:
+        base["_dt"] = pd.to_datetime(base["Date"], errors="coerce")
+        base = (
+            base.sort_values(["Ticker", "_dt"], ascending=[True, False])
+                .drop_duplicates(subset=["Ticker"], keep="first")
         )
-    else:
-        # white -> red
-        t = abs(t)
-        return colors.Color(
-            1.0,
-            1.0 - 0.25 * t,
-            1.0 - 0.25 * t
-        )
 
+    # ensure numerics
+    for c in ["Sharpe_Rank", "previous_Sharpe_Rank", "Sharpe_Rank_daily_change"]:
+        if c in base.columns:
+            base[c] = pd.to_numeric(base[c], errors="coerce")
 
-def _sr_load_latest():
-    """
-    Loads Sharpe Rank Heatmap dataset (macro rows w/ category),
-    and returns (df, asof_str).
-    """
-    def _read_csv(path: Path) -> pd.DataFrame:
-        df = pd.read_csv(path)
-        # normalize common columns
-        for c in df.columns:
-            if isinstance(c, str):
-                df.rename(columns={c: c.strip()}, inplace=True)
-        return df
+    # compute daily change if missing
+    if ("Sharpe_Rank_daily_change" not in base.columns) or base["Sharpe_Rank_daily_change"].isna().all():
+        if "Sharpe_Rank" in base.columns and "previous_Sharpe_Rank" in base.columns:
+            base["Sharpe_Rank_daily_change"] = base["Sharpe_Rank"] - base["previous_Sharpe_Rank"]
 
-    base = _read_csv(SR_CSV_BASE)
-
-    # Try to detect "as of" date from the base file (same approach you use elsewhere)
-    asof_str = "N/A"
-    for dc in ["Date", "date", "AsOf", "asof"]:
-        if dc in base.columns:
-            try:
-                d = pd.to_datetime(base[dc].dropna().iloc[-1])
-                asof_str = d.strftime("%-m/%-d/%Y") if hasattr(d, "strftime") else str(d)
-            except Exception:
-                pass
-            break
-
-    # Key columns we rely on
-    # Expecting: Ticker, Ticker_name (or Name), Category, Rank
-    # Make sure we have a consistent Name column
-    if "Name" not in base.columns:
-        if "Ticker_name" in base.columns:
-            base["Name"] = base["Ticker_name"]
-        else:
-            base["Name"] = base.get("Ticker", "")
-
-    # Merge deltas by ticker
+    # helper to load a delta file, latest-per-ticker
     def _load_delta(path: Path, colname: str) -> pd.DataFrame:
-        df = _read_csv(path)
-        if "Ticker" not in df.columns:
-            # try common fallbacks
-            for cand in ["ticker", "TICKER"]:
-                if cand in df.columns:
-                    df.rename(columns={cand: "Ticker"}, inplace=True)
-                    break
-        # find numeric column
-        num_col = None
-        for cand in [colname, "Value", "value", "Change", "change", "Delta", "delta"]:
-            if cand in df.columns:
-                num_col = cand
-                break
-        if num_col is None:
-            # last resort: first numeric column
-            num_cols = [c for c in df.columns if c != "Ticker"]
-            num_col = num_cols[0] if num_cols else None
+        if not path.exists():
+            return pd.DataFrame(columns=["Ticker", colname])
 
-        out = df[["Ticker"]].copy()
-        out[colname] = df[num_col] if num_col in df.columns else None
-        return out
+        d = pd.read_csv(path)
+        if d.empty or "Ticker" not in d.columns or colname not in d.columns:
+            return pd.DataFrame(columns=["Ticker", colname])
 
-    wtd = _load_delta(SR_CSV_WTD, "WTD")
-    mtd = _load_delta(SR_CSV_MTD, "MTD")
-    qtd = _load_delta(SR_CSV_QTD, "QTD")
+        if "Date" in d.columns:
+            d["_dt"] = pd.to_datetime(d["Date"], errors="coerce")
+            d = (
+                d.sort_values(["Ticker", "_dt"], ascending=[True, False])
+                 .drop_duplicates(subset=["Ticker"], keep="first")
+            )
+
+        d[colname] = pd.to_numeric(d[colname], errors="coerce")
+        return d[["Ticker", colname]].drop_duplicates("Ticker", keep="first")
+
+    wtd = _load_delta(SR_CSV_WTD, "Sharpe_Rank_wtd_change")
+    mtd = _load_delta(SR_CSV_MTD, "Sharpe_Rank_mtd_change")
+    qtd = _load_delta(SR_CSV_QTD, "Sharpe_Rank_qtd_change")
 
     df = base.copy()
-    for dfx in (wtd, mtd, qtd):
-        df = df.merge(dfx, on="Ticker", how="left")
+    for add in (wtd, mtd, qtd):
+        df = df.merge(add, on="Ticker", how="left")
 
-    # Daily change: if your base has it, keep it; else compute from a column if exists
-    if "Daily" not in df.columns:
-        # common base column possibilities
-        for cand in ["daily", "DailyChange", "daily_change", "Δ Daily", "Delta_Daily"]:
-            if cand in df.columns:
-                df.rename(columns={cand: "Daily"}, inplace=True)
-                break
-    if "Daily" not in df.columns:
-        df["Daily"] = None
+    # normalize schema to match PDF table labels
+    df = df.rename(columns={
+        "Ticker_name": "Name",
+        "Sharpe_Rank": "Rank",
+        "Sharpe_Rank_daily_change": "Daily",
+        "Sharpe_Rank_wtd_change":   "WTD",
+        "Sharpe_Rank_mtd_change":   "MTD",
+        "Sharpe_Rank_qtd_change":   "QTD",
+    })
 
-    # Rank column normalization
-    if "Rank" not in df.columns:
-        for cand in ["rank", "SharpeRank", "Sharpe_Rank", "Percentile", "percentile"]:
-            if cand in df.columns:
-                df.rename(columns={cand: "Rank"}, inplace=True)
-                break
+    # keep only the fields we need (Category may be absent in some bad exports)
+    keep = [c for c in ["Name","Ticker","Category","Rank","Daily","WTD","MTD","QTD"] if c in df.columns]
+    df = df[keep].copy()
+
+    # enforce numeric on the number columns if present
+    for c in ["Rank","Daily","WTD","MTD","QTD"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
 
     return df, asof_str
+
+
+def _sr_rank_bg_color(rank_val: float) -> colors.Color:
+    """
+    Rank tint: High=green, Neutral=gray, Low=red (same concept as portal page).
+    """
+    try:
+        if rank_val is None or pd.isna(rank_val):
+            return colors.white
+        v = float(rank_val)
+    except Exception:
+        return colors.white
+
+    # simple bands: 0-30 low, 30-70 neutral, 70-100 high
+    if v >= 70:
+        return colors.Color(0.90, 0.98, 0.95)  # light green
+    if v <= 30:
+        return colors.Color(0.99, 0.92, 0.92)  # light red
+    return colors.Color(0.95, 0.95, 0.95)      # neutral gray
+
+
+def _sr_fmt_int(x) -> str:
+    try:
+        if x is None or pd.isna(x):
+            return ""
+        v = int(round(float(x)))
+        # avoid "-0"
+        return "0" if v == 0 else str(v)
+    except Exception:
+        return ""
+
+
+def _sr_vmax(series: pd.Series, floor: float = 1.0) -> float:
+    s = pd.to_numeric(series, errors="coerce").abs().dropna()
+    if s.empty:
+        return floor
+    return max(floor, float(s.max()))
+
+
+def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include_ticker: bool) -> Table:
+    """
+    Build a ReportLab table with:
+      - Rank column shaded via _sr_rank_bg_color
+      - Change columns shaded via existing _ph_interp_color (green/red scale)
+    """
+    cols = df.columns.tolist()
+
+    # Header row
+    header = [th(c) for c in cols]
+    data_rows = [header]
+
+    # Body rows
+    for _, r in df.iterrows():
+        row = []
+        for c in cols:
+            if c in ("Rank", "Daily", "WTD", "MTD", "QTD"):
+                row.append(_sr_fmt_int(r.get(c)))
+            else:
+                row.append("" if pd.isna(r.get(c)) else str(r.get(c)))
+        data_rows.append(row)
+
+    # widths (mirror your perf heatmap proportions)
+    if include_ticker and ("Ticker" in cols):
+        col_widths = [220, 60, 55, 55, 55, 55, 55]  # Name, Ticker, Rank, Daily, WTD, MTD, QTD
+    else:
+        col_widths = [240, 55, 55, 55, 55, 55]      # Name, Rank, Daily, WTD, MTD, QTD
+
+    t = Table(data_rows, colWidths=col_widths, hAlign="LEFT")
+
+    # base table style matches your existing look
+    style_cmds = [
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, 0), 9),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.Color(0.95, 0.95, 0.95)),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+        ("GRID", (0, 0), (-1, -1), 0.25, colors.Color(0.80, 0.80, 0.80)),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("ALIGN", (0, 0), (-1, 0), "CENTER"),
+    ]
+
+    # align numeric columns right
+    for c in ("Rank", "Daily", "WTD", "MTD", "QTD"):
+        if c in cols:
+            ci = cols.index(c)
+            style_cmds.append(("ALIGN", (ci, 1), (ci, -1), "RIGHT"))
+
+    # apply per-cell shading
+    for r_i in range(1, len(data_rows)):
+        # Rank shading
+        if "Rank" in cols:
+            ci = cols.index("Rank")
+            rv = pd.to_numeric(df.iloc[r_i - 1].get("Rank"), errors="coerce")
+            style_cmds.append(("BACKGROUND", (ci, r_i), (ci, r_i), _sr_rank_bg_color(rv)))
+
+        # delta shading (independent per timeframe)
+        for c in ("Daily", "WTD", "MTD", "QTD"):
+            if c not in cols:
+                continue
+            ci = cols.index(c)
+            v = pd.to_numeric(df.iloc[r_i - 1].get(c), errors="coerce")
+            vmax = vmax_map.get(c, 1.0)
+            style_cmds.append(("BACKGROUND", (ci, r_i), (ci, r_i), _ph_interp_color(v, vmax)))
+
+    t.setStyle(TableStyle(style_cmds))
+    return t
 
 
 def build_sharpe_rank_heatmap_pdf(
     include_macro_orientation: bool = True,
     include_category_averages: bool = True,
 ) -> bytes:
-    buffer = io.BytesIO()
+    ranks, asof_str = _sr_load_latest()
 
+    buf = io.BytesIO()
     doc = SimpleDocTemplate(
-        buffer,
-        pagesize=landscape(letter),
-        leftMargin=0.60*inch, rightMargin=0.60*inch,
-        topMargin=0.60*inch, bottomMargin=0.85*inch
+        buf,
+        pagesize=letter,
+        leftMargin=36, rightMargin=36,
+        topMargin=36, bottomMargin=40
     )
 
-    df, asof_str = _sr_load_latest()
-    flow = []
+    flow: list = []
+    flow.append(Paragraph("<b>Sharpe Rank Heatmap</b>", STYLES["Title"]))
+    # If you later want the date line like the portal, uncomment:
+    # if asof_str:
+    #     flow.append(Paragraph(asof_str, STYLES["Normal"]))
+    flow.append(Spacer(1, 10))
 
-    # Title page header (matches your other report sections)
-    flow.append(Paragraph("<b>Sharpe Percentile Rank Heatmap</b>", STYLES["Title"]))
-    flow.append(Spacer(1, 0.20*inch))
-
-    # Helper: build a styled table with per-cell background colors
-    def _make_table(data_rows, col_widths, bg_func_matrix=None):
-        t = Table(data_rows, colWidths=col_widths, repeatRows=1)
-        ts = TableStyle([
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("FONTSIZE", (0, 0), (-1, -1), 9),
-            ("ALIGN", (0, 0), (-1, 0), "CENTER"),
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-            ("GRID", (0, 0), (-1, -1), 0.25, colors.lightgrey),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F2F2F2")),
-        ])
-
-        if bg_func_matrix:
-            # bg_func_matrix: dict[(row_idx, col_idx)] = color
-            for (r, c), col in bg_func_matrix.items():
-                ts.add("BACKGROUND", (c, r), (c, r), col)
-
-        t.setStyle(ts)
-        return t
+    if ranks.empty:
+        flow.append(Paragraph("No sharpe rank data available (qry_graph_data_48–51.csv missing or empty).", STYLES["Normal"]))
+        doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
+        return buf.getvalue()
 
     # -------------------------
-    # Macro Orientation page
+    # Macro Orientation
     # -------------------------
     if include_macro_orientation:
-        # Filter to macro tickers if your file contains that, else keep top rows
-        macro = df.copy()
-        # If your data has Macro Orientation subset already, keep it;
-        # otherwise it still renders fine for the same ~18-20 rows you show in portal.
-        cols = ["Name", "Ticker", "Rank", "Daily", "WTD", "MTD", "QTD"]
-        for c in cols:
-            if c not in macro.columns:
-                macro[c] = None
-        macro = macro[cols].copy()
+        flow.append(Paragraph("Macro Orientation", H2))
+        flow.append(Spacer(1, 6))
 
-        # Ensure numeric types
-        for c in ["Rank", "Daily", "WTD", "MTD", "QTD"]:
-            macro[c] = macro[c].apply(_sr_safe_num)
+        m = ranks[ranks.get("Ticker").isin(SR_MACRO_LIST) if "Ticker" in ranks.columns else False].copy()
+        if not m.empty and "Ticker" in m.columns:
+            order = {t: i for i, t in enumerate(SR_MACRO_LIST)}
+            m["__ord__"] = m["Ticker"].map(order)
+            m = m.sort_values(["__ord__"], kind="stable")
 
-        # Column-wise vmax for deltas
-        # Column-wise vmax for deltas (robust numeric coercion)
-        vmax = {}
-        for k in ["Daily", "WTD", "MTD", "QTD"]:
-            s = pd.to_numeric(macro[k], errors="coerce")
-            vmax[k] = float(s.abs().max(skipna=True) or 0.0)
+        # columns for the PDF table
+        want = ["Name", "Ticker", "Rank", "Daily", "WTD", "MTD", "QTD"]
+        m = m[[c for c in want if c in m.columns]].copy()
 
-        flow.append(Paragraph("<b>Macro Orientation</b>", H2))
-        flow.append(Paragraph("Current Sharpe Percentile Rank and Change by timeframe", NOTE))
-        flow.append(Spacer(1, 0.15*inch))
+        if m.empty:
+            flow.append(Paragraph("No macro orientation rows found.", NOTE))
+        else:
+            vmax = {c: _sr_vmax(m[c]) for c in ["Daily", "WTD", "MTD", "QTD"] if c in m.columns}
+            flow.append(_sr_make_colored_table(m, vmax, include_ticker=("Ticker" in m.columns)))
 
-        header = ["Name", "Ticker", "Rank", "Daily", "WTD", "MTD", "QTD"]
-        rows = [header]
-
-        bg = {}
-        for i, row in enumerate(macro.itertuples(index=False), start=1):
-            name, ticker, rank, dly, wtdv, mtdv, qtdv = row
-            rows.append([
-                str(name),
-                str(ticker),
-                "" if rank is None else f"{rank:.0f}",
-                "" if dly  is None else f"{dly:.0f}",
-                "" if wtdv is None else f"{wtdv:.0f}",
-                "" if mtdv is None else f"{mtdv:.0f}",
-                "" if qtdv is None else f"{qtdv:.0f}",
-            ])
-
-            bg[(i, 2)] = _sr_rank_bg_color(rank)
-            bg[(i, 3)] = _sr_delta_bg_color(dly,  vmax["Daily"])
-            bg[(i, 4)] = _sr_delta_bg_color(wtdv, vmax["WTD"])
-            bg[(i, 5)] = _sr_delta_bg_color(mtdv, vmax["MTD"])
-            bg[(i, 6)] = _sr_delta_bg_color(qtdv, vmax["QTD"])
-
-        col_widths = [3.2*inch, 0.9*inch, 0.8*inch, 0.8*inch, 0.8*inch, 0.8*inch, 0.8*inch]
-        flow.append(_make_table(rows, col_widths, bg))
-        flow.append(Spacer(1, 0.12*inch))
-        flow.append(Paragraph(
-            "Rank cells are High/Neutral/Low (green/gray/red); change columns use independent red/green scales.",
-            NOTE
-        ))
-
-        # separate page before category averages
-        if include_category_averages:
-            flow.append(PageBreak())
+        flow.append(Spacer(1, 12))
 
     # -------------------------
-    # Category Averages page
+    # Category Averages
     # -------------------------
-    if include_category_averages:
-        cat = df.copy()
-        # must have Category
-        if "Category" not in cat.columns:
-            cat["Category"] = "Unknown"
+    if include_category_averages and ("Category" in ranks.columns):
+        flow.append(PageBreak())
+        flow.append(Paragraph("Category Averages", H2))
+        flow.append(Spacer(1, 6))
 
-        cols = ["Category", "Rank", "Daily", "WTD", "MTD", "QTD"]
-        for c in cols:
-            if c not in cat.columns:
-                cat[c] = None
-        cat = cat[cols].copy()
+        g = (
+            ranks.dropna(subset=["Category"])
+                 .groupby("Category", as_index=False)
+                 .agg(
+                     Rank=("Rank", "mean"),
+                     Daily=("Daily", "mean"),
+                     WTD=("WTD", "mean"),
+                     MTD=("MTD", "mean"),
+                     QTD=("QTD", "mean"),
+                 )
+        )
 
-        # Force numeric dtypes so groupby mean doesn't drop the columns
-        for c in ["Rank", "Daily", "WTD", "MTD", "QTD"]:
-            cat[c] = pd.to_numeric(cat[c], errors="coerce")
+        # enforce preferred order
+        order_map = {name: i for i, name in enumerate(SR_CATEGORY_ORDER)}
+        g["__ord__"] = g["Category"].map(order_map).fillna(10_000).astype(int)
+        g = g.sort_values(["__ord__", "Category"], kind="stable")
 
-        grp = cat.groupby("Category", dropna=False)[["Rank", "Daily", "WTD", "MTD", "QTD"]].mean(numeric_only=True).reset_index()
+        cat = g.rename(columns={"Category": "Name"})[["Name", "Rank", "Daily", "WTD", "MTD", "QTD"]].copy()
 
-        vmax = {}
-        for k in ["Daily", "WTD", "MTD", "QTD"]:
-            s = pd.to_numeric(grp[k], errors="coerce")
-            vmax[k] = float(s.abs().max(skipna=True) or 0.0)
+        vmax = {c: _sr_vmax(cat[c]) for c in ["Daily", "WTD", "MTD", "QTD"] if c in cat.columns}
+        flow.append(_sr_make_colored_table(cat, vmax, include_ticker=False))
 
-        flow.append(Paragraph("<b>Category Averages</b>", H2))
-        flow.append(Paragraph("Avg Sharpe Percentile Rank and Change by category and timeframe", NOTE))
-        flow.append(Spacer(1, 0.15*inch))
+    elif include_category_averages:
+        # Category column missing in export
+        flow.append(PageBreak())
+        flow.append(Paragraph("Category Averages", H2))
+        flow.append(Spacer(1, 6))
+        flow.append(Paragraph("Category data not available (missing 'Category' column).", NOTE))
 
-        header = ["Name", "Rank", "Daily", "WTD", "MTD", "QTD"]
-        rows = [header]
-        bg = {}
-
-        for i, row in enumerate(grp.itertuples(index=False), start=1):
-            category, rank, dly, wtdv, mtdv, qtdv = row
-            rows.append([
-                str(category),
-                "" if rank is None else f"{rank:.0f}",
-                "" if dly  is None else f"{dly:.0f}",
-                "" if wtdv is None else f"{wtdv:.0f}",
-                "" if mtdv is None else f"{mtdv:.0f}",
-                "" if qtdv is None else f"{qtdv:.0f}",
-            ])
-
-            bg[(i, 1)] = _sr_rank_bg_color(rank)
-            bg[(i, 2)] = _sr_delta_bg_color(dly,  vmax["Daily"])
-            bg[(i, 3)] = _sr_delta_bg_color(wtdv, vmax["WTD"])
-            bg[(i, 4)] = _sr_delta_bg_color(mtdv, vmax["MTD"])
-            bg[(i, 5)] = _sr_delta_bg_color(qtdv, vmax["QTD"])
-
-        col_widths = [3.2*inch, 0.8*inch, 0.8*inch, 0.8*inch, 0.8*inch, 0.8*inch]
-        flow.append(_make_table(rows, col_widths, bg))
-        flow.append(Spacer(1, 0.12*inch))
-        flow.append(Paragraph(
-            "Each change column uses its own red/green gradient scale; Rank cells use High/Neutral/Low shading.",
-            NOTE
-        ))
-
-    # footer hook (matches your existing pattern)
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
-    return buffer.getvalue()
-
-
-
+    return buf.getvalue()
 
 # =========================================================
 # MODULAR PACKET ARCHITECTURE (NEW)
@@ -1771,29 +1760,26 @@ class SharpeRankHeatmapModule(ReportModuleBase):
     label = "Sharpe Rank Heatmap"
 
     def ui(self) -> dict:
-        st.markdown("**Sharpe Rank Heatmap Options**")
-        include_macro = st.checkbox(
-            "Include Macro Orientation",
-            value=st.session_state.get("sr_include_macro", True),
-            key="sr_include_macro",
-        )
-        include_cat = st.checkbox(
-            "Include Category Averages",
-            value=st.session_state.get("sr_include_cat", True),
-            key="sr_include_cat",
-        )
-        return {"include_macro": include_macro, "include_cat": include_cat}
+        include_macro = st.checkbox("Include Macro Orientation", value=True)
+        include_cat = st.checkbox("Include Category Averages", value=True)
 
-    def build(self, options: dict) -> tuple[list[tuple[str, bytes]], str | None]:
-        include_macro = bool(options.get("include_macro", True))
-        include_cat = bool(options.get("include_cat", True))
+        # preview date
+        _, asof = _sr_load_latest()
+        if asof:
+            st.markdown(f"**Preview:** Sharpe Rank Heatmap – {asof}")
 
-        pdf_bytes = build_sharpe_rank_heatmap_pdf(
-            include_macro_orientation=include_macro,
-            include_category_averages=include_cat,
+        st.caption("Note: Per-ticker category breakouts are intentionally excluded from the report pack.")
+        return {
+            "include_macro": include_macro,
+            "include_cat": include_cat,
+        }
+
+    def build(self, options: dict) -> tuple[list[bytes], str]:
+        blob = build_sharpe_rank_heatmap_pdf(
+            include_macro_orientation=options.get("include_macro", True),
+            include_category_averages=options.get("include_cat", True),
         )
-
-        return ([pdf_bytes], "sharpe_rank_heatmap")
+        return ([blob], "sharpe_rank_heatmap")
 
 
 class PlaceholderModule(ReportModuleBase):
