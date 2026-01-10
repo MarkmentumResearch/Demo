@@ -1416,12 +1416,11 @@ def build_sharpe_rank_heatmap_pdf(
             macro[c] = macro[c].apply(_sr_safe_num)
 
         # Column-wise vmax for deltas
-        vmax = {
-            "Daily": float(macro["Daily"].abs().max(skipna=True) or 0.0),
-            "WTD":   float(macro["WTD"].abs().max(skipna=True) or 0.0),
-            "MTD":   float(macro["MTD"].abs().max(skipna=True) or 0.0),
-            "QTD":   float(macro["QTD"].abs().max(skipna=True) or 0.0),
-        }
+        # Column-wise vmax for deltas (robust numeric coercion)
+        vmax = {}
+        for k in ["Daily", "WTD", "MTD", "QTD"]:
+            s = pd.to_numeric(macro[k], errors="coerce")
+            vmax[k] = float(s.abs().max(skipna=True) or 0.0)
 
         flow.append(Paragraph("<b>Macro Orientation</b>", STYLES["h2_left"]))
         flow.append(Paragraph("Current Sharpe Percentile Rank and Change by timeframe", STYLES["subtle_center"]))
@@ -1481,12 +1480,10 @@ def build_sharpe_rank_heatmap_pdf(
 
         grp = cat.groupby("Category", dropna=False)[["Rank", "Daily", "WTD", "MTD", "QTD"]].mean(numeric_only=True).reset_index()
 
-        vmax = {
-            "Daily": float(grp["Daily"].abs().max(skipna=True) or 0.0),
-            "WTD":   float(grp["WTD"].abs().max(skipna=True) or 0.0),
-            "MTD":   float(grp["MTD"].abs().max(skipna=True) or 0.0),
-            "QTD":   float(grp["QTD"].abs().max(skipna=True) or 0.0),
-        }
+        vmax = {}
+        for k in ["Daily", "WTD", "MTD", "QTD"]:
+            s = pd.to_numeric(grp[k], errors="coerce")
+            vmax[k] = float(s.abs().max(skipna=True) or 0.0)
 
         flow.append(Paragraph("<b>Category Averages</b>", STYLES["h2_center"]))
         flow.append(Paragraph("Avg Sharpe Percentile Rank and Change by category and timeframe", STYLES["subtle_center"]))
