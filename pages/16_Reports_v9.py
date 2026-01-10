@@ -1475,8 +1475,9 @@ def build_sharpe_rank_heatmap_pdf(
                 cat[c] = None
         cat = cat[cols].copy()
 
+        # Force numeric dtypes so groupby mean doesn't drop the columns
         for c in ["Rank", "Daily", "WTD", "MTD", "QTD"]:
-            cat[c] = cat[c].apply(_sr_safe_num)
+            cat[c] = pd.to_numeric(cat[c], errors="coerce")
 
         grp = cat.groupby("Category", dropna=False)[["Rank", "Daily", "WTD", "MTD", "QTD"]].mean(numeric_only=True).reset_index()
 
@@ -1515,7 +1516,7 @@ def build_sharpe_rank_heatmap_pdf(
         flow.append(Spacer(1, 0.12*inch))
         flow.append(Paragraph(
             "Each change column uses its own red/green gradient scale; Rank cells use High/Neutral/Low shading.",
-            STYLES["footnote"]
+            NOTE
         ))
 
     # footer hook (matches your existing pattern)
