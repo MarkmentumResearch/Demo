@@ -1374,8 +1374,7 @@ def build_sharpe_rank_heatmap_pdf(
     flow = []
 
     # Title page header (matches your other report sections)
-    title = Paragraph(f"<b>Sharpe Percentile Rank Heatmap — {asof_str}</b>", STYLES["H1"])
-    flow.append(title)
+    flow.append(Paragraph("<b>Sharpe Percentile Rank Heatmap</b>", STYLES["Title"]))
     flow.append(Spacer(1, 0.20*inch))
 
     # Helper: build a styled table with per-cell background colors
