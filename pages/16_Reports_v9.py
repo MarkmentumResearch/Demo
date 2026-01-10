@@ -1730,8 +1730,16 @@ class PerformanceHeatmapModule(ReportModuleBase):
 
     def ui(self) -> dict:
         # defaults: keep it tight; table shading already conveys “heatmap”
-        include_macro = st.checkbox("Include Macro Orientation", value=True)
-        include_cat = st.checkbox("Include Category Averages", value=True)
+        include_macro = st.checkbox(
+            "Include Macro Orientation",
+            value=True,
+            key=f"{self.key}_include_macro",
+        )
+        include_cat = st.checkbox(
+            "Include Category Averages",
+            value=True,
+            key=f"{self.key}_include_cat",
+        )
         include_heatmap = False #skip for now
 
         # preview date
@@ -1760,8 +1768,16 @@ class SharpeRankHeatmapModule(ReportModuleBase):
     label = "Sharpe Rank Heatmap"
 
     def ui(self) -> dict:
-        include_macro = st.checkbox("Include Macro Orientation", value=True)
-        include_cat = st.checkbox("Include Category Averages", value=True)
+        include_macro = st.checkbox(
+            "Include Macro Orientation",
+            value=True,
+            key=f"{self.key}_include_macro",
+        )
+        include_cat = st.checkbox(
+            "Include Category Averages",
+            value=True,
+            key=f"{self.key}_include_cat",
+        )
 
         # preview date
         _, asof = _sr_load_latest()
@@ -1830,7 +1846,11 @@ default_selected = ["morning_compass"]
 
 selected_keys = []
 for m in REGISTERED_MODULES:
-    checked = st.checkbox(m.label, value=(m.key in default_selected))
+    checked = st.checkbox(
+        m.label,
+        value=(m.key in default_selected),
+        key=f"select_{m.key}",
+    )
     if checked:
         selected_keys.append(m.key)
 
