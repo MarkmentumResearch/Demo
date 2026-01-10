@@ -1432,6 +1432,20 @@ def _sr_make_colored_table(df: pd.DataFrame, vmax_map: dict[str, float], include
     """
     cols = df.columns.tolist()
 
+    # display headers (PDF only)
+    display_headers = []
+    for c in cols:
+        if c == "Daily":
+            display_headers.append("Δ Daily")
+        elif c == "WTD":
+            display_headers.append("Δ WTD")
+        elif c == "MTD":
+            display_headers.append("Δ MTD")
+        elif c == "QTD":
+            display_headers.append("Δ QTD")
+        else:
+            display_headers.append(c)
+
     # build table data (header row as strings, like Performance)
     data = [cols]
     for _, r in df.iterrows():
