@@ -575,7 +575,7 @@ def _sr_rank_bg(score, cap=100.0):
 def _sr_delta_bg(val, vmax):
     """
     Match portal delta shading:
-    alpha = 0.12 + 0.28 * min(abs(val)/vmax, 1)
+    alpha = 0.05 + 0.14 * min(abs(val)/vmax, 1)
     green if val>0, red if val<0, transparent if 0
     """
     if val is None or pd.isna(val) or vmax is None or float(vmax) <= 0:
