@@ -1656,9 +1656,9 @@ class MorningCompassModule(ReportModuleBase):
 
         with mid:
             st.markdown("**Include Sections**")
-            include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
             include_macro        = st.checkbox("Macro Orientation (by timeframe)", value=True)
-
+            include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
+            
         with right:
             st.markdown("**Top Five Cards (by timeframe)**")
             include_pct   = st.checkbox("Top Five Leaders/Laggards by % Change", value=True)
