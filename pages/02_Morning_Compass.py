@@ -560,7 +560,7 @@ else:
     '''
     st.markdown(card_html, unsafe_allow_html=True)
 
-
+row_spacer(10)
 # =========================
 # USD & Rates Correlations (Daily only)
 # =========================
