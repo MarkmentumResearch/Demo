@@ -439,25 +439,6 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     """
     st.markdown(card_html, unsafe_allow_html=True)
 
-# =========================
-# USD & Rates Correlations (Daily only)
-# =========================
-if sel_tf == "Daily":
-    render_correlation_card(
-        title="USD Correlations",
-        csv_id=93,
-        docx_name="usd_correlation_bottom_line.docx",
-    )
-
-    row_spacer(10)
-
-    render_correlation_card(
-        title="Rates Correlations",
-        csv_id=94,
-        docx_name="tnx_correlation_bottom_line.docx",
-    )
-
-    row_spacer(14)
 
 # -------------------------
 # Card 1: Morning Compass table (uses selected timeframe)
@@ -578,6 +559,29 @@ else:
     </div>
     '''
     st.markdown(card_html, unsafe_allow_html=True)
+
+
+# =========================
+# USD & Rates Correlations (Daily only)
+# =========================
+if sel_tf == "Daily":
+    render_correlation_card(
+        title="USD Correlations",
+        csv_id=93,
+        docx_name="usd_correlation_bottom_line.docx",
+    )
+
+    row_spacer(10)
+
+    render_correlation_card(
+        title="Rates Correlations",
+        csv_id=94,
+        docx_name="tnx_correlation_bottom_line.docx",
+    )
+
+    row_spacer(14)
+
+
 
 # -------------------------
 # Card 2: Leaders/Laggard by % Change
