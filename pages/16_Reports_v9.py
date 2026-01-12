@@ -707,7 +707,7 @@ def build_morning_compass_pdf(
         asof = _asof_date_from_main(tf_key)
         title = f"Morning Compass" if asof else "Morning Compass"
         flow.append(Paragraph(title, H1))
-        flow.append(Spacer(1, 6))
+        flow.append(Spacer(1, 3))
 
 
     cfg = TIMEFRAMES[tf_key]
