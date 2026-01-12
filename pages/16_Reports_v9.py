@@ -709,10 +709,6 @@ def build_morning_compass_pdf(
         flow.append(Paragraph(title, H1))
         flow.append(Spacer(1, 6))
 
-    # Correlations (Daily only)
-    if include_correlations and tf_key == "Daily":
-        _section_correlations(flow)
-        flow.append(PageBreak())
 
     cfg = TIMEFRAMES[tf_key]
 
@@ -725,6 +721,12 @@ def build_morning_compass_pdf(
             bottom_docx=cfg["docx_macro"]
         )
         flow.append(PageBreak())
+
+    # Correlations (Daily only)
+    if include_correlations and tf_key == "Daily":
+        _section_correlations(flow)
+        flow.append(PageBreak())
+
 
     if include_pct:
         _section_macro_table(
