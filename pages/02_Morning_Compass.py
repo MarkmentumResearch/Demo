@@ -579,7 +579,7 @@ if sel_tf == "Daily":
         docx_name="tnx_correlation_bottom_line.docx",
     )
 
-    row_spacer(14)
+    row_spacer(10)
 
 
 
