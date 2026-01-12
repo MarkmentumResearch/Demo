@@ -325,7 +325,7 @@ def _rr_bg_color(v: float, cap: float = 3.0):
     s = min(abs(v) / float(cap), 1.0)
 
     # lighter overall (Sharpe-style, but restrained for print)
-    alpha = 0.06 + 0.16 * s  # 0.06 .. 0.22
+    alpha = 0.05 + 0.14 * s  # 0.06 .. 0.22
 
     def _blend(rgb_255, a):
         r, g, b = [c / 255.0 for c in rgb_255]
@@ -374,7 +374,7 @@ def _mm_bg_color(v: float, cap: float = 150.0):
     s = (abs(score) - neutral_band) / (float(cap) - neutral_band)
     s = max(0.0, min(s, 1.0))
 
-    alpha = 0.08 + 0.18 * s  # 0.08 .. 0.26
+    alpha = 0.05 + 0.14 * s  # 0.08 .. 0.26
 
     if score > 0:
         return _blend((16, 185, 129), alpha)   # green
