@@ -374,7 +374,7 @@ def _mm_bg_color(v: float, cap: float = 150.0):
     s = (abs(score) - neutral_band) / (float(cap) - neutral_band)
     s = max(0.0, min(s, 1.0))
 
-    alpha = 0.05 + 0.14 * s  # 0.08 .. 0.26
+    alpha = 0.08 + 0.18 * s  # 0.08 .. 0.26
 
     if score > 0:
         return _blend((16, 185, 129), alpha)   # green
