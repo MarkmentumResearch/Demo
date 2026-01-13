@@ -1155,7 +1155,7 @@ def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str)
 
     # apply per-column shading for % columns
     for j, c in enumerate(cols):
-        if c in ("Daily", "WTD", "MTD", "QTD"):
+        if c in ("Δ Daily", "Δ WTD", "Δ MTD", "Δ QTD"):
             col_vmax = vmax.get(c.replace("Δ ", ""), 0.0) or 0.0
             for i in range(1, len(data)):
                 raw = df.iloc[i-1, j]
@@ -1253,10 +1253,10 @@ def build_performance_heatmap_pdf(
             })
 
             vmaxC = {
-                "Daily": float(cat_df["Daily"].abs().max(skipna=True) or 0.0),
-                "WTD":   float(cat_df["WTD"].abs().max(skipna=True) or 0.0),
-                "MTD":   float(cat_df["MTD"].abs().max(skipna=True) or 0.0),
-                "QTD":   float(cat_df["QTD"].abs().max(skipna=True) or 0.0),
+                "Daily": float(pd.to_numeric(cat_df["Δ Daily"], errors="coerce").abs().max(skipna=True) or 0.0),
+                "WTD":   float(pd.to_numeric(cat_df["Δ WTD"],   errors="coerce").abs().max(skipna=True) or 0.0),
+                "MTD":   float(pd.to_numeric(cat_df["Δ MTD"],   errors="coerce").abs().max(skipna=True) or 0.0),
+                "QTD":   float(pd.to_numeric(cat_df["Δ QTD"],   errors="coerce").abs().max(skipna=True) or 0.0),
             }
 
             flow.append(PageBreak())
