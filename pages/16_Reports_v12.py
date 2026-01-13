@@ -1130,7 +1130,7 @@ def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str)
         row = []
         for c in cols:
             v = df.loc[df.index[r], c]
-            if c in ("Daily", "WTD", "MTD", "QTD"):
+            if c in ("Δ Daily", "Δ WTD", "Δ MTD", "Δ QTD"):
                 row.append(_ph_fmt_pct(v))
             else:
                 row.append(v)
@@ -1156,7 +1156,7 @@ def _ph_make_colored_table(df: pd.DataFrame, vmax: dict[str, float], title: str)
     # apply per-column shading for % columns
     for j, c in enumerate(cols):
         if c in ("Daily", "WTD", "MTD", "QTD"):
-            col_vmax = vmax.get(c, 0.0) or 0.0
+            col_vmax = vmax.get(c.replace("Δ ", ""), 0.0) or 0.0
             for i in range(1, len(data)):
                 raw = df.iloc[i-1, j]
                 ts.add("BACKGROUND", (j, i), (j, i), _ph_interp_color(raw, col_vmax))
@@ -1206,11 +1206,12 @@ def build_performance_heatmap_pdf(
         macro_df = pd.DataFrame({
             "Name": m.get("Ticker_name", m["Ticker"]),
             "Ticker": m["Ticker"],
-            "Daily": m[_col("Daily")],
-            "WTD":   m[_col("WTD")],
-            "MTD":   m[_col("MTD")],
-            "QTD":   m[_col("QTD")],
+            "Δ Daily": m[_col("Daily")],
+            "Δ WTD":   m[_col("WTD")],
+            "Δ MTD":   m[_col("MTD")],
+            "Δ QTD":   m[_col("QTD")],
         })
+
 
         # numeric vmax per column (independent scaling)
         vmax = {
@@ -1245,10 +1246,10 @@ def build_performance_heatmap_pdf(
 
             cat_df = pd.DataFrame({
                 "Name": g["Category"],
-                "Daily": g["Daily"],
-                "WTD": g["WTD"],
-                "MTD": g["MTD"],
-                "QTD": g["QTD"],
+                "Δ Daily": g["Daily"],
+                "Δ WTD": g["WTD"],
+                "Δ MTD": g["MTD"],
+                "Δ QTD": g["QTD"],
             })
 
             vmaxC = {
