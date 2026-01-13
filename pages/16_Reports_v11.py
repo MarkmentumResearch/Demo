@@ -505,7 +505,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
         flowables.append(Spacer(1, 8))
         return
 
-    flowables.append(Paragraph(title, H2))
+    #flowables.append(Paragraph(title, H2))
 
     d = df.copy()
 
