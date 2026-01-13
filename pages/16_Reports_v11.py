@@ -773,7 +773,7 @@ def build_morning_compass_pdf(
     # Correlations (Daily only)
     if include_correlations and tf_key == "Daily":
         _section_correlations(flow)
-        #flow.append(PageBreak())
+        flow.append(PageBreak())
 
 
     if include_pct:
