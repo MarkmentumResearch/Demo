@@ -767,7 +767,8 @@ def build_morning_compass_pdf(
             csv_id=cfg["ids"]["main"],
             bottom_docx=cfg["docx_macro"]
         )
-        flow.append(PageBreak())
+        if not (tf_key == "Daily" and include_correlations):
+            flow.append(PageBreak())
 
     # Correlations (Daily only)
     if include_correlations and tf_key == "Daily":
