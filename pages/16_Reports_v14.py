@@ -2531,7 +2531,7 @@ REGISTERED_MODULES: list[ReportModuleBase] = [
     SharpeRankHeatmapModule(),
     MarkmentumHeatmapModule(),
     DirectionalTrendsModule(),
-    PlaceholderModule("vantage_point", "Vantage Point"),
+    #PlaceholderModule("vantage_point", "Vantage Point"),
 ]
 
 MODULE_BY_KEY = {m.key: m for m in REGISTERED_MODULES}
