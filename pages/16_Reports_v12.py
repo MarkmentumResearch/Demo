@@ -126,6 +126,18 @@ def clean_text(s: str) -> str:
 
     return s
 
+from xml.sax.saxutils import escape as _xml_escape
+
+def pdf_safe_text(s: str) -> str:
+    """
+    Make text safe for ReportLab Paragraph (XML-based).
+    Escapes &, <, > but leaves quotes alone.
+    """
+    if s is None:
+        return ""
+    return _xml_escape(str(s), {"'": "'", '"': '"'})
+
+
 def _read_docx_plain_text(doc_path: Path) -> str:
     """Return docx text, or empty string if missing/unreadable (never print errors into PDF)."""
     if Document is None:
@@ -470,7 +482,7 @@ def _section_correlations(flowables):
         bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
         if bl:
             flowables.append(Spacer(1, 6))
-            flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
+            flowables.append(Paragraph(pdf_safe_text(clean_text(bl)).replace("\n", "<br/>"), P))
 
         flowables.append(Spacer(1, 4))
         flowables.append(Paragraph(note_text, NOTE))
