@@ -1811,7 +1811,7 @@ def _mmhm_make_colored_table(df: pd.DataFrame, vmax: dict, include_ticker: bool)
     ]:
         col_vmax = vmax.get(key, 1.0) or 1.0
         for i in range(1, len(data)):
-            v = pd.to_numeric(df.iloc[i-1].get(src_col), errors="coerce")
+            v = pd.to_numeric(df.iloc[i-1].get(key), errors="coerce")
             ts.add("BACKGROUND", (col_idx, i), (col_idx, i), _sr_delta_bg(v, col_vmax))
 
     t.setStyle(ts)
