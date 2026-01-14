@@ -1771,10 +1771,10 @@ def _mmhm_make_colored_table(df: pd.DataFrame, vmax: dict, include_ticker: bool)
 
         row += [
             fmt_int(r.get("Score")),
-            fmt_int(r.get("ΔDaily")),
-            fmt_int(r.get("ΔWTD")),
-            fmt_int(r.get("ΔMTD")),
-            fmt_int(r.get("ΔQTD")),
+            fmt_int(r.get("Daily")),
+            fmt_int(r.get("WTD")),
+            fmt_int(r.get("MTD")),
+            fmt_int(r.get("QTD")),
         ]
         rows.append(row)
 
