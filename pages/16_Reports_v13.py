@@ -1754,7 +1754,7 @@ def _mmhm_make_colored_table(df: pd.DataFrame, vmax: dict, include_ticker: bool)
     cols = ["Name"]
     if include_ticker:
         cols.append("Ticker")
-    cols += ["MM Score", "Δ Daily", "Δ WTD", "Δ MTD", "Δ QTD"]
+    cols += ["Score", "Δ Daily", "Δ WTD", "Δ MTD", "Δ QTD"]
 
     # header row as plain strings (Sharpe-style sizing/behavior)
     data = [cols]
