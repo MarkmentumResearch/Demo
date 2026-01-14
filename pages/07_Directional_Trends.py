@@ -462,7 +462,13 @@ else:
 # little breathing room
 st.markdown('<div class="vspace-16"></div>', unsafe_allow_html=True)
 
-
+preferred_order = [
+    "Sector & Style ETFs","Indices","Futures","Currencies","Commodities",
+    "Bonds","Yields","Volatility","Foreign",
+    "Communication Services","Consumer Discretionary","Consumer Staples",
+    "Energy","Financials","Health Care","Industrials","Information Technology",
+    "Materials","Real Estate","Utilities","MR Discretion"
+]
 
 # =========================================================
 # Card 3 — Per-Category Tickers (selector)
