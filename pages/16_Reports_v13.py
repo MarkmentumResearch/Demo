@@ -1754,16 +1754,12 @@ def _mmhm_make_colored_table(df: pd.DataFrame, vmax: dict, include_ticker: bool)
     cols = ["Name"]
     if include_ticker:
         cols.append("Ticker")
-    cols += ["Score", "Daily", "WTD", "MTD", "QTD"]
+    cols += ["MM Score", "Δ Daily", "Δ WTD", "Δ MTD", "Δ QTD"]
 
-    # header row
-    header = [th("Name")]
-    if include_ticker:
-        header.append(th("Ticker"))
-    header += [th("MM<br/>Score"), th("ΔDaily"), th("ΔWTD"), th("ΔMTD"), th("ΔQTD")]
+    # header row as plain strings (Sharpe-style sizing/behavior)
+    data = [cols]
 
     # rows
-    rows = [header]
     for _, r in df.iterrows():
         row = [clean_text(r.get("Name", ""))]
         if include_ticker:
@@ -1771,47 +1767,54 @@ def _mmhm_make_colored_table(df: pd.DataFrame, vmax: dict, include_ticker: bool)
 
         row += [
             fmt_int(r.get("Score")),
-            fmt_int(r.get("Daily")),
-            fmt_int(r.get("WTD")),
-            fmt_int(r.get("MTD")),
-            fmt_int(r.get("QTD")),
+            fmt_int(r.get("ΔDaily")),
+            fmt_int(r.get("ΔWTD")),
+            fmt_int(r.get("ΔMTD")),
+            fmt_int(r.get("ΔQTD")),
         ]
-        rows.append(row)
+        data.append(row)
 
-    # widths (match your other heatmap tables)
-    w_name = 3.0 * inch if not include_ticker else 2.6 * inch
-    widths = [w_name]
-    if include_ticker:
-        widths.append(0.75 * inch)
-    widths += [0.85 * inch, 0.85 * inch, 0.85 * inch, 0.85 * inch, 0.85 * inch]
+    # Sharpe Rank Heatmap sizing approach (NO fixed colWidths)
+    t = Table(data, hAlign="CENTER")
 
-    t = _build_table(rows, widths)
+    ts = TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.whitesmoke),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, 0), 9),
+        ("FONTSIZE", (0, 1), (-1, -1), 9),
+        ("ALIGN", (0, 0), (-1, 0), "CENTER"),
+        ("ALIGN", (0, 1), (0, -1), "LEFT"),      # Name left
+        ("ALIGN", (1, 1), (-1, -1), "CENTER"),   # rest centered
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.lightgrey),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+    ])
 
     # column indices
     c_score = 1 if not include_ticker else 2
-    c_d0 = c_score + 1  # Daily
-    c_d1 = c_score + 2  # WTD
-    c_d2 = c_score + 3  # MTD
-    c_d3 = c_score + 4  # QTD
+    c_d0 = c_score + 1  # Δ Daily
+    c_d1 = c_score + 2  # Δ WTD
+    c_d2 = c_score + 3  # Δ MTD
+    c_d3 = c_score + 4  # Δ QTD
 
-    # apply shading row-by-row
-    for rr in range(1, len(rows)):
-        try:
-            score_val = float(str(rows[rr][c_score]).replace(",", ""))
-            t.setStyle(TableStyle([("BACKGROUND", (c_score, rr), (c_score, rr), _mm_bg_color(score_val))]))
-        except Exception:
-            pass
+    # Score shading
+    for i in range(1, len(data)):
+        v = pd.to_numeric(df.iloc[i-1].get("Score"), errors="coerce")
+        ts.add("BACKGROUND", (c_score, i), (c_score, i), _mm_bg_color(v))
 
-        # deltas use Sharpe-style delta shading
-        for col_idx, key in [(c_d0, "Daily"), (c_d1, "WTD"), (c_d2, "MTD"), (c_d3, "QTD")]:
-            try:
-                v = float(str(rows[rr][col_idx]).replace(",", ""))
-            except Exception:
-                continue
-            bg = _sr_delta_bg(v, vmax.get(key))
-            if bg is not None:
-                t.setStyle(TableStyle([("BACKGROUND", (col_idx, rr), (col_idx, rr), bg)]))
+    # Delta shading (independent per timeframe, same as Sharpe logic)
+    for (col_idx, key, src_col) in [
+        (c_d0, "Daily", "ΔDaily"),
+        (c_d1, "WTD",   "ΔWTD"),
+        (c_d2, "MTD",   "ΔMTD"),
+        (c_d3, "QTD",   "ΔQTD"),
+    ]:
+        col_vmax = vmax.get(key, 1.0) or 1.0
+        for i in range(1, len(data)):
+            v = pd.to_numeric(df.iloc[i-1].get(src_col), errors="coerce")
+            ts.add("BACKGROUND", (col_idx, i), (col_idx, i), _sr_delta_bg(v, col_vmax))
 
+    t.setStyle(ts)
     return t
 
 
@@ -1830,7 +1833,7 @@ def build_markmentum_heatmap_pdf(
     flow: list = []
 
     df, asof = _mmhm_load_latest()
-    title = "Markmentum Heatmap" + (f" – {asof}" if asof else "")
+    title = "Markmentum Heatmap" #+ (f" – {asof}" if asof else "")
     flow.append(Paragraph(clean_text(title), H1))
     flow.append(Spacer(1, 6))
 
