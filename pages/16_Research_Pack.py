@@ -2650,7 +2650,7 @@ if gen:
 
     st.success("Research Pack ready.")
     st.download_button(
-        label="Download PDF",
+        label="Download Research Pack",
         data=final_pdf,
         file_name=filename,
         mime="application/pdf"
