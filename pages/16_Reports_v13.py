@@ -1826,8 +1826,8 @@ def build_markmentum_heatmap_pdf(
     doc = SimpleDocTemplate(
         buf,
         pagesize=landscape(letter),
-        leftMargin=0.45*inch, rightMargin=0.45*inch,
-        topMargin=0.50*inch, bottomMargin=0.95*inch
+        leftMargin=36, rightMargin=36,
+        topMargin=36, bottomMargin=40
     )
 
     flow: list = []
