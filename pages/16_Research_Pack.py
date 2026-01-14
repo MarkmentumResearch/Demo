@@ -847,7 +847,7 @@ def build_market_overview_pdf(
     asof = _mo_asof_from_df(dfs[0])
 
     # Header
-    title = f"{tf_key} Market Overview" #+ (f" – {asof}" if asof else "")
+    title = f"{tf_key} Market Overview" 
     flow.append(Paragraph(clean_text(title), H1))
     flow.append(Spacer(1, 6))
 
