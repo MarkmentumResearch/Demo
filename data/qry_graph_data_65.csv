@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,qtd_return_pct
-AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,2026-01-13,-0.155
-GDDY,GODADDY INC.,Information Technology,2026-01-13,-0.1193
-ADBE,ADOBE INC.,Information Technology,2026-01-13,-0.1145
-PGR,THE PROGRESSIVE ,Financials,2026-01-13,-0.0995
-NOW,"SERVICENOW, INC.",Information Technology,2026-01-13,-0.0979
-PSKY,PARAMOUNT SKYDANCE ,Communication Services,2026-01-13,-0.094
-CRM,"SALESFORCE, INC.",Information Technology,2026-01-13,-0.09
-CALM,"CAL-MAINE FOODS, INC.",MR Discretion,2026-01-13,-0.0896
-INTU,INTUIT INC.,Information Technology,2026-01-13,-0.0863
-ADSK,"AUTODESK, INC.",Information Technology,2026-01-13,-0.0857
+UNG,UNITED STATES NAT GAS,Commodities,2026-01-14,-0.1648
+AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,2026-01-14,-0.1462
+INTU,INTUIT INC.,Information Technology,2026-01-14,-0.1447
+ADBE,ADOBE INC.,Information Technology,2026-01-14,-0.1301
+GDDY,GODADDY INC.,Information Technology,2026-01-14,-0.1285
+NOW,"SERVICENOW, INC.",Information Technology,2026-01-14,-0.1213
+ADSK,"AUTODESK, INC.",Information Technology,2026-01-14,-0.1173
+DDOG,"DATADOG, INC.",Information Technology,2026-01-14,-0.0999
+PSKY,PARAMOUNT SKYDANCE ,Communication Services,2026-01-14,-0.0985
+PGR,THE PROGRESSIVE ,Financials,2026-01-14,-0.0976

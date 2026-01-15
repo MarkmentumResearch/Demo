@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_day_change,current_model_score,previous_model_score
-EWT,ISHARES:MSCI TAIWAN,Foreign,2026-01-13,-79.0,-46.0,33.0
-AEE,AMEREN ,Utilities,2026-01-13,-70.0,-56.0,14.0
-ANET,"ARISTA NETWORKS, INC.",Information Technology,2026-01-13,-68.0,-43.0,25.0
-APH,AMPHENOL ,Information Technology,2026-01-13,-61.0,-14.0,47.0
-SNA,SNAP-ON INC.,Industrials,2026-01-13,-61.0,-23.0,38.0
-SNPS,"SYNOPSYS, INC.",Information Technology,2026-01-13,-61.0,-63.0,-2.0
-DHT,"DHT HOLDINGS, INC.",MR Discretion,2026-01-13,-59.0,-36.0,23.0
-EXPE,"EXPEDIA GROUP, INC.",Consumer Discretionary,2026-01-13,-52.0,-7.0,45.0
-APA,APA ,Energy,2026-01-13,-51.0,-9.0,42.0
-WFC,WELLS FARGO & COMPANY,Financials,2026-01-13,-50.0,-16.0,34.0
+CORN,TEUCRIUM:CORN,Commodities,2026-01-14,-64.0,-10.0,54.0
+CB,CHUBB LTD,Financials,2026-01-14,-63.0,18.0,81.0
+BBY,"BEST BUY CO., INC.",Consumer Discretionary,2026-01-14,-61.0,-26.0,35.0
+FTNT,"FORTINET, INC.",Information Technology,2026-01-14,-60.0,-62.0,-2.0
+HRL,HORMEL FOODS ,Consumer Staples,2026-01-14,-59.0,-17.0,42.0
+CME,CME GROUP INC.,Financials,2026-01-14,-58.0,-12.0,46.0
+DGX,QUEST DIAGNOSTICS INC.,Health Care,2026-01-14,-55.0,-23.0,32.0
+VICI,VICI PROPERTIES INC.,Real Estate,2026-01-14,-55.0,-51.0,4.0
+GDXJ,VANECK:JR GOLD MINERS,Commodities,2026-01-14,-52.0,-10.0,42.0
+EQR,EQUITY RESIDENTIAL,Real Estate,2026-01-14,-51.0,-31.0,20.0
