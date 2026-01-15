@@ -308,7 +308,7 @@ st.markdown(
 macro_list = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 scores["_dt"] = pd.to_datetime(scores["Date"], errors="coerce")
 latest = (

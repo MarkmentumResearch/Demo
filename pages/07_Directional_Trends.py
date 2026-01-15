@@ -385,7 +385,7 @@ html { scrollbar-width: thick; scrollbar-color: #bdbdbd #f2f2f2; }
 macro_list = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 if df.empty:
