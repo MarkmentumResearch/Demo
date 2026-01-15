@@ -327,7 +327,7 @@ st.markdown("""
 macro_list = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 # ---------- Build card ----------
