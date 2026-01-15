@@ -412,7 +412,7 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     bl_html_safe = escape(bl_text).replace("\n", "<br>")
     if csv_id == 93:
         note_text = (
-            "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. "
+            "Note: USD correlations use the U.S. Dollar Index (DXY), a trade-weighted FX index. "
             "15D/30D/90D are trading-day windows. Correlation ranges from -1 to +1. "
             "Negative = tends to move opposite. Positive = tends to move together."
         )
