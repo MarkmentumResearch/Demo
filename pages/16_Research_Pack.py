@@ -2042,7 +2042,7 @@ def _dt_make_colored_table(df: pd.DataFrame, vmax: dict) -> Table:
     data = [header]
     for _, r in df.iterrows():
         data.append([
-            pdf_safe_text(r.get("Name", "")),
+            clean_text(r.get("Name", "")),
             pdf_safe_text(r.get("Ticker", "")),
             fmt_pct(r.get("ST"), 1),
             fmt_pct(r.get("MT"), 1),
