@@ -492,7 +492,7 @@ def _section_correlations(flowables):
         df_usd,
         "USD Correlations",
         "usd_correlation_bottom_line.docx",
-        "Note: USD correlations use UUP as the proxy for the U.S. Dollar Index. 15D/30D/90D are trading-day windows. "
+        "Note: USD correlations use the U.S. Dollar Index (DXY), a trade-weighted FX index. 15D/30D/90D are trading-day windows. "
         "Correlation ranges from -1 to +1. Negative = tends to move opposite. Positive = tends to move together."
     )
 
@@ -1074,7 +1074,7 @@ PH_COL_MAP = {
 PH_MACRO_LIST = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 PH_CATEGORY_ORDER = [
@@ -1325,7 +1325,7 @@ SR_CSV_QTD  = DATA_DIR / "qry_graph_data_51.csv"  # Sharpe_Rank_qtd_change
 SR_MACRO_LIST = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 SR_CATEGORY_ORDER = [
@@ -1641,7 +1641,7 @@ MM_CSV_QTD  = DATA_DIR / "model_score_qtd_change.csv"
 MM_MACRO_LIST = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 MM_CATEGORY_ORDER = [
@@ -1914,7 +1914,7 @@ DT_CSV = DATA_DIR / "qry_graph_data_88.csv"
 DT_MACRO_LIST = [
     "SPX","NDX","DJI","RUT",
     "XLB","XLC","XLE","XLF","XLI","XLK","XLP","XLRE","XLU","XLV","XLY",
-    "GLD","UUP","TLT","BTC=F"
+    "GLD","DXY","TLT","BTC=F"
 ]
 
 def _dt_load_latest() -> tuple[pd.DataFrame, str]:
