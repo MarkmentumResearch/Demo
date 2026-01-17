@@ -215,7 +215,7 @@ def get_last_trading_date() -> str:
     Single source of truth for Research Pack 'Data as of'.
     Uses Daily Macro Orientation CSV.
     """
-    df = load_csv_by_id(73, DATA_DIR)  # Daily Macro Orientation
+    df = load_csv_by_id(29, DATA_DIR)  # Daily Macro Orientation
     if df.empty or "Date" not in df.columns:
         return ""
     asof = pd.to_datetime(df["Date"], errors="coerce").max()
@@ -727,7 +727,7 @@ def build_title_page_pdf(trading_session: str, data_asof: str) -> bytes:
     flow.append(Spacer(1, 0.5 * inch))
 
     data_asof = get_last_trading_date()
-    
+
     if data_asof:
         flow.append(Paragraph(
             f"Data as of: {data_asof}",
