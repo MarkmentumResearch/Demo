@@ -612,7 +612,7 @@ Date,Ticker,Ticker_name,Exposure,Category,model_score_mtd_change,current_model_s
 2026-01-16,VTR,"VENTAS, INC.",Real Estate,Real Estate,72.0,63.0,-9.0
 2026-01-16,VTRS,VIATRIS INC.,Health Care,Health Care,-4.0,-41.0,-37.0
 2026-01-16,VXN,CBOE NASDAQ MKT VOL NDX,,Volatility,1.0,32.0,31.0
-2026-01-16,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,-55.0,-43.0,12.0
+2026-01-16,VZ,VERIZON COMMUNICATIONS INC.,Communication Services,Communication Services,0.0,12.0,12.0
 2026-01-16,WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIES ,Industrials,Industrials,4.0,-43.0,-47.0
 2026-01-16,WAT,WATERS ,Health Care,Health Care,6.0,14.0,8.0
 2026-01-16,WBD,"WARNER BROS. DISCOVERY, INC.",Communication Services,Communication Services,86.0,51.0,-35.0
