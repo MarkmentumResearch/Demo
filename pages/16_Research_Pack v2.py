@@ -2384,16 +2384,25 @@ class MarketOverviewModule(ReportModuleBase):
     def ui(self) -> dict:
         extra_tfs = st.multiselect(
             "Add Timeframes (Optional)",
-                ["Weekly", "Monthly", "Quarterly"],
-                default=[]
+            ["Weekly", "Monthly", "Quarterly"],
+            default=[],
+            key="mo_timeframes"
         )
         tf_keys = ["Daily"] + extra_tfs
 
         c1, c2, c3 = st.columns([1, 1, 1])
 
         with c1:
-            include_top_cards = st.checkbox("Include Top % Gainers / Top % Decliners / Most Active", value=True)
-            include_score_change_cards = st.checkbox("Include MM Score Gainers / Decliners / Change Distribution", value=True)
+            include_top_cards = st.checkbox(
+                "Include Top % Gainers / Top % Decliners / Most Active",
+                value=True,
+                key="mo_top_cards"
+            )
+            include_score_change_cards = st.checkbox(
+                "Include MM Score Gainers / Decliners / Change Distribution",
+                value=True,
+                key="mo_mm_cards"
+            )
 
         with c2:
 #            include_daily_extras = st.checkbox(
@@ -2404,12 +2413,17 @@ class MarketOverviewModule(ReportModuleBase):
 
             include_daily_extras = st.checkbox(
                 "Include Daily extras (Highest/Lowest/Histogram + Opportunity Density)",
-                value=True
+                value=True,
+                key="mo_daily_extras"
             )
 
 
         with c3:
-            include_market_read = st.checkbox("Include Market Read", value=True)
+            include_market_read = st.checkbox(
+                "Include Market Read",
+                value=True,
+                key="mo_market_read"
+            )
 
         st.caption(
             "Daily Market Overview is always included by default. "
@@ -2649,12 +2663,12 @@ def apply_preset(preset_name: str):
     p = PRESETS[preset_name]
 
     # Main sections
-    st.session_state.include_morning_compass = p.get("include_morning_compass", False)
-    st.session_state.include_market_overview = p.get("include_market_overview", False)
-    st.session_state.include_performance_heatmap = p.get("include_performance_heatmap", False)
-    st.session_state.include_sharpe_heatmap = p.get("include_sharpe_heatmap", False)
-    st.session_state.include_markmentum_heatmap = p.get("include_markmentum_heatmap", False)
-    st.session_state.include_directional_trends = p.get("include_directional_trends", False)
+    st.session_state[f"select_morning_compass"]      = p.get("include_morning_compass", False)
+    st.session_state[f"select_market_overview"]      = p.get("include_market_overview", False)
+    st.session_state[f"select_performance_heatmap"]  = p.get("include_performance_heatmap", False)
+    st.session_state[f"select_sharpe_rank_heatmap"]  = p.get("include_sharpe_heatmap", False)
+    st.session_state[f"select_markmentum_heatmap"]   = p.get("include_markmentum_heatmap", False)
+    st.session_state[f"select_directional_trends"]   = p.get("include_directional_trends", False)
 
     # Morning Compass
     st.session_state.mc_timeframes = p.get("mc_timeframes", [])
@@ -2674,7 +2688,9 @@ def apply_preset(preset_name: str):
 if preset_choice != "Custom":
     apply_preset(preset_choice)
 
-
+def _mark_custom():
+    if st.session_state.get("preset_choice") != "Custom":
+        st.session_state["preset_choice"] = "Custom"
 
 st.divider()
 
@@ -2688,6 +2704,7 @@ for m in REGISTERED_MODULES:
         m.label,
         value=(m.key in default_selected),
         key=f"select_{m.key}",
+        on_change=_mark_custom
     )
     if checked:
         selected_keys.append(m.key)
