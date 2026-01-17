@@ -2297,49 +2297,6 @@ class ReportModuleBase:
         return ([], "report")
 
 
-st.subheader("Preset")
-
-preset_choice = st.radio(
-    "",
-    ["Daily Research Pack", "Full Research Pack", "Risk & Regime Pack", "Custom"],
-    index=0,
-    horizontal=False,
-    key="preset_choice"
-)
-
-def apply_preset(preset_name: str):
-    if preset_name not in PRESETS:
-        return
-
-    p = PRESETS[preset_name]
-
-    # Main sections
-    st.session_state.include_morning_compass = p.get("include_morning_compass", False)
-    st.session_state.include_market_overview = p.get("include_market_overview", False)
-    st.session_state.include_performance_heatmap = p.get("include_performance_heatmap", False)
-    st.session_state.include_sharpe_heatmap = p.get("include_sharpe_heatmap", False)
-    st.session_state.include_markmentum_heatmap = p.get("include_markmentum_heatmap", False)
-    st.session_state.include_directional_trends = p.get("include_directional_trends", False)
-
-    # Morning Compass
-    st.session_state.mc_timeframes = p.get("mc_timeframes", [])
-    st.session_state.mc_macro = p.get("mc_macro", False)
-    st.session_state.mc_correlations = p.get("mc_correlations", False)
-    st.session_state.mc_top_pct = p.get("mc_top_pct", False)
-    st.session_state.mc_top_mm = p.get("mc_top_mm", False)
-    st.session_state.mc_top_delta = p.get("mc_top_delta", False)
-
-    # Market Overview
-    st.session_state.mo_timeframes = p.get("mo_timeframes", [])
-    st.session_state.mo_top_cards = p.get("mo_top_cards", False)
-    st.session_state.mo_mm_cards = p.get("mo_mm_cards", False)
-    st.session_state.mo_daily_extras = p.get("mo_daily_extras", False)
-    st.session_state.mo_market_read = p.get("mo_market_read", False)
-
-if preset_choice != "Custom":
-    apply_preset(preset_choice)
-
-
 class MorningCompassModule(ReportModuleBase):
     key = "morning_compass"
     label = "Morning Compass"
@@ -2674,6 +2631,50 @@ st.markdown(
     "<div style='text-align:center; color:#6c757d; margin-bottom:16px;'>Build a curated research pack from portal sections</div>",
     unsafe_allow_html=True
 )
+st.divider()
+st.subheader("Preset")
+
+preset_choice = st.radio(
+    "",
+    ["Daily Research Pack", "Full Research Pack", "Risk & Regime Pack", "Custom"],
+    index=0,
+    horizontal=False,
+    key="preset_choice"
+)
+
+def apply_preset(preset_name: str):
+    if preset_name not in PRESETS:
+        return
+
+    p = PRESETS[preset_name]
+
+    # Main sections
+    st.session_state.include_morning_compass = p.get("include_morning_compass", False)
+    st.session_state.include_market_overview = p.get("include_market_overview", False)
+    st.session_state.include_performance_heatmap = p.get("include_performance_heatmap", False)
+    st.session_state.include_sharpe_heatmap = p.get("include_sharpe_heatmap", False)
+    st.session_state.include_markmentum_heatmap = p.get("include_markmentum_heatmap", False)
+    st.session_state.include_directional_trends = p.get("include_directional_trends", False)
+
+    # Morning Compass
+    st.session_state.mc_timeframes = p.get("mc_timeframes", [])
+    st.session_state.mc_macro = p.get("mc_macro", False)
+    st.session_state.mc_correlations = p.get("mc_correlations", False)
+    st.session_state.mc_top_pct = p.get("mc_top_pct", False)
+    st.session_state.mc_top_mm = p.get("mc_top_mm", False)
+    st.session_state.mc_top_delta = p.get("mc_top_delta", False)
+
+    # Market Overview
+    st.session_state.mo_timeframes = p.get("mo_timeframes", [])
+    st.session_state.mo_top_cards = p.get("mo_top_cards", False)
+    st.session_state.mo_mm_cards = p.get("mo_mm_cards", False)
+    st.session_state.mo_daily_extras = p.get("mo_daily_extras", False)
+    st.session_state.mo_market_read = p.get("mo_market_read", False)
+
+if preset_choice != "Custom":
+    apply_preset(preset_choice)
+
+
 
 st.divider()
 
