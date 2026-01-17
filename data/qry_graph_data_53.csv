@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,wtd_return_pct
 GLATF,GLOBAL ATOMIC ,MR Discretion,2026-01-15,-0.2108
-INTU,INTUIT INC.,Information Technology,2026-01-15,-0.1427
-RCL,ROYAL CARIBBEAN CRUISES LTD.,Consumer Discretionary,2026-01-15,-0.1072
-SYF,SYNCHRONY FINANCIAL,Financials,2026-01-15,-0.1058
-CRM,"SALESFORCE, INC.",Information Technology,2026-01-15,-0.1016
-BIIB,BIOGEN INC.,Health Care,2026-01-15,-0.1015
-QCOM,QUALCOMM INC.,Information Technology,2026-01-15,-0.0922
-ADBE,ADOBE INC.,Information Technology,2026-01-15,-0.0894
-CCL,CARNIVAL CORP,Consumer Discretionary,2026-01-15,-0.0837
-STLA,STELLANTIS NV,MR Discretion,2026-01-15,-0.0816
+INTU,INTUIT INC.,Information Technology,2026-01-16,-0.1571
+CRM,"SALESFORCE, INC.",Information Technology,2026-01-16,-0.1263
+BIIB,BIOGEN INC.,Health Care,2026-01-16,-0.1237
+APP,APPLOVIN CORP,Information Technology,2026-01-16,-0.1219
+STLA,STELLANTIS NV,MR Discretion,2026-01-16,-0.1201
+RCL,ROYAL CARIBBEAN CRUISES LTD.,Consumer Discretionary,2026-01-16,-0.1139
+APTV,APTIV PLC,Consumer Discretionary,2026-01-16,-0.1135
+ADBE,ADOBE INC.,Information Technology,2026-01-16,-0.1133
+QCOM,QUALCOMM INC.,Information Technology,2026-01-16,-0.1033
