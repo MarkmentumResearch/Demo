@@ -2265,10 +2265,24 @@ class MorningCompassModule(ReportModuleBase):
             "If you select another timeframe, you may uncheck 'Include Daily' to exclude Daily."
         )
 
+        daily_selected = "Daily" in tf_keys
+
         with mid:
             st.markdown("**Include Sections**")
-            include_macro        = st.checkbox("Macro Orientation (by timeframe)", value=True)
-            include_correlations = st.checkbox("Correlations (USD + Rates) (Daily only)", value=True)
+            include_macro = st.checkbox("Macro Orientation (by timeframe)", value=True)
+
+            corr_key = f"{self.key}_include_correlations"
+
+            # If Daily isn't in tf_keys, force correlations OFF (prevents stale True)
+            if not daily_selected:
+                st.session_state[corr_key] = False
+
+            include_correlations = st.checkbox(
+                "Correlations (USD + Rates) (Daily only)",
+                value=st.session_state.get(corr_key, True),
+                key=corr_key,
+                disabled=not daily_selected,
+            )
             
         with right:
             st.markdown("**Top Five Cards (by timeframe)**")
@@ -2360,10 +2374,19 @@ class MarketOverviewModule(ReportModuleBase):
 #                value=True,
 #                disabled=(tf_key != "Daily")
 #            )
+            daily_selected = "Daily" in tf_keys
 
+            extras_key = f"{self.key}_include_daily_extras"
+
+            # If Daily isn't in tf_keys, force extras OFF (prevents stale True)
+            if not daily_selected:
+                st.session_state[extras_key] = False
+            
             include_daily_extras = st.checkbox(
                 "Include Daily extras (Highest/Lowest/Histogram + Opportunity Density)",
-                value=True
+                value=st.session_state.get(extras_key, True),
+                key=extras_key,
+                disabled=not daily_selected,
             )
 
 
