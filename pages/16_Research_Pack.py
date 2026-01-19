@@ -2388,6 +2388,7 @@ class MarketOverviewModule(ReportModuleBase):
                 key=extras_key,
                 disabled=not daily_selected,
             )
+            
 
 
         with c3:
