@@ -2667,13 +2667,27 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.divider()
+
+
 st.subheader("Preset")
+def apply_preset(preset_name: str):
+    preset = PRESETS[preset_name]
+
+    st.session_state["select_morning_compass"] = preset.get("include_morning_compass", False)
+    st.session_state["select_market_overview"] = preset.get("include_market_overview", False)
+    st.session_state["select_performance_heatmap"] = preset.get("include_performance_heatmap", False)
+    st.session_state["select_sharpe_rank_heatmap"] = preset.get("include_sharpe_heatmap", False)
+    st.session_state["select_markmentum_heatmap"] = preset.get("include_markmentum_heatmap", False)
+    st.session_state["select_directional_trends"] = preset.get("include_directional_trends", False)
+
+
 
 preset_choice = st.radio(
-    "",
+    "Preset",
     ["Daily Research Pack", "Full Research Pack", "Risk & Regime Pack", "Custom"],
     index=0,
-    key="preset_choice"
+    on_change=lambda: apply_preset(st.session_state["preset"]),
+    key="preset"
 )
 
 def apply_preset(preset_name: str):
@@ -2705,8 +2719,9 @@ def apply_preset(preset_name: str):
     st.session_state.mo_market_read   = p.get("mo_market_read", True)
 
 # apply preset unless Custom
-if preset_choice != "Custom":
-    apply_preset(preset_choice)
+_choice = st.session_state.get("preset_choice", "Daily Research Pack")
+if _choice != "Custom":
+    apply_preset(_choice)
 
 st.divider()
 
