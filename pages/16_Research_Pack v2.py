@@ -2714,7 +2714,14 @@ def _mark_custom():
     # Flip to Custom when the user manually changes any checkbox/multiselect
     if st.session_state.get("preset_choice") != "Custom":
         st.session_state["preset_choice"] = "Custom"
-        
+
+# Initialize checkbox state once (only if not already set by presets or prior runs)
+default_selected = ["morning_compass"]
+for m in REGISTERED_MODULES:
+    k = f"select_{m.key}"
+    if k not in st.session_state:
+        st.session_state[k] = (m.key in default_selected)
+
 # ---- Module selection ----
 # Default only Morning Compass ON (same as your current behavior)
 default_selected = ["morning_compass"]
@@ -2723,13 +2730,12 @@ selected_keys = []
 for m in REGISTERED_MODULES:
     checked = st.checkbox(
         m.label,
-        value=(m.key in default_selected),
         key=f"select_{m.key}",
         on_change=_mark_custom
     )
     if checked:
         selected_keys.append(m.key)
-
+        
 # ---- Module options blocks ----
 module_options: dict[str, dict] = {}
 
