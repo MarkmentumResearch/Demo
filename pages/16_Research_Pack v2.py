@@ -2726,6 +2726,12 @@ for m in REGISTERED_MODULES:
 # Default only Morning Compass ON (same as your current behavior)
 default_selected = ["morning_compass"]
 
+# Initialize checkbox session state ONCE (do not override presets)
+for m in REGISTERED_MODULES:
+    k = f"select_{m.key}"
+    if k not in st.session_state:
+        st.session_state[k] = (m.key in default_selected)
+
 selected_keys = []
 for m in REGISTERED_MODULES:
     checked = st.checkbox(
@@ -2735,7 +2741,7 @@ for m in REGISTERED_MODULES:
     )
     if checked:
         selected_keys.append(m.key)
-        
+
 # ---- Module options blocks ----
 module_options: dict[str, dict] = {}
 
