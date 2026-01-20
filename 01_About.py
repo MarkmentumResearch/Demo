@@ -151,7 +151,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   Therefore, market participants need a new way to achieve consistent compounding of returns and preservation of capital with advanced risk management techniques. We provide this via a volatility adjusted probability-driven market momentum framework.  
 </p>
 <p>
-  Risk exists and our goal is to manage that risk properly while extracting consistent gains based on market signals over different time scales. 
+  Risk exists and the goal is to manage that risk properly while extracting consistent gains based on market signals over different time scales. 
   Tipping the scales in your favor where the upside reward is greater than the downside risk is possible when you forget all your past learnings about how financial markets work and use a data dependent decision-making process.
 </p>
 
@@ -171,7 +171,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   <li><b>Morning Compass</b> – Your orientation dashboard across major indices, sectors, and macro levers — with a one-click Daily / Weekly / Monthly selector. 
   Displays probable ranges, risk/reward bias, and Markmentum Scores for key macro exposures (Indices, S&P 500 sectors, Gold, USD, TLT, BTC Futures), plus top 5 gainers and laggards by % change and by Markmentum Score, 
   along with an optional category snapshot for deeper drill-downs. On the Daily view, Morning Compass also includes USD and Rates Correlation snapshots, showing how equities, sectors, commodities, and other assets have recently moved 
-  relative to the U.S. Dollar (via UUP) and 10-Year Treasury yields — helping frame near-term sensitivity and cross-asset influences. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.</li>
+  relative to the U.S. Dollar (via DXY) and 10-Year Treasury yields — helping frame near-term sensitivity and cross-asset influences. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.</li>
   <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
     The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores, a Markmentum Score histogram, and the Opportunity Density report, which summarizes the distribution of Buy, Neutral, and Sell setups across categories based on Risk/Reward and Markmentum Score thresholds.
       At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
