@@ -159,7 +159,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <ul>
   <li><b>Probable Ranges &amp; Anchors</b> – Forward ranges that frame upside/downside by day, week, and month, plus long-term anchor levels to gauge extension and mean-reversion risk.</li>
   <li><b>Directional Trends</b> – Short, mid, and long-term trend lines alongside their changes with tape bias cues (Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming).</li>
-  <li><b>Volatility Stats</b> – Implied (Ivol) vs. realized (Rvol) spreads, percentile ranks, and Z-Scores to spot crowding and regime shifts.</li>
+  <li><b>Volatility Stats</b> – Implied (Ivol) vs. Realized (Rvol) spreads, percentile ranks, and Z-Scores to spot crowding and regime shifts.</li>
   <li><b>Markmentum Score</b> – a rules-based, volatility-adjusted risk–reward score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Heatmaps</b> – Data tables and heatmaps for broad performance distribution, risk-adjusted performance layer, and core signal distribution to surface opportunity and risk fast.</li>
   <li><b>Signals</b> – Curated tactical lists designed to highlight near-term opportunities and crowding dynamics across the instrument universe. Each list distills probabilistic signals into actionable context for different trading styles.</li>
