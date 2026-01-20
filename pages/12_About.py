@@ -189,7 +189,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-gene
   Each row includes a Tape Bias field summarizing overall market bias (e.g., Buy/Sell, Leaning Bullish/Bearish, Neutral, Topping/Bottoming). Includes a sortable, searchable, and downloadable table at the bottom. </li>
   <li><b>Vantage Point</b> – Unified snapshot of Sharpe Rank, Markmentum Score, and Tape Bias by timeframe. Starts with macro orientation, then averages by category, and finally drills down to per-ticker detail. 
   Highlights where performance, risk, and sentiment are aligning or diverging across the market.</li>
-  <li><b>Deep Dive Dashboard</b> – Full per instrument view: probable ranges, anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
+  <li><b>Deep Dive Dashboard</b> – Full per instrument view: probable ranges, probable anchors, trend lines, gap-to-anchor, volatility stats, Sharpe percentile ranks, Markmentum Score, and more.</li>
   <li><b>Signals</b> – Tactical screens for chase/no chase, watch, up-cycle, crowding, and upside/downside lists to surface where conviction and risk are shifting.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
