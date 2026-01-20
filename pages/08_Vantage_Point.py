@@ -510,9 +510,9 @@ cat_render = pd.DataFrame({
     "Avg MM Score":  [ _score_cell(v)              for v in grp["MMScore"]  ],
     "Avg Sharpe Rank":    [ _rank_cell(v)               for v in grp["Sharpe"]   ],
     "":          [ ""                          for _ in range(len(grp)) ],  # spacer
-    "Avg % Δ":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
-    "Avg MM Score Δ":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
-    "Avg Sharpe Rank Δ":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
+    "Δ Avg %":       [ _divergent_pct_cell(v, vmax_ret) for v in grp["Ret"]     ],
+    "Δ Avg MM Score":[ _delta_cell(v, vmax_dmm)         for v in grp["dMM"]     ],
+    "Δ Avg Sharpe Rank":  [ _delta_cell(v, vmax_dsh)         for v in grp["dSharpe"] ],
 })
 
 # HTML + colgroup (spacer column uses .col-spacer which you already zero-border in CSS)
