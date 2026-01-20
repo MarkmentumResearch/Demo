@@ -204,7 +204,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
 <ul>
   <li><b>Probable Ranges</b> – Calculated independently for highs and lows using: (1) the high or low price series, (2) realized volatility on that series, (3) volatility-of-volatility on that series, and (4) volume volatility. 
   These inputs generate the probable high and low across daily, weekly, and monthly horizons. By building the model on highs and lows—rather than just closes—the ranges capture more information about market behavior. </li>
-  <li><b>Trends</b> – Short-, mid-, and long-term composites derived by netting the volatility-adjusted factors behind probable highs and lows, providing a directional trend signal.</li>
+  <li><b>Directional Trends</b> – Short-, mid-, and long-term composites derived by netting the volatility-adjusted factors behind probable highs and lows, providing a directional trend signal.</li>
   <li><b>Anchors</b> – Anchor levels are extrapolated by aligning short-term trend structure with long-term trend structure, creating a probabilistic reference to gauge extension and mean-reversion risk.</li>
   <li><b>Volatility Stats</b> – 30-day z-scores, percentile ranks, Ivol/Rvol spreads, and regime flags.</li>
   <li><b>Markmentum Score</b> – A proprietary, rules-based, volatility-adjusted risk/reward framework that blends multiple market signals into a single intuitive scale. A high positive score favors the long side; a negative score favors the short side.</li>
