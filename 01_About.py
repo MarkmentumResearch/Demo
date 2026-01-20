@@ -135,7 +135,7 @@ Markets + Momentum = Markmentum Research.  The equation to achieve trading, inve
 </p>
 
 <p style="font-weight:600; margin:12px 0 18px;">
-We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assisted market reads that frame growth and inflation expectations — plus probability-driven signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused insights. Zero noise.
+We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-generated market reads that frame growth and inflation expectations — plus probability-driven signals across major market tickers and indices—through a sleek, modern portal. Actionable data. Focused insights. Zero noise.
 </p>
 
 <p style="font-weight:600; margin:12px 0 18px;">You're the captain. We provide the coordinates. Let us help you navigate markets with clarity and confidence.</p>
@@ -174,7 +174,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-assi
   relative to the U.S. Dollar (via DXY) and 10-Year Treasury yields — helping frame near-term sensitivity and cross-asset influences. Auto-refreshed for a concise, data-first read on market direction, sector leadership and risk sentiment.</li>
   <li><b>Market Overview</b> – A single, unified page with a timeframe selector (Daily / Weekly / Monthly / Quarterly). Each view displays the top percentage gainers and decliners, Most Active (Shares), and Markmentum Score change distribution.
     The Daily view additionally includes the Top-10 Highest and Lowest Markmentum Scores, a Markmentum Score histogram, and the Opportunity Density report, which summarizes the distribution of Buy, Neutral, and Sell setups across categories based on Risk/Reward and Markmentum Score thresholds.
-      At the bottom of the page, each timeframe features an AI-assisted Market Read summarizing key market dynamics and macro context.</li>
+      At the bottom of the page, each timeframe features an AI-generated Market Read summarizing key market dynamics and macro context.</li>
   <li><b>Performance Heatmap</b> – Multi-layered view of realized market performance across categories and tickers. Begins with key macro tickers and category-level averages, then allows a drill-down by category to explore per-ticker percentage changes. 
   Displays Daily, WTD, MTD, and QTD returns, with each timeframe independently scaled for clarity. The layout combines table and heatmap views to show where performance strength or weakness has already occurred, complementing the forward-looking insights from the Markmentum Heatmap. 
   Includes a sortable, searchable, and downloadable table at the bottom.</li>
