@@ -609,9 +609,9 @@ if not tcat.empty:
         "Sharpe Rank": [ _rank_cell(v)  for v in tcat[CURRENT["rank"]] ],
         "Tape Bias": tcat[CURRENT["tape"]].fillna("").map(_tape_pill),
         "":            [ "" for _ in range(len(tcat)) ],               # spacer
-        "% Δ":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
-        "MM Score Δ":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
-        "Sharpe Rank Δ":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
+        "Δ %":         [ _divergent_pct_cell(v, vmaxC_ret) for v in tcat[tf["ret"]]  ],
+        "Δ MM Score":  [ _delta_cell(v, vmaxC_dmm)      for v in tcat[tf["d_mm"]]  ],
+        "Δ Sharpe Rank":[ _delta_cell(v, vmaxC_dsh)     for v in tcat[tf["d_sh"]] ],
     })
 
     html_t = t_render.to_html(index=False, classes="tbl", escape=False, border=0)
