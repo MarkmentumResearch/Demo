@@ -2049,7 +2049,7 @@ def _dt_make_colored_table(df: pd.DataFrame, vmax: dict) -> Table:
     cols = [
         "Name", "Ticker",
         "ST", "MT", "LT",
-        "ST Change", "MT Change", "LT Change",
+        "Δ ST", "Δ MT", "Δ LT",
         "Tape Bias",
     ]
 
