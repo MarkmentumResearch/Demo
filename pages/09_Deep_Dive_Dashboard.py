@@ -2097,7 +2097,7 @@ table.sp tbody th:first-child{{
   <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th class="left">Signal</th><th>ST</th><th>MT</th><th>LT</th><th>ST Δ</th><th>MT Δ</th><th>Tape Bias</th></tr>
+      <tr><th class="left">Signal</th><th>ST</th><th>MT</th><th>LT</th><th>Δ ST</th><th>Δ MT</th><th>Tape Bias</th></tr>
     </thead>
     <tbody>
       <tr>
