@@ -2151,9 +2151,9 @@ def build_directional_trends_pdf() -> bytes:
         "ST": m.get("st_trend"),
         "MT": m.get("mt_trend"),
         "LT": m.get("lt_trend"),
-        "ST Change": m.get("st_trend_change"),
-        "MT Change": m.get("mt_trend_change"),
-        "LT Change": m.get("lt_trend_change"),
+        "Δ ST": m.get("st_trend_change"),
+        "Δ MT": m.get("mt_trend_change"),
+        "Δ LT": m.get("lt_trend_change"),
     })
     m_tbl["Tape Bias"] = [
         _dt_tape_bias_label(st, mt, lt, stc, mtc)
