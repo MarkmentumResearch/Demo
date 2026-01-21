@@ -2059,7 +2059,7 @@ table.sp tbody th:first-child{{
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th class="left">Signal</th><th>Rank</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th></tr>
+      <tr><th class="left">Signal</th><th>Rank</th><th>Δ Daily</th><th>Δ WTD/th><th>Δ MTD</th><th>Δ QTD</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -2077,7 +2077,7 @@ table.sp tbody th:first-child{{
   <table class="sp sp-bias-lastcol">
     <colgroup><col><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th class="left">Signal</th><th>Current</th><th>Daily Δ</th><th>WTD Δ</th><th>MTD Δ</th><th>QTD Δ</th><th>Rating</th></tr>
+      <tr><th class="left">Signal</th><th>Current</th><th>Δ Daily</th><th>Δ WTD</th><th>Δ MTD</th><th>Δ QTD</th><th>Rating</th></tr>
     </thead>
     <tbody>
       <tr>
