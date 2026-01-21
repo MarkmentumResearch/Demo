@@ -2053,7 +2053,16 @@ def _dt_make_colored_table(df: pd.DataFrame, vmax: dict) -> Table:
         "Tape Bias",
     ]
 
-    header = [th(c) for c in cols]
+    # ✅ Display labels (only affect header text, not dataframe keys)
+    header_labels = [
+        "Name", "Ticker",
+        "ST", "MT", "LT",
+        "Δ ST", "Δ MT", "Δ LT",
+        "Tape Bias",
+    ]
+
+    header = [th(c) for c in header_labels]
+    #header = [th(c) for c in cols]
 
     data = [header]
     for _, r in df.iterrows():
