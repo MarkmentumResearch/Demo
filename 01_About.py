@@ -152,7 +152,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-gene
 </p>
 <p>
   Markmentum Research provides a volatility-adjusted, probability-driven market framework designed to help investors better understand risk and reward across daily, weekly, and longer-term timeframes. 
-  By combining price behavior, trend structure, and quantitative signals, our approach helps users tilt exposure toward opportunities where upside potential outweighs downside risk—while avoiding crowded, stretched setups.
+  By combining price behavior, trend structure, and quantitative signals, our approach helps users tilt exposure toward asymmetric opportunities where upside potential outweighs downside risk—while avoiding crowded, stretched setups.
 </p>
 <p>
   Rather than relying on narratives or predictions, Markmentum emphasizes disciplined, data-driven decision-making to support capital preservation and repeatable outcomes across changing market regimes.
