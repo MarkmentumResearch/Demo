@@ -196,7 +196,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-gene
   <li><b>Signals</b> – Tactical screens for chase/no chase, watch, up-cycle, crowding, and upside/downside lists to surface where conviction and risk are shifting.</li>
   <li><b>Universe</b> – Full list of instruments with ticker, name, category, last close, and day/week/month/quarter percent changes. 
   Quick filter and CSV export. Coverage includes major indices, sector/style ETFs, currencies, commodities, bonds, and yields, plus full S&P 500 coverage and selected single names (including Bitcoin, ES, and NQ futures).</li>
-  <li><b>Education</b> – – Structured, plain-English walkthrough of the Markmentum framework and underlying signals. Covers probable ranges, trend lines, probable anchors, volatility regimes, crowding, asymmetry vs. stretch, and key guardrails used throughout the platform. 
+  <li><b>Education</b> – Structured, plain-English walkthrough of the Markmentum framework and underlying signals. Covers probable ranges, trend lines, probable anchors, volatility regimes, crowding, asymmetry vs. stretch, and key guardrails used throughout the platform. 
   Designed to help users understand why the tools behave the way they do, so insights can be applied with clarity, confidence, and discipline. Includes visual examples and a downloadable PDF reference.</li> 
   <li><b>Contact</b> – Have questions or feedback? Send us a note and we’ll get back to you as soon as possible.</li>  
   <li><b>Downloads</b> – Central hub for exporting the same data that powers the Markmentum portal. Includes full-history CSVs for the Stat Box (all tickers, all dates), the latest Signal Box (all tickers, most recent date), and all datasets used in the Deep Dive Dashboard charts. 
