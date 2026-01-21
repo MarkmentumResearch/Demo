@@ -2059,7 +2059,7 @@ table.sp tbody th:first-child{{
   <table class="sp">
     <colgroup><col><col><col><col><col><col></colgroup>
     <thead>
-      <tr><th class="left">Signal</th><th>Rank</th><th>Δ Daily</th><th>Δ WTD/th><th>Δ MTD</th><th>Δ QTD</th></tr>
+      <tr><th class="left">Signal</th><th>Rank</th><th>Δ Daily</th><th>Δ WTD</th><th>Δ MTD</th><th>Δ QTD</th></tr>
     </thead>
     <tbody>
       <tr>
