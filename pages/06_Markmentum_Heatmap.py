@@ -333,10 +333,10 @@ m_render = pd.DataFrame({
     "Name":   m["Name"],
     "Ticker": m["Ticker_link"],
     "Score":  [ _score_cell_html(v) for v in m["Score"] ],
-    "Daily":  [ _delta_cell_html(v, vmaxM["ΔDaily"]) for v in m["ΔDaily"] ],
-    "WTD":    [ _delta_cell_html(v, vmaxM["ΔWTD"])   for v in m["ΔWTD"]   ],
-    "MTD":    [ _delta_cell_html(v, vmaxM["ΔMTD"])   for v in m["ΔMTD"]   ],
-    "QTD":    [ _delta_cell_html(v, vmaxM["ΔQTD"])   for v in m["ΔQTD"]   ],
+    "Δ Daily":  [ _delta_cell_html(v, vmaxM["ΔDaily"]) for v in m["ΔDaily"] ],
+    "Δ WTD":    [ _delta_cell_html(v, vmaxM["ΔWTD"])   for v in m["ΔWTD"]   ],
+    "Δ MTD":    [ _delta_cell_html(v, vmaxM["ΔMTD"])   for v in m["ΔMTD"]   ],
+    "Δ QTD":    [ _delta_cell_html(v, vmaxM["ΔQTD"])   for v in m["ΔQTD"]   ],
 })
 
 html_macro = m_render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -402,10 +402,10 @@ vmax_cat = {
 g_render = pd.DataFrame({
     "Name":  grouped["Category"],
     "Score": [ _score_cell_html(v) for v in grouped["Score"] ],
-    "Daily": [ _delta_cell_html(v, vmax_cat["ΔDaily"]) for v in grouped["ΔDaily"] ],
-    "WTD":   [ _delta_cell_html(v, vmax_cat["ΔWTD"])   for v in grouped["ΔWTD"]   ],
-    "MTD":   [ _delta_cell_html(v, vmax_cat["ΔMTD"])   for v in grouped["ΔMTD"]   ],
-    "QTD":   [ _delta_cell_html(v, vmax_cat["ΔQTD"])   for v in grouped["ΔQTD"]   ],
+    "Δ Daily": [ _delta_cell_html(v, vmax_cat["ΔDaily"]) for v in grouped["ΔDaily"] ],
+    "Δ WTD":   [ _delta_cell_html(v, vmax_cat["ΔWTD"])   for v in grouped["ΔWTD"]   ],
+    "Δ MTD":   [ _delta_cell_html(v, vmax_cat["ΔMTD"])   for v in grouped["ΔMTD"]   ],
+    "Δ QTD":   [ _delta_cell_html(v, vmax_cat["ΔQTD"])   for v in grouped["ΔQTD"]   ],
 })
 
 html_cat = g_render.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -544,10 +544,10 @@ d_render = pd.DataFrame({
     "Name":   d["Name"],
     "Ticker": d["Ticker_link"],
     "Score":  [ _score_cell_html(v) for v in d["Score"] ],
-    "Daily":  [ _delta_cell_html(v, vmax_sel["ΔDaily"]) for v in d["ΔDaily"] ],
-    "WTD":    [ _delta_cell_html(v, vmax_sel["ΔWTD"])   for v in d["ΔWTD"]   ],
-    "MTD":    [ _delta_cell_html(v, vmax_sel["ΔMTD"])   for v in d["ΔMTD"]   ],
-    "QTD":    [ _delta_cell_html(v, vmax_sel["ΔQTD"])   for v in d["ΔQTD"]   ],
+    "Δ Daily":  [ _delta_cell_html(v, vmax_sel["ΔDaily"]) for v in d["ΔDaily"] ],
+    "Δ WTD":    [ _delta_cell_html(v, vmax_sel["ΔWTD"])   for v in d["ΔWTD"]   ],
+    "Δ MTD":    [ _delta_cell_html(v, vmax_sel["ΔMTD"])   for v in d["ΔMTD"]   ],
+    "Δ QTD":    [ _delta_cell_html(v, vmax_sel["ΔQTD"])   for v in d["ΔQTD"]   ],
 })
 
 html_detail = d_render.to_html(index=False, classes="tbl", escape=False, border=0)
