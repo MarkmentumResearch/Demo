@@ -480,7 +480,7 @@ else:
         "Probable High":  df_render[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
         "Risk / Reward":  df_render[cols["rr"]].map(rr_tinted_html),
         "MM Score":       df_render["model_score"].map(mm_badge_html),
-        "MM Score Change":df_render["model_score_delta"].map(fmt_int),
+        "Δ MM Score":df_render["model_score_delta"].map(fmt_int),
     })
 
     table_html = df_card.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -609,7 +609,7 @@ else:
         "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
         "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
         "MM Score":       d["model_score"].map(mm_badge_html),
-        "MM Score Change":d["model_score_delta"].map(fmt_int),
+        "Δ MM Score":d["model_score_delta"].map(fmt_int),
     })
 
     tbl_html_74 = df_74_card.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -663,7 +663,7 @@ else:
         "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
         "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
         "MM Score":       d["model_score"].map(mm_badge_html),
-        "MM Score Change":d["model_score_delta"].map(fmt_int),
+        "Δ MM Score":d["model_score_delta"].map(fmt_int),
     })
 
     tbl_html_75 = df_75_card.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -717,7 +717,7 @@ else:
         "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
         "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
         "MM Score":       d["model_score"].map(mm_badge_html),
-        "MM Score Change":d["model_score_delta"].map(fmt_int),
+        "Δ MM Score":d["model_score_delta"].map(fmt_int),
     })
 
     tbl_html_77 = df_77_card.to_html(index=False, classes="tbl", escape=False, border=0)
@@ -788,7 +788,7 @@ if show_cat:
             "Probable High":  d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
             "Risk / Reward":  d[cols["rr"]].map(rr_tinted_html),
             "MM Score":       d["model_score"].map(mm_badge_html),
-            "MM Score Change":d["model_score_delta"].map(fmt_int),
+            "Δ MM Score":d["model_score_delta"].map(fmt_int),
         })
 
         tbl_html_76 = df_cat_card.to_html(index=False, classes="tbl", escape=False, border=0)
