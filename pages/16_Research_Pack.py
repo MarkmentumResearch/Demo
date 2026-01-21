@@ -544,7 +544,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
         "Probable High": d[cols["pr_high"]].map(lambda v: fmt_num(v, 2)),
         "Risk / Reward": d[cols["rr"]].map(lambda v: fmt_num(v, 1)),
         "MM Score": d["model_score"].map(lambda v: fmt_int(v)),
-        "MM Score Change": d["model_score_delta"].map(lambda v: fmt_int(v)),
+        "Δ MM Score": d["model_score_delta"].map(lambda v: fmt_int(v)),
     })
 
     header = [
