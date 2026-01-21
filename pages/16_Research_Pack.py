@@ -2063,9 +2063,9 @@ def _dt_make_colored_table(df: pd.DataFrame, vmax: dict) -> Table:
             fmt_pct(r.get("ST"), 1),
             fmt_pct(r.get("MT"), 1),
             fmt_pct(r.get("LT"), 1),
-            fmt_pct(r.get("ST Change"), 1),
-            fmt_pct(r.get("MT Change"), 1),
-            fmt_pct(r.get("LT Change"), 1),
+            fmt_pct(r.get("Δ ST"), 1),
+            fmt_pct(r.get("Δ MT"), 1),
+            fmt_pct(r.get("Δ LT"), 1),
             pdf_safe_text(r.get("Tape Bias", "")),
         ])
 
