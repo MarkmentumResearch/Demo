@@ -2390,7 +2390,6 @@ class MarketOverviewModule(ReportModuleBase):
             )
             
 
-
         with c3:
             include_market_read = st.checkbox("Include Market Read", value=True)
 
