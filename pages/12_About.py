@@ -222,7 +222,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-gene
 </p>
 <p>
   Our mission is to deliver actionable, probability-driven insights without noise or narratives, 
-  helping market participants steward their resources with confidence.
+  helping market participants steward their resources with clarity and confidence.
 </p>
 </div>
 """,
