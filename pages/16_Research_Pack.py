@@ -556,7 +556,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
         th("Probable<br/>High"),
         th("Risk /<br/>Reward"),
         th("MM<br/>Score"),
-        th("MM Score<br/>Change"),
+        th("Δ MM<br/>Score"),
     ]
     data_rows = [header] + out.values.tolist()
 
