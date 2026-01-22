@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,mtd_return_pct
-INTU,INTUIT INC.,Information Technology,2026-01-20,-0.2015
-NOW,"SERVICENOW, INC.",Information Technology,2026-01-20,-0.1814
-ADBE,ADOBE INC.,Information Technology,2026-01-20,-0.1703
-CRM,"SALESFORCE, INC.",Information Technology,2026-01-20,-0.1693
-GDDY,GODADDY INC.,Information Technology,2026-01-20,-0.1659
-CEG,CONSTELLATION ENERGY,Utilities,2026-01-20,-0.1638
-APP,APPLOVIN CORP,Information Technology,2026-01-20,-0.1607
-AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,2026-01-20,-0.1532
-HPE,HEWLETT PACKARD ENTERPRISE COMPANY,Information Technology,2026-01-20,-0.1511
-WDAY,"WORKDAY, INC.",Information Technology,2026-01-20,-0.148
+APP,APPLOVIN CORP,Information Technology,2026-01-21,-0.2096
+INTU,INTUIT INC.,Information Technology,2026-01-21,-0.2076
+NOW,"SERVICENOW, INC.",Information Technology,2026-01-21,-0.1821
+CEG,CONSTELLATION ENERGY,Utilities,2026-01-21,-0.1667
+CRM,"SALESFORCE, INC.",Information Technology,2026-01-21,-0.1636
+GDDY,GODADDY INC.,Information Technology,2026-01-21,-0.1607
+AIG,"AMERICAN INTERNATIONAL GROUP, INC.",Financials,2026-01-21,-0.1597
+ADBE,ADOBE INC.,Information Technology,2026-01-21,-0.1593
+WDAY,"WORKDAY, INC.",Information Technology,2026-01-21,-0.1461
+PSKY,PARAMOUNT SKYDANCE ,Communication Services,2026-01-21,-0.1343
