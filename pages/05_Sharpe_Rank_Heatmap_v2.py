@@ -451,7 +451,7 @@ def _norm_for_heatmap(tf, val):
 
     # Rank: center on 50 (neutral)
     if tf == "Rank":
-        return float(np.clip((v - 50.0) / 50.0, -1, 1))
+        return float(np.clip((v - 50.0) / 60.0, -1, 1))
 
     # Deltas: center on 0 using robust vmax per timeframe
     vmax = float(vmax_tf.get(tf, 1.0) or 1.0)
@@ -603,7 +603,7 @@ def _norm_for_heatmap(tf, val):
 
     # Rank: center on 50 (neutral)
     if tf == "Rank":
-        return float(np.clip((v - 50.0) / 50.0, -1, 1))
+        return float(np.clip((v - 50.0) / 60.0, -1, 1))
 
     # Deltas: center on 0 using robust universe vmax per timeframe
     vmax = float(vmax_univ_tf.get(tf, 1.0) or 1.0)
