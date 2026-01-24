@@ -436,19 +436,28 @@ glong = grouped.melt(
 )
 glong["Category"] = pd.Categorical(glong["Category"], categories=preferred_order, ordered=True)
 
-# Robust |max| per timeframe INCLUDING Rank; cap Rank's vmax at 105
+# Robust |max| per delta timeframe (Rank handled separately)
 vmax_tf = {}
 for tf, sub in glong.groupby("Timeframe"):
-    vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
     if tf == "Rank":
-        vmax = min(105.0, max(vmax, 1.0))
-    vmax_tf[tf] = vmax
+        continue
+    vmax_tf[tf] = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
 
-# Normalize each cell by its timeframe-specific vmax → [-1, 1]
-glong["norm"] = glong.apply(
-    lambda r: float(np.clip((r["Value"] or 0.0) / (vmax_tf.get(r["Timeframe"], 1.0) or 1.0), -1, 1)),
-    axis=1
-)
+def _norm_for_heatmap(tf, val):
+    if pd.isna(val):
+        return np.nan
+
+    v = float(val)
+
+    # Rank: center on 50 (neutral)
+    if tf == "Rank":
+        return float(np.clip((v - 50.0) / 60.0, -1, 1))
+
+    # Deltas: center on 0 using robust vmax per timeframe
+    vmax = float(vmax_tf.get(tf, 1.0) or 1.0)
+    return float(np.clip(v / vmax, -1, 1))
+
+glong["norm"] = glong.apply(lambda r: _norm_for_heatmap(r["Timeframe"], r["Value"]), axis=1)
 
 timeframe_order = ["Rank", "ΔDaily", "ΔWTD", "ΔMTD", "ΔQTD"]
 
@@ -579,25 +588,32 @@ tlong_all = latest.melt(
 )
 
 # Universe-wide robust vmax per timeframe; cap Rank at 105
+# Universe-wide robust vmax for deltas only (Rank handled separately)
 vmax_univ_tf = {}
 for tf, sub in tlong_all.groupby("Timeframe"):
-    vmax = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
     if tf == "Rank":
-        vmax = min(105.0, max(vmax, 1.0))
-    vmax_univ_tf[tf] = vmax
+        continue
+    vmax_univ_tf[tf] = _robust_vmax(sub["Value"], q=0.98, floor=1.0, step=1.0)
 
+def _norm_for_heatmap(tf, val):
+    if pd.isna(val):
+        return np.nan
+
+    v = float(val)
+
+    # Rank: center on 50 (neutral)
+    if tf == "Rank":
+        return float(np.clip((v - 50.0) / 60.0, -1, 1))
+
+    # Deltas: center on 0 using robust universe vmax per timeframe
+    vmax = float(vmax_univ_tf.get(tf, 1.0) or 1.0)
+    return float(np.clip(v / vmax, -1, 1))
 # Selected category long
 tlong_sel = tlong_all.loc[tlong_all["Category"] == sel].copy()
 tickers_order = sorted(tlong_sel["Ticker"].dropna().unique().tolist())
 
 # Normalize each cell by the universe max for its timeframe → [-1, 1]
-tlong_sel["norm"] = tlong_sel.apply(
-    lambda r: np.clip(
-        (r["Value"] or 0.0) / (vmax_univ_tf.get(r["Timeframe"], 1.0) or 1.0),
-        -1, 1
-    ),
-    axis=1
-)
+tlong_sel["norm"] = tlong_sel.apply(lambda r: _norm_for_heatmap(r["Timeframe"], r["Value"]), axis=1)
 
 hm_sel = (
     alt.Chart(tlong_sel)
