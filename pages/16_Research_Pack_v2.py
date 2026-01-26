@@ -169,34 +169,51 @@ def _read_txt_plain_text(p: Path) -> str:
 
 def _read_html_plain_text(p: Path) -> str:
     """
-    Very lightweight HTML -> text for your generated Market Read HTML.
+    HTML -> plain text for your generated Market Read HTML.
+    - removes <style>/<script> blocks completely (prevents CSS showing in PDF)
     - preserves bullets from <li>
-    - turns <br> / </p> into newlines
-    - strips the rest of tags
+    - turns <br> and </p> into newlines
+    - strips remaining tags
+    - normalizes 'Daily/Weekly/Monthly/Quarterly Market Read:' -> 'Market Read:'
+    - drops standalone 'Market Read' line (the big centered H2 in HTML)
     """
     try:
         if not p.exists():
             return ""
         html = p.read_text(encoding="utf-8", errors="ignore")
 
-        # normalize breaks
+        # 1) REMOVE style/script blocks (this is the key fix)
+        html = re.sub(r"(?is)<style[^>]*>.*?</style>", "", html)
+        html = re.sub(r"(?is)<script[^>]*>.*?</script>", "", html)
+
+        # 2) normalize breaks
         html = re.sub(r"(?i)<br\s*/?>", "\n", html)
         html = re.sub(r"(?i)</p\s*>", "\n", html)
 
-        # list items -> "- ..."
+        # 3) list items -> "- ..."
         html = re.sub(r"(?is)<li[^>]*>\s*", "- ", html)
         html = re.sub(r"(?is)</li\s*>", "\n", html)
 
-        # strip remaining tags
+        # 4) strip remaining tags
         html = re.sub(r"(?is)<[^>]+>", "", html)
 
-        # decode a couple common entities (minimal)
+        # 5) decode a couple entities (minimal)
         html = html.replace("&nbsp;", " ").replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
 
-        # cleanup whitespace
+        # 6) cleanup whitespace
         lines = [ln.strip() for ln in html.splitlines()]
         lines = [ln for ln in lines if ln]
-        return clean_text("\n".join(lines).strip())
+
+        # 7) normalize header line to match PDF expectation
+        #    "Daily Market Read: January 23, 2026" -> "Market Read: January 23, 2026"
+        normed = []
+        for ln in lines:
+            if ln.strip().lower() == "market read":
+                continue  # drop the big centered title from HTML
+            ln = re.sub(r"(?i)^(daily|weekly|monthly|quarterly)\s+market read:\s*", "Market Read: ", ln)
+            normed.append(ln)
+
+        return clean_text("\n".join(normed).strip())
     except Exception:
         return ""
 
@@ -1106,7 +1123,6 @@ def build_market_overview_pdf(
     # Market Read (docx)
     # -------------------------
     if include_market_read:
-        #flow.append(Paragraph("Market Read", H1))
         docx_name = MO_MARKET_READ_DOCX.get(tf_key, "")
         mr_text = _read_plain_text_any(DATA_DIR / docx_name) if docx_name else ""
 
@@ -1115,17 +1131,15 @@ def build_market_overview_pdf(
         else:
             mr_items = _market_read_to_flowables(mr_text)
 
-    # Force Market Read to stay on ONE page by shrinking content if needed
-    # doc.height is the usable height (already respects your margins: bottomMargin=0.95")
-    mr_box = KeepInFrame(
-        maxWidth=doc.width,
-        maxHeight=doc.height,
-        content=mr_items,
-        mode="shrink",      # <— key: auto-scale down to fit
-        hAlign="LEFT",
-        vAlign="TOP",
-    )
-    flow.append(mr_box)
+            mr_box = KeepInFrame(
+                maxWidth=doc.width,
+                maxHeight=doc.height,
+                content=mr_items,
+                mode="shrink",
+                hAlign="LEFT",
+                vAlign="TOP",
+            )
+            flow.append(mr_box)
 
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
 
