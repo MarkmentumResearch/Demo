@@ -548,9 +548,9 @@ else:
         return "\n\n".join(lines)
 
     from html import escape
-    docx_path = (DATA_DIR / cfg_tf["docx"]).resolve()
-    bl_text = load_market_read_md(str(docx_path)).strip()
-    bl_html_safe = escape(bl_text)
+    txt_path = (DATA_DIR / cfg_tf["txt"]).resolve()
+    bl_text = load_txt_text(str(txt_path)).strip()
+    bl_html_safe = escape(bl_text).replace("\n", "<br>")
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 
