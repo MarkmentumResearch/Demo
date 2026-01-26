@@ -645,7 +645,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
     block.append(t)
     flowables.append(KeepTogether(block))
 
-    bl = _read_docx_plain_text(DATA_DIR / bottom_docx) if bottom_docx else ""
+    bl = _read_plain_text_any(DATA_DIR / bottom_docx) if bottom_docx else ""
     if bl:
         flowables.append(Spacer(1, 6))
         flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
