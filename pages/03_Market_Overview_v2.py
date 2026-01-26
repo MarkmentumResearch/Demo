@@ -633,6 +633,7 @@ mr_html = f"""
 </div>
 """
 # Render the full HTML doc inside the Streamlit page
+row_spacer(14)
 components.html(mr_html, height=900, scrolling=True)
 #st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
 
