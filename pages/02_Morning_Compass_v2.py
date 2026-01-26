@@ -415,8 +415,8 @@ def render_correlation_card(title: str, csv_id: int, docx_name: str):
     table_html = table_html.replace('class="dataframe tbl corr"', 'class="tbl corr"')
 
     # load bottom line from docx (plain text)
-    txt_path = (DATA_DIR / cfg_tf["txt"]).resolve()
-    bl_text = load_txt_text(str(txt_path)).strip()
+    docx_path = (DATA_DIR / docx_name).resolve()
+    bl_text = load_docx_text(str(docx_path))
     bl_html_safe = escape(bl_text).replace("\n", "<br>")
     if csv_id == 93:
         note_text = (
