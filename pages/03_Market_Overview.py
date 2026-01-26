@@ -603,73 +603,23 @@ unsafe_allow_html=True,
 
 # ========= Market Read (per timeframe) =========
 import os
-try:
-    from docx import Document  # pip install python-docx
-except Exception:
-    Document = None
-
-def _is_list_paragraph(paragraph) -> bool:
-    try:
-        return paragraph._p.pPr.numPr is not None
-    except Exception:
-        return False
-
-MR_DOCX = {
-    "Daily":     "Market_Read_daily.docx",
-    "Weekly":    "Market_Read_weekly.docx",
-    "Monthly":   "Market_Read_monthly.docx",
-    "Quarterly": "Market_Read_quarterly.docx",
+import streamlit.components.v1 as components
+MR_HTML = {
+    "Daily":     "Market_Read_daily.html",
+    "Weekly":    "Market_Read_weekly.html",
+    "Monthly":   "Market_Read_monthly.html",
+    "Quarterly": "Market_Read_quarterly.html",
 }
 
-@st.cache_data(show_spinner=False)
-def load_market_read_md(doc_path: str) -> str:
-    if Document is None:
-        return "⚠️ **Market Read**: python-docx is not installed (run: `pip install python-docx`)."
-    if not os.path.exists(doc_path):
-        return f"⚠️ **Market Read** file not found: `{doc_path}`"
-    try:
-        doc = Document(doc_path)
-    except Exception as e:
-        return f"⚠️ Could not open **Market Read** file `{doc_path}`: {e}"
-    lines: list[str] = []
-    for p in doc.paragraphs:
-        text = p.text.strip()
-        if not text:
-            continue
-        lines.append(f"- {text}" if _is_list_paragraph(p) else text)
-    # Preserve your split line logic if present in the file
-    for i, l in enumerate(lines):
-        if l.startswith("Market Read:") and "The market is saying:" in l:
-            left, right = l.split("The market is saying:", 1)
-            lines[i] = left.strip()
-            lines.insert(i + 1, "The market is saying:")
-            if right.strip():
-                lines.insert(i + 2, right.strip())
-            break
-    return "\n\n".join(lines)
+def load_market_read_html(path: Path) -> str:
+    if not path.exists():
+        return f"<div style='text-align:center;color:#b91c1c;'>⚠️ Market Read HTML not found: {path.name}</div>"
+    return path.read_text(encoding="utf-8")
 
-with st.container():
-    st.markdown("""
-    <style>
-      .market-read-wrapper{
-        max-width:900px; margin:0 auto; padding:0 6px; line-height:1.5;
-        font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      }
-      .market-read-wrapper p, .market-read-wrapper li { font-size:16px; }
-      .market-read-wrapper p:first-of-type { margin-bottom: 15px; }
-      .market-read-wrapper h2 { font-size:28px; font-weight:700; margin:8px 0 12px; text-align:center; }
-      .market-read-note { margin-top:6px; color:#6b7280; font-size:13px; text-align:center; }
-    </style>
-    """, unsafe_allow_html=True)
+mr_path = DATA_DIR / MR_HTML[tf]
+mr_html = load_market_read_html(mr_path)
 
-    docx_path = (DATA_DIR / MR_DOCX[tf]).resolve()
-    mr_md = load_market_read_md(str(docx_path))
-    mr_md = mr_md.replace("The market is saying:", "<br>The market is saying:", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are WTD % returns):", "<br>The market is saying (all numbers are WTD % returns):", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are MTD % returns):", "<br>The market is saying (all numbers are MTD % returns):", 1)
-    mr_md = mr_md.replace("The market is saying (all numbers are QTD % returns):", "<br>The market is saying (all numbers are QTD % returns):", 1)
-
-    note_html = (
+note_html = (
     "<div class='market-read-note'>Note: Indices are excluded from Highest/Lowest Markmentum Score lists.</div>"
     if show_daily_extra else ""
 )
@@ -677,13 +627,15 @@ with st.container():
 # Compose HTML, then dedent to remove leading spaces that can trigger Markdown code blocks
 mr_html = f"""
 <div class="market-read-wrapper">
-  <h2>Market Read</h2>
-  {mr_md}
+  
+  {mr_html}
   {note_html}
 </div>
 """
-
-st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
+# Render the full HTML doc inside the Streamlit page
+row_spacer(14)
+components.html(mr_html, height=900, scrolling=True)
+#st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
 
 # -------------------------
 # Footer disclaimer

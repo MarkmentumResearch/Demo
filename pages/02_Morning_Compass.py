@@ -161,6 +161,14 @@ def load_docx_text(doc_path: str) -> str:
 
     return "\n".join(lines).strip()
 
+@st.cache_data(show_spinner=False)
+def load_txt_text(txt_path: str) -> str:
+    if not os.path.exists(txt_path):
+        return f"⚠️ Bottom line file not found: {txt_path}"
+    try:
+        return Path(txt_path).read_text(encoding="utf-8").strip()
+    except Exception as e:
+        return f"⚠️ Could not open bottom line file: {e}"
 
 # ---------- UI renderers ----------
 def mm_badge_html(x):
@@ -219,7 +227,7 @@ TIMEFRAMES = {
     "Daily": {
         "ids": {"main": 73, "leaders": 74, "mm": 75, "category": 76, "delta": 77},
         "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
-        "docx": "bottom_line_daily.docx",
+        "txt": "bottom_line_daily.txt",
         "card_title": "Daily Macro Orientation",
         "card_title2":"Daily Top Five Leaders/Laggards by % Change",
         "card_title3":"Daily Top Five Leaders/Laggards by MM Score",
@@ -229,7 +237,7 @@ TIMEFRAMES = {
     "Weekly": {
         "ids": {"main": 78, "leaders": 79, "mm": 80, "category": 81, "delta": 82},
         "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
-        "docx": "bottom_line_weekly.docx",
+        "txt": "bottom_line_weekly.txt",
         "card_title": "Weekly Macro Orientation",
         "card_title2":"Weekly Top Five Leaders/Laggards by % Change",
         "card_title3":"Weekly Top Five Leaders/Laggards by MM Score",
@@ -240,7 +248,7 @@ TIMEFRAMES = {
     "Monthly": {
         "ids": {"main": 83, "leaders": 84, "mm": 85, "category": 86, "delta": 87},
         "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
-        "docx": "bottom_line_monthly.docx",
+        "txt": "bottom_line_monthly.txt",
         "card_title": "Monthly Macro Orientation",
         "card_title2":"Monthly Top Five Leaders/Laggards by % Change",
         "card_title3":"Monthly Top Five Leaders/Laggards by MM Score",
@@ -540,9 +548,9 @@ else:
         return "\n\n".join(lines)
 
     from html import escape
-    docx_path = (DATA_DIR / cfg_tf["docx"]).resolve()
-    bl_text = load_market_read_md(str(docx_path)).strip()
-    bl_html_safe = escape(bl_text)
+    txt_path = (DATA_DIR / cfg_tf["txt"]).resolve()
+    bl_text = load_txt_text(str(txt_path)).strip()
+    bl_html_safe = escape(bl_text).replace("\n", "<br>")
     note_text = "Note: MM Score → Rules-based contrarian score designed to avoid chasing stretch, identify crowding, and size conviction sensibly."
     note_html_safe = escape(note_text)
 

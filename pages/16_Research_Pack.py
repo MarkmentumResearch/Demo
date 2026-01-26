@@ -156,6 +156,83 @@ def _read_docx_plain_text(doc_path: Path) -> str:
         return clean_text("\n".join(lines).strip())
     except Exception:
         return ""
+import re
+
+def _read_txt_plain_text(p: Path) -> str:
+    """Return txt content, or empty string if missing/unreadable."""
+    try:
+        if not p.exists():
+            return ""
+        return clean_text(p.read_text(encoding="utf-8", errors="ignore").strip())
+    except Exception:
+        return ""
+
+def _read_html_plain_text(p: Path) -> str:
+    """
+    HTML -> plain text for your generated Market Read HTML.
+    - removes <style>/<script> blocks completely (prevents CSS showing in PDF)
+    - preserves bullets from <li>
+    - turns <br> and </p> into newlines
+    - strips remaining tags
+    - normalizes 'Daily/Weekly/Monthly/Quarterly Market Read:' -> 'Market Read:'
+    - drops standalone 'Market Read' line (the big centered H2 in HTML)
+    """
+    try:
+        if not p.exists():
+            return ""
+        html = p.read_text(encoding="utf-8", errors="ignore")
+
+        # 1) REMOVE style/script blocks (this is the key fix)
+        html = re.sub(r"(?is)<style[^>]*>.*?</style>", "", html)
+        html = re.sub(r"(?is)<script[^>]*>.*?</script>", "", html)
+
+        # 2) normalize breaks
+        html = re.sub(r"(?i)<br\s*/?>", "\n", html)
+        html = re.sub(r"(?i)</p\s*>", "\n", html)
+
+        # 3) list items -> "- ..."
+        html = re.sub(r"(?is)<li[^>]*>\s*", "- ", html)
+        html = re.sub(r"(?is)</li\s*>", "\n", html)
+
+        # 4) strip remaining tags
+        html = re.sub(r"(?is)<[^>]+>", "", html)
+
+        # 5) decode a couple entities (minimal)
+        html = html.replace("&nbsp;", " ").replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+
+        # 6) cleanup whitespace
+        lines = [ln.strip() for ln in html.splitlines()]
+        lines = [ln for ln in lines if ln]
+
+        # 7) normalize header line to match PDF expectation
+        #    "Daily Market Read: January 23, 2026" -> "Market Read: January 23, 2026"
+        normed = []
+        for ln in lines:
+            if ln.strip().lower() == "market read":
+                continue  # drop the big centered title from HTML
+            # Only normalize DAILY -> Market Read. Keep Weekly/Monthly/Quarterly as-is.
+            ln = re.sub(r"(?i)^daily\s+market read:\s*", "Market Read: ", ln)
+            normed.append(ln)
+
+        return clean_text("\n".join(normed).strip())
+    except Exception:
+        return ""
+
+def _read_plain_text_any(p: Path) -> str:
+    """
+    Unified reader:
+    - .txt  -> txt
+    - .html -> html->text
+    - .docx -> docx (existing)
+    """
+    suf = p.suffix.lower()
+    if suf == ".txt":
+        return _read_txt_plain_text(p)
+    if suf in (".html", ".htm"):
+        return _read_html_plain_text(p)
+    if suf == ".docx":
+        return _read_docx_plain_text(p)
+    return ""
 
 def _market_read_to_flowables(mr_text: str) -> list:
     """
@@ -201,7 +278,10 @@ def _market_read_to_flowables(mr_text: str) -> list:
 
         # normal lines
         if in_bullets:
-            bullets.append(ListItem(Paragraph(clean_text(ln), P)))
+            ln2 = ln
+            if ln2.startswith("- "):
+                ln2 = ln2[2:].lstrip()
+            bullets.append(ListItem(Paragraph(clean_text(ln2), P)))
         else:
             out.append(Paragraph(clean_text(ln), P))
 
@@ -242,7 +322,7 @@ TIMEFRAMES = {
     "Daily": {
         "ids": {"main": 73, "leaders": 74, "mm": 75, "delta": 77},
         "cols": {"ret": "daily_Return", "pr_low": "day_pr_low", "pr_high": "day_pr_high", "rr": "day_rr_ratio"},
-        "docx_macro": "bottom_line_daily.docx",
+        "docx_macro": "bottom_line_daily.txt",
         "title_macro": "Daily Macro Orientation",
         "title_leaders": "Daily Top Five Leaders/Laggards by % Change",
         "title_mm": "Daily Top Five Leaders/Laggards by MM Score",
@@ -251,7 +331,7 @@ TIMEFRAMES = {
     "Weekly": {
         "ids": {"main": 78, "leaders": 79, "mm": 80, "delta": 82},
         "cols": {"ret": "weekly_Return", "pr_low": "week_pr_low", "pr_high": "week_pr_high", "rr": "week_rr_ratio"},
-        "docx_macro": "bottom_line_weekly.docx",
+        "docx_macro": "bottom_line_weekly.txt",
         "title_macro": "Weekly Macro Orientation",
         "title_leaders": "Weekly Top Five Leaders/Laggards by % Change",
         "title_mm": "Weekly Top Five Leaders/Laggards by MM Score",
@@ -260,7 +340,7 @@ TIMEFRAMES = {
     "Monthly": {
         "ids": {"main": 83, "leaders": 84, "mm": 85, "delta": 87},
         "cols": {"ret": "monthly_Return", "pr_low": "month_pr_low", "pr_high": "month_pr_high", "rr": "month_rr_ratio"},
-        "docx_macro": "bottom_line_monthly.docx",
+        "docx_macro": "bottom_line_monthly.txt",
         "title_macro": "Monthly Macro Orientation",
         "title_leaders": "Monthly Top Five Leaders/Laggards by % Change",
         "title_mm": "Monthly Top Five Leaders/Laggards by MM Score",
@@ -282,10 +362,10 @@ MO_CSV_MAP = {
 
 # Market Read docx (same filenames as Market Overview page)
 MO_MARKET_READ_DOCX = {
-    "Daily":     "Market_Read_daily.docx",
-    "Weekly":    "Market_Read_weekly.docx",
-    "Monthly":   "Market_Read_monthly.docx",
-    "Quarterly": "Market_Read_quarterly.docx",
+    "Daily":     "Market_Read_daily.html",
+    "Weekly":    "Market_Read_weekly.html",
+    "Monthly":   "Market_Read_monthly.html",
+    "Quarterly": "Market_Read_quarterly.html",
 }
 
 # Opportunity Density (daily only in your page)
@@ -493,7 +573,7 @@ def _section_correlations(flowables):
         t = _build_table(data_rows, col_widths)
         flowables.append(t)
 
-        bl = _read_docx_plain_text(DATA_DIR / bottom_docx)
+        bl = _read_plain_text_any(DATA_DIR / bottom_docx)
         if bl:
             flowables.append(Spacer(1, 6))
             flowables.append(Paragraph(pdf_safe_text(clean_text(bl)).replace("\n", "<br/>"), P))
@@ -586,7 +666,7 @@ def _section_macro_table(flowables, tf_key: str, title: str, csv_id: int, bottom
     block.append(t)
     flowables.append(KeepTogether(block))
 
-    bl = _read_docx_plain_text(DATA_DIR / bottom_docx) if bottom_docx else ""
+    bl = _read_plain_text_any(DATA_DIR / bottom_docx) if bottom_docx else ""
     if bl:
         flowables.append(Spacer(1, 6))
         flowables.append(Paragraph(clean_text(bl).replace("\n", "<br/>"), P))
@@ -1047,26 +1127,23 @@ def build_market_overview_pdf(
     # Market Read (docx)
     # -------------------------
     if include_market_read:
-        #flow.append(Paragraph("Market Read", H1))
         docx_name = MO_MARKET_READ_DOCX.get(tf_key, "")
-        mr_text = _read_docx_plain_text(DATA_DIR / docx_name) if docx_name else ""
+        mr_text = _read_plain_text_any(DATA_DIR / docx_name) if docx_name else ""
 
         if not mr_text:
             flow.append(Paragraph(f"Market Read missing or empty: {docx_name}", NOTE))
         else:
             mr_items = _market_read_to_flowables(mr_text)
 
-    # Force Market Read to stay on ONE page by shrinking content if needed
-    # doc.height is the usable height (already respects your margins: bottomMargin=0.95")
-    mr_box = KeepInFrame(
-        maxWidth=doc.width,
-        maxHeight=doc.height,
-        content=mr_items,
-        mode="shrink",      # <— key: auto-scale down to fit
-        hAlign="LEFT",
-        vAlign="TOP",
-    )
-    flow.append(mr_box)
+            mr_box = KeepInFrame(
+                maxWidth=doc.width,
+                maxHeight=doc.height,
+                content=mr_items,
+                mode="shrink",
+                hAlign="LEFT",
+                vAlign="TOP",
+            )
+            flow.append(mr_box)
 
     doc.build(flow, onFirstPage=_footer, onLaterPages=_footer)
 
