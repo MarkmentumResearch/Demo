@@ -627,7 +627,7 @@ note_html = (
 # Compose HTML, then dedent to remove leading spaces that can trigger Markdown code blocks
 mr_html = f"""
 <div class="market-read-wrapper">
-  <h2>Market Read</h2>
+  
   {mr_html}
   {note_html}
 </div>
