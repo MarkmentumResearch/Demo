@@ -210,7 +210,8 @@ def _read_html_plain_text(p: Path) -> str:
         for ln in lines:
             if ln.strip().lower() == "market read":
                 continue  # drop the big centered title from HTML
-            ln = re.sub(r"(?i)^(daily|weekly|monthly|quarterly)\s+market read:\s*", "Market Read: ", ln)
+            # Only normalize DAILY -> Market Read. Keep Weekly/Monthly/Quarterly as-is.
+            ln = re.sub(r"(?i)^daily\s+market read:\s*", "Market Read: ", ln)
             normed.append(ln)
 
         return clean_text("\n".join(normed).strip())
