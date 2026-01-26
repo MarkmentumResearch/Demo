@@ -259,10 +259,10 @@ def _market_read_to_flowables(mr_text: str) -> list:
                    "macro levers (mtd % returns):", "macro levers (qtd % returns):"):
             # flush existing bullets
             if bullets:
-                out.append(Paragraph(pdf_safe_text(ln[2:]), bullets))
+                out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
                 bullets = []
             out.append(Spacer(1, 6))
-            out.append(Paragraph(f"<b>{pdf_safe_text(ln)}</b>", P))
+            out.append(Paragraph(clean_text(ln), H2))
             in_bullets = True
             continue
 
@@ -271,7 +271,7 @@ def _market_read_to_flowables(mr_text: str) -> list:
                 out.append(ListFlowable(bullets, bulletType="bullet", leftIndent=18))
                 bullets = []
             out.append(Spacer(1, 10))
-            out.append(Paragraph(f"<b>{pdf_safe_text(ln)}</b>", P))
+            out.append(Paragraph(clean_text(ln), P))
             in_bullets = False
             continue
 
