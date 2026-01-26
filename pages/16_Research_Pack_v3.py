@@ -250,7 +250,7 @@ def _market_read_to_flowables(mr_text: str) -> list:
         # section headers / labels
         if low.startswith("market read:") or low.startswith("weekly market read:") or low.startswith("monthly market read:") or low.startswith("quarterly market read:"):
             out.append(Spacer(1, 6))
-            out.append(Paragraph(f"<b>{pdf_safe_text(ln)}</b>", P))
+            out.append(Paragraph(clean_text(ln), H2))
             in_bullets = False
             continue
 
@@ -277,7 +277,10 @@ def _market_read_to_flowables(mr_text: str) -> list:
 
         # normal lines
         if in_bullets:
-            bullets.append(ListItem(Paragraph(clean_text(ln), P)))
+            ln2 = ln
+            if ln2.startswith("- "):
+                ln2 = ln2[2:].lstrip()
+            bullets.append(ListItem(Paragraph(clean_text(ln2), P)))
         else:
             out.append(Paragraph(clean_text(ln), P))
 
