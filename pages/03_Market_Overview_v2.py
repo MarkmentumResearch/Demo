@@ -603,6 +603,7 @@ unsafe_allow_html=True,
 
 # ========= Market Read (per timeframe) =========
 import os
+import streamlit.components.v1 as components
 MR_HTML = {
     "Daily":     "Market_Read_daily.html",
     "Weekly":    "Market_Read_weekly.html",
@@ -631,8 +632,9 @@ mr_html = f"""
   {note_html}
 </div>
 """
-
-st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
+# Render the full HTML doc inside the Streamlit page
+components.html(mr_html, height=900, scrolling=True)
+#st.markdown(textwrap.dedent(mr_html), unsafe_allow_html=True)
 
 # -------------------------
 # Footer disclaimer
