@@ -166,7 +166,7 @@ We deliver volatility-adjusted probable ranges, proprietary scoring, and AI-gene
   <li><b>Markmentum Score</b> – a rules-based, volatility-adjusted risk–reward score — the navigator allowing you, the captain, to steer the ship to your destination with clarity and confidence.</li>
   <li><b>Heatmaps</b> – Data tables and heatmaps for broad performance distribution, risk-adjusted performance layer, and core signal distribution to surface opportunity and risk fast.</li>
   <li><b>Signals</b> – Curated tactical lists designed to highlight near-term opportunities and crowding dynamics across the instrument universe. Each list distills probabilistic signals into actionable context for different trading styles.</li>
-  <li><b>Updates</b> – Nightly refresh after market close (typically 9–10 pm ET).</li>
+  <li><b>Updates</b> – Nightly refresh after market close (typically 8:15PM ET).</li>
 </ul>
 
 <h3>How to use the app</h3>
