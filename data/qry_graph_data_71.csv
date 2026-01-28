@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,model_score_day_change,current_model_score,previous_model_score
-LRCX,LAM RESEARCH ,Information Technology,2026-01-26,-95.0,-46.0,49.0
-FXY,INVESCO:JAPANESE YEN,Currencies,2026-01-26,-88.0,-65.0,23.0
-CEG,CONSTELLATION ENERGY,Utilities,2026-01-26,-79.0,-38.0,41.0
-XOP,SPDR S&P OIL&GAS EXP,MR Discretion,2026-01-26,-75.0,-82.0,-7.0
-TJX,"THE TJX COMPANIES, INC.",Consumer Discretionary,2026-01-26,-72.0,-11.0,61.0
-FSLR,"FIRST SOLAR, INC.",Information Technology,2026-01-26,-71.0,8.0,79.0
-EWY,ISHARES:MSCI S KOREA,Foreign,2026-01-26,-64.0,-58.0,6.0
-GOOGL,ALPHABET INC.,Communication Services,2026-01-26,-64.0,-22.0,42.0
-URNM,SPROTT URANIUM MINERS,MR Discretion,2026-01-26,-61.0,-70.0,-9.0
-STX,SEAGATE TECHNOLOGY HOLDINGS,Information Technology,2026-01-26,-60.0,-2.0,58.0
+SYF,SYNCHRONY FINANCIAL,Financials,2026-01-27,-82.0,-38.0,44.0
+RTX,RTX ,Industrials,2026-01-27,-71.0,-46.0,25.0
+TROW,"T. ROWE PRICE GROUP, INC.",Financials,2026-01-27,-71.0,-38.0,33.0
+HCA,"HCA HEALTHCARE, INC.",Health Care,2026-01-27,-70.0,-5.0,65.0
+WDC,WESTERN DIGITAL ,Information Technology,2026-01-27,-70.0,-38.0,32.0
+FOXA,FOX ,Communication Services,2026-01-27,-69.0,-15.0,54.0
+CMI,CUMMINS INC.,Industrials,2026-01-27,-68.0,-56.0,12.0
+HOLX,"HOLOGIC, INC.",Health Care,2026-01-27,-67.0,-79.0,-12.0
+SCHW,THE CHARLES SCHWAB ,Financials,2026-01-27,-64.0,4.0,68.0
+GLW,CORNING INC.,Information Technology,2026-01-27,-61.0,5.0,66.0
