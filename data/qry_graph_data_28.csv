@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,volume
-INTC,INTEL ,Information Technology,2026-01-28,202.0
-SLV,ISHARES:SILVER TRUST,Commodities,2026-01-28,184.57
-NVDA,NVIDIA ,Information Technology,2026-01-28,148.55
-T,AT&T INC.,Communication Services,2026-01-28,84.12
-EWZ,ISHARES:MSCI BRAZIL,Foreign,2026-01-28,62.46
-SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2026-01-28,61.17
-KVUE,KENVUE INC.,Consumer Staples,2026-01-28,56.73
-TSLA,"TESLA, INC.",Consumer Discretionary,2026-01-28,54.86
-QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2026-01-28,50.69
-F,FORD MOTOR COMPANY,Consumer Discretionary,2026-01-28,48.75
+SLV,ISHARES:SILVER TRUST,Commodities,2026-01-29,246.35
+NVDA,NVIDIA ,Information Technology,2026-01-29,171.76
+MSFT,MICROSOFT ,Information Technology,2026-01-29,128.86
+INTC,INTEL ,Information Technology,2026-01-29,124.26
+SPY,SPDR S&P 500 ETF,Sector & Style ETFs,2026-01-29,97.49
+F,FORD MOTOR COMPANY,Consumer Discretionary,2026-01-29,84.8
+TSLA,"TESLA, INC.",Consumer Discretionary,2026-01-29,81.69
+QQQ,INVESCO QQQ TRUST 1,Sector & Style ETFs,2026-01-29,79.94
+XLE,SEL SECTOR:ENERGY SPDR,Sector & Style ETFs,2026-01-29,77.52
+T,AT&T INC.,Communication Services,2026-01-29,73.26

@@ -1,11 +1,11 @@
 Ticker,Ticker_name,Category,Date,mtd_return_pct
-HUM,HUMANA INC.,Health Care,2026-01-28,-0.2425
-APP,APPLOVIN CORP,Information Technology,2026-01-28,-0.1951
-ROP,"ROPER TECHNOLOGIES, INC.",Information Technology,2026-01-28,-0.1904
-INTU,INTUIT INC.,Information Technology,2026-01-28,-0.1868
-CEG,CONSTELLATION ENERGY,Utilities,2026-01-28,-0.1849
-GDDY,GODADDY INC.,Information Technology,2026-01-28,-0.1671
-TTD,"THE TRADE DESK, INC.",Communication Services,2026-01-28,-0.1604
-FIS,FIDELITY NATIONAL INFORMATION SERVICES,Financials,2026-01-28,-0.1545
-NOW,"SERVICENOW, INC.",Information Technology,2026-01-28,-0.1539
-PSKY,PARAMOUNT SKYDANCE ,Communication Services,2026-01-28,-0.1537
+INTU,INTUIT INC.,Information Technology,2026-01-29,-0.2407
+NOW,"SERVICENOW, INC.",Information Technology,2026-01-29,-0.238
+HUM,HUMANA INC.,Health Care,2026-01-29,-0.2321
+GDDY,GODADDY INC.,Information Technology,2026-01-29,-0.2002
+CRM,"SALESFORCE, INC.",Information Technology,2026-01-29,-0.1919
+LVS,LAS VEGAS SANDS CORP.,Consumer Discretionary,2026-01-29,-0.1902
+WDAY,"WORKDAY, INC.",Information Technology,2026-01-29,-0.1868
+CEG,CONSTELLATION ENERGY,Utilities,2026-01-29,-0.1863
+ROP,"ROPER TECHNOLOGIES, INC.",Information Technology,2026-01-29,-0.18
+TTD,"THE TRADE DESK, INC.",Communication Services,2026-01-29,-0.1768
