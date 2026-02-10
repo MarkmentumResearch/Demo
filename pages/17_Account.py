@@ -11,13 +11,14 @@ import sys
 import numpy as np
 from urllib.parse import quote_plus
 import os
+import time
 
 st.cache_data.clear()
 # 13_Contact.py (or wherever your Contact page lives)
 #import streamlit as st
 import requests
 
-st.set_page_config(page_title="Account", page_icon="✉️", layout="wide")
+st.set_page_config(page_title="Account", layout="wide")
 # -------------------------
 # Page & shared style
 # -------------------------
@@ -87,7 +88,7 @@ LOGO_PATH  = ASSETS_DIR / "markmentum_logo.png"
 
 
 
-CSV_PATH  = DATA_DIR / "ticker_data.csv"   # model_score
+#CSV_PATH  = DATA_DIR / "ticker_data.csv"   # model_score
 
 
 # -------------------------
