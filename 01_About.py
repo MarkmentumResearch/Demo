@@ -127,7 +127,7 @@ if LOGO_PATH.exists():
 ACCOUNT_URL = "https://www.markmentumresearch.com/account"
 
 st.title("Demo Site")
-st.write("This Demo Site has been discontinued.")
+st.write("This Demo site has been discontinued.")
 st.write("Please visit our production site.")
 
 # Optional manual fallback button
