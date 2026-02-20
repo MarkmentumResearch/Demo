@@ -132,7 +132,7 @@ st.write("Please visit our production site.")
 
 # Optional manual fallback button
 st.markdown(
-    f'<a href="{ACCOUNT_URL}" target="_self" rel="noopener noreferrer">https://www.markmentumresearch.com/account</a>',
+    f'<a href="{ACCOUNT_URL}" target="_self" rel="noopener noreferrer">https://www.markmentumresearch.com</a>',
     unsafe_allow_html=True
 )
 
